@@ -38,9 +38,30 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 var options = {
   mode: process.env.NODE_ENV || 'development',
   entry: {
-    popup: path.join(__dirname, 'src', 'pages', 'Popup', 'index.tsx'),
-    onboarding: path.join(__dirname, 'src', 'pages', 'Onboarding', 'index.tsx'),
-    background: path.join(__dirname, 'src', 'pages', 'Background', 'index.ts'),
+    popup: path.join(
+      __dirname,
+      'src',
+      'extension',
+      'pages',
+      'Popup',
+      'index.tsx'
+    ),
+    onboarding: path.join(
+      __dirname,
+      'src',
+      'extension',
+      'pages',
+      'Onboarding',
+      'index.tsx'
+    ),
+    background: path.join(
+      __dirname,
+      'src',
+      'extension',
+      'pages',
+      'Background',
+      'index.ts'
+    ),
   },
   chromeExtensionBoilerplate: {
     notHotReload: ['background'],
@@ -133,7 +154,7 @@ var options = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'src/manifest.json',
+          from: 'src/extension/manifest.json',
           to: path.join(__dirname, 'build'),
           force: true,
           transform: function (content, path) {
@@ -152,7 +173,7 @@ var options = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'src/assets/img/icon-128.png',
+          from: 'src/extension/assets/img/icon-128.png',
           to: path.join(__dirname, 'build'),
           force: true,
         },
@@ -161,7 +182,7 @@ var options = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'src/assets/img/icon-34.png',
+          from: 'src/extension/assets/img/icon-34.png',
           to: path.join(__dirname, 'build'),
           force: true,
         },
@@ -171,6 +192,7 @@ var options = {
       template: path.join(
         __dirname,
         'src',
+        'extension',
         'pages',
         'Onboarding',
         'index.html'
@@ -180,7 +202,14 @@ var options = {
       cache: false,
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'pages', 'Popup', 'index.html'),
+      template: path.join(
+        __dirname,
+        'src',
+        'extension',
+        'pages',
+        'Popup',
+        'index.html'
+      ),
       filename: 'popup.html',
       chunks: ['popup'],
       cache: false,
