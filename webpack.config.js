@@ -39,6 +39,7 @@ var options = {
   mode: process.env.NODE_ENV || 'development',
   entry: {
     popup: path.join(__dirname, 'src', 'pages', 'Popup', 'index.tsx'),
+    onboarding: path.join(__dirname, 'src', 'pages', 'Onboarding', 'index.tsx'),
     background: path.join(__dirname, 'src', 'pages', 'Background', 'index.ts'),
   },
   chromeExtensionBoilerplate: {
@@ -165,6 +166,18 @@ var options = {
           force: true,
         },
       ],
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(
+        __dirname,
+        'src',
+        'pages',
+        'Onboarding',
+        'index.html'
+      ),
+      filename: 'onboarding.html',
+      chunks: ['onboarding'],
+      cache: false,
     }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src', 'pages', 'Popup', 'index.html'),

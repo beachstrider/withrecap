@@ -4,38 +4,49 @@ import { User } from 'firebase/auth';
 import logo from '../../assets/img/logo.svg';
 import './Popup.css';
 import { GoogleAuth } from '../../utils/auth/google';
+import { Users } from '../../utils/storage/users';
 
 const google = new GoogleAuth();
+const users = new Users();
+
+const redirect = (url: string) => {
+  let internalUrl = chrome.runtime.getURL(url);
+  chrome.tabs.create({ url: internalUrl }, (_tab) => {
+    console.debug(`New tab launched with ${internalUrl}`);
+  });
+};
 
 const Popup = () => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // const init = () => {
-    //   chrome.runtime.sendMessage(
-    //     { message: 'is_user_signed_in' },
-    //     function (response) {
-    //       if (response.message === 'success' && response.payload) {
-    //         window.location.replace('./main.html');
-    //       }
-    //     }
-    //   );
-    // };
+    google.auth.onAuthStateChanged((u) => {
+      if (u === null) {
+        setUser(null);
+        return redirect('onboarding.html');
+      }
+
+      users.exists(u.uid).then((exists) => {
+        if (!exists) {
+          users.insert(u).then(() => {
+            setUser(u);
+          });
+        } else {
+          setUser(u);
+        }
+      });
+    });
   }, []);
 
   const login = async (e: React.MouseEvent<HTMLButtonElement>) => {
     // TODO: Handle errors
     await google.login();
-    setUser(google.user);
   };
 
   const logout = async (e: React.MouseEvent<HTMLButtonElement>) => {
     // TODO: Handle errors
     await google.logout();
-    setUser(null);
   };
-
-  console.log('user', user);
 
   const body = () => {
     if (!!user) {
