@@ -9,7 +9,7 @@ import { GoogleAuthProvider } from 'firebase/auth';
 import { getAuth } from 'firebase/auth';
 import 'firebase/compat/auth';
 
-import { firebase } from '../../utils/auth/firebase';
+import { firebase } from '../../common/auth/firebase';
 
 // Configure FirebaseUI.
 const uiConfig = {

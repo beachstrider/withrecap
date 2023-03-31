@@ -43,7 +43,7 @@ var options = {
       'packages',
       'extension',
       'pages',
-      'Popup',
+      'popup',
       'index.tsx'
     ),
     onboarding: path.join(
@@ -51,20 +51,26 @@ var options = {
       'packages',
       'extension',
       'pages',
-      'Onboarding',
+      'onboarding',
       'index.tsx'
     ),
     background: path.join(
       __dirname,
       'packages',
       'extension',
-      'pages',
-      'Background',
+      'background',
+      'index.ts'
+    ),
+    content: path.join(
+      __dirname,
+      'packages',
+      'extension',
+      'content',
       'index.ts'
     ),
   },
   chromeExtensionBoilerplate: {
-    notHotReload: ['background'],
+    notHotReload: ['background', 'content'],
   },
   output: {
     filename: '[name].bundle.js',
@@ -194,7 +200,7 @@ var options = {
         'packages',
         'extension',
         'pages',
-        'Onboarding',
+        'onboarding',
         'index.html'
       ),
       filename: 'onboarding.html',
@@ -207,7 +213,7 @@ var options = {
         'packages',
         'extension',
         'pages',
-        'Popup',
+        'popup',
         'index.html'
       ),
       filename: 'popup.html',

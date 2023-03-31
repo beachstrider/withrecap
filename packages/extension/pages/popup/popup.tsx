@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
 
 import logo from '../../assets/img/logo.svg';
-import './Popup.css';
-import { GoogleAuth } from '../../utils/auth/google';
-import { Users } from '../../utils/storage/users';
+import { GoogleAuth } from '../../common/auth/google';
+import { Users } from '../../common/storage/users';
+
+import './popup.css';
 
 const google = new GoogleAuth();
 const users = new Users();

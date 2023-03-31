@@ -3,7 +3,7 @@
   "name": "Firebase Auth in Chrome Extension Sample",
   "description": "This sample shows how to authorize Firebase in a Chrome extension using a Google account.",
   "background": { "service_worker": "background.bundle.js" },
-  "permissions": ["identity"],
+  "permissions": ["identity", "tabs", "storage"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": "icon-34.png"
@@ -15,6 +15,12 @@
     {
       "resources": ["icon-128.png", "icon-34.png"],
       "matches": []
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://meet.google.com/*"],
+      "js": ["content.bundle.js"]
     }
   ],
   "content_security_policy": {
