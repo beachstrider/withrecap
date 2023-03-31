@@ -40,7 +40,7 @@ var options = {
   entry: {
     popup: path.join(
       __dirname,
-      'src',
+      'packages',
       'extension',
       'pages',
       'Popup',
@@ -48,7 +48,7 @@ var options = {
     ),
     onboarding: path.join(
       __dirname,
-      'src',
+      'packages',
       'extension',
       'pages',
       'Onboarding',
@@ -56,7 +56,7 @@ var options = {
     ),
     background: path.join(
       __dirname,
-      'src',
+      'packages',
       'extension',
       'pages',
       'Background',
@@ -77,7 +77,7 @@ var options = {
       {
         // look for .css or .scss files
         test: /\.(css|scss)$/,
-        // in the `src` directory
+        // in the `packages` directory
         use: [
           {
             loader: 'style-loader',
@@ -154,7 +154,7 @@ var options = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'src/extension/manifest.json',
+          from: 'packages/extension/manifest.json',
           to: path.join(__dirname, 'build'),
           force: true,
           transform: function (content, path) {
@@ -173,7 +173,7 @@ var options = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'src/extension/assets/img/icon-128.png',
+          from: 'packages/extension/assets/img/icon-128.png',
           to: path.join(__dirname, 'build'),
           force: true,
         },
@@ -182,7 +182,7 @@ var options = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'src/extension/assets/img/icon-34.png',
+          from: 'packages/extension/assets/img/icon-34.png',
           to: path.join(__dirname, 'build'),
           force: true,
         },
@@ -191,7 +191,7 @@ var options = {
     new HtmlWebpackPlugin({
       template: path.join(
         __dirname,
-        'src',
+        'packages',
         'extension',
         'pages',
         'Onboarding',
@@ -204,7 +204,7 @@ var options = {
     new HtmlWebpackPlugin({
       template: path.join(
         __dirname,
-        'src',
+        'packages',
         'extension',
         'pages',
         'Popup',
