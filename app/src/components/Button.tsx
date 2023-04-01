@@ -28,11 +28,11 @@ export default function Button(props: ButtonProps) {
             : ""
         } ${
           props.type === "SECONDARY_MEDIUM_TEXT_ICON_TYPE"
-            ? "px-4 h-12 gap-2.5 text-left font-semibold w-[164px] bg-[rgba(241,243,245,1)] rounded-[14px] font-['Inter'] text-[rgba(34,39,52,1)]"
+            ? "h-12 gap-2.5 text-left font-semibold w-[164px] bg-[rgba(241,243,245,1)] rounded-[14px] font-['Inter'] text-[rgba(34,39,52,1)]"
             : ""
         } ${
           props.type === "SECONDARY_MEDIUM_TEXT_ICON_TYPE1"
-            ? "px-4 h-12 gap-2.5 text-left font-semibold bg-[rgba(241,243,245,1)] rounded-[14px] font-['Inter'] text-[rgba(34,39,52,1)]"
+            ? "h-12 gap-2.5 text-left font-semibold bg-[rgba(241,243,245,1)] rounded-[14px] font-['Inter'] text-[rgba(34,39,52,1)]"
             : ""
         } ${
           props.type === "SECONDARY_SMALL_TEXT_ICON_TYPE3"
@@ -40,19 +40,19 @@ export default function Button(props: ButtonProps) {
             : ""
         } ${
           props.type === "SECONDARY_SMALL_TEXT_TYPE"
-            ? "px-2.5 h-8 gap-1.5 rounded-xl text-left w-[125px] bg-[rgba(241,243,245,1)] font-['Inter']"
+            ? "h-8 gap-1.5 rounded-xl text-left w-[125px] bg-[rgba(241,243,245,1)] font-['Inter']"
             : ""
         } ${
           props.type === "SECONDARY_SMALL_TEXT_ICON_TYPE2"
-            ? "px-2.5 h-8 gap-1.5 rounded-xl text-left font-semibold bg-[rgba(241,243,245,1)] font-['Inter'] text-[rgba(34,39,52,1)]"
+            ? "h-8 gap-1.5 rounded-xl text-left font-semibold bg-[rgba(241,243,245,1)] font-['Inter'] text-[rgba(34,39,52,1)]"
             : ""
         } ${
           props.type === "SECONDARY_SMALL_TEXT_ICON_TYPE"
-            ? "px-2.5 h-8 gap-1.5 rounded-xl text-left font-semibold w-[148px] bg-[rgba(241,243,245,1)] font-['Inter'] text-[rgba(34,39,52,1)]"
+            ? "h-8 gap-1.5 rounded-xl text-left font-semibold w-[148px] bg-[rgba(241,243,245,1)] font-['Inter'] text-[rgba(34,39,52,1)]"
             : ""
         } ${
           props.type === "SECONDARY_SMALL_TEXT_ICON_TYPE1"
-            ? "px-2.5 h-8 gap-1.5 rounded-xl text-left font-semibold w-[83px] bg-[rgba(241,243,245,1)] font-['Inter'] text-[rgba(34,39,52,1)]"
+            ? "h-8 gap-1.5 rounded-xl text-left font-semibold w-[83px] bg-[rgba(241,243,245,1)] font-['Inter'] text-[rgba(34,39,52,1)]"
             : ""
         }`}
       >
