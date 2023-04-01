@@ -1,0 +1,18 @@
+{
+  "pages": {
+    "main": {
+      "componentData": [
+        {
+          "type": "EXISTING_COMPONENT",
+          "x": 10,
+          "y": 10,
+          "width": 1728,
+          "height": 4715,
+          "filePath": "/src/components/Landing.tsx",
+          "exportName": "default"
+        }
+      ]
+    }
+  },
+  "version": { "major": 0, "minor": 0, "patch": 0 }
+}
