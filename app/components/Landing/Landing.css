@@ -1,0 +1,11 @@
+.landing {
+  align-items: center;
+  background-color: var(--darkbackgroundprimary-button);
+  border: 1px none;
+  display: flex;
+  flex-direction: column;
+  height: 4715px;
+  padding: 0 32.4px;
+  width: 1728px;
+}
+

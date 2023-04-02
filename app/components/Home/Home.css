@@ -1,0 +1,11 @@
+.home {
+  align-items: flex-start;
+  background-color: var(--darkbackgroundprimary-button);
+  border: 1px none;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  height: 1672px;
+  width: 1728px;
+}
+

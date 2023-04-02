@@ -11,7 +11,7 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
-    "public": "build",
+    "public": "dist",
     "rewrites": [ {
       "source": "**",
      "destination": "/index.html"
