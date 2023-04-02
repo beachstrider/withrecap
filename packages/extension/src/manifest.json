@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "Firebase Auth in Chrome Extension Sample",
+  "version": "0.0.1",
+  "description": "This sample shows how to authorize Firebase in a Chrome extension using a Google account.",
+  "background": {
+    "service_worker": "background/index.ts",
+    "type": "module"
+  },
+  "options_ui": {
+    "page": "pages/onboarding/index.html",
+    "open_in_tab": true
+  },
+  "permissions": ["identity", "tabs", "storage"],
+  "action": {
+    "default_popup": "pages/popup/index.html",
+    "default_icon": "assets/img/icon-34.png"
+  },
+  "icons": {
+    "128": "assets/img/icon-128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/img/icon-128.png", "assets/img/icon-34.png"],
+      "matches": []
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://meet.google.com/*"],
+      "js": ["content/index.ts"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'",
+    "sandbox": "sandbox allow-scripts; script-src 'self' 'https://apis.google.com/' 'https://www.gstatic.com/' 'https://*.firebaseio.com' 'https://www.googleapis.com' 'https://ajax.googleapis.com'; object-src 'self'"
+  },
+  "oauth2": {
+    "client_id": "920065143357-udln2c3909na2gl80gc92ndl34msfngo.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/contacts.readonly"]
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyY8HHd8mWCCzT2+6pe5cQi3lLtcIeHwDSneAlhRV+OLpyAiNQ1iuMliTFZqj+1zyTF3zYO+TOKJjHwqc3ulvP4JqCTg9t9AEYJK0X+EHQ635HBgqa80xhZX6c+a4fLB9c8oEX6pmGxZxygqhcGcAYIokcLC7gjoP+xLBYC5sDc7Kgkxduo2Hy6Q76uY4MXS9AlR9+bAVOZc2GiLBnMF3MDQTd5aJ6a0MOiG/ry3EZlBbTFmCKvWUhQJBxCcknJTrdLcKyodAAsQMcBoV/ta4IbNinRq7zcMeqVMNGK6v+PHEMof0Zo1ZnzZg7kPWL+WzxwQyZ3Stf8rE+lmh0pQCHwIDAQAB"
+}

@@ -1,0 +1,16 @@
+{
+  "name": "@recap/extension",
+  "version": "0.0.1",
+  "description": "Chrome extension for reCap app",
+  "private": true,
+  "scripts": {
+    "start": "parcel watch src/manifest.json --host localhost --config @parcel/config-webextension",
+    "build": "parcel build src/manifest.json --config @parcel/config-webextension"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@parcel/config-webextension": "^2.8.3",
+    "@parcel/transformer-typescript-tsc": "^2.8.3",
+    "@recap/shared": "0.0.1"
+  }
+}
