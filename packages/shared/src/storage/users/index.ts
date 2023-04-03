@@ -1,32 +1,25 @@
-import { User } from 'firebase/auth';
-import {
-  collection,
-  doc,
-  setDoc,
-  getDoc,
-  CollectionReference,
-  DocumentData,
-} from 'firebase/firestore';
+import { User } from 'firebase/auth'
+import { collection, doc, setDoc, getDoc, CollectionReference, DocumentData } from 'firebase/firestore'
 
-import { firestore } from '../firestore';
+import { firestore } from '../firestore'
 
 export class Users {
-  private _db: CollectionReference<DocumentData>;
+  private _db: CollectionReference<DocumentData>
 
   constructor() {
-    this._db = collection(firestore, 'users');
+    this._db = collection(firestore, 'users')
   }
 
   public async exists(uid: string) {
-    const document = await getDoc(doc(this._db, uid));
+    const document = await getDoc(doc(this._db, uid))
 
-    return document.exists();
+    return document.exists()
   }
 
   public async get(uid: string) {
-    const document = await getDoc(doc(this._db, uid));
+    const document = await getDoc(doc(this._db, uid))
 
-    return document.data();
+    return document.data()
   }
 
   public async insert(user: User) {
@@ -34,7 +27,7 @@ export class Users {
       displayName: user.displayName || null,
       email: user.email,
       photoURL: user.photoURL,
-      uid: user.uid,
-    });
+      uid: user.uid
+    })
   }
 }

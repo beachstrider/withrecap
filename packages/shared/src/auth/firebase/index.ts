@@ -1,5 +1,5 @@
-import { FirebaseOptions, initializeApp } from 'firebase/app';
-import 'firebase/compat/auth';
+import { FirebaseOptions, initializeApp } from 'firebase/app'
+import 'firebase/compat/auth'
 
 // TODO: Put this in env
 const firebaseConfig: FirebaseOptions = {
@@ -8,7 +8,7 @@ const firebaseConfig: FirebaseOptions = {
   projectId: 'recap-dev-3c341',
   storageBucket: 'recap-dev-3c341.appspot.com',
   messagingSenderId: '920065143357',
-  appId: '1:920065143357:web:d6bf33c14c8cd073cbb054',
-};
+  appId: '1:920065143357:web:d6bf33c14c8cd073cbb054'
+}
 
-export const firebase = initializeApp(firebaseConfig);
+export const firebase = initializeApp(firebaseConfig)

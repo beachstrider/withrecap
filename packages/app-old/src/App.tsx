@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import * as firebaseui from 'firebaseui';
-import { GoogleAuthProvider, User, getAuth, Config } from 'firebase/auth';
-import { FirebaseOptions, initializeApp } from 'firebase/app';
-import 'firebase/compat/auth';
+import React, { useEffect, useState } from 'react'
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
+import * as firebaseui from 'firebaseui'
+import { GoogleAuthProvider, User, getAuth, Config } from 'firebase/auth'
+import { FirebaseOptions, initializeApp } from 'firebase/app'
+import 'firebase/compat/auth'
 
-import './App.css';
+import './App.css'
 
 // TODO: Put this in env
 const firebaseConfig: FirebaseOptions = {
@@ -14,11 +14,11 @@ const firebaseConfig: FirebaseOptions = {
   projectId: 'recap-dev-3c341',
   storageBucket: 'recap-dev-3c341.appspot.com',
   messagingSenderId: '920065143357',
-  appId: '1:920065143357:web:d6bf33c14c8cd073cbb054',
-};
+  appId: '1:920065143357:web:d6bf33c14c8cd073cbb054'
+}
 
-const firebase = initializeApp(firebaseConfig);
-const auth = getAuth(firebase);
+const firebase = initializeApp(firebaseConfig)
+const auth = getAuth(firebase)
 
 // Configure FirebaseUI.
 const uiConfig: firebaseui.auth.Config = {
@@ -32,25 +32,25 @@ const uiConfig: firebaseui.auth.Config = {
   callbacks: {
     signInSuccessWithAuthResult(authResult, _redirectUrl) {
       // TODO: This is really unsafe!
-      localStorage.setItem('recap/authResult', JSON.stringify(authResult));
+      localStorage.setItem('recap/authResult', JSON.stringify(authResult))
 
-      return true;
-    },
-  },
-};
+      return true
+    }
+  }
+}
 
 const SignInScreen = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
     auth.onAuthStateChanged((u) => {
       if (u === null) {
-        setUser(null);
+        setUser(null)
       }
 
-      setUser(u);
-    });
-  });
+      setUser(u)
+    })
+  })
 
   const body = () => {
     if (!!user) {
@@ -59,23 +59,23 @@ const SignInScreen = () => {
           <h1>Signed in as {user.email}.</h1>
           <button onClick={auth.signOut.bind(auth)}>Sign Out?</button>
         </div>
-      );
+      )
     } else {
       return (
         <>
           <p>Please sign-in:</p>
           <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
         </>
-      );
+      )
     }
-  };
+  }
 
   return (
     <div>
       <h1>My App</h1>
       {body()}
     </div>
-  );
-};
+  )
+}
 
-export default SignInScreen;
+export default SignInScreen

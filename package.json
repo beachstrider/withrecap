@@ -4,7 +4,8 @@
   "description": "Coming soon",
   "private": true,
   "scripts": {
-    "prettier": "prettier --check './packages/**/*.{ts,tsx}'"
+    "prettier": "prettier --check './packages/**/*.{ts,tsx}'",
+    "prettier:fix": "prettier --write './packages/**/*.{ts,tsx}'"
   },
   "workspaces": [
     "packages/*"
