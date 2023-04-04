@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { User } from 'firebase/auth'
-import { GoogleAuth, Users } from '@recap/shared'
+import { GoogleAuth, UserStore } from '@recap/shared'
 
 import logo from '../../assets/img/logo.svg'
 
 import './popup.css'
 
 const google = new GoogleAuth()
-const users = new Users()
+const users = new UserStore()
 
 const redirect = () => {
   chrome.runtime.openOptionsPage()

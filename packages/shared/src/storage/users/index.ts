@@ -3,7 +3,7 @@ import { collection, doc, setDoc, getDoc, CollectionReference, DocumentData } fr
 
 import { firestore } from '../firestore'
 
-export class Users {
+export class UserStore {
   private _db: CollectionReference<DocumentData>
 
   constructor() {

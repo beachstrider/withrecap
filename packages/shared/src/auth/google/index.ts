@@ -36,7 +36,7 @@ export class GoogleAuth {
       await setPersistence(this.auth, browserLocalPersistence)
 
       try {
-        const token = await this._login({})
+        const token = await this._login({ interactive: true })
         await signInWithCredential(this.auth, GoogleAuthProvider.credential(null, token))
       } catch (err) {
         throw new Error(`SSO ended with an error: ${err}`)

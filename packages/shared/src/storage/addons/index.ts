@@ -1,12 +1,14 @@
-import { collection, doc, getDoc, CollectionReference, DocumentData } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, CollectionReference, DocumentData } from 'firebase/firestore'
 
 import { firestore } from '../firestore'
 
 export type Addon = {
   url: string
+  available: boolean
 }
+export type Addons = { [name: string]: Addon }
 
-export class Addons {
+export class AddonStore {
   private _db: CollectionReference<DocumentData>
 
   constructor() {
@@ -23,5 +25,16 @@ export class Addons {
     const document = await getDoc(doc(this._db, id))
 
     return document.data() as Addon
+  }
+
+  public async list(): Promise<Addons> {
+    const documents = await getDocs(this._db)
+
+    const addons: Addons = {}
+    documents.forEach((doc) => {
+      addons[doc.id] = doc.data() as Addon
+    })
+
+    return addons
   }
 }

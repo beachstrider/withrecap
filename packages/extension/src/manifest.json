@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Firebase Auth in Chrome Extension Sample",
+  "name": "reCap",
   "version": "0.0.1",
-  "description": "This sample shows how to authorize Firebase in a Chrome extension using a Google account.",
+  "description": "Description coming soon",
   "background": {
     "service_worker": "background/index.ts",
     "type": "module"

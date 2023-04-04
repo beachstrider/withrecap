@@ -1,28 +1,56 @@
-import React from 'react'
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
-import { GoogleAuthProvider } from 'firebase/auth'
-import { getAuth } from 'firebase/auth'
-import 'firebase/compat/auth'
-import { firebase } from '@recap/shared'
+import React, { useEffect, useMemo, useState } from 'react'
+import { User } from 'firebase/auth'
+import { UserStore } from '@recap/shared'
 
-// Configure FirebaseUI.
-const uiConfig = {
-  // Popup signin flow rather than redirect flow.
-  signInFlow: 'popup',
-  // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
-  signInSuccessUrl: '/onboarding.html',
-  // We will display Google and Facebook as auth providers.
-  signInOptions: [GoogleAuthProvider.PROVIDER_ID]
-}
+import AddonsSelection from './addons/addons'
+import SignIn from './signin/signin'
 
-function SignInScreen() {
+import './onboarding.css'
+
+const Onboarding = () => {
+  const userStore = useMemo(() => new UserStore(), [])
+
+  const [user, setUser] = useState<User | null>(null)
+  const [step, setStep] = useState<number>(1)
+
+  useEffect(() => {
+    if (user !== null) {
+      userStore.exists(user.uid).then((exists) => {
+        if (!exists) {
+          userStore.insert(user)
+        }
+      })
+
+      setStep(2)
+    }
+  }, [userStore, user])
+
+  const body = () => {
+    switch (step) {
+      case 1:
+        return <SignIn onUserLoggedIn={setUser} />
+      case 2:
+        if (user) {
+          return <AddonsSelection uid={user.uid} />
+        } else {
+          return (
+            <div>
+              <h1>Loading...</h1>
+            </div>
+          )
+        }
+      default:
+        break
+    }
+  }
+
   return (
-    <div>
-      <h1>My App</h1>
-      <p>Please sign-in:</p>
-      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={getAuth(firebase)} />
+    <div className="app">
+      <h1>Recap</h1>
+      <p>Step {step} of 3</p>
+      <div className="content">{body()}</div>
     </div>
   )
 }
 
-export default SignInScreen
+export default Onboarding
