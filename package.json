@@ -4,6 +4,7 @@
   "description": "Coming soon",
   "private": true,
   "scripts": {
+    "eslint": "eslint ./packages --ext .ts,.tsx",
     "prettier": "prettier --check './packages/**/*.{ts,tsx}'",
     "prettier:fix": "prettier --write './packages/**/*.{ts,tsx}'"
   },

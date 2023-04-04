@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import * as firebaseui from 'firebaseui'
-import { GoogleAuthProvider, User, getAuth, Config } from 'firebase/auth'
+import { GoogleAuthProvider, User, getAuth } from 'firebase/auth'
 import { FirebaseOptions, initializeApp } from 'firebase/app'
 import 'firebase/compat/auth'
 
