@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "start": "parcel watch src/manifest.json --host localhost",
-    "build": "parcel build src/manifest.json"
+    "build": "parcel build src/manifest.json",
+    "package": "zip -r dist.zip dist"
   },
   "dependencies": {},
   "devDependencies": {
