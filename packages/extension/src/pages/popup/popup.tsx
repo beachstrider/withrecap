@@ -25,7 +25,7 @@ const Popup = () => {
 
       users.exists(u.uid).then((exists) => {
         if (!exists) {
-          users.insert(u).then(() => {
+          users.create(u).then(() => {
             setUser(u)
           })
         } else {

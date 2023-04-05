@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { AddonStore, Addons, UserAddonStore, UserAddons } from '@recap/shared'
+import { NextButton } from '../common'
 
 interface AddonsSelectionProps {
   uid: string
+  onNext: () => void
 }
 
 const AddonsSelection = (props: AddonsSelectionProps) => {
@@ -47,7 +49,7 @@ const AddonsSelection = (props: AddonsSelectionProps) => {
     <>
       <h1>Add Recap to your video call apps</h1>
       <ul>{renderAddonList()}</ul>
-      <a href="./">Skip</a>
+      <NextButton onClick={props.onNext} />
     </>
   )
 }

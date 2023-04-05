@@ -1,0 +1,16 @@
+#next-button {
+  width: 576px;
+  height: 24px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #69707a;
+  cursor: pointer;
+}
+
+#next-button:link,
+#next-button:visited,
+#next-button:hover,
+#next-button:active {
+  text-decoration: none;
+}

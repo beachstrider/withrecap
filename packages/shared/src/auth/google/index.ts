@@ -9,6 +9,9 @@ import {
 } from 'firebase/auth'
 
 import { firebase } from '../firebase'
+import { User as FirebaseUser } from 'firebase/auth'
+
+export { User as FirebaseUser } from 'firebase/auth'
 
 export class GoogleAuth {
   public firebase: FirebaseApp
@@ -29,6 +32,10 @@ export class GoogleAuth {
         resolve(token)
       })
     })
+  }
+
+  public onAuthStateChanged = (callback: (user: FirebaseUser | null) => void) => {
+    this.auth.onAuthStateChanged(callback)
   }
 
   public login = async () => {
