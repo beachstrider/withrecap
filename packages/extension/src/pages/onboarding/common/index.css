@@ -1,4 +1,4 @@
-#next-button {
+#skip-button {
   width: 576px;
   height: 24px;
   font-weight: 400;
@@ -8,9 +8,9 @@
   cursor: pointer;
 }
 
-#next-button:link,
-#next-button:visited,
-#next-button:hover,
-#next-button:active {
+#skip-button:link,
+#skip-button:visited,
+#skip-button:hover,
+#skip-button:active {
   text-decoration: none;
 }

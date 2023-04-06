@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { AddonStore, Addons, UserAddonStore, UserAddons } from '@recap/shared'
-import { NextButton } from '../common'
+import { SkipButton } from '../common'
 
 interface AddonsSelectionProps {
   uid: string
@@ -28,6 +28,10 @@ const AddonsSelection = (props: AddonsSelectionProps) => {
     await userAddonStore.insert(id)
 
     setAddons({ ...addons, [id]: { ...addons[id], available: true } })
+
+    // Note: For now, since we only have Google Meet working, we redirect
+    // the user automatically to the next step once he enables it
+    props.onNext()
   }
 
   const isEnabled = (id: string): boolean => {
@@ -49,7 +53,7 @@ const AddonsSelection = (props: AddonsSelectionProps) => {
     <>
       <h1>Add Recap to your video call apps</h1>
       <ul>{renderAddonList()}</ul>
-      <NextButton onClick={props.onNext} />
+      <SkipButton onClick={props.onNext} />
     </>
   )
 }

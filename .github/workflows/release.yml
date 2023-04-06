@@ -30,8 +30,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ github.run_number }}
-          release_name: Release v${{ github.run_number }}
+          tag_name: v0.0.${{ github.run_number }}
+          release_name: Release v0.0.${{ github.run_number }}
           draft: false
           prerelease: false
       - name: Upload release asset
@@ -42,5 +42,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./packages/extension/dist.zip
-          asset_name: recap-v${{ github.run_number }}.zip
+          asset_name: recap-v0.0.${{ github.run_number }}.zip
           asset_content_type: application/zip

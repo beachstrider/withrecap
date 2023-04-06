@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { UserStore } from '@recap/shared'
-import { NextButton } from '../common'
+import { SkipButton } from '../common'
 
 interface AutoSharingProps {
   uid: string
@@ -15,7 +15,13 @@ const AutoSharing = (props: AutoSharingProps) => {
   useEffect(() => {
     // TODO: Handle errors
     userStore.update(props.uid, { autoSharing: toggle })
-  }, [userStore, props.uid, toggle])
+
+    // Note: If the use decides to enable it now, we
+    // redirect him to the next step automatically
+    if (toggle) {
+      props.onNext()
+    }
+  }, [userStore, props.uid, props, toggle])
 
   return (
     <>
@@ -29,7 +35,7 @@ const AutoSharing = (props: AutoSharingProps) => {
         <input onClick={() => setToggle(!toggle)} type="checkbox" />
         <span></span>
       </label>
-      <NextButton onClick={props.onNext} />
+      <SkipButton onClick={props.onNext} />
     </>
   )
 }

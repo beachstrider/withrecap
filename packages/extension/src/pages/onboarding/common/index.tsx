@@ -2,20 +2,20 @@ import React from 'react'
 
 import './index.css'
 
-type NextButtonProps = {
+type SkipButtonProps = {
   onClick: React.DOMAttributes<HTMLSpanElement>['onClick']
 }
-export const NextButton = (props: NextButtonProps) => {
+export const SkipButton = (props: SkipButtonProps) => {
   return (
     <span
-      id="next-button"
+      id="skip-button"
       onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
         e.preventDefault()
 
         props.onClick?.(e)
       }}
     >
-      Next
+      Skip
     </span>
   )
 }
