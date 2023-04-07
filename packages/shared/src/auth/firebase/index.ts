@@ -1,7 +1,5 @@
 import { FirebaseOptions, initializeApp } from 'firebase/app'
 
-import 'firebase/compat/auth'
-
 const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,

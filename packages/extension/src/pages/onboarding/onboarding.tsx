@@ -52,6 +52,7 @@ const Onboarding = () => {
       case 4:
         return <h1>Pin Recap to Chrome for the best experience</h1>
       default:
+        return null
     }
   }
 

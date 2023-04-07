@@ -12,7 +12,7 @@
 
     "jsx": "react",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "resolveJsonModule": true,
+
     "types": ["@recap/shared", "@types/chrome"]
   },
   "include": ["src"],

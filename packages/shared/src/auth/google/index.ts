@@ -5,11 +5,11 @@ import {
   GoogleAuthProvider,
   setPersistence,
   browserLocalPersistence,
-  Auth
+  Auth,
+  User as FirebaseUser
 } from 'firebase/auth'
 
 import { firebase } from '../firebase'
-import { User as FirebaseUser } from 'firebase/auth'
 
 export { User as FirebaseUser } from 'firebase/auth'
 
