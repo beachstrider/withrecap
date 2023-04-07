@@ -4,6 +4,7 @@ import { firestore } from '../firestore'
 
 export type Addon = {
   url: string
+  name: string
   available: boolean
 }
 export type Addons = { [name: string]: Addon }

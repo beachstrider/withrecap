@@ -41,7 +41,7 @@ const AddonsSelection = (props: AddonsSelectionProps) => {
   const renderAddonList = () => {
     return Object.entries(addons).map(([id, addon]) => (
       <li key={id}>
-        <div>{id}</div>
+        <div>{addon.name}</div>
         <button disabled={!addon.available || isEnabled(id)} onClick={async () => await enableAddon(id)}>
           {isEnabled(id) ? 'Enabled' : addon.available ? 'Connect' : 'Coming Soon'}
         </button>

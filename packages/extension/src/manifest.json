@@ -36,8 +36,8 @@
     "sandbox": "sandbox allow-scripts; script-src 'self' 'https://apis.google.com/' 'https://www.gstatic.com/' 'https://*.firebaseio.com' 'https://www.googleapis.com' 'https://ajax.googleapis.com'; object-src 'self'"
   },
   "oauth2": {
-    "client_id": "920065143357-udln2c3909na2gl80gc92ndl34msfngo.apps.googleusercontent.com",
+    "client_id": "621133214709-ia6rs00uka8mke4t4oqlbphlu5baeh9b.apps.googleusercontent.com",
     "scopes": ["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/contacts.readonly"]
   },
-  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyY8HHd8mWCCzT2+6pe5cQi3lLtcIeHwDSneAlhRV+OLpyAiNQ1iuMliTFZqj+1zyTF3zYO+TOKJjHwqc3ulvP4JqCTg9t9AEYJK0X+EHQ635HBgqa80xhZX6c+a4fLB9c8oEX6pmGxZxygqhcGcAYIokcLC7gjoP+xLBYC5sDc7Kgkxduo2Hy6Q76uY4MXS9AlR9+bAVOZc2GiLBnMF3MDQTd5aJ6a0MOiG/ry3EZlBbTFmCKvWUhQJBxCcknJTrdLcKyodAAsQMcBoV/ta4IbNinRq7zcMeqVMNGK6v+PHEMof0Zo1ZnzZg7kPWL+WzxwQyZ3Stf8rE+lmh0pQCHwIDAQAB"
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhsKO0mRds3OQ2IvPNzQ/C3gPcX+soXRFRahMwMI/7MvFY1+lOka2vgM9bO5ZiGJsFRwquyRcHaQG3QpLSB10490LmUZryRDU+xKDbVPiaz4HVQCXtv0BGV0U9bWFZPx/7G9vCh9Xzweo8eX/J59j0SHNUGPPhrvUzsQ3u8MWqcT+zXzYSpiVkquaCqROLOyB/V0pbmYJEvBMsBW8+J2q5kn6HeAFJMwtMq0KmN2NQe/qgWpr8ySj0QRejBWGtIwxyc78jplrrQUC8nCXG3xvaSOEPT0kOBUxVOf5qUBTUHSA1YuDyeoG6uPHnmF5xFlkvn1CrHu68GrUsRgx8S/LswIDAQAB"
 }
