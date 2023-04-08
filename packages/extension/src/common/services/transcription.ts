@@ -1,18 +1,6 @@
 import { MeetingMetadata, MeetingMessage, Meeting } from '../models'
 
-export interface TranscriptionService {
-  appendMessage(meetingId: string, message: MeetingMessage): void
-  getMeetingTranscription(meetingId: string): MeetingMessage[]
-  getMeetingMetadata(meetingId: string): MeetingMetadata
-  updateMeetingMetadata(tabId: number, meetingId: string, metadata: MeetingMetadata): void
-  endMeetingFromTabId(tabId: number): void
-  getCurrentJoinedMeetings(): Meeting[]
-  getEndedMeetings(): Meeting[]
-  popMeeting(meetingId: string): Meeting
-  getAllMeetings(): Meeting[]
-}
-
-export class TranscriptionServiceImpl implements TranscriptionService {
+export class TranscriptionService {
   //local cache of meeting messages while background process is running
   allMeetingMessages: { [meetingId: string]: MeetingMessage[] } = {}
   tabsToMeetings: { [tabId: number]: string } = {}

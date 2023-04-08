@@ -1,25 +1,27 @@
 import { FirebaseApp } from 'firebase/app'
-import {
-  getAuth,
-  signInWithCredential,
-  GoogleAuthProvider,
-  setPersistence,
-  browserLocalPersistence,
-  Auth,
-  User as FirebaseUser
-} from 'firebase/auth'
+import { getAuth, signInWithCredential, GoogleAuthProvider, Auth, User as FirebaseUser } from 'firebase/auth'
 
 import { firebase } from '../firebase'
 
 export { User as FirebaseUser } from 'firebase/auth'
 
-export class GoogleAuth {
-  public firebase: FirebaseApp
-  public auth: Auth
+export type GoogleAuthOptions = {
+  persistAuth: boolean
+}
 
-  constructor() {
+export class GoogleAuth {
+  private _accessToken?: string
+
+  private firebase: FirebaseApp
+  private auth: Auth
+
+  constructor(private options: GoogleAuthOptions = { persistAuth: true }) {
     this.firebase = firebase
     this.auth = getAuth(this.firebase)
+  }
+
+  public get accessToken() {
+    return this._accessToken
   }
 
   private _login = async (details: chrome.identity.TokenDetails) => {
@@ -38,13 +40,16 @@ export class GoogleAuth {
     this.auth.onAuthStateChanged(callback)
   }
 
-  public login = async () => {
+  public login = async ({ silent }: { silent: boolean } = { silent: false }) => {
     try {
-      await setPersistence(this.auth, browserLocalPersistence)
+      // TODO: Figure this out
+      // if (this.options.persistAuth) {
+      //   await setPersistence(this.auth, browserLocalPersistence)
+      // }
 
       try {
-        const token = await this._login({ interactive: true })
-        await signInWithCredential(this.auth, GoogleAuthProvider.credential(null, token))
+        this._accessToken = await this._login({ interactive: !silent })
+        await signInWithCredential(this.auth, GoogleAuthProvider.credential(null, this._accessToken))
       } catch (err) {
         throw new Error(`SSO ended with an error: ${err}`)
       }

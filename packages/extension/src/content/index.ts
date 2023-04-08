@@ -1,121 +1,83 @@
 import { ExtensionMessages, MeetingMetadata, MeetingMessage } from '../common/models'
 
-interface MeetingService {
-  isOnCall(): boolean
-  prepareListener(): void
-  startTranscribing(): void
-}
+const SELECTOR_CALL_BAR = "div[jscontroller='kAPMuc']"
+const SELECTOR_CC_DIV = '.a4cQT'
+const SELECTOR_CC_BUTTON = "button[jscontroller='xzbRj']"
+const SELECTOR_LANGUAGE = "span[jsname='V67aGc']"
+const SELECTOR_SPEAKER = "div[class='zs7s8d jxFHg']"
+const SELECTOR_TEXT = "div[jsname='YSxPC']"
+const SELECTOR_TITLE = "div[jscontroller='yEvoid']"
+const SELECTOR_PARTICIPANTS = "div[jscontroller='SKibOb']"
+const SELECTOR_END_CALL = "div[jscontroller='m1IMT']"
 
-class GoogleMeetsService implements MeetingService {
-  callBar: Element | null = null
-  meetingStartTimestamp?: number
+class GoogleMeetsService {
+  private callBar: HTMLDivElement | null = null
 
-  SELECTOR_CALL_BAR = "div[jscontroller='kAPMuc']"
-  SELECTOR_CC_DIV = '.a4cQT'
-  SELECTOR_CC_BUTTON = "button[jscontroller='xzbRj']"
-  SELECTOR_LANGUAGE = "span[jsname='V67aGc']"
-  SELECTOR_SPEAKER = "div[class='zs7s8d jxFHg']"
-  SELECTOR_TEXT = "div[jsname='YSxPC']"
-  SELECTOR_TITLE = "div[jscontroller='yEvoid']"
-  SELECTOR_PARTICIPANTS = "div[jscontroller='SKibOb']"
-  SELECTOR_END_CALL = "div[jscontroller='m1IMT']"
+  private meetingStartTimestamp?: number
+  private meetingEndTimestamp?: number
 
-  isOnCall(): boolean {
-    return this.meetingStartTimestamp ? true : false
+  public isOnCall(): boolean {
+    // if call bar is available this means the call started
+    return this.callBar ? true : false
   }
 
-  getMeetingTitle(): string {
-    let divTitle = document.querySelector(this.SELECTOR_TITLE) as HTMLElement
+  private getMeetingTitle(): string {
+    const divTitle = document.querySelector<HTMLDivElement>(SELECTOR_TITLE)
+
+    if (!divTitle?.textContent) {
+      console.error('title of the meeting could not be found.')
+    }
+
     return divTitle?.textContent ?? ''
   }
 
-  getMeetingId(): string {
+  private getMeetingId(): string {
     return window.location.pathname.slice(1)
   }
 
-  prepareListener(): void {
-    const docObserver = new MutationObserver(() => {
-      //if call bar is available - means the call started
-      this.callBar = document.body.querySelector(this.SELECTOR_CALL_BAR)
-      if (this.callBar) {
-        //remove observer
-        docObserver.disconnect()
-        //start transcription
-        console.log('call started')
-        this.meetingStartTimestamp = new Date().getTime()
-        //setting timeout or else we dont find the cc button to click
-        setTimeout(() => {
-          //this will also be useful even if you rejoin a meeting
-          //for example the meeting was ended through tab close, but then you joined again - this will nullify the metadata's endTimestamp
-          this.updateMeetingMetadata()
-          //click on the cc button and start transcribing
-          this.startTranscribing()
-        }, 800)
-      }
-    })
+  private getMeetingMetadata(): MeetingMetadata {
+    const nbParticipantsText = document.querySelector<HTMLDivElement>(SELECTOR_PARTICIPANTS)?.textContent
+    console.debug(`Number of participants: ${nbParticipantsText}`)
+    // We try to convert the text input to a integer and fallback to 1 when undefined
+    const nbParticipants = nbParticipantsText ? parseInt(nbParticipantsText) : 1
 
-    docObserver.observe(document.body, {
-      childList: true,
-      subtree: true
-    })
-  }
-
-  updateMeetingMetadata(endCall: boolean = false): void {
-    const nbParticipants = document.querySelector(this.SELECTOR_PARTICIPANTS)?.textContent
-    console.log(`Number of participants: ${nbParticipants}`)
     if (!this.meetingStartTimestamp) {
       this.meetingStartTimestamp = new Date().getTime()
     }
 
-    const metadata: MeetingMetadata = {
-      title: this.getMeetingTitle(),
-      nbParticipants: nbParticipants ? parseInt(nbParticipants) : 1,
-      startTimestamp: this.meetingStartTimestamp,
-      endTimestamp: endCall ? new Date().getTime() : undefined
-    }
-    chrome.runtime.sendMessage(
-      {
-        meetingId: this.getMeetingId(),
-        metadata: metadata,
-        type: ExtensionMessages.MeetingMetadata
-      },
-      () => {}
-    )
-  }
-  startTranscribing(): void {
-    //TODO divide this into 2 - 1 that gets in the text, and the other that sends the text to the background script along with the meeting id
-    const ccDiv = document.querySelector(this.SELECTOR_CC_DIV) as HTMLElement
-    const callDiv = this.callBar!
-    const participantsDiv = document.querySelector(this.SELECTOR_PARTICIPANTS) as HTMLElement
-    const endCallDiv = document.querySelector(this.SELECTOR_END_CALL) as HTMLElement
-    const self = this
-    if (!ccDiv) {
-      console.log('no cc div found')
-      return
-    }
+    const title = this.getMeetingTitle()
 
-    console.log('found caption div - checking if hidden: ' + ccDiv.style.display)
-    if (ccDiv.style.display === 'none') {
-      console.log("caption isn't enabled - enabling")
-      const ccButton = callDiv.querySelector(this.SELECTOR_CC_BUTTON) as HTMLElement
+    return {
+      title: title,
+      nbParticipants: nbParticipants,
+      startTimestamp: this.meetingStartTimestamp,
+      endTimestamp: this.meetingEndTimestamp
+    }
+  }
+
+  private enableCaption(ccDiv: HTMLDivElement, callDiv: HTMLDivElement): void {
+    const isHidden = ccDiv.style.display === 'none'
+    console.debug('found caption div - checking if hidden... ', isHidden)
+    if (isHidden) {
+      const ccButton = callDiv.querySelector<HTMLButtonElement>(SELECTOR_CC_BUTTON)
       if (ccButton) {
-        console.log('found button - clicking')
         ccButton.click()
+        console.debug('caption enabled')
       } else {
-        console.log("didn't find button")
+        console.error("didn't find button trying to enable caption")
       }
     }
+  }
 
-    console.log('cc enabled - subscribing to observer')
-
+  private listenOnNewMessage(ccDiv: HTMLDivElement): MutationObserver {
     const ccDivObserver = new MutationObserver(() => {
-      console.log('change happened')
-      const language = ccDiv.querySelector(this.SELECTOR_LANGUAGE)?.textContent
-      const speaker = ccDiv.querySelector(this.SELECTOR_SPEAKER)?.textContent
-      const text = ccDiv.querySelector(this.SELECTOR_TEXT)?.textContent
+      console.debug('change happened')
+      const language = ccDiv.querySelector<HTMLSpanElement>(SELECTOR_LANGUAGE)?.textContent
+      const speaker = ccDiv.querySelector<HTMLDivElement>(SELECTOR_SPEAKER)?.textContent
+      const text = ccDiv.querySelector<HTMLDivElement>(SELECTOR_TEXT)?.textContent
 
       if (!language && !text) {
-        console.log('CALL HANGUP?')
+        console.error('an unexpected error happened, text and language could not be extracted. CALL HANGUP?')
         return
       }
       console.log(`Language: ${language}\nSpeaker: ${speaker}\nText: ${text}`)
@@ -126,6 +88,7 @@ class GoogleMeetsService implements MeetingService {
         text: text ? text : '',
         timestamp: new Date().getTime()
       }
+
       chrome.runtime.sendMessage(
         {
           meetingId: this.getMeetingId(),
@@ -141,9 +104,21 @@ class GoogleMeetsService implements MeetingService {
       subtree: true
     })
 
+    return ccDivObserver
+  }
+
+  private listenOnParticipantChange(participantsDiv: HTMLDivElement): MutationObserver {
+    console.debug('subscribing to observer')
+
     const participantsDivObserver = new MutationObserver(() => {
-      console.log('number of participants changed')
-      self.updateMeetingMetadata()
+      console.debug('number of participants changed')
+
+      const metadata = this.getMeetingMetadata()
+      chrome.runtime.sendMessage({
+        meetingId: this.getMeetingId(),
+        metadata: metadata,
+        type: ExtensionMessages.MeetingMetadata
+      })
     })
 
     participantsDivObserver.observe(participantsDiv, {
@@ -153,9 +128,76 @@ class GoogleMeetsService implements MeetingService {
       subtree: true
     })
 
+    return participantsDivObserver
+  }
+
+  public prepareListener(): void {
+    const docObserver = new MutationObserver(() => {
+      this.callBar = document.body.querySelector(SELECTOR_CALL_BAR)
+
+      if (this.callBar) {
+        console.debug('call started')
+        this.meetingStartTimestamp = new Date().getTime()
+
+        // Note: this is a semi hack to make sure all element are displayed properly so we can interact with the UI
+        setTimeout(() => {
+          // this will also be useful even if you rejoin a meeting
+          // for example the meeting was ended through tab close, but then you joined again - this will nullify the metadata's endTimestamp
+          const metadata = this.getMeetingMetadata()
+          chrome.runtime.sendMessage({
+            meetingId: this.getMeetingId(),
+            metadata: metadata,
+            type: ExtensionMessages.MeetingStarted
+          })
+
+          // click on the cc button and start transcribing
+          this.startTranscribing()
+        }, 800)
+
+        docObserver.disconnect()
+      }
+    })
+
+    docObserver.observe(document.body, {
+      childList: true,
+      subtree: true
+    })
+  }
+
+  public startTranscribing(): void {
+    const ccDiv = document.querySelector<HTMLDivElement>(SELECTOR_CC_DIV)
+    const participantsDiv = document.querySelector<HTMLDivElement>(SELECTOR_PARTICIPANTS)
+    const endCallDiv = document.querySelector<HTMLDivElement>(SELECTOR_END_CALL)
+    const callDiv = this.callBar
+
+    if (!ccDiv || !participantsDiv || !endCallDiv || !callDiv) {
+      return console.error('some required visual components are missing', {
+        ccDiv: !!ccDiv,
+        participantsDiv: !!participantsDiv,
+        endCallDiv: !!endCallDiv,
+        callDiv: !!callDiv
+      })
+    }
+
+    this.enableCaption(ccDiv, callDiv)
+
+    const ccDivObserver = this.listenOnNewMessage(ccDiv)
+    const participantsDivObserver = this.listenOnParticipantChange(participantsDiv)
+
     endCallDiv.onclick = () => {
-      console.log('ending call')
-      self.updateMeetingMetadata(true)
+      console.debug('ending call')
+      this.meetingEndTimestamp = new Date().getTime()
+
+      const metadata = this.getMeetingMetadata()
+      chrome.runtime.sendMessage({
+        meetingId: this.getMeetingId(),
+        metadata: metadata,
+        type: ExtensionMessages.MeetingEnded
+      })
+
+      // Remove observers are they are not needed anymore
+      ccDivObserver.disconnect()
+      participantsDivObserver.disconnect()
     }
   }
 }
@@ -163,6 +205,5 @@ class GoogleMeetsService implements MeetingService {
 //TODO: Find out which service we're on and initialize the right service
 //TODO: Hide transcript display on production
 
-const meetingService: MeetingService = new GoogleMeetsService()
+const meetingService = new GoogleMeetsService()
 meetingService.prepareListener()
-console.log('ready')
