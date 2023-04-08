@@ -17,7 +17,7 @@ const Popup = () => {
   const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
-    google.auth.onAuthStateChanged((u) => {
+    google.onAuthStateChanged((u) => {
       if (u === null) {
         setUser(null)
         return redirect()
@@ -37,7 +37,7 @@ const Popup = () => {
 
   const login = async (e: React.MouseEvent<HTMLButtonElement>) => {
     // TODO: Handle errors
-    await google.login()
+    await google.login({ silent: true })
   }
 
   const logout = async (e: React.MouseEvent<HTMLButtonElement>) => {

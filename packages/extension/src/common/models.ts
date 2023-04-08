@@ -1,5 +1,7 @@
 export enum ExtensionMessages {
   MeetingMessage = 'MEETING_MESSAGE',
+  MeetingStarted = 'MEETING_STARTED',
+  MeetingEnded = 'MEETING_ENDED',
   MeetingMetadata = 'MEETING_METADATA'
 }
 
