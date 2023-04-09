@@ -7,7 +7,7 @@
     "public": "dist",
     "rewrites": [
       {
-        "source": "**",
+        "source": "!/img/**",
         "destination": "/index.html"
       }
     ],
