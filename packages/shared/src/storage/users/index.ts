@@ -1,5 +1,5 @@
 import { User as FirebaseUser } from 'firebase/auth'
-import { collection, doc, setDoc, getDoc, CollectionReference, DocumentData, updateDoc } from 'firebase/firestore'
+import { collection, doc, setDoc, getDoc, CollectionReference, DocumentData, updateDoc } from 'firebase/firestore/lite'
 
 import { firestore } from '../firestore'
 

@@ -7,7 +7,7 @@ import {
   DocumentData,
   updateDoc,
   deleteDoc
-} from 'firebase/firestore'
+} from 'firebase/firestore/lite'
 
 import { firestore } from '../firestore'
 import { GoogleCalendarEvent } from '../../calendar/google'

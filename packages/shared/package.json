@@ -6,7 +6,9 @@
   "types": "dist/index.d.ts",
   "source": "src/index.ts",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "build": "yarn && yarn run -T tsc --build"
+  },
   "dependencies": {},
   "devDependencies": {}
 }

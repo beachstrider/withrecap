@@ -1,5 +1,12 @@
 import { FirebaseApp } from 'firebase/app'
-import { getAuth, signInWithCredential, GoogleAuthProvider, Auth, User as FirebaseUser } from 'firebase/auth'
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithCredential,
+  GoogleAuthProvider,
+  Auth,
+  User as FirebaseUser
+} from 'firebase/auth'
 
 import { firebase } from '../firebase'
 
@@ -37,7 +44,7 @@ export class GoogleAuth {
   }
 
   public onAuthStateChanged = (callback: (user: FirebaseUser | null) => void) => {
-    this.auth.onAuthStateChanged(callback)
+    onAuthStateChanged(this.auth, callback)
   }
 
   public login = async ({ silent }: { silent: boolean } = { silent: false }) => {
