@@ -1,6 +1,6 @@
 # reCap
 
-Description coming soon
+Meeting notes, on autopilot.
 
 ## Getting started
 
@@ -18,7 +18,7 @@ _Note: The commands listed below are for the repository only. Go inside each pac
 
 Install dependencies
 
-_Note: Dependencies only need to be installed once since we are using yarn workspaces_
+_Note: Dependencies can be installed from anywhere since we are using yarn workspaces_
 
 ```sh
 $ yarn install

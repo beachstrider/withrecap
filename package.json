@@ -1,7 +1,7 @@
 {
   "name": "recap",
-  "version": "0.0.1",
-  "description": "Coming soon",
+  "version": "0.0.8",
+  "description": "Meeting notes, on autopilot. Recap automatically takes notes in Google Meet, so you can focus on getting things done.",
   "private": true,
   "scripts": {
     "eslint": "eslint ./packages --ext .ts,.tsx",

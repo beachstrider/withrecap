@@ -33,7 +33,19 @@ jobs:
         run: |
           yarn build
           yarn package
+      - name: Get version from package.json
+        id: get_version
+        run: echo "::set-output name=version::$(node -p -e "require('./package.json').version")"
+      - name: Check version
+        id: check_version
+        run: |
+          if [[ "$(git tag -l v${{ steps.get_version.outputs.version }})" != "" ]]; then
+            echo "::set-output name=version_bump::false"
+          else
+            echo "::set-output name=version_bump::true"
+          fi
       - name: Create release
+        if: steps.check_version.outputs.version_bump == 'true'
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -44,6 +56,7 @@ jobs:
           draft: false
           prerelease: false
       - name: Upload release asset
+        if: steps.check_version.outputs.version_bump == 'true'
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
