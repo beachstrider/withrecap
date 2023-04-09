@@ -1439,7 +1439,7 @@ const IntroductionMaxwell = styled.p`
   position: relative;
   align-self: stretch;
   margin-top: -1.04px;
-  font-family: var(--font-family-undefined-regular);
+  font-family: var(--font-family-inter);
   font-weight: 600;
   color: var(--lighttextprimary);
   font-size: var(--font-size-m);

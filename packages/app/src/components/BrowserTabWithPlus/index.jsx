@@ -68,7 +68,7 @@ const TabName = styled.div`
   ${ValignTextMiddle}
   position: relative;
   width: fit-content;
-  font-family: var(--font-family-roboto-regular);
+  font-family: var(--font-family-roboto);
   font-weight: 400;
   color: var(--darkbackgroundprimary-button);
   font-size: var(--font-size-12px);

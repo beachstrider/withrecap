@@ -41,8 +41,8 @@ const Text16 = styled.div`
   ${SfproroundedNormalWhite13px}
             position: absolute;
   height: 20px;
-  top: 3px;
-  left: 6px;
+  top: 6px;
+  left: 4px;
   text-shadow: 0px 1px 6px #0000001a;
   text-align: center;
   letter-spacing: -0.28px;
