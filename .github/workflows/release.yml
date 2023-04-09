@@ -35,28 +35,28 @@ jobs:
           yarn package
       - name: Get version from package.json
         id: get_version
-        run: echo "::set-output name=version::$(node -p -e "require('./package.json').version")"
+        run: echo "version=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
       - name: Check version
         id: check_version
         run: |
           if [[ "$(git tag -l v${{ steps.get_version.outputs.version }})" != "" ]]; then
-            echo "::set-output name=version_bump::false"
+            echo "create_release=false" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=version_bump::true"
+            echo "create_release=true" >> $GITHUB_OUTPUT
           fi
       - name: Create release
-        if: steps.check_version.outputs.version_bump == 'true'
+        if: steps.check_version.outputs.create_release == 'true'
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v0.0.${{ github.run_number }}
-          release_name: Release v0.0.${{ github.run_number }}
+          tag_name: v${{ steps.get_version.outputs.version }}
+          release_name: Release v${{ steps.get_version.outputs.version }}
           draft: false
           prerelease: false
       - name: Upload release asset
-        if: steps.check_version.outputs.version_bump == 'true'
+        if: steps.check_version.outputs.create_release == 'true'
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
@@ -64,5 +64,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./packages/extension/dist.zip
-          asset_name: recap-v0.0.${{ github.run_number }}.zip
+          asset_name: recap-v${{ steps.get_version.outputs.version }}.zip
           asset_content_type: application/zip
