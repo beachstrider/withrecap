@@ -6,7 +6,7 @@
   "source": "src/index.html",
   "scripts": {
     "start": "parcel",
-    "build": "parcel build --public-url ./ --no-scope-hoist"
+    "build": "parcel build --public-url ./ --no-scope-hoist && cp -R src/static/* dist"
   },
   "dependencies": {
     "react": "^18.2.0"

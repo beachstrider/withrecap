@@ -9,10 +9,10 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/app">
+        <Route path="/home">
           <Home {...homeData} />
         </Route>
-        <Route path="/">
+        <Route path="/:path(|landing)">
           <Landing {...landingData} />
         </Route>
       </Switch>

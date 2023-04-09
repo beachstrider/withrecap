@@ -90,7 +90,7 @@ const Domaincom = styled.div`
   position: relative;
   margin-top: -1px;
   min-width: 113px;
-  font-family: var(--font-family-roboto);
+  font-family: var(--font-family-roboto-regular);
   font-weight: 400;
   color: var(--darkbackgroundprimary-button);
   font-size: 14px;
@@ -104,7 +104,7 @@ const Subdomain = styled.div`
   position: relative;
   margin-top: -1px;
   min-width: 6px;
-  font-family: var(--font-family-roboto);
+  font-family: var(--font-family-roboto-regular);
   font-weight: 400;
   color: #86888a;
   font-size: 14px;
