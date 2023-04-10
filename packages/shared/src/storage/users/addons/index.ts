@@ -1,4 +1,4 @@
-import { collection, doc, CollectionReference, DocumentData, setDoc, getDocs } from 'firebase/firestore/lite'
+import { collection, doc, CollectionReference, DocumentData, setDoc, getDocs, getDoc } from 'firebase/firestore/lite'
 
 import { firestore } from '../../firestore'
 
@@ -28,6 +28,12 @@ export class UserAddonStore {
     })
 
     return addons
+  }
+
+  public async get(addonId: string): Promise<UserAddonConfig | undefined> {
+    const document = await getDoc(doc(this._db, this.uid, 'addons', addonId))
+
+    return document.data() as UserAddonConfig | undefined
   }
 
   public async insert(id: string, config: UserAddonConfig): Promise<void> {

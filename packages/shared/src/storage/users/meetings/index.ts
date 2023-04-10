@@ -1,4 +1,15 @@
-import { collection, CollectionReference, DocumentData, getDocs, query, orderBy, limit } from 'firebase/firestore/lite'
+import {
+  collection,
+  CollectionReference,
+  DocumentData,
+  getDocs,
+  query,
+  orderBy,
+  limit,
+  setDoc,
+  doc,
+  getDoc
+} from 'firebase/firestore/lite'
 
 import { firestore } from '../../firestore'
 
@@ -28,5 +39,17 @@ export class UserMeetingStore {
     })
 
     return meetingId
+  }
+
+  public async exists(mid: string) {
+    const document = await getDoc(doc(this._db, this.uid, 'meetings', mid))
+
+    return document.exists()
+  }
+
+  public async create(mid: string) {
+    return setDoc(doc(this._db, this.uid, 'meetings', mid), {
+      date: new Date()
+    })
   }
 }

@@ -16,16 +16,23 @@ const Summary = (props: SummaryProps) => {
   useEffect(() => {
     setLoading(true)
 
-    userMeetingStore.recent().then((recentMeetingId) => {
-      if (!recentMeetingId) {
-        return
-      }
+    userMeetingStore
+      .recent()
+      .then((recentMeetingId) => {
+        if (!recentMeetingId) {
+          return
+        }
 
-      meetingStore.get(recentMeetingId).then((m) => {
-        setRecentMeetingDetails({ ...m, mid: recentMeetingId })
+        meetingStore
+          .get(recentMeetingId)
+          .then((m) => {
+            setRecentMeetingDetails({ ...m, mid: recentMeetingId })
+          })
+          .finally(() => setLoading(false))
+      })
+      .finally(() => {
         setLoading(false)
       })
-    })
   }, [userMeetingStore, meetingStore])
 
   const displayRecentMeeting = () => {
