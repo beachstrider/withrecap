@@ -62,11 +62,6 @@ export class GoogleAuth {
 
   public login = async ({ silent }: { silent: boolean } = { silent: false }) => {
     try {
-      // TODO: Figure this out
-      // if (this.options.persistAuth) {
-      //   await setPersistence(this.auth, browserLocalPersistence)
-      // }
-
       try {
         this._accessToken = await this._login({ interactive: !silent })
         await signInWithCredential(this.auth, GoogleAuthProvider.credential(null, this._accessToken))
