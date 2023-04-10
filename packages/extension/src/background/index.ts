@@ -5,10 +5,12 @@ import { ExtensionMessages, MeetingMessage, MeetingMetadata } from '../common/mo
 class ChromeBackgroundService {
   private meetingStore: MeetingStore
   private conversationStore: ConversationStore
+  private google: GoogleAuth
 
   constructor() {
     this.meetingStore = new MeetingStore()
     this.conversationStore = new ConversationStore()
+    this.google = new GoogleAuth()
   }
 
   async startListener(): Promise<void> {
@@ -42,8 +44,9 @@ class ChromeBackgroundService {
   }
 
   async processTranscriptionMessage(meetingId: string, message: MeetingMessage): Promise<void> {
-    if (message.speaker === 'You') {
-      // TODO: Replace with user name (or email as fallback)?
+    if (message.speaker === 'You' && this.google.auth.currentUser) {
+      // TODO: Find out if we can have something better here
+      message.speaker = this.google.auth.currentUser.displayName || this.google.auth.currentUser.email || 'Unknown'
     }
 
     return this.conversationStore.add(meetingId, message)
@@ -52,16 +55,15 @@ class ChromeBackgroundService {
   async processMeetingStart(meetingId: string, _metadata: MeetingMetadata): Promise<void> {
     if (!(await this.meetingStore.exists(meetingId))) {
       // Create an empty meeting now, so that other users don't have to do it as well
-      await this.meetingStore.create(meetingId, {})
+      await this.meetingStore.create(meetingId, { mid: meetingId })
 
-      const google = new GoogleAuth()
-      await google.login({ silent: true })
+      await this.google.login({ silent: true })
 
-      if (!google.accessToken) {
+      if (!this.google.accessToken) {
         return console.error('an error must have occurred while authenticating, no access token could be fetched')
       }
 
-      const calendar = new GoogleCalendar(google.accessToken)
+      const calendar = new GoogleCalendar(this.google.accessToken)
       const meetingDetails = await calendar.getMeetingDetails(meetingId)
 
       // TODO: Validate this

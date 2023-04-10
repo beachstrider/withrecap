@@ -1,10 +1,18 @@
-import React from 'react'
+import React, { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
 
-import Popup from './popup'
+import { App } from './app'
+
 import './index.css'
 
 const container = document.getElementById('app-container') as Element
 const root = createRoot(container)
 
-root.render(<Popup />)
+root.render(
+  <StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </StrictMode>
+)

@@ -4,6 +4,8 @@ import { firestore } from '../../firestore'
 
 export type UserAddonConfig = {
   enabled: true
+  url: string
+  regex: string
 }
 
 export type UserAddons = {
@@ -28,9 +30,7 @@ export class UserAddonStore {
     return addons
   }
 
-  public async insert(id: string): Promise<void> {
-    const config: UserAddonConfig = { enabled: true }
-
+  public async insert(id: string, config: UserAddonConfig): Promise<void> {
     return setDoc(doc(this._db, this.uid, 'addons', id), config)
   }
 }

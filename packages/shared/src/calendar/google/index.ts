@@ -2,7 +2,9 @@ import { calendar_v3 } from 'googleapis'
 
 const GOOGLE_CALENDAR_BASE_URL = 'https://www.googleapis.com/calendar/v3'
 
-export interface GoogleCalendarEvent extends calendar_v3.Schema$Event {}
+export interface GoogleCalendarEvent extends calendar_v3.Schema$Event {
+  mid: string
+}
 type ResponseData = {
   items: GoogleCalendarEvent[]
 }

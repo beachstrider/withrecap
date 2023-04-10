@@ -17,10 +17,10 @@ export type GoogleAuthOptions = {
 }
 
 export class GoogleAuth {
-  private _accessToken?: string
+  private _accessToken: string | null = null
 
   private firebase: FirebaseApp
-  private auth: Auth
+  public auth: Auth
 
   constructor(private options: GoogleAuthOptions = { persistAuth: true }) {
     this.firebase = firebase
@@ -43,8 +43,21 @@ export class GoogleAuth {
     })
   }
 
-  public onAuthStateChanged = (callback: (user: FirebaseUser | null) => void) => {
-    onAuthStateChanged(this.auth, callback)
+  public onAuthStateChanged = (callback: (user: FirebaseUser | null, token: string | null) => void) => {
+    onAuthStateChanged(this.auth, (user) => {
+      if (user) {
+        if (this._accessToken === null) {
+          this._login({ interactive: false }).then((token) => {
+            this._accessToken = token
+            callback(user, token)
+          })
+        } else {
+          callback(user, this._accessToken || null)
+        }
+      } else {
+        callback(user, null)
+      }
+    })
   }
 
   public login = async ({ silent }: { silent: boolean } = { silent: false }) => {
