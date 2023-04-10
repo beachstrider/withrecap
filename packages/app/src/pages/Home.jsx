@@ -16,12 +16,14 @@ export default function Index() {
           <img src={user} alt="" className="w-[64px] h-[64px]" />
           <div className="">
             <div className="sm:text-[24px] text-[18px] font-semibold mb-[8px]">Afternoon, Sarah!</div>
-            <div className="flex items-center gap-[24px]">
+            <div className="flex sm:flex-row flex-col sm:items-center gap-[24px]">
               <div className="text-[16px]">Recap saved you 8 hours of meeting notes this week!</div>
-              <Badge>
-                <img src={gift} alt="" className="w-[16px] h-[16px]" />
-                Help a friend save time
-              </Badge>
+              <div className="flex">
+                <Badge>
+                  <img src={gift} alt="" className="w-[16px] h-[16px]" />
+                  Help a friend save time
+                </Badge>
+              </div>
             </div>
           </div>
         </div>

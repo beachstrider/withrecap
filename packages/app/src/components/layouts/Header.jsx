@@ -14,7 +14,7 @@ export default function Index({ isPublic = false }) {
         </Link>
         {!isPublic && (
           <>
-            <div className="flex items-center gap-[18px]">
+            <div className="sm:flex hidden items-center gap-[18px]">
               <Badge>Past Meetings</Badge>
               <div className="px-[10px] py-[6px] font-semibold text-gray-500">Integrations</div>
             </div>
