@@ -1,7 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./globals.css"
-import "./styleguide.css"
-import App from "./App";
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import App from './App'
+import './globals.css'
+import './styleguide.css'
 
-ReactDOM.render(<App />, document.getElementById("app"));
+ReactDOM.createRoot(document.getElementById('app')).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>
+)
