@@ -26,7 +26,7 @@ export default function Index({ isPublic = false }) {
         )}
         {isPublic && (
           <div className="flex items-center sm:gap-[20px] gap-[15px]">
-            <Link to="/signin" className="text-[15px] font-semibold">
+            <Link to="/signin" className="text-[15px] font-semibold text-gray-500">
               Sign in
             </Link>
             <Link to="#">
