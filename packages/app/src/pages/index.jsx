@@ -27,7 +27,7 @@ export default function Index() {
               <div className="sm:block hidden absolute bottom-0 left-[44px] mb-[132px]">
                 <div className="flex rotate-[-14deg] mb-[10px]">
                   <div
-                    className="p-[20px] flex flex-col gap-[16px] rounded-[16px] min-w-[306px] bg-white"
+                    className="p-[20px] flex flex-col sm: gap-[16px] gap-[12px] rounded-[16px] min-w-[306px] bg-white"
                     style={{
                       boxShadow:
                         '0px 2px 8px rgba(0, 0, 0, 0.01), 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 2px 22px rgba(0, 0, 0, 0.04)'
@@ -41,7 +41,7 @@ export default function Index() {
                         design and <span className="font-semibold">make it pop</span>!
                       </div>
                     </div>
-                    <div className="flex gap-[16px]">
+                    <div className="flex sm: gap-[16px] gap-[12px]">
                       <img src={max} alt="" className="w-[24px] h-[24px]" />
                       <div className="font-semibold">Maxwell</div>
                     </div>
@@ -49,7 +49,7 @@ export default function Index() {
                 </div>
                 <div className="flex rotate-[5deg]">
                   <div
-                    className="p-[20px] flex flex-col gap-[16px] rounded-[16px] min-w-[306px] bg-white"
+                    className="p-[20px] flex flex-col sm: gap-[16px] gap-[12px] rounded-[16px] min-w-[306px] bg-white"
                     style={{
                       boxShadow:
                         '0px 2px 8px rgba(0, 0, 0, 0.01), 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 2px 22px rgba(0, 0, 0, 0.04)'
@@ -63,7 +63,7 @@ export default function Index() {
                         design and <span className="font-semibold">make it pop</span>!
                       </div>
                     </div>
-                    <div className="flex gap-[16px]">
+                    <div className="flex sm: gap-[16px] gap-[12px]">
                       <img src={max} alt="" className="w-[24px] h-[24px]" />
                       <div className="font-semibold">Maxwell</div>
                     </div>
@@ -121,9 +121,11 @@ export default function Index() {
                 <div className="w-[4px] rounded-[3px] bg-purple-500"></div>
               </div>
               <div className="sm:text-[22px] text-[17px] text-gray-500 max-w-[645px] sm:mb-[62px] mb-[44px]">
-                Recap automatically takes notes in Google Meet, so you can focus on getting things done.
+                Recap automatically takes notes <br className="sm:hidden" />
+                in Google Meet, so you can focus <br className="sm:hidden" />
+                on getting things done.
               </div>
-              <div className="flex items-center gap-[20px]">
+              <div className="flex sm:flex-row flex-col items-center gap-[20px]">
                 <Link to="#">
                   <Badge className="!px-[16px] !py-[14px] !rounded-[14px]">
                     <img src={google} alt="" />
@@ -135,52 +137,54 @@ export default function Index() {
             </div>
           </div>
         </div>
-        <div className="px-[60px] sm:mb-[140px] mb-[110px] ">
-          <div className="relative sm:px-[112px] px-[80px] sm:py-[80px] py-[60px] sm:rounded-[60px] rounded-[45px] bg-black text-white overflow-hidden">
-            <div className="flex flex-col gap-[50px]">
-              <div className="text-[53px] font-bold leading-[58px]">
+        <div className="sm:px-[60px] px-[20px] sm:mb-[140px] mb-[110px] ">
+          <div className="relative sm:px-[112px] px-[20px] sm:py-[80px] py-[60px] sm:rounded-[60px] rounded-[45px] bg-black text-white overflow-hidden">
+            <div className="flex flex-col sm:gap-[50px] gap-[36px]">
+              <div className="sm:text-[53px] text-[30px] font-bold leading-[58px]">
                 Recap in one,
                 <br />
                 two, three!
               </div>
-              <div className="text-[18px]">
+              <div className="sm:text-[18px] text-[13px]">
                 Add to Google Chrome
-                <div className="leading-[26px] text-[18px] opacity-[0.7] mt-[6px]">
+                <div className="leading-[26px] sm:text-[18px] text-[13px] opacity-[0.7] mt-[6px]">
                   Recap works with only with browsers running Chrome.
                   <br />
                   Yes, that includes support Arc!
                 </div>
               </div>
-              <div className="text-[18px]">
+              <div className="sm:text-[18px] text-[13px]">
                 Connect your meeting apps
-                <div className="leading-[26px] text-[18px] opacity-[0.7] mt-[6px]">
+                <div className="leading-[26px] sm:text-[18px] text-[13px] opacity-[0.7] mt-[6px]">
                   We support Zoom, Google Meet, Microsoft Teams,
                   <br />
                   Webex, and much more!
                 </div>
               </div>
-              <div className="text-[18px]">
+              <div className="sm:text-[18px] text-[13px]">
                 That’s really it!
-                <div className="leading-[26px] text-[18px] opacity-[0.7] mt-[6px]">
+                <div className="leading-[26px] sm:text-[18px] text-[13px] opacity-[0.7] mt-[6px]">
                   Next time you take your call using your browser, Recap
                   <br />
                   will be taking notes for you and your team.
                 </div>
               </div>
             </div>
-            <div className="absolute right-0 top-0">
+            <div className="sm:block hidden absolute right-0 top-0">
               <img src={bgGrad} alt="" />
             </div>
           </div>
         </div>
-        <div className="px-[60px] mb-[74px]">
+        <div className="sm:px-[60px] px-[20px] mb-[74px]">
           <div className="flex flex-col items-center text-center gap-[20px]">
-            <div className="text-[56px] font-bold text-gray-900">
+            <div className="sm:text-[56px] text-[42px] font-bold text-gray-900">
               Meeting notes can be
-              <br />
+              <br className="sm:block hidden" />
               smart, fun, and automated.
             </div>
-            <div className="text-[22px] text-gray-500">(at least that’s how we feel when we use Recap)</div>
+            <div className="sm:text-[22px] text-[18px] text-gray-500">
+              (at least that’s how we feel when we use Recap)
+            </div>
 
             <Link to="#">
               <Badge className="!px-[16px] !py-[14px] !rounded-[14px]">
@@ -190,23 +194,23 @@ export default function Index() {
             </Link>
           </div>
         </div>
-        <div className="px-[60px] sm:grid grid-cols-3 gap-[40px]">
+        <div className="sm:px-[60px] px-[20px] sm:grid grid-cols-3 gap-[40px]">
           <div
-            className="col-span-2 pt-[60px] pb-[100px] rounded-[60px] flex flex-col items-center gap-[68px]"
+            className="col-span-2 pt-[60px] pb-[100px] sm:rounded-[60px] rounded-[45px] flex flex-col items-center gap-[68px]"
             style={{ background: 'linear-gradient(180deg, #F2ECFF 0%, #F9FBFD 100%)' }}
           >
-            <div className="text-[30px] font-semibold">So, what's the next step?</div>
+            <div className="sm:text-[30px] text-[22px] font-semibold">So, what's the next step?</div>
             <div
-              className="min-w-[724px] p-[26px] bg-white rounded-[30px]"
+              className="sm:min-w-[724px] p-[26px] bg-white rounded-[30px]"
               style={{
                 boxShadow:
                   '0px 2.7218px 10.8872px rgba(0, 0, 0, 0.01), 0px 0px 5.44361px rgba(0, 0, 0, 0.04), 0px 2.7218px 29.9398px rgba(0, 0, 0, 0.04)'
               }}
             >
-              <div className="flex gap-[16px] items-center mb-[46px]">
+              <div className="flex sm: gap-[16px] gap-[12px] items-center sm:mb-[46px] mb-[35px]">
                 <img src={greenCheck} alt="" className="w-[26px] h-[26px]" />
-                <div className="text-[21px] font-semibold">Todos</div>
-                <div className="text-[21px] font-semibold text-gray-500">3</div>
+                <div className="sm:text-[21px] text-[15px] font-semibold">Todos</div>
+                <div className="sm:text-[21px] text-[15px] font-semibold text-gray-500">3</div>
               </div>
               <div className="flex flex-col gap-[20px]">
                 <div className="flex items-center gap-[20px] text-gray-900">
@@ -229,12 +233,12 @@ export default function Index() {
             </div>
           </div>
           <div
-            className="pt-[60px] pb-[100px] rounded-[60px] flex flex-col items-center gap-[112px]"
+            className="pt-[60px] pb-[100px] sm:rounded-[60px] rounded-[45px] flex flex-col items-center gap-[112px]"
             style={{ background: 'linear-gradient(180deg, #F2ECFF 0%, #F9FBFD 100%)' }}
           >
-            <div className="text-[30px] font-semibold">Highlighted moments</div>
+            <div className="sm:text-[30px] text-[22px] font-semibold">Highlighted moments</div>
             <div
-              className="min-w-[386px] p-[26px] bg-white rounded-[30px] flex flex-col gap-[16px]"
+              className="min-w-[386px] p-[26px] bg-white rounded-[30px] flex flex-col sm: gap-[16px] gap-[12px]"
               style={{
                 boxShadow:
                   '0px 2.7218px 10.8872px rgba(0, 0, 0, 0.01), 0px 0px 5.44361px rgba(0, 0, 0, 0.04), 0px 2.7218px 29.9398px rgba(0, 0, 0, 0.04)'
@@ -248,17 +252,17 @@ export default function Index() {
                   design and <span className="font-semibold">make it pop</span>!
                 </div>
               </div>
-              <div className="flex gap-[16px]">
+              <div className="flex sm: gap-[16px] gap-[12px]">
                 <img src={max} alt="" className="w-[24px] h-[24px]" />
                 <div className="font-semibold">Maxwell</div>
               </div>
             </div>
           </div>
           <div
-            className="pt-[42px] pb-[100px] rounded-[60px] flex flex-col items-center gap-[70px]"
+            className="pt-[42px] pb-[100px] sm:rounded-[60px] rounded-[45px] flex flex-col items-center gap-[70px] px-[20px]"
             style={{ background: 'linear-gradient(180deg, #F2ECFF 0%, #F9FBFD 100%)' }}
           >
-            <div className="text-[30px] font-semibold">
+            <div className="sm:text-[30px] text-[22px] font-semibold">
               See who lead the discussion
               <br />
               and who listened
@@ -312,10 +316,10 @@ export default function Index() {
             </div>
           </div>
           <div
-            className="col-span-2 pt-[60px] pb-[100px] rounded-[60px] flex flex-col items-center gap-[42px]"
+            className="col-span-2 pt-[60px] pb-[100px] sm:rounded-[60px] rounded-[45px] flex flex-col items-center gap-[42px] px-[20px]"
             style={{ background: 'linear-gradient(180deg, #F2ECFF 0%, #F9FBFD 100%)' }}
           >
-            <div className="text-[30px] font-semibold">Missing a meeting shouldn’t be a problem</div>
+            <div className="sm:text-[30px] text-[22px] font-semibold">Missing a meeting shouldn’t be a problem</div>
             <div
               className="max-w-[601px] w-full p-[26px] bg-white rounded-[30px]"
               style={{
@@ -323,9 +327,9 @@ export default function Index() {
                   '0px 2.7218px 10.8872px rgba(0, 0, 0, 0.01), 0px 0px 5.44361px rgba(0, 0, 0, 0.04), 0px 2.7218px 29.9398px rgba(0, 0, 0, 0.04)'
               }}
             >
-              <div className="flex gap-[16px] items-center mb-[35px]">
+              <div className="flex sm: gap-[16px] gap-[12px] items-center mb-[35px]">
                 <img src={summaryList} alt="" className="w-[26px] h-[26px]" />
-                <div className="text-[21px] font-semibold">Summary</div>
+                <div className="sm:text-[21px] text-[15px] font-semibold">Summary</div>
               </div>
               <div className="flex flex-col gap-[20px]">
                 <div className="">
@@ -348,25 +352,25 @@ export default function Index() {
             </div>
           </div>
         </div>
-        <div className="px-[60px] mb-[60px]">
+        <div className="sm:px-[60px] px-[20px] mb-[60px]">
           <div className="flex flex-col items-center gap-[20px] text-center">
             <img src={lock} alt="" />
-            <div className="text-[56px] font-bold">Secure, by design</div>
+            <div className="sm:text-[56px] text-[42px] font-bold">Secure, by design</div>
             <div className="text-[22px] text-gray-500 max-w-[645px]">
               Your meeting transcripts are never ready by anyone, and are securely encrypted within Google Chrome.
             </div>
           </div>
         </div>
-        <div className="px-[60px] h-[440px] mb-[20px]">
-          <div className="relative rounded-[60px] bg-black overflow-hidden h-full">
-            <img src={bgGlad1} alt="" className="w-full" />
-            <div className="absolute left-0 top-0 w-full h-full flex justify-center pt-[84px]">
+        <div className="sm:px-[60px] px-[20px] sm:h-[440px] mb-[20px]">
+          <div className="relative sm:rounded-[60px] rounded-[45px] bg-black overflow-hidden h-full">
+            <img src={bgGlad1} alt="" className="w-full sm:block hidden" />
+            <div className="sm:absolute left-0 top-0 w-full h-full flex justify-center pt-[84px]">
               <div className="relative max-w-[1288px] w-full mx-[20px] flex">
                 <div className="">
                   <img src={browserLeft} alt="" />
                 </div>
                 <div className="grow">
-                  <img src={BrowserMiddle} alt="" className="w-full h-full" />
+                  <img src={BrowserMiddle} alt="" className="w-full sm:h-full" />
                 </div>
                 <div className="">
                   <img src={browserRight} alt="" />
