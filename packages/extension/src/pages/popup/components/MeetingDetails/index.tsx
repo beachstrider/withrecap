@@ -1,4 +1,5 @@
 import React from 'react'
+import { formatDistance, format } from 'date-fns'
 import { GoogleCalendarEvent } from '@recap/shared'
 
 interface MeetingDetailsProps {
@@ -6,7 +7,6 @@ interface MeetingDetailsProps {
   ended: boolean
 }
 
-// TODO: Use library of utils to display dates and times properly
 /**
  * Smart component that displays meeting information of the most recent meeting or the one that is being recorded
  */
@@ -18,7 +18,7 @@ export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
     if (ended) {
       return <p>Last meeting</p>
     } else {
-      return <p>Taking notes • {Math.round((meetingEndDate.getTime() - now.getTime()) / 1000 / 60)} minutes left...</p>
+      return <p>Taking notes • {formatDistance(meetingEndDate, now)} left...</p>
     }
   }
 
@@ -34,9 +34,12 @@ export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
   }
 
   const Time = () => {
+    const startTime = format(new Date(meeting.start!.dateTime!), 'h:mm a')
+    const endTime = format(new Date(meeting.end!.dateTime!), 'h:mm a')
+
     return (
       <span>
-        {meeting.start?.dateTime} - {meeting.end?.dateTime}
+        {startTime} - {endTime}
       </span>
     )
   }
