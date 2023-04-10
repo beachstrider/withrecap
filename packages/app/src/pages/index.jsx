@@ -8,8 +8,12 @@ import bgGlad1 from '../assets/img/bgGrad1.png'
 import browserLeft from '../assets/img/browserLeft.png'
 import BrowserMiddle from '../assets/img/browserMiddle.png'
 import browserRight from '../assets/img/browserRight.png'
+import cara from '../assets/img/cara_mini.png'
 import google from '../assets/img/google.png'
 import greenCheck from '../assets/img/greenCheck.png'
+import jeff from '../assets/img/jeff.png'
+import jessica from '../assets/img/jessica.png'
+import josh from '../assets/img/josh.png'
 import lock from '../assets/img/lock.png'
 import max from '../assets/img/photo-3@2x.png'
 import summaryList from '../assets/img/summaryList.png'
@@ -25,7 +29,7 @@ export default function Index() {
           <div className="">
             <div className="absolute w-full h-full top-0 left-0 z-[-1]">
               <div className="sm:block hidden absolute bottom-0 left-[44px] mb-[132px]">
-                <div className="flex rotate-[-14deg] mb-[10px]">
+                <div className="flex rotate-[-14deg] mb-[12px]">
                   <div
                     className="p-[20px] flex flex-col sm: gap-[16px] gap-[12px] rounded-[16px] min-w-[306px] bg-white"
                     style={{
@@ -64,14 +68,14 @@ export default function Index() {
                       </div>
                     </div>
                     <div className="flex sm: gap-[16px] gap-[12px]">
-                      <img src={max} alt="" className="w-[24px] h-[24px]" />
-                      <div className="font-semibold">Maxwell</div>
+                      <img src={jeff} alt="" className="w-[24px] h-[24px]" />
+                      <div className="font-semibold">Jeff</div>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="sm:block hidden absolute right-[200px] bottom-[200px] flex flex-end">
-                <div className="absolute right-0 bottom-[120px]">
+                <div className="absolute right-0 bottom-[150px]">
                   <div
                     className="px-[14px] py-[10px] bg-white flex gap-[8px] rounded-[16px] rotate-[16deg]"
                     style={{
@@ -79,12 +83,12 @@ export default function Index() {
                         '0px 2px 8px rgba(0, 0, 0, 0.01), 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 2px 22px rgba(0, 0, 0, 0.04)'
                     }}
                   >
-                    <img src={max} alt="" className="w-[32px] h-[32px]" />
+                    <img src={cara} alt="" className="w-[32px] h-[32px]" />
                     <div className="font-semibold">Cara</div>
                     <div className="rounded-[6px] bg-gray-100 px-[4px] py-[2px] font-bold text-gray-500">50%</div>
                   </div>
                 </div>
-                <div className="absolute right-[20px] bottom-[40px]">
+                <div className="absolute right-[10px] bottom-[56px]">
                   <div
                     className="px-[14px] py-[10px] bg-white flex gap-[8px] rounded-[16px]  rotate-[46deg]"
                     style={{
@@ -93,8 +97,8 @@ export default function Index() {
                     }}
                   >
                     <img src={max} alt="" className="w-[32px] h-[32px]" />
-                    <div className="font-semibold">Cara</div>
-                    <div className="rounded-[6px] bg-gray-100 px-[4px] py-[2px] font-bold text-gray-500">50%</div>
+                    <div className="font-semibold">Maxwell</div>
+                    <div className="rounded-[6px] bg-gray-100 px-[4px] py-[2px] font-bold text-gray-500">22%</div>
                   </div>
                 </div>
                 <div className="absolute right-[100px] bottom-0">
@@ -105,9 +109,9 @@ export default function Index() {
                         '0px 2px 8px rgba(0, 0, 0, 0.01), 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 2px 22px rgba(0, 0, 0, 0.04)'
                     }}
                   >
-                    <img src={max} alt="" className="w-[32px] h-[32px]" />
-                    <div className="font-semibold">Cara</div>
-                    <div className="rounded-[6px] bg-gray-100 px-[4px] py-[2px] font-bold text-gray-500">50%</div>
+                    <img src={jessica} alt="" className="w-[32px] h-[32px]" />
+                    <div className="font-semibold">Jessica</div>
+                    <div className="rounded-[6px] bg-gray-100 px-[4px] py-[2px] font-bold text-gray-500">28%</div>
                   </div>
                 </div>
               </div>
@@ -116,8 +120,8 @@ export default function Index() {
               <div className="sm:text-[28px] text-[20px] sm:mb-[24px] mb-[18px] text-gray-500">
                 Supercharge Google Meet
               </div>
-              <div className="flex gap-[8px] sm:text-[56px] text-[42px] leading-[67px] font-bold text-gray-800 sm:mb-[24px] mb-[18px]">
-                Meeting notes, on autopilot.
+              <div className="flex sm:flex-row flex-col items-center gap-[8px] sm:text-[56px] text-[42px] leading-[67px] font-bold text-gray-800 sm:mb-[24px] mb-[18px]">
+                Meeting notes, <span className="bg-gray-100 sm:rounded-[14px] rounded-[10px] ">on autopilot.</span>
                 <div className="w-[4px] rounded-[3px] bg-purple-500"></div>
               </div>
               <div className="sm:text-[22px] text-[17px] text-gray-500 max-w-[645px] sm:mb-[62px] mb-[44px]">
@@ -291,10 +295,10 @@ export default function Index() {
                       '0px 2px 8px rgba(0, 0, 0, 0.01), 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 2px 22px rgba(0, 0, 0, 0.04)'
                   }}
                 >
-                  <img src={max} alt="" className="w-[55px] h-[55px]" />
-                  <div className="font-semibold text-[27px]">Cara</div>
+                  <img src={jessica} alt="" className="w-[55px] h-[55px]" />
+                  <div className="font-semibold text-[27px]">Jessica</div>
                   <div className="rounded-[6px] text-[20px] bg-gray-100 px-[7px] py-[4px] font-bold text-gray-500">
-                    50%
+                    28%
                   </div>
                 </div>
               </div>
@@ -306,10 +310,10 @@ export default function Index() {
                       '0px 2px 8px rgba(0, 0, 0, 0.01), 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 2px 22px rgba(0, 0, 0, 0.04)'
                   }}
                 >
-                  <img src={max} alt="" className="w-[55px] h-[55px]" />
-                  <div className="font-semibold text-[27px]">Cara</div>
+                  <img src={josh} alt="" className="w-[55px] h-[55px]" />
+                  <div className="font-semibold text-[27px]">Josh</div>
                   <div className="rounded-[6px] text-[20px] bg-gray-100 px-[7px] py-[4px] font-bold text-gray-500">
-                    50%
+                    22%
                   </div>
                 </div>
               </div>
@@ -363,7 +367,7 @@ export default function Index() {
         </div>
         <div className="sm:px-[60px] px-[20px] sm:h-[440px] mb-[20px]">
           <div className="relative sm:rounded-[60px] rounded-[45px] bg-black overflow-hidden h-full">
-            <img src={bgGlad1} alt="" className="w-full sm:block hidden" />
+            <img src={bgGlad1} alt="" className="w-full  sm:h-[440px] sm:block hidden" />
             <div className="sm:absolute left-0 top-0 w-full h-full flex justify-center pt-[84px]">
               <div className="relative max-w-[1288px] w-full mx-[20px] flex">
                 <div className="">
