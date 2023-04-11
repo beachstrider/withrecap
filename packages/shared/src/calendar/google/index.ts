@@ -1,5 +1,6 @@
 import { calendar_v3 } from 'googleapis'
-import { Meeting } from '../../storage'
+
+import { Meeting } from '../../storage/meetings'
 
 const GOOGLE_CALENDAR_BASE_URL = 'https://www.googleapis.com/calendar/v3'
 

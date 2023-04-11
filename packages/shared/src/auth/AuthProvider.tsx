@@ -2,9 +2,9 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from '
 import { User } from 'firebase/auth'
 
 import { GoogleAuth } from './google'
-import { UserStore } from '../storage'
+import { UserStore } from '../storage/users'
 
-export type AuthContextType = {
+type AuthContextType = {
   token: string
   user: User
 }
@@ -14,7 +14,7 @@ export const useAuth = () => {
   return useContext(AuthContext)!
 }
 
-export interface AuthProviderProps {
+interface AuthProviderProps {
   children: JSX.Element
 }
 
