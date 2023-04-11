@@ -1,6 +1,9 @@
+import React from 'react'
 import { Link } from 'react-router-dom'
 
 import Footer from '../components/layouts/Footer'
+import Badge from '../components/display/Badge'
+import Layout from '../components/layouts'
 
 import add from '../assets/img/Add.png'
 import bgGrad from '../assets/img/bg-grad.png'
@@ -18,8 +21,6 @@ import lock from '../assets/img/lock.png'
 import max from '../assets/img/photo-3@2x.png'
 import summaryList from '../assets/img/summaryList.png'
 import unchecked from '../assets/img/unchecked.png'
-import Badge from '../components/display/Badge'
-import Layout from '../components/layouts'
 
 export default function Index() {
   return (

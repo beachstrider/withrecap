@@ -1,8 +1,11 @@
+import React from 'react'
 import { useEffect, useState } from 'react'
-import gift from '../../assets/img/Gift.svg'
-import Badge from '../../components/display/Badge'
 
-export default function () {
+import Badge from '../display/Badge'
+
+import gift from '../../assets/img/Gift.svg'
+
+export default function MeetingSavings() {
   const [savingTime, setSavingTime] = useState(0)
 
   useEffect(() => {

@@ -6,7 +6,7 @@ export function useEmpty() {
   const [error, setError] = useState(null)
 
   async function action() {
-    setData()
+    setData(null)
     setError(null)
     setLoading(false)
   }

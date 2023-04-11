@@ -1,7 +1,7 @@
+import React from 'react'
 import { Auth, useStore } from '../store'
 
 import Layout from '../components/layouts'
-
 import MeetingSavings from '../components/dashboard/MeetingSavings'
 import Meetings from '../components/dashboard/Meetings'
 

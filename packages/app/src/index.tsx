@@ -8,7 +8,10 @@ import App from './App'
 import './globals.css'
 import './styleguide.css'
 
-ReactDOM.createRoot(document.getElementById('app')).render(
+const container = document.getElementById('app') as Element
+const root = ReactDOM.createRoot(container)
+
+root.render(
   <React.StrictMode>
     <Store>
       <BrowserRouter>

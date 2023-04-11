@@ -1,3 +1,5 @@
+import React from 'react'
+
 export default function Index() {
   return (
     <div className="w-full h-[100vh] fixed z-10000 flex justify-center items-center">

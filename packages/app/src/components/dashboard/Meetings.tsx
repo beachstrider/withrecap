@@ -1,3 +1,4 @@
+import React from 'react'
 import { Link } from 'react-router-dom'
 
 import { useMeetings } from '../../firebase/Meetings'
@@ -143,7 +144,7 @@ export default function Index() {
                 </div>
                 <div className="flex justify-between">
                   <div className="sm:text-[20px] text-[15px] font-semibold">{meeting.name}</div>
-                  <Link className="rounded-full w-[40px] h-[40px] flex justify-center items-center bg-gray-100">
+                  <Link to="/" className="rounded-full w-[40px] h-[40px] flex justify-center items-center bg-gray-100">
                     <img src={exitArrow} alt="" />
                   </Link>
                 </div>

@@ -1,4 +1,4 @@
-:root { 
+:root {
   --amethyst: #a35aff1a;
   --darkbackgroundprimary-button: #ffffff;
   --darkbackgroundview: #121316;
@@ -20,7 +20,7 @@
   --onyx: #35363a;
   --shark: #202124;
   --white: #ffffffe6;
- 
+
   --font-size-12px: 12px;
   --font-size-20px: 20px;
   --font-size-24px: 24px;
@@ -32,11 +32,11 @@
   --font-size-xs: 15px;
   --font-size-xxl: 21.8px;
   --font-size-xxxl: 22px;
- 
-  --font-family-inter: "Inter", Helvetica;
-  --font-family-roboto-regular: "Roboto-Regular", Helvetica;
-  --font-family-sf_pro-bold: "SF Pro-Bold", Helvetica;
-  --font-family-sf_pro_rounded-bold: "SF Pro Rounded-Bold", Helvetica;
-  --font-family-sf_pro_rounded-semibold: "SF Pro Rounded-Semibold", Helvetica;
-  --font-family-undefined-regular: "undefined-Regular", Helvetica;
+
+  --font-family-inter: 'Inter', Helvetica;
+  --font-family-roboto-regular: 'Roboto-Regular', Helvetica;
+  --font-family-sf_pro-bold: 'SF Pro-Bold', Helvetica;
+  --font-family-sf_pro_rounded-bold: 'SF Pro Rounded-Bold', Helvetica;
+  --font-family-sf_pro_rounded-semibold: 'SF Pro Rounded-Semibold', Helvetica;
+  --font-family-undefined-regular: 'undefined-Regular', Helvetica;
 }

@@ -1,7 +1,10 @@
+import React from 'react'
 import { Link } from 'react-router-dom'
+
+import Badge from '../display/Badge'
+
 import google from '../../assets/img/google.png'
 import logo from '../../assets/img/logo.svg'
-import Badge from '../display/Badge'
 
 export default function Index({ className = '' }) {
   return (
