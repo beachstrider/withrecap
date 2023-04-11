@@ -5,13 +5,12 @@
   "private": true,
   "scripts": {
     "start": "parcel watch src/manifest.json --host localhost",
-    "build": "NODE_ENV=production parcel build src/manifest.json --detailed-report",
+    "build": "rm -rf dist && NODE_ENV=production parcel build src/manifest.json --no-scope-hoist --no-content-hash --no-cache --no-source-maps --detailed-report 0 ",
     "package": "zip -r dist.zip dist"
   },
   "dependencies": {},
   "devDependencies": {
-    "@parcel/config-webextension": "^2.8.3",
-    "@parcel/transformer-typescript-tsc": "^2.8.3",
-    "@recap/shared": "0.0.1"
-  }
+    "@parcel/config-webextension": "^2.8.3"
+  },
+  "browserslist": "> 0.5%, last 2 versions, not dead"
 }
