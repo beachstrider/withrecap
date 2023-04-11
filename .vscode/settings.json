@@ -15,5 +15,7 @@
   },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "eslint.workingDirectories": ["packages/app"],
+  "FSharp.analyzersPath": ["packages/Analyzers", "analyzers"]
 }

@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom'
+
+import { Auth, useStore } from '../../store'
+
 import google from '../../assets/img/google.png'
 import logo from '../../assets/img/logo.svg'
-import user from '../../assets/img/profile-user.png'
 import Badge from '../display/Badge'
 
 export default function Index({ isPublic = false }) {
+  const { user } = useStore(Auth)
+
   return (
     <header className="container py-[18px]">
       <div className="flex justify-between">
@@ -19,8 +23,8 @@ export default function Index({ isPublic = false }) {
               <div className="px-[10px] py-[6px] font-semibold text-gray-500">Integrations</div>
             </div>
             <Link to="#" className="flex items-center gap-[10px]">
-              <img src={user} alt="" className="w-[32px] h-[32px]" />
-              <div className="font-semibold rounded-full">Maxwell</div>
+              <img src={user?.image} alt="" className="w-[32px] h-[32px]" />
+              <div className="font-semibold rounded-full">{user?.name}</div>
             </Link>
           </>
         )}
@@ -29,7 +33,7 @@ export default function Index({ isPublic = false }) {
             <Link to="/signin" className="text-[15px] font-semibold text-gray-500">
               Sign in
             </Link>
-            <Link to="#">
+            <Link to="/home">
               <Badge>
                 <img src={google} alt="" />
                 Add to Chrome
