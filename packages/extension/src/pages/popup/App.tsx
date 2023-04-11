@@ -6,8 +6,12 @@ import Layout from './components/Layout'
 import Popup from './pages/popup'
 
 export const App = () => {
+  const onNeedAuth = () => {
+    return chrome.runtime.openOptionsPage()
+  }
+
   return (
-    <AuthProvider>
+    <AuthProvider onNeedAuth={onNeedAuth}>
       <Routes>
         <Route path="*" element={<Layout />}>
           <Route path="*" element={<Popup />} />
