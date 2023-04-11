@@ -6,9 +6,10 @@
   "source": "src/index.html",
   "scripts": {
     "start": "parcel",
-    "build": "parcel build --public-url ./ --no-scope-hoist"
+    "build": "NODE_ENV=production parcel build --public-url ./ --no-scope-hoist"
   },
   "dependencies": {
+    "@recap/shared": "0.0.1",
     "react": "^18.2.0",
     "recoil": "^0.7.7"
   },
