@@ -4,6 +4,7 @@ import { firestore } from '../firestore'
 
 export type Addon = {
   url: string
+  regex: string
   name: string
   available: boolean
 }

@@ -1,6 +1,16 @@
-import { ConversationStore, GoogleAuth, GoogleCalendar, MeetingStore } from '@recap/shared'
+import {
+  ConversationStore,
+  GoogleAuth,
+  GoogleCalendar,
+  Meeting,
+  MeetingStore,
+  UserAddonStore,
+  UserMeetingStore
+} from '@recap/shared'
 
 import { ExtensionMessages, MeetingMessage, MeetingMetadata } from '../common/models'
+
+const google = new GoogleAuth()
 
 class ChromeBackgroundService {
   private meetingStore: MeetingStore
@@ -11,70 +21,128 @@ class ChromeBackgroundService {
     this.conversationStore = new ConversationStore()
   }
 
-  async startListener(): Promise<void> {
-    // when tab is closed - make sure to end meeting - its possible the meeting was ended earlier but the TranscriptionService will handle it
-    chrome.tabs.onRemoved.addListener((_tabId, _removeInfo) => {
-      console.debug('meeting ended since tab was closed')
+  private async getMeetingDetails(meetingId: string): Promise<Meeting | undefined> {
+    await google.login({ silent: true })
+
+    if (!google.accessToken) {
+      throw Error('an error must have occurred while authenticating, no access token could be fetched')
+    }
+
+    const calendar = new GoogleCalendar(google.accessToken)
+    const meetingDetails = await calendar.getMeetingDetails(meetingId)
+
+    if (!meetingDetails) {
+      console.warn('no calendar event could be found for the current meeting, skipping...')
+      return
+    }
+
+    return meetingDetails
+  }
+
+  startListener(): void {
+    chrome.tabs.onRemoved.addListener(async (tid, _removeInfo) => {
+      const { tabId } = await chrome.storage.local.get(['tabId'])
+
+      if (tid === tabId) {
+        console.debug(`meeting ended since tab (${tid}) was closed.`)
+        await this.processMeetingEnd()
+      }
     })
 
-    chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
-      console.debug(sender.tab ? 'messaged received from a content script: ' + sender.tab.url : 'from the extension')
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      console.debug(
+        sender.tab
+          ? `messaged received from a content script: ${sender.tab.url}`
+          : 'messaged received from the extension',
+        request
+      )
 
       switch (request.type) {
         case ExtensionMessages.MeetingMessage:
-          await this.processTranscriptionMessage(request.meetingId, request.message)
+          this.processTranscriptionMessage(request.meetingId, request.message).then(sendResponse)
           break
         case ExtensionMessages.MeetingMetadata:
-          await this.processMeetingMetadata(request.meetingId, request.metadata)
+          this.processMeetingMetadata(request.meetingId, request.metadata).then(sendResponse)
           break
         case ExtensionMessages.MeetingStarted:
-          await this.processMeetingStart(request.meetingId, request.metadata)
+          this.processMeetingStart(request.meetingId, request.metadata, sender.tab!.id!).then(sendResponse)
           break
         case ExtensionMessages.MeetingEnded:
-          await this.processMeetingEnd(request.meetingId, request.metadata)
+          this.processMeetingEnd().then(sendResponse)
           break
-        default:
+        case ExtensionMessages.MeetingState:
+          this.processMeetingState().then(sendResponse)
+          break
+        case ExtensionMessages.AddonSupported:
+          this.processAddonEnabled(request.addonId).then(sendResponse)
           break
       }
 
-      return sendResponse()
+      // To tell the listener that we are async
+      return true
     })
   }
 
+  async processAddonEnabled(addonId: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(async (tabs) => {
+        if (!tabs || tabs.length === 0) {
+          return resolve(false)
+        }
+
+        if (!google.auth.currentUser) {
+          return resolve(false)
+        }
+
+        const userAddonStore = new UserAddonStore(google.auth.currentUser.uid)
+        const addon = await userAddonStore.get(addonId)
+
+        return resolve(!!addon)
+      })
+    })
+  }
+
+  async processMeetingState(): Promise<any> {
+    const { recording, meetingDetails } = await chrome.storage.local.get(['recording', 'meetingDetails'])
+
+    return {
+      recording,
+      meetingDetails
+    }
+  }
+
   async processTranscriptionMessage(meetingId: string, message: MeetingMessage): Promise<void> {
-    if (message.speaker === 'You') {
-      // TODO: Replace with user name (or email as fallback)?
+    if (message.speaker === 'You' && google.auth.currentUser) {
+      // TODO: Find out if we can have something better here
+      message.speaker = google.auth.currentUser.displayName || google.auth.currentUser.email || 'Unknown'
     }
 
     return this.conversationStore.add(meetingId, message)
   }
 
-  async processMeetingStart(meetingId: string, _metadata: MeetingMetadata): Promise<void> {
-    if (!(await this.meetingStore.exists(meetingId))) {
-      // Create an empty meeting now, so that other users don't have to do it as well
-      await this.meetingStore.create(meetingId, {})
+  async processMeetingStart(meetingId: string, _metadata: MeetingMetadata, tabId: number): Promise<void> {
+    await chrome.storage.local.set({ tabId })
 
-      const google = new GoogleAuth()
-      await google.login({ silent: true })
-
-      if (!google.accessToken) {
-        return console.error('an error must have occurred while authenticating, no access token could be fetched')
-      }
-
-      const calendar = new GoogleCalendar(google.accessToken)
-      const meetingDetails = await calendar.getMeetingDetails(meetingId)
-
-      // TODO: Validate this
-      if (!meetingDetails) {
-        console.warn('no calendar event could be found for the current meeting, skipping...')
-        return this.meetingStore.delete(meetingId)
-      }
-
-      await this.meetingStore.update(meetingId, { ...meetingDetails })
+    const meetingDetails = await this.getMeetingDetails(meetingId)
+    if (!meetingDetails) {
+      return this.meetingStore.delete(meetingId)
     }
+
+    if (!(await this.meetingStore.exists(meetingId))) {
+      await this.meetingStore.create(meetingId, meetingDetails)
+    }
+
+    const userMeetingStore = new UserMeetingStore(google.auth.currentUser!.uid)
+    if (!(await userMeetingStore.exists(meetingId))) {
+      await userMeetingStore.create(meetingId)
+    }
+
+    await chrome.storage.local.set({ recording: true, meetingDetails })
   }
 
-  async processMeetingEnd(_meetingId: string, _metadata: MeetingMetadata) {}
+  async processMeetingEnd() {
+    await chrome.storage.local.remove(['recording', 'meetingDetails', 'tabId'])
+  }
 
   async processMeetingMetadata(_meetingId: string, _metadata: MeetingMetadata) {}
 }

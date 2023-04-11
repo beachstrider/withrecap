@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { AddonStore, Addons, UserAddonStore, UserAddons } from '@recap/shared'
+import { Addon, AddonStore, Addons, UserAddonConfig, UserAddonStore, UserAddons } from '@recap/shared'
 import { SkipButton } from '../common'
 
 interface AddonsSelectionProps {
@@ -24,10 +24,12 @@ const AddonsSelection = (props: AddonsSelectionProps) => {
     })
   }, [addonStore, userAddonStore])
 
-  const enableAddon = async (id: string) => {
-    await userAddonStore.insert(id)
+  const enableAddon = async (id: string, addon: Addon) => {
+    const config: UserAddonConfig = { url: addon.url, regex: addon.regex, enabled: true }
+    await userAddonStore.insert(id, config)
 
-    setAddons({ ...addons, [id]: { ...addons[id], available: true } })
+    userAddons[id] = config
+    setUserAddons({ ...userAddons })
 
     // Note: For now, since we only have Google Meet working, we redirect
     // the user automatically to the next step once he enables it
@@ -42,7 +44,7 @@ const AddonsSelection = (props: AddonsSelectionProps) => {
     return Object.entries(addons).map(([id, addon]) => (
       <li key={id}>
         <div>{addon.name}</div>
-        <button disabled={!addon.available || isEnabled(id)} onClick={async () => await enableAddon(id)}>
+        <button disabled={!addon.available || isEnabled(id)} onClick={async () => await enableAddon(id, addon)}>
           {isEnabled(id) ? 'Enabled' : addon.available ? 'Connect' : 'Coming Soon'}
         </button>
       </li>
