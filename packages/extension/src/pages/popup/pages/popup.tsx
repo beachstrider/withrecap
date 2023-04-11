@@ -24,10 +24,6 @@ const Popup = () => {
       .finally(() => setLoading(false))
   }, [])
 
-  if (loading) {
-    return <p>Loading...</p>
-  }
-
   const displayMeetingDetails = () => {
     if (meeting) {
       return (
@@ -42,6 +38,10 @@ const Popup = () => {
         </div>
       )
     }
+  }
+
+  if (loading) {
+    return <p>Loading...</p>
   }
 
   return <div>{!meeting ? <RecentMeeting uid={user.uid} /> : displayMeetingDetails()}</div>
