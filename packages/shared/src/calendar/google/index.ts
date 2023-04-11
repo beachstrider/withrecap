@@ -1,18 +1,16 @@
 import { calendar_v3 } from 'googleapis'
+import { Meeting } from '../../storage'
 
 const GOOGLE_CALENDAR_BASE_URL = 'https://www.googleapis.com/calendar/v3'
 
-export interface GoogleCalendarEvent extends calendar_v3.Schema$Event {
-  mid: string
-}
 type ResponseData = {
-  items: GoogleCalendarEvent[]
+  items: calendar_v3.Schema$Event[]
 }
 
 export class GoogleCalendar {
   constructor(private accessToken: string) {}
 
-  public async getMeetingDetails(title: string): Promise<GoogleCalendarEvent | undefined> {
+  public async getMeetingDetails(mid: string): Promise<Meeting | undefined> {
     const now = new Date().toISOString()
     const inOneHour = new Date(Date.now() + 60 * 60 * 1000).toISOString()
 
@@ -26,6 +24,24 @@ export class GoogleCalendar {
     )
     const data: ResponseData = await response.json()
 
-    return data.items.find((calendar) => calendar.hangoutLink?.includes(title))
+    const event = data.items.find((calendar) => calendar.hangoutLink?.includes(mid))
+
+    return this.toMeeting(event, mid)
+  }
+
+  private toMeeting(event: calendar_v3.Schema$Event | undefined, mid: string): Meeting | undefined {
+    if (!event) {
+      return undefined
+    }
+
+    return {
+      mid,
+      id: event.id!,
+      attendees: event.attendees?.map((a) => ({ email: a.email!, name: a.displayName! })) || [],
+      start: event.start!.dateTime!,
+      end: event.end!.dateTime!,
+      link: event.hangoutLink!,
+      summary: event.summary!
+    }
   }
 }

@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { GoogleCalendarEvent, useAuth } from '@recap/shared'
+import { Meeting, useAuth } from '@recap/shared'
 
-import Summary from '../components/Summary'
-import Meeting from '../components/Meeting'
 import { ExtensionMessages } from '../../../common/models'
+import { MeetingDetails } from '../components/MeetingDetails'
+import { RecentMeeting } from '../components/RecentMeeting'
 
 const Popup = () => {
   const { user } = useAuth()
 
-  const [meeting, setMeeting] = useState<GoogleCalendarEvent | undefined>()
+  const [meeting, setMeeting] = useState<Meeting | undefined>()
   const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     setLoading(true)
 
     chrome.runtime
-      .sendMessage<any, { recording: boolean; meetingDetails?: GoogleCalendarEvent }>({
+      .sendMessage<any, { recording: boolean; meetingDetails?: Meeting }>({
         type: ExtensionMessages.MeetingState
       })
       .then((response) => {
@@ -28,7 +28,23 @@ const Popup = () => {
     return <p>Loading...</p>
   }
 
-  return <div>{!meeting ? <Summary uid={user.uid} /> : <Meeting meeting={meeting} />}</div>
+  const displayMeetingDetails = () => {
+    if (meeting) {
+      return (
+        <>
+          <MeetingDetails meeting={meeting} ended={false} />
+        </>
+      )
+    } else {
+      return (
+        <div>
+          <p>cannot record this meeting as it's not part of your calendar</p>
+        </div>
+      )
+    }
+  }
+
+  return <div>{!meeting ? <RecentMeeting uid={user.uid} /> : displayMeetingDetails()}</div>
 }
 
 export default Popup

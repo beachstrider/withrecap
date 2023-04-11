@@ -10,7 +10,21 @@ import {
 } from 'firebase/firestore/lite'
 
 import { firestore } from '../firestore'
-import { GoogleCalendarEvent } from '../../calendar/google'
+
+export type MeetingAttendee = {
+  email: string
+  name?: string
+  avatar?: string
+}
+export type Meeting = {
+  id: string
+  mid: string
+  attendees: Array<MeetingAttendee>
+  start: string
+  end: string
+  link: string
+  summary: string
+}
 
 export class MeetingStore {
   private _db: CollectionReference<DocumentData>
@@ -19,27 +33,23 @@ export class MeetingStore {
     this._db = collection(firestore, 'meetings')
   }
 
-  public async exists(uid: string) {
+  public async exists(uid: string): Promise<boolean> {
     const document = await getDoc(doc(this._db, uid))
 
     return document.exists()
   }
 
-  public async get(mid: string): Promise<GoogleCalendarEvent | undefined> {
-    const document = await getDoc<GoogleCalendarEvent>(doc(this._db, mid))
+  public async get(mid: string): Promise<Meeting | undefined> {
+    const document = await getDoc(doc(this._db, mid))
 
-    return document.data()
+    return document.data() as Meeting | undefined
   }
 
-  public async create(mid: string, meeting: GoogleCalendarEvent) {
+  public async create(mid: string, meeting: Meeting): Promise<void> {
     return setDoc(doc(this._db, mid), meeting)
   }
 
-  public async update(mid: string, meeting: GoogleCalendarEvent) {
-    return updateDoc(doc(this._db, mid), { ...meeting })
-  }
-
-  public async delete(mid: string) {
+  public async delete(mid: string): Promise<void> {
     return deleteDoc(doc(this._db, mid))
   }
 }

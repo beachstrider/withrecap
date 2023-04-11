@@ -1,16 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { GoogleCalendarEvent, MeetingStore, UserMeetingStore } from '@recap/shared'
+import { Meeting, MeetingStore, UserMeetingStore } from '@recap/shared'
 import { MeetingDetails } from '../MeetingDetails'
 
-export type SummaryProps = {
+export type RecentMeetingProps = {
   uid: string
 }
 
-const Summary = (props: SummaryProps) => {
+export const RecentMeeting = (props: RecentMeetingProps) => {
   const userMeetingStore = useMemo(() => new UserMeetingStore(props.uid), [props.uid])
   const meetingStore = useMemo(() => new MeetingStore(), [])
 
-  const [recentMeetingDetails, setRecentMeetingDetails] = useState<GoogleCalendarEvent | undefined>()
+  const [recentMeeting, setRecentMeeting] = useState<Meeting | undefined>()
   const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
@@ -25,9 +25,7 @@ const Summary = (props: SummaryProps) => {
 
         meetingStore
           .get(recentMeetingId)
-          .then((m) => {
-            setRecentMeetingDetails({ ...m, mid: recentMeetingId })
-          })
+          .then(setRecentMeeting)
           .finally(() => setLoading(false))
       })
       .finally(() => {
@@ -36,10 +34,10 @@ const Summary = (props: SummaryProps) => {
   }, [userMeetingStore, meetingStore])
 
   const displayRecentMeeting = () => {
-    if (recentMeetingDetails) {
+    if (recentMeeting) {
       return (
         <div>
-          <MeetingDetails meeting={recentMeetingDetails} ended />
+          <MeetingDetails meeting={recentMeeting} ended />
         </div>
       )
     } else {
@@ -61,5 +59,3 @@ const Summary = (props: SummaryProps) => {
     </div>
   )
 }
-
-export default Summary

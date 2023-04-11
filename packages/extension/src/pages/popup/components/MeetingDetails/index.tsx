@@ -1,9 +1,9 @@
 import React from 'react'
 import { formatDistance, format } from 'date-fns'
-import { GoogleCalendarEvent } from '@recap/shared'
+import { Meeting } from '@recap/shared'
 
 interface MeetingDetailsProps {
-  meeting: GoogleCalendarEvent
+  meeting: Meeting
   ended: boolean
 }
 
@@ -12,7 +12,7 @@ interface MeetingDetailsProps {
  */
 export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
   const Header = () => {
-    const meetingEndDate = new Date(meeting.end!.dateTime!)
+    const meetingEndDate = new Date(meeting.end)
     const now = new Date()
 
     if (ended) {
@@ -28,14 +28,14 @@ export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
 
   const Participants = () => {
     // Includes the meeting creator
-    const nbAttendees = (meeting.attendees?.length || 0) + 1
+    const nbAttendees = meeting.attendees.length + 1
 
     return <span>{nbAttendees} Participants</span>
   }
 
   const Time = () => {
-    const startTime = format(new Date(meeting.start!.dateTime!), 'h:mm a')
-    const endTime = format(new Date(meeting.end!.dateTime!), 'h:mm a')
+    const startTime = format(new Date(meeting.start), 'h:mm a')
+    const endTime = format(new Date(meeting.end), 'h:mm a')
 
     return (
       <span>

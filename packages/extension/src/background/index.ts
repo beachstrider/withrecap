@@ -2,14 +2,13 @@ import {
   ConversationStore,
   GoogleAuth,
   GoogleCalendar,
-  GoogleCalendarEvent,
+  Meeting,
   MeetingStore,
   UserAddonStore,
   UserMeetingStore
 } from '@recap/shared'
 
 import { ExtensionMessages, MeetingMessage, MeetingMetadata } from '../common/models'
-import { signInWithCustomToken } from 'firebase/auth'
 
 const google = new GoogleAuth()
 
@@ -22,7 +21,7 @@ class ChromeBackgroundService {
     this.conversationStore = new ConversationStore()
   }
 
-  private async getMeetingDetails(meetingId: string): Promise<GoogleCalendarEvent | undefined> {
+  private async getMeetingDetails(meetingId: string): Promise<Meeting | undefined> {
     await google.login({ silent: true })
 
     if (!google.accessToken) {
@@ -37,7 +36,6 @@ class ChromeBackgroundService {
       return
     }
 
-    meetingDetails.mid = meetingId
     return meetingDetails
   }
 
@@ -131,7 +129,7 @@ class ChromeBackgroundService {
     }
 
     if (!(await this.meetingStore.exists(meetingId))) {
-      await this.meetingStore.create(meetingId, { ...meetingDetails })
+      await this.meetingStore.create(meetingId, meetingDetails)
     }
 
     const userMeetingStore = new UserMeetingStore(google.auth.currentUser!.uid)
