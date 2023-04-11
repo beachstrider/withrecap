@@ -132,36 +132,48 @@ class GoogleMeetsService {
   }
 
   public prepareListener(): void {
-    const docObserver = new MutationObserver(() => {
-      this.callBar = document.body.querySelector(SELECTOR_CALL_BAR)
+    chrome.runtime.sendMessage<any, any>(
+      {
+        addonId: 'meet',
+        type: ExtensionMessages.AddonSupported
+      },
+      (isEnabled) => {
+        if (!isEnabled || chrome.runtime.lastError) {
+          return
+        }
 
-      if (this.callBar) {
-        console.debug('call started')
-        this.meetingStartTimestamp = new Date().getTime()
+        const docObserver = new MutationObserver(() => {
+          this.callBar = document.body.querySelector(SELECTOR_CALL_BAR)
 
-        // Note: this is a semi hack to make sure all element are displayed properly so we can interact with the UI
-        setTimeout(() => {
-          // this will also be useful even if you rejoin a meeting
-          // for example the meeting was ended through tab close, but then you joined again - this will nullify the metadata's endTimestamp
-          const metadata = this.getMeetingMetadata()
-          chrome.runtime.sendMessage({
-            meetingId: this.getMeetingId(),
-            metadata: metadata,
-            type: ExtensionMessages.MeetingStarted
-          })
+          if (this.callBar) {
+            console.debug('call started')
+            this.meetingStartTimestamp = new Date().getTime()
 
-          // click on the cc button and start transcribing
-          this.startTranscribing()
-        }, 800)
+            // Note: this is a semi hack to make sure all element are displayed properly so we can interact with the UI
+            setTimeout(() => {
+              // this will also be useful even if you rejoin a meeting
+              // for example the meeting was ended through tab close, but then you joined again - this will nullify the metadata's endTimestamp
+              const metadata = this.getMeetingMetadata()
+              chrome.runtime.sendMessage({
+                meetingId: this.getMeetingId(),
+                metadata: metadata,
+                type: ExtensionMessages.MeetingStarted
+              })
 
-        docObserver.disconnect()
+              // click on the cc button and start transcribing
+              this.startTranscribing()
+            }, 800)
+
+            docObserver.disconnect()
+          }
+        })
+
+        docObserver.observe(document.body, {
+          childList: true,
+          subtree: true
+        })
       }
-    })
-
-    docObserver.observe(document.body, {
-      childList: true,
-      subtree: true
-    })
+    )
   }
 
   public startTranscribing(): void {
@@ -202,7 +214,7 @@ class GoogleMeetsService {
   }
 }
 
-//TODO: Find out which service we're on and initialize the right service
+//TODO: Once we support more addons, find out which service we're on and initialize the right service
 //TODO: Hide transcript display on production
 
 const meetingService = new GoogleMeetsService()

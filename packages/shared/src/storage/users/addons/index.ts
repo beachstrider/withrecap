@@ -1,9 +1,11 @@
-import { collection, doc, CollectionReference, DocumentData, setDoc, getDocs } from 'firebase/firestore/lite'
+import { collection, doc, CollectionReference, DocumentData, setDoc, getDocs, getDoc } from 'firebase/firestore/lite'
 
 import { firestore } from '../../firestore'
 
 export type UserAddonConfig = {
   enabled: true
+  url: string
+  regex: string
 }
 
 export type UserAddons = {
@@ -28,9 +30,13 @@ export class UserAddonStore {
     return addons
   }
 
-  public async insert(id: string): Promise<void> {
-    const config: UserAddonConfig = { enabled: true }
+  public async get(addonId: string): Promise<UserAddonConfig | undefined> {
+    const document = await getDoc(doc(this._db, this.uid, 'addons', addonId))
 
+    return document.data() as UserAddonConfig | undefined
+  }
+
+  public async insert(id: string, config: UserAddonConfig): Promise<void> {
     return setDoc(doc(this._db, this.uid, 'addons', id), config)
   }
 }

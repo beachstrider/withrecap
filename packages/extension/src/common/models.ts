@@ -2,7 +2,9 @@ export enum ExtensionMessages {
   MeetingMessage = 'MEETING_MESSAGE',
   MeetingStarted = 'MEETING_STARTED',
   MeetingEnded = 'MEETING_ENDED',
-  MeetingMetadata = 'MEETING_METADATA'
+  MeetingMetadata = 'MEETING_METADATA',
+  MeetingState = 'MEETING_STATE',
+  AddonSupported = 'ADDON_SUPPORTED'
 }
 
 export interface MeetingMessage {

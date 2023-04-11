@@ -1,3 +1,39 @@
-export * from './auth'
-export * from './storage'
-export * from './calendar'
+//===========================================================
+// AUTHENTIFICATION
+//===========================================================
+
+export { AuthProvider, useAuth } from './auth/AuthProvider'
+export * from './auth/firebase'
+
+export { GoogleAuth } from './auth/google'
+export type { GoogleAuthOptions, FirebaseUser } from './auth/google'
+
+//===========================================================
+// STORAGE
+//===========================================================
+
+export { AddonStore } from './storage/addons'
+export type { Addon, Addons } from './storage/addons'
+
+export * from './storage/firestore'
+
+export { MeetingStore } from './storage/meetings'
+export type { Meeting, MeetingAttendee } from './storage/meetings'
+
+export { ConversationStore } from './storage/meetings/conversation'
+export type { Conversation } from './storage/meetings/conversation'
+
+export { UserStore } from './storage/users'
+export type { User } from './storage/users'
+
+export { UserAddonStore } from './storage/users/addons'
+export type { UserAddonConfig, UserAddons } from './storage/users/addons'
+
+export { UserMeetingStore } from './storage/users/meetings'
+export type { UserMeetingConfig, UserMeetings } from './storage/users/meetings'
+
+//===========================================================
+// CALENDAR
+//===========================================================
+
+export * from './calendar/google'

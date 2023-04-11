@@ -10,17 +10,17 @@ import {
 
 import { firebase } from '../firebase'
 
-export { User as FirebaseUser } from 'firebase/auth'
+export type { User as FirebaseUser } from 'firebase/auth'
 
 export type GoogleAuthOptions = {
   persistAuth: boolean
 }
 
 export class GoogleAuth {
-  private _accessToken?: string
+  private _accessToken: string | null = null
 
   private firebase: FirebaseApp
-  private auth: Auth
+  public auth: Auth
 
   constructor(private options: GoogleAuthOptions = { persistAuth: true }) {
     this.firebase = firebase
@@ -43,17 +43,25 @@ export class GoogleAuth {
     })
   }
 
-  public onAuthStateChanged = (callback: (user: FirebaseUser | null) => void) => {
-    onAuthStateChanged(this.auth, callback)
+  public onAuthStateChanged = (callback: (user: FirebaseUser | null, token: string | null) => void) => {
+    onAuthStateChanged(this.auth, (user) => {
+      if (user) {
+        if (this._accessToken === null) {
+          this._login({ interactive: false }).then((token) => {
+            this._accessToken = token
+            callback(user, token)
+          })
+        } else {
+          callback(user, this._accessToken || null)
+        }
+      } else {
+        callback(user, null)
+      }
+    })
   }
 
   public login = async ({ silent }: { silent: boolean } = { silent: false }) => {
     try {
-      // TODO: Figure this out
-      // if (this.options.persistAuth) {
-      //   await setPersistence(this.auth, browserLocalPersistence)
-      // }
-
       try {
         this._accessToken = await this._login({ interactive: !silent })
         await signInWithCredential(this.auth, GoogleAuthProvider.credential(null, this._accessToken))
