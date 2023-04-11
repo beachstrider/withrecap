@@ -9,13 +9,5 @@
     ".parcelrc": "json"
   },
   "files.eol": "\n",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "[javascriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "eslint.workingDirectories": ["packages/app"],
-  "FSharp.analyzersPath": ["packages/Analyzers", "analyzers"]
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }
