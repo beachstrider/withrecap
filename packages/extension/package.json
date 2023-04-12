@@ -12,7 +12,9 @@
     "@recap/shared": "0.0.1"
   },
   "devDependencies": {
-    "@parcel/config-webextension": "^2.8.3"
+    "@parcel/config-webextension": "^2.8.3",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.3.1"
   },
   "browserslist": "> 0.5%, last 2 versions, not dead"
 }
