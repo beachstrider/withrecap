@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           console.log('.....')
           if (!exists) {
             console.info('user must install an extension')
+            setUser(u)
           } else {
             console.log('u.uid exist')
             setUser(u)
@@ -53,6 +54,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   if (!user && location.pathname !== '/signin') return <Loading />
 
+  console.log('u==', user)
   return (
     <AuthContext.Provider
       value={{
