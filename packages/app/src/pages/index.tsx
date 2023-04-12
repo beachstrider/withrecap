@@ -1,9 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
-import Footer from '../components/layouts/Footer'
 import Badge from '../components/display/Badge'
 import Layout from '../components/layouts'
+import Footer from '../components/layouts/Footer'
+import Loading from '../components/layouts/Loading'
 
 import add from '../assets/img/Add.png'
 import bgGrad from '../assets/img/bg-grad.png'
@@ -23,8 +24,11 @@ import summaryList from '../assets/img/summaryList.png'
 import unchecked from '../assets/img/unchecked.png'
 
 export default function Index() {
+  const location = useLocation()
+
   return (
     <>
+      {location.hash === '#signin' && <Loading />}
       <Layout isPublic>
         <div className="relative sm:mb-[160px] mb-[120px] sm:pt-[140px] pt-[100px] sm:pb-[200px] pb-[150px]">
           <div className="">

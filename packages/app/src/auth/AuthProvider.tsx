@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (u === null) {
         setUser(null)
 
-        if (location.pathname !== '/') navigate('/signin')
+        if (location.pathname !== '/') navigate('/')
       } else {
         userStore.exists(u.uid).then((exists) => {
           console.log('.....')
@@ -52,9 +52,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return unsubscribe
   }, [auth, userStore])
 
-  if (!user && location.pathname !== '/signin') return <Loading />
+  if (!user && location.pathname !== '/') return <Loading />
 
-  console.log('u==', user)
   return (
     <AuthContext.Provider
       value={{
