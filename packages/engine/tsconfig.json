@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.shared.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "lib",
+
+    "module": "commonjs",
+    "target": "es2017",
+
+    "sourceMap": true
+  },
+  "compileOnSave": true,
+  "include": ["src"],
+  "exclude": ["lib", "node_modules"]
+}
