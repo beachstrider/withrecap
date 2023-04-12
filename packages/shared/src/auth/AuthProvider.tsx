@@ -16,9 +16,10 @@ export const useAuth = () => {
 
 interface AuthProviderProps {
   children: JSX.Element
+  onNeedAuth?: () => void
 }
 
-export const AuthProvider = ({ children }: AuthProviderProps) => {
+export const AuthProvider = ({ children, onNeedAuth }: AuthProviderProps) => {
   const google = useMemo(() => new GoogleAuth(), [])
   const userStore = useMemo(() => new UserStore(), [])
 
@@ -30,7 +31,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (u === null || t === null) {
         setUser(null)
         setToken(null)
-        return chrome.runtime.openOptionsPage()
+        return onNeedAuth?.()
       }
 
       userStore.exists(u.uid).then((exists) => {
