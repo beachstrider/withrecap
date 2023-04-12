@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react'
-import { FirebaseUser, useAuth } from '@recap/shared'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@recap/shared'
+import { ROUTES } from '../../App'
 
-interface SignInProps {
-  onUserLoggedIn: (user: FirebaseUser) => void
-}
-
-const SignIn = (props: SignInProps) => {
+export const SignIn = () => {
   const { user, login } = useAuth()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (user) {
-      return props.onUserLoggedIn(user)
+      return navigate(ROUTES.Addon)
     }
-  }, [user, props])
+  }, [user, navigate])
 
   return (
     <>
@@ -24,5 +23,3 @@ const SignIn = (props: SignInProps) => {
     </>
   )
 }
-
-export default SignIn

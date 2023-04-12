@@ -1,27 +1,28 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { UserStore } from '@recap/shared'
-import { SkipButton } from '../common'
+import { useNavigate } from 'react-router-dom'
+import { UserStore, useAuthGuard } from '@recap/shared'
 
-interface AutoSharingProps {
-  uid: string
-  onNext: () => void
-}
+import { SkipButton } from '../../components/SkipButton'
+import { ROUTES } from '../../App'
 
-const AutoSharing = (props: AutoSharingProps) => {
+export const AutoSharing = () => {
+  const { user } = useAuthGuard()
+  const navigate = useNavigate()
+
   const userStore = useMemo(() => new UserStore(), [])
 
   const [toggle, setToggle] = useState<boolean>(false)
 
   useEffect(() => {
     // TODO: Handle errors
-    userStore.update(props.uid, { autoSharing: toggle })
+    userStore.update(user.uid, { autoSharing: toggle })
 
     // Note: If the use decides to enable it now, we
     // redirect him to the next step automatically
     if (toggle) {
-      props.onNext()
+      return navigate(ROUTES.Done)
     }
-  }, [userStore, props.uid, props, toggle])
+  }, [userStore, user, toggle, navigate])
 
   return (
     <>
@@ -35,9 +36,7 @@ const AutoSharing = (props: AutoSharingProps) => {
         <input onClick={() => setToggle(!toggle)} type="checkbox" />
         <span></span>
       </label>
-      <SkipButton onClick={props.onNext} />
+      <SkipButton onClick={() => navigate(ROUTES.Done)} />
     </>
   )
 }
-
-export default AutoSharing

@@ -1,14 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Addon, AddonStore, Addons, UserAddonConfig, UserAddonStore, UserAddons } from '@recap/shared'
-import { SkipButton } from '../common'
+import { useNavigate } from 'react-router-dom'
+import { Addon, AddonStore, Addons, UserAddonConfig, UserAddonStore, UserAddons, useAuthGuard } from '@recap/shared'
 
-interface AddonsSelectionProps {
-  uid: string
-  onNext: () => void
-}
+import { SkipButton } from '../../components/SkipButton'
+import { ROUTES } from '../../App'
 
-const AddonsSelection = (props: AddonsSelectionProps) => {
-  const userAddonStore = useMemo(() => new UserAddonStore(props.uid), [props.uid])
+export const AddonsSelection = () => {
+  const { user } = useAuthGuard()
+  const navigate = useNavigate()
+
+  const userAddonStore = useMemo(() => new UserAddonStore(user.uid), [user.uid])
   const addonStore = useMemo(() => new AddonStore(), [])
 
   const [addons, setAddons] = useState<Addons>({})
@@ -33,7 +34,7 @@ const AddonsSelection = (props: AddonsSelectionProps) => {
 
     // Note: For now, since we only have Google Meet working, we redirect
     // the user automatically to the next step once he enables it
-    props.onNext()
+    return navigate(ROUTES.Sharing)
   }
 
   const isEnabled = (id: string): boolean => {
@@ -55,9 +56,7 @@ const AddonsSelection = (props: AddonsSelectionProps) => {
     <>
       <h1>Add Recap to your video call apps</h1>
       <ul>{renderAddonList()}</ul>
-      <SkipButton onClick={props.onNext} />
+      <SkipButton onClick={() => navigate(ROUTES.Sharing)} />
     </>
   )
 }
-
-export default AddonsSelection
