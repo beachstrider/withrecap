@@ -1,28 +1,16 @@
 import { FirebaseApp } from 'firebase/app'
-import {
-  getAuth,
-  onAuthStateChanged,
-  signInWithCredential,
-  GoogleAuthProvider,
-  Auth,
-  User as FirebaseUser
-} from 'firebase/auth'
+import { getAuth, onAuthStateChanged, signInWithCredential, GoogleAuthProvider, Auth, Unsubscribe } from 'firebase/auth'
 
-import { firebase } from '../firebase'
+import { firebase, FirebaseUser } from '../firebase'
+import { BaseAuthProvider } from '..'
 
-export type { User as FirebaseUser } from 'firebase/auth'
-
-export type GoogleAuthOptions = {
-  persistAuth: boolean
-}
-
-export class GoogleAuth {
+export class GoogleIdentityAuthProvider implements BaseAuthProvider {
   private _accessToken: string | null = null
 
   private firebase: FirebaseApp
   public auth: Auth
 
-  constructor(private options: GoogleAuthOptions = { persistAuth: true }) {
+  constructor() {
     this.firebase = firebase
     this.auth = getAuth(this.firebase)
   }
@@ -43,7 +31,7 @@ export class GoogleAuth {
     })
   }
 
-  public onAuthStateChanged = (callback: (user: FirebaseUser | null, token: string | null) => void) => {
+  public onAuthStateChanged = (callback: (user: FirebaseUser | null, token: string | null) => void): Unsubscribe => {
     return onAuthStateChanged(this.auth, (user) => {
       if (user) {
         if (this._accessToken === null) {

@@ -1,6 +1,6 @@
 import {
   ConversationStore,
-  GoogleAuth,
+  GoogleIdentityAuthProvider,
   GoogleCalendar,
   Meeting,
   MeetingStore,
@@ -10,7 +10,7 @@ import {
 
 import { ExtensionMessages, MeetingMessage, MeetingMetadata } from '../common/models'
 
-const google = new GoogleAuth()
+const google = new GoogleIdentityAuthProvider()
 
 class ChromeBackgroundService {
   private meetingStore: MeetingStore

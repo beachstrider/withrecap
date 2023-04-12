@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Meeting, useAuth } from '@recap/shared'
+import { Meeting, useAuthGuard } from '@recap/shared'
 
 import { ExtensionMessages } from '../../../common/models'
 import { MeetingDetails } from '../components/MeetingDetails'
 import { RecentMeeting } from '../components/RecentMeeting'
 
 const Popup = () => {
-  const { user } = useAuth()
+  const { user } = useAuthGuard()
 
   const [meeting, setMeeting] = useState<Meeting | undefined>()
   const [loading, setLoading] = useState<boolean>(false)

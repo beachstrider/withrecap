@@ -1,12 +1,16 @@
 //===========================================================
-// AUTHENTIFICATION
+// AUTHENTICATION
 //===========================================================
 
-export { AuthProvider, useAuth } from './auth/AuthProvider'
-export * from './auth/firebase'
+export type { BaseAuthProvider } from './auth'
 
-export { GoogleAuth } from './auth/google'
-export type { GoogleAuthOptions, FirebaseUser } from './auth/google'
+export { AuthProvider, useAuth } from './auth/AuthProvider'
+export { AuthGuard, useAuthGuard } from './auth/AuthGuard'
+
+export { firebase } from './auth/firebase'
+export type { FirebaseUser } from './auth/firebase'
+
+export { GoogleIdentityAuthProvider } from './auth/google'
 
 //===========================================================
 // STORAGE

@@ -1,25 +1,18 @@
-import React, { useEffect, useMemo } from 'react'
-import { GoogleAuth, FirebaseUser } from '@recap/shared'
+import React, { useEffect } from 'react'
+import { FirebaseUser, useAuth } from '@recap/shared'
 
 interface SignInProps {
   onUserLoggedIn: (user: FirebaseUser) => void
 }
 
 const SignIn = (props: SignInProps) => {
-  const google = useMemo(() => new GoogleAuth(), [])
+  const { user, login } = useAuth()
 
   useEffect(() => {
-    google.onAuthStateChanged((user) => {
-      if (user !== null) {
-        return props.onUserLoggedIn(user)
-      }
-    })
-  }, [google, props])
-
-  const login = async () => {
-    // TODO: Handle errors
-    await google.login()
-  }
+    if (user) {
+      return props.onUserLoggedIn(user)
+    }
+  }, [user, props])
 
   return (
     <>

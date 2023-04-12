@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { UserStore, User, FirebaseUser } from '@recap/shared'
+import { UserStore, User, FirebaseUser, AuthProvider, GoogleIdentityAuthProvider } from '@recap/shared'
 
 import AddonsSelection from './addons/addons'
 import SignIn from './signin/signin'
@@ -38,7 +38,11 @@ const Onboarding = () => {
   const body = () => {
     switch (step) {
       case 1:
-        return <SignIn onUserLoggedIn={onUserLoggedIn} />
+        return (
+          <AuthProvider provider={GoogleIdentityAuthProvider}>
+            <SignIn onUserLoggedIn={onUserLoggedIn} />
+          </AuthProvider>
+        )
       case 2:
         if (user) {
           return <AddonsSelection uid={user.uid} onNext={() => setStep(step + 1)} />
@@ -60,7 +64,9 @@ const Onboarding = () => {
     <div className="app">
       <h1>Recap</h1>
       <p>Step {step} of 4</p>
-      <div className="content">{body()}</div>
+      <AuthProvider provider={GoogleIdentityAuthProvider}>
+        <div className="content">{body()}</div>
+      </AuthProvider>
     </div>
   )
 }

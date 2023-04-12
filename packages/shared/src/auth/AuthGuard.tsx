@@ -4,25 +4,23 @@ import { User } from 'firebase/auth'
 import { UserStore } from '../storage/users'
 import { BaseAuthProvider } from '.'
 
-type AuthProviderContextType = {
-  token: string | null
-  user: User | null
-  login: BaseAuthProvider['login']
-  logout: BaseAuthProvider['logout']
-  onAuthStateChanged: BaseAuthProvider['onAuthStateChanged']
+type AuthGuardContextType = {
+  token: string
+  user: User
 }
-export const AuthProviderContext = createContext<AuthProviderContextType>({} as AuthProviderContextType)
+export const AuthGuardContext = createContext<AuthGuardContextType>({} as AuthGuardContextType)
 
-export const useAuth = () => {
-  return useContext(AuthProviderContext)
+export const useAuthGuard = () => {
+  return useContext(AuthGuardContext)
 }
 
-interface AuthProviderProps {
+interface AuthGuardProps {
   provider: new () => BaseAuthProvider
   children: JSX.Element
+  onNeedAuth: () => void
 }
 
-export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
+export const AuthGuard = ({ children, onNeedAuth, provider }: AuthGuardProps) => {
   const auth = useMemo(() => new provider(), [provider])
   const userStore = useMemo(() => new UserStore(), [])
 
@@ -34,7 +32,7 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
       if (u === null || t === null) {
         setUser(null)
         setToken(null)
-        return
+        return onNeedAuth()
       }
 
       userStore.exists(u.uid).then((exists) => {
@@ -51,19 +49,20 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
     })
 
     return unsubscribe
-  }, [auth, userStore])
+  }, [auth, userStore, onNeedAuth])
+
+  if (!user || !token) {
+    return null
+  }
 
   return (
-    <AuthProviderContext.Provider
+    <AuthGuardContext.Provider
       value={{
         token,
-        user,
-        login: auth.login,
-        logout: auth.logout,
-        onAuthStateChanged: auth.onAuthStateChanged
+        user
       }}
     >
       {children}
-    </AuthProviderContext.Provider>
+    </AuthGuardContext.Provider>
   )
 }
