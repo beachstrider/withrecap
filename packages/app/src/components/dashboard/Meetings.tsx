@@ -142,7 +142,7 @@ export default function Index() {
                     <img src={exitArrow} alt="" />
                   </Link>
                 </div>
-                <div className="text-[15px] font-semibold flex items-center">
+                <div className="text-[15px] font-semibold flex items-center text-gray-500">
                   <div className="mr-[16px]">
                     {meeting.startTime} - {meeting.endTime}
                   </div>
