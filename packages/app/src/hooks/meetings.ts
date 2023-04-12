@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 
-import { Auth, useStore } from '../store'
-import { collection, db, doc, getDoc, getDocs } from './index'
+import { collection, db, doc, getDoc, getDocs } from '../firebase/index'
+import { Auth, useRead } from '../store'
 
 export function useMeetings() {
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const { user } = useStore(Auth)
+  const { user } = useRead(Auth)
 
   async function action() {
     const values = []

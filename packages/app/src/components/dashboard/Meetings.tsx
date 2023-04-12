@@ -1,8 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { useMeetings } from '../../firebase/Meetings'
-
 import exitArrow from '../../assets/img/exit-arrow-right.svg'
 import purpleMessage from '../../assets/img/purple-message.png'
 
@@ -14,10 +12,6 @@ import sara from '../../assets/img/sara.png'
 import tom from '../../assets/img/tom.png'
 
 export default function Index() {
-  const { meetings, loading } = useMeetings()
-
-  console.log('===', meetings, loading)
-
   // dummy data
   const meetingGroups = [
     {

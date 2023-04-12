@@ -12,11 +12,9 @@ const container = document.getElementById('app') as Element
 const root = ReactDOM.createRoot(container)
 
 root.render(
-  <React.StrictMode>
-    <Store>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Store>
-  </React.StrictMode>
+  <Store>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Store>
 )

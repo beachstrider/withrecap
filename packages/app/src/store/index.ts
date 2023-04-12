@@ -1,8 +1,3 @@
 import * as recoil from 'recoil'
 
-export const Auth = recoil.atom<any>({
-  key: 'Auth',
-  default: {}
-})
-
-export const { useRecoilValue: useStore, useRecoilState: useSetStore } = recoil
+export const { useRecoilValue: useRead, useRecoilState: useSet } = recoil
