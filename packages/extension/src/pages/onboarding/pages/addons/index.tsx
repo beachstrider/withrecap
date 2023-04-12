@@ -54,7 +54,7 @@ export const AddonsSelection = () => {
 
   return (
     <>
-      <h1>Add Recap to your video call apps</h1>
+      <h1 className="text-2xl">Add Recap to your video call apps</h1>
       <ul>{renderAddonList()}</ul>
       <SkipButton onClick={() => navigate(ROUTES.Sharing)} />
     </>

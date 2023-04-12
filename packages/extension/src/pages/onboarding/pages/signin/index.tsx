@@ -1,6 +1,6 @@
+import { useAuth } from '@recap/shared'
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '@recap/shared'
 import { ROUTES } from '../../App'
 
 export const SignIn = () => {
@@ -15,7 +15,7 @@ export const SignIn = () => {
 
   return (
     <>
-      <h1>Create your account</h1>
+      <h1 className="text-2xl">Create your account</h1>
       <p>Continue with Google to get started.</p>
       <button onClick={login}>Sign In with Google</button>
       <p>Unlimited meeting notes for free!</p>
