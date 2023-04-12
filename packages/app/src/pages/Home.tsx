@@ -7,6 +7,7 @@ import Layout from '../components/layouts'
 
 export default function Index() {
   const { user } = useAuth()
+  console.log('=======  user:', user?.uid)
 
   return (
     <Layout>

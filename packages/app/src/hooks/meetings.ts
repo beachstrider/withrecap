@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react'
 
+import { useAuth } from '../auth/AuthProvider'
 import { collection, db, doc, getDoc, getDocs } from '../firebase/index'
-import { Auth, useRead } from '../store'
 
 export function useMeetings() {
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const { user } = useRead(Auth)
+  const { user } = useAuth()
 
   async function action() {
     const values = []
-    const userRef = doc(db, 'users', user?.uid)
+    const userRef = doc(db, 'users', user?.uid!)
     const meetingsSnapshot = await getDocs(collection(userRef, 'meetings'))
 
     for await (const { id } of meetingsSnapshot.docs) {
