@@ -8,7 +8,7 @@ import logo from '../../assets/img/logo.svg'
 import { useAuth } from '../../auth/AuthProvider'
 
 export default function Index({ isPublic = false }) {
-  const { user } = isPublic ? { user: null } : useAuth()
+  const { user } = useAuth() ?? {}
 
   return (
     <header className="container py-[18px]">
