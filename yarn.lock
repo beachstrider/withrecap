@@ -2769,7 +2769,7 @@
     "@parcel/utils" "2.8.3"
     nullthrows "^1.1.1"
 
-"@parcel/plugin@2.8.3", "@parcel/plugin@^2.0.0-beta.1":
+"@parcel/plugin@2.8.3":
   version "2.8.3"
   resolved "https://registry.npmjs.org/@parcel/plugin/-/plugin-2.8.3.tgz"
   integrity sha512-jZ6mnsS4D9X9GaNnvrixDQwlUQJCohDX2hGyM0U0bY2NWU8Km97SjtoCpWjq+XBCx/gpC4g58+fk9VQeZq2vlw==
@@ -9251,13 +9251,6 @@ param-case@^3.0.4:
   dependencies:
     dot-case "^3.0.4"
     tslib "^2.0.3"
-
-parcel-reporter-static-files-copy@^1.3.4:
-  version "1.5.0"
-  resolved "https://registry.npmjs.org/parcel-reporter-static-files-copy/-/parcel-reporter-static-files-copy-1.5.0.tgz"
-  integrity sha512-dsY3MQkbYSgEqS0/22vtD2mZtel8UC0ItH0ok8LmgFeCMTsdhyOtJgvt945ODIzu9lYc/sCIzksM8C77uSE3Fg==
-  dependencies:
-    "@parcel/plugin" "^2.0.0-beta.1"
 
 parcel@^2.8.3:
   version "2.8.3"

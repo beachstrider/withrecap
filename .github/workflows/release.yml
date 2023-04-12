@@ -35,33 +35,25 @@ jobs:
           yarn package
       - name: Get version from package.json
         id: get_version
-        run: echo "version=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
+        run: echo "version=v$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
       - name: Check version
+        uses: mukunku/tag-exists-action@v1.2.0
         id: check_version
-        run: |
-          version="${{ steps.get_version.outputs.version }}"
-          echo "Checking for tag v${version}"
-          tags=$(git tag -l "v${version}")
-          if [[ "$tags" != "" ]]; then
-            echo "Tag v${version} already exists"
-            echo "create_release=false" >> $GITHUB_OUTPUT
-          else
-            echo "Tag v${version} does not exist"
-            echo "create_release=true" >> $GITHUB_OUTPUT
-          fi
+        with:
+          tag: ${{ steps.get_version.outputs.version }}
       - name: Create release
-        if: steps.check_version.outputs.create_release != 'false'
+        if: steps.check_version.outputs.exists != 'true'
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.get_version.outputs.version }}
-          release_name: Release v${{ steps.get_version.outputs.version }}
+          tag_name: ${{ steps.get_version.outputs.version }}
+          release_name: Release ${{ steps.get_version.outputs.version }}
           draft: false
           prerelease: false
       - name: Upload release asset
-        if: steps.check_version.outputs.create_release != 'false'
+        if: steps.check_version.outputs.exists != 'true'
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
@@ -69,5 +61,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./packages/extension/dist.zip
-          asset_name: recap-v${{ steps.get_version.outputs.version }}.zip
+          asset_name: recap-${{ steps.get_version.outputs.version }}.zip
           asset_content_type: application/zip
