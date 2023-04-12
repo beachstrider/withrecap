@@ -27,7 +27,7 @@ export const AuthProvider = ({ children, onNeedAuth }: AuthProviderProps) => {
   const [token, setToken] = useState<string | null>(null)
 
   useEffect(() => {
-    google.onAuthStateChanged((u, t) => {
+    const unsubscribe = google.onAuthStateChanged((u, t) => {
       if (u === null || t === null) {
         setUser(null)
         setToken(null)
@@ -46,7 +46,9 @@ export const AuthProvider = ({ children, onNeedAuth }: AuthProviderProps) => {
         }
       })
     })
-  }, [google, userStore])
+
+    return unsubscribe
+  }, [google, userStore, onNeedAuth])
 
   if (!user || !token) {
     return null

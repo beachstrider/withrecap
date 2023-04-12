@@ -44,7 +44,7 @@ export class GoogleAuth {
   }
 
   public onAuthStateChanged = (callback: (user: FirebaseUser | null, token: string | null) => void) => {
-    onAuthStateChanged(this.auth, (user) => {
+    return onAuthStateChanged(this.auth, (user) => {
       if (user) {
         if (this._accessToken === null) {
           this._login({ interactive: false }).then((token) => {
