@@ -17,6 +17,7 @@ import logo from '../../assets/img/logo.svg'
 import outbound from '../../assets/img/outbound.svg'
 import paperPlan from '../../assets/img/paperPlan.svg'
 import question from '../../assets/img/question.svg'
+import { SIGNING_IN } from '../../constants/routes'
 
 export default function Index({ isPublic = false }) {
   return (
@@ -122,7 +123,7 @@ const PublicSection = () => {
     <div className="flex items-center sm:gap-[20px] gap-[15px]">
       <button
         onClick={() => {
-          navigate('/#signin')
+          navigate(`/${SIGNING_IN}`)
           signin()
         }}
         className="text-[15px] font-semibold text-gray-500"

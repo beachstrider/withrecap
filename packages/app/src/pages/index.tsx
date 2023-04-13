@@ -6,6 +6,8 @@ import Layout from '../components/layouts'
 import Footer from '../components/layouts/Footer'
 import Loading from '../components/layouts/Loading'
 
+import { SIGNING_IN } from '../constants/routes'
+
 import add from '../assets/img/Add.png'
 import bgGrad from '../assets/img/bg-grad.png'
 import bgGlad1 from '../assets/img/bgGrad1.png'
@@ -28,7 +30,7 @@ export default function Index() {
 
   return (
     <>
-      {location.hash === '#signin' && <Loading />}
+      {location.hash === SIGNING_IN && <Loading />}
       <Layout isPublic>
         <div className="relative sm:mb-[160px] mb-[120px] sm:pt-[140px] pt-[100px] sm:pb-[200px] pb-[150px]">
           <div className="">
