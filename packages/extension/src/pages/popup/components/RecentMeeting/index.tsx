@@ -1,5 +1,7 @@
 import { LoadingIcon, Meeting, MeetingStore, UserMeetingStore } from '@recap/shared'
 import React, { useEffect, useMemo, useState } from 'react'
+import { AutomaticSharing } from '../AutomaticSharing'
+import { InviteFriends } from '../InviteFriends'
 import { MeetingDetails } from '../MeetingDetails'
 
 export type RecentMeetingProps = {
@@ -49,13 +51,19 @@ export const RecentMeeting = (props: RecentMeetingProps) => {
     }
   }
 
-  return <LoadingIcon />
-  if (loading) {
-  }
+  if (loading)
+    return (
+      <div className="flex justify-center">
+        <LoadingIcon />
+      </div>
+    )
 
   return (
     <div>
       <div>{displayRecentMeeting()}</div>
+      <AutomaticSharing />
+      <hr />
+      <InviteFriends />
     </div>
   )
 }

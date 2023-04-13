@@ -7,8 +7,8 @@ import { useAuth } from '../../auth/AuthProvider'
 import { signin, signout } from '../../auth/Google'
 import { auth } from '../../firebase'
 
+import { Switch } from '@recap/shared'
 import Badge from '../display/Badge'
-import Switch from '../inputs/Switch'
 
 import arrowRight from '../../assets/img/arrowRight.svg'
 import danger from '../../assets/img/danger.svg'

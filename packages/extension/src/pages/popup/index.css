@@ -10,4 +10,19 @@
     color: #222734;
     @apply w-[360px];
   }
+  hr {
+    @apply w-full h-[1px] bg-gray-100;
+  }
+
+  p {
+    @apply text-[15px] leading-[20px];
+  }
+
+  small {
+    @apply block text-[12px];
+  }
+
+  h6 {
+    @apply text-[16px] leading-[24px] font-semibold;
+  }
 }

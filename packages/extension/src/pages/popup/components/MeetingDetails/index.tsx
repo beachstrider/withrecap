@@ -16,14 +16,18 @@ export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
     const now = new Date()
 
     if (ended) {
-      return <p className="font-semibold text-gray-500">Last meeting</p>
+      return <p className="font-semibold text-gray-500 mb-[10px]">Last meeting</p>
     } else {
-      return <p className="font-semibold text-gray-500">Taking notes • {formatDistance(meetingEndDate, now)} left...</p>
+      return (
+        <p className="font-semibold text-gray-500 mb-[10px]">
+          Taking notes • {formatDistance(meetingEndDate, now)} left...
+        </p>
+      )
     }
   }
 
   const Summary = () => {
-    return <p>{meeting.summary}</p>
+    return <h6 className="mb-[4px]">🌞 {meeting.summary}</h6>
   }
 
   const Participants = () => {
@@ -50,7 +54,11 @@ export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
         return chrome.tabs.create({ url: `${process.env.RECAP_APP_BASE_URL}/meetings/${meeting.mid}` })
       }
 
-      return <button onClick={openRecapApp}>See notes</button>
+      return (
+        <button className="w-full py-[6px] text-[15px] bg-gray-950 text-white rounded-[12px]" onClick={openRecapApp}>
+          See notes
+        </button>
+      )
     }
 
     return null
@@ -60,7 +68,7 @@ export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
     <div className="bg-gray-100 p-[16px] rounded-[16px]">
       <Header />
       <Summary />
-      <p>
+      <p className="text-gray-500 mb-[24px]">
         <Time /> • <Participants />
       </p>
       <Footer />

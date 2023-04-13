@@ -2,8 +2,8 @@ import { UserStore, useAuthGuard } from '@recap/shared'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { Switch } from '@recap/shared'
 import { ROUTES } from '../../App'
-import { Switch } from '../../components/Inputs/Check'
 import { SkipButton } from '../../components/SkipButton'
 
 import jeff from '../../../../assets/img/jeff.png'
