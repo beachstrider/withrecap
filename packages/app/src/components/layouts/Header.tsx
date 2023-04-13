@@ -34,7 +34,6 @@ export default function Index({ isPublic = false }) {
 
 const PrivateSection = () => {
   const { user } = useAuth() ?? {}
-  const navigate = useNavigate()
   const [automaticSharing, setAutomaticSharing] = useState(false)
 
   return (
@@ -65,7 +64,7 @@ const PrivateSection = () => {
               </div>
             </div>
             <div className="mb-[20px]">
-              <Link to="#" className="flex justify-between items-center">
+              <Link to="#" className="flex items-center justify-between">
                 <div className="flex gap-[10px] grow">
                   <img src={question} alt="" className="w-[20px] h-[20px]" />
                   <div className="font-semibold text-[15px]">Support</div>
@@ -79,7 +78,7 @@ const PrivateSection = () => {
                   signout()
                   window.location.href = '/'
                 }}
-                className="flex justify-between items-center cursor-pointer"
+                className="flex items-center justify-between cursor-pointer"
               >
                 <div className="flex gap-[10px] grow">
                   <img src={arrowRight} alt="" className="w-[20px] h-[20px]" />
@@ -90,7 +89,7 @@ const PrivateSection = () => {
             </div>
             <div className="flex w-full mb-[20px] border-t border-solid border-gray-100"></div>
             <div className="">
-              <Link to="#" className="flex justify-between items-center">
+              <Link to="#" className="flex items-center justify-between">
                 <div className="flex gap-[10px] grow">
                   <img src={danger} alt="" className="w-[20px] h-[20px]" />
                   <div className="font-semibold text-[15px] text-[#F12858]">Delete Account</div>
@@ -108,9 +107,9 @@ const PublicSection = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
+    // If user log in is detected on public home page, user redirects to their dashboard
     const unsubscribe = auth.onAuthStateChanged((u: any) => {
-      if (u === null) {
-      } else {
+      if (u !== null) {
         console.log('you are logged in!')
         navigate('/home')
       }
