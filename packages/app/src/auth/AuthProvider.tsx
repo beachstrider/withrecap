@@ -32,12 +32,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (u === null) {
         setUser(null)
 
-        if (location.pathname !== '/') navigate('/signin')
+        if (location.pathname !== '/') navigate('/')
       } else {
         userStore.exists(u.uid).then((exists) => {
           console.log('.....')
           if (!exists) {
             console.info('user must install an extension')
+            setUser(u)
           } else {
             console.log('u.uid exist')
             setUser(u)
@@ -51,7 +52,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return unsubscribe
   }, [auth, userStore])
 
-  if (!user && location.pathname !== '/signin') return <Loading />
+  if (!user && location.pathname !== '/') return <Loading />
 
   return (
     <AuthContext.Provider

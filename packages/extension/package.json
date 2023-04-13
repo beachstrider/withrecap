@@ -4,7 +4,7 @@
   "description": "Chrome extension for reCap app",
   "private": true,
   "scripts": {
-    "start": "parcel watch src/manifest.json --host localhost",
+    "start": "parcel watch src/manifest.json --no-content-hash --host localhost",
     "build": "rm -rf dist && yarn workspace @recap/shared build && NODE_ENV=production parcel build src/manifest.json --no-content-hash --no-cache --no-source-maps --detailed-report 0",
     "package": "zip -r dist.zip dist"
   },

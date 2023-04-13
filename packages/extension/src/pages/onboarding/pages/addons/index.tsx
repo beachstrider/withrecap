@@ -1,9 +1,9 @@
+import { Addon, AddonStore, Addons, UserAddonConfig, UserAddonStore, UserAddons, useAuthGuard } from '@recap/shared'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Addon, AddonStore, Addons, UserAddonConfig, UserAddonStore, UserAddons, useAuthGuard } from '@recap/shared'
 
-import { SkipButton } from '../../components/SkipButton'
 import { ROUTES } from '../../App'
+import { SkipButton } from '../../components/SkipButton'
 
 export const AddonsSelection = () => {
   const { user } = useAuthGuard()
@@ -43,20 +43,40 @@ export const AddonsSelection = () => {
 
   const renderAddonList = () => {
     return Object.entries(addons).map(([id, addon]) => (
-      <li key={id}>
-        <div>{addon.name}</div>
-        <button disabled={!addon.available || isEnabled(id)} onClick={async () => await enableAddon(id, addon)}>
+      <div
+        className={`flex justify-between items-center w-full px-[24px] py-[16px] rounded-[16px] ${
+          addon.available ? 'bg-gray-100' : ''
+        }`}
+        key={id}
+      >
+        <div className="flex gap-[12px] items-center">
+          {/* Todo: add meeting provider icon in collection */}
+          <img src="" alt="" className="w-[50px] h-[50px]" />
+          <div className="flex flex-col gap-[1px]">
+            <div className="sm:text-[17px] text-[12px] font-semibold">{addon.name}</div>
+            {addon.name === 'Google Meet' ? <div className="text-gray-500">Most Popular</div> : ''}
+          </div>
+        </div>
+        <button
+          disabled={!addon.available || isEnabled(id)}
+          onClick={async () => await enableAddon(id, addon)}
+          className={`px-[14px] py-[10px] rounded-[14px] sm:text-[15px] text-[12px] font-semibold ${
+            addon.available ? 'bg-gray-950 text-white' : 'bg-gray-100 text-gray-500'
+          }`}
+        >
           {isEnabled(id) ? 'Enabled' : addon.available ? 'Connect' : 'Coming Soon'}
         </button>
-      </li>
+      </div>
     ))
   }
 
   return (
     <>
-      <h1>Add Recap to your video call apps</h1>
-      <ul>{renderAddonList()}</ul>
-      <SkipButton onClick={() => navigate(ROUTES.Sharing)} />
+      <h1 className="sm:mb-[64px] mb-[48px]">Add Recap to your video call apps</h1>
+      <div className="flex flex-col gap-[16px] sm:mb-[64px] mb-[48px]">{renderAddonList()}</div>
+      <div className="flex justify-center">
+        <SkipButton onClick={() => navigate(ROUTES.Sharing)} />
+      </div>
     </>
   )
 }

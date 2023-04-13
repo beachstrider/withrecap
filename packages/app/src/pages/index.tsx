@@ -1,9 +1,12 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
-import Footer from '../components/layouts/Footer'
 import Badge from '../components/display/Badge'
 import Layout from '../components/layouts'
+import Footer from '../components/layouts/Footer'
+import Loading from '../components/layouts/Loading'
+
+import { SIGNING_IN } from '../constants/routes'
 
 import add from '../assets/img/Add.png'
 import bgGrad from '../assets/img/bg-grad.png'
@@ -18,13 +21,16 @@ import jeff from '../assets/img/jeff.png'
 import jessica from '../assets/img/jessica.png'
 import josh from '../assets/img/josh.png'
 import lock from '../assets/img/lock.png'
-import max from '../assets/img/photo-3@2x.png'
+import max from '../assets/img/max.png'
 import summaryList from '../assets/img/summaryList.png'
 import unchecked from '../assets/img/unchecked.png'
 
 export default function Index() {
+  const location = useLocation()
+
   return (
     <>
+      {location.hash === SIGNING_IN && <Loading />}
       <Layout isPublic>
         <div className="relative sm:mb-[160px] mb-[120px] sm:pt-[140px] pt-[100px] sm:pb-[200px] pb-[150px]">
           <div className="">
@@ -32,7 +38,7 @@ export default function Index() {
               <div className="sm:block hidden absolute bottom-0 left-[44px] mb-[132px]">
                 <div className="flex rotate-[-14deg] mb-[12px]">
                   <div
-                    className="p-[20px] flex flex-col sm: gap-[16px] gap-[12px] rounded-[16px] min-w-[306px] bg-white"
+                    className="p-[20px] flex flex-col sm:gap-[16px] gap-[12px] rounded-[16px] min-w-[306px] bg-white"
                     style={{
                       boxShadow:
                         '0px 2px 8px rgba(0, 0, 0, 0.01), 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 2px 22px rgba(0, 0, 0, 0.04)'
@@ -46,7 +52,7 @@ export default function Index() {
                         design and <span className="font-semibold">make it pop</span>!
                       </div>
                     </div>
-                    <div className="flex sm: gap-[16px] gap-[12px]">
+                    <div className="flex sm:gap-[16px] gap-[12px]">
                       <img src={max} alt="" className="w-[24px] h-[24px]" />
                       <div className="font-semibold">Maxwell</div>
                     </div>
@@ -54,7 +60,7 @@ export default function Index() {
                 </div>
                 <div className="flex rotate-[5deg]">
                   <div
-                    className="p-[20px] flex flex-col sm: gap-[16px] gap-[12px] rounded-[16px] min-w-[306px] bg-white"
+                    className="p-[20px] flex flex-col sm:gap-[16px] gap-[12px] rounded-[16px] min-w-[306px] bg-white"
                     style={{
                       boxShadow:
                         '0px 2px 8px rgba(0, 0, 0, 0.01), 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 2px 22px rgba(0, 0, 0, 0.04)'
@@ -68,7 +74,7 @@ export default function Index() {
                         design and <span className="font-semibold">make it pop</span>!
                       </div>
                     </div>
-                    <div className="flex sm: gap-[16px] gap-[12px]">
+                    <div className="flex sm:gap-[16px] gap-[12px]">
                       <img src={jeff} alt="" className="w-[24px] h-[24px]" />
                       <div className="font-semibold">Jeff</div>
                     </div>
@@ -175,7 +181,7 @@ export default function Index() {
                 </div>
               </div>
             </div>
-            <div className="sm:block hidden absolute right-0 top-0">
+            <div className="absolute top-0 right-0 hidden sm:block">
               <img src={bgGrad} alt="" />
             </div>
           </div>
@@ -184,7 +190,7 @@ export default function Index() {
           <div className="flex flex-col items-center text-center gap-[20px]">
             <div className="sm:text-[56px] text-[42px] font-bold text-gray-900">
               Meeting notes can be
-              <br className="sm:block hidden" />
+              <br className="hidden sm:block" />
               smart, fun, and automated.
             </div>
             <div className="sm:text-[22px] text-[18px] text-gray-500">
@@ -212,7 +218,7 @@ export default function Index() {
                   '0px 2.7218px 10.8872px rgba(0, 0, 0, 0.01), 0px 0px 5.44361px rgba(0, 0, 0, 0.04), 0px 2.7218px 29.9398px rgba(0, 0, 0, 0.04)'
               }}
             >
-              <div className="flex sm: gap-[16px] gap-[12px] items-center sm:mb-[46px] mb-[35px]">
+              <div className="flex sm:gap-[16px] gap-[12px] items-center sm:mb-[46px] mb-[35px]">
                 <img src={greenCheck} alt="" className="w-[26px] h-[26px]" />
                 <div className="sm:text-[21px] text-[15px] font-semibold">Todos</div>
                 <div className="sm:text-[21px] text-[15px] font-semibold text-gray-500">3</div>
@@ -243,7 +249,7 @@ export default function Index() {
           >
             <div className="sm:text-[30px] text-[22px] font-semibold">Highlighted moments</div>
             <div
-              className="min-w-[386px] p-[26px] bg-white rounded-[30px] flex flex-col sm: gap-[16px] gap-[12px]"
+              className="min-w-[386px] p-[26px] bg-white rounded-[30px] flex flex-col sm:gap-[16px] gap-[12px]"
               style={{
                 boxShadow:
                   '0px 2.7218px 10.8872px rgba(0, 0, 0, 0.01), 0px 0px 5.44361px rgba(0, 0, 0, 0.04), 0px 2.7218px 29.9398px rgba(0, 0, 0, 0.04)'
@@ -257,7 +263,7 @@ export default function Index() {
                   design and <span className="font-semibold">make it pop</span>!
                 </div>
               </div>
-              <div className="flex sm: gap-[16px] gap-[12px]">
+              <div className="flex sm:gap-[16px] gap-[12px]">
                 <img src={max} alt="" className="w-[24px] h-[24px]" />
                 <div className="font-semibold">Maxwell</div>
               </div>
@@ -332,7 +338,7 @@ export default function Index() {
                   '0px 2.7218px 10.8872px rgba(0, 0, 0, 0.01), 0px 0px 5.44361px rgba(0, 0, 0, 0.04), 0px 2.7218px 29.9398px rgba(0, 0, 0, 0.04)'
               }}
             >
-              <div className="flex sm: gap-[16px] gap-[12px] items-center mb-[35px]">
+              <div className="flex sm:gap-[16px] gap-[12px] items-center mb-[35px]">
                 <img src={summaryList} alt="" className="w-[26px] h-[26px]" />
                 <div className="sm:text-[21px] text-[15px] font-semibold">Summary</div>
               </div>

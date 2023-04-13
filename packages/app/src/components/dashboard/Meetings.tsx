@@ -131,14 +131,17 @@ export default function Index() {
           </div>
           <div className="flex flex-col sm:gap-[54px] gap-[40px]">
             {meetings.map((meeting, key) => (
-              <div className="flex flex-col gap-[12px]" key={key}>
+              <div className="group flex flex-col gap-[12px]" key={key}>
                 <div className="flex items-center gap-[12px]">
                   <img src={purpleMessage} alt="" />
                   <div className="font-semibold text-purple-500">{meeting.type}</div>
                 </div>
                 <div className="flex justify-between">
                   <div className="sm:text-[20px] text-[15px] font-semibold">{meeting.name}</div>
-                  <Link to="/" className="rounded-full w-[40px] h-[40px] flex justify-center items-center bg-gray-100">
+                  <Link
+                    to="/"
+                    className="rounded-full w-[40px] h-[40px] flex justify-center items-center bg-gray-100 group-hover:visible invisible"
+                  >
                     <img src={exitArrow} alt="" />
                   </Link>
                 </div>
