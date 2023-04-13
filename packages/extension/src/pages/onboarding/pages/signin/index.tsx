@@ -16,7 +16,7 @@ export const SignIn = () => {
 
   return (
     <>
-      <h1>Create your account</h1>
+      <h1 className="sm:mb-[16px] mb-[12px]">Create your account</h1>
       <p className="sm:text-[17px] text-[12px] sm:mb-[72px] mb-[54px] text-gray-500">
         Continue with Google to get started.
       </p>
@@ -30,11 +30,11 @@ export const SignIn = () => {
       <p className="sm:text-[16px] text-[12px] sm:mb-[72px] mb-[69px] text-center text-gray-500">
         Unlimited meeting notes for free!
       </p>
-      <p className="text-center text-gray-500">
+      <small className="text-center text-gray-500">
         By signing up, you agree to our Terms of Service
         <br />
         and Privacy Policy.
-      </p>
+      </small>
     </>
   )
 }
