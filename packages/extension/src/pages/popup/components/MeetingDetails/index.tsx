@@ -1,6 +1,6 @@
-import React from 'react'
-import { formatDistance, format } from 'date-fns'
 import { Meeting } from '@recap/shared'
+import { format, formatDistance } from 'date-fns'
+import React from 'react'
 
 interface MeetingDetailsProps {
   meeting: Meeting
@@ -16,9 +16,9 @@ export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
     const now = new Date()
 
     if (ended) {
-      return <p>Last meeting</p>
+      return <p className="font-semibold text-gray-500">Last meeting</p>
     } else {
-      return <p>Taking notes • {formatDistance(meetingEndDate, now)} left...</p>
+      return <p className="font-semibold text-gray-500">Taking notes • {formatDistance(meetingEndDate, now)} left...</p>
     }
   }
 
@@ -57,7 +57,7 @@ export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
   }
 
   return (
-    <div>
+    <div className="bg-gray-100 p-[16px] rounded-[16px]">
       <Header />
       <Summary />
       <p>
