@@ -7,8 +7,9 @@ type SkipButtonProps = {
 }
 export const SkipButton = (props: SkipButtonProps) => {
   return (
-    <span
+    <button
       id="skip-button"
+      className="text-gray-500"
       onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
         e.preventDefault()
 
@@ -16,6 +17,6 @@ export const SkipButton = (props: SkipButtonProps) => {
       }}
     >
       Skip
-    </span>
+    </button>
   )
 }

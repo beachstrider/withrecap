@@ -1,15 +1,24 @@
+@import url('https://fonts.googleapis.com/css?family=Inter:100,700,400,600');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html,
-body {
-  height: 99%;
-}
+@layer base {
+  body {
+    font-family: 'Inter';
+    color: #222734;
+    @apply sm:text-[16px] text-[12px] sm:leading-[24px] leading-[18px];
+  }
+  h1 {
+    @apply sm:text-[36px] text-[27px] font-semibold sm:leading-[44px] leading-[38px];
+  }
+  p {
+    @apply sm:text-[15px] text-[11px] sm:leading-[20px] leading-[15px];
+  }
 
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+  .card {
+    @apply bg-white rounded-[20px];
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.01), 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 2px 22px rgba(0, 0, 0, 0.04);
+  }
 }

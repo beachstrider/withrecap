@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
+import logo from '../../../../assets/img/logo.svg'
 
 const Layout = () => {
   const location = useLocation()
@@ -15,15 +16,20 @@ const Layout = () => {
   }, [location.pathname])
 
   return (
-    <>
-      <header>
-        <h1>Recap</h1>
-        <p>Step {step} of 4</p>
-      </header>
-      <div>
-        <Outlet />
+    <div className="flex items-center justify-center h-[100vh]">
+      <div className="md:max-w-[576px] w-full mx-auto sm:px-0 px-[20px]">
+        <header className="mb-[10px]">
+          <div className="flex items-center gap-[14px] sm:mb-[72px] mb-[54px]">
+            <img src={logo} alt="" />
+            <h1 className="sm:text-[30px] text-[24px] font-semibold">Recap</h1>
+          </div>
+          <p className="sm:text-[15px] text-[12px]">Step {step} of 4</p>
+        </header>
+        <div>
+          <Outlet />
+        </div>
       </div>
-    </>
+    </div>
   )
 }
 
