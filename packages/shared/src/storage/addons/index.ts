@@ -7,6 +7,8 @@ export type Addon = {
   regex: string
   name: string
   available: boolean
+  logo: string
+  popular?: boolean
 }
 export type Addons = { [name: string]: Addon }
 

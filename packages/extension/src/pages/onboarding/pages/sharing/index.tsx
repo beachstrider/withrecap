@@ -1,5 +1,5 @@
 import { UserStore, useAuthGuard } from '@recap/shared'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { ROUTES } from '../../App'
@@ -16,21 +16,35 @@ export const AutoSharing = () => {
 
   const userStore = useMemo(() => new UserStore(), [])
 
+  const [loading, setLoading] = useState<boolean>()
   const [toggle, setToggle] = useState<boolean>(false)
 
-  useEffect(() => {
-    // TODO: Handle errors
-    userStore.update(user.uid, { autoSharing: toggle })
+  const nextStep = useCallback(() => {
+    setTimeout(() => {
+      // Just to make navigation user friendly
+      navigate(ROUTES.Done)
+    }, 500)
+  }, [navigate])
 
-    // Note: If the use decides to enable it now, we
-    // redirect him to the next step automatically
-    if (toggle) {
-      setTimeout(() => {
-        // Just to make navigation user friendly
-        navigate(ROUTES.Done)
-      }, 1000)
-    }
-  }, [userStore, user, toggle, navigate])
+  useEffect(() => {
+    setLoading(true)
+
+    userStore.get(user.uid).then((u) => {
+      if (u.autoSharing) {
+        setToggle(true)
+      }
+
+      setLoading(false)
+    })
+  }, [userStore, nextStep, user.uid])
+
+  const toggleAutoSharing = async () => {
+    setToggle(!toggle)
+
+    await userStore.update(user.uid, { autoSharing: !toggle })
+
+    return nextStep()
+  }
 
   return (
     <>
@@ -49,7 +63,7 @@ export const AutoSharing = () => {
               </p>
             </div>
           </div>
-          <Switch checked={toggle} onClick={() => setToggle(!toggle)} />
+          <Switch checked={toggle} onClick={toggleAutoSharing} />
         </div>
         <div className="relative flex justify-center bg-gray-100 pt-[52px] overflow-hidden">
           <div className="">

@@ -50,11 +50,10 @@ export const AddonsSelection = () => {
         key={id}
       >
         <div className="flex gap-[12px] items-center">
-          {/* Todo: add meeting provider icon in collection */}
-          <img src="" alt="" className="w-[50px] h-[50px]" />
+          <img src={addon.logo} alt={`${addon.name} Logo`} className="w-[50px] h-[50px]" />
           <div className="flex flex-col gap-[1px]">
             <div className="sm:text-[17px] text-[12px] font-semibold">{addon.name}</div>
-            {addon.name === 'Google Meet' ? <div className="text-gray-500">Most Popular</div> : ''}
+            {addon.popular ? <div className="text-gray-500">Most Popular</div> : ''}
           </div>
         </div>
         <button
