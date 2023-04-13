@@ -54,6 +54,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   if (!user && location.pathname !== '/') return <Loading />
 
+  console.log('u==', user)
   return (
     <AuthContext.Provider
       value={{
