@@ -1,5 +1,5 @@
+import { LoadingIcon, Meeting, MeetingStore, UserMeetingStore } from '@recap/shared'
 import React, { useEffect, useMemo, useState } from 'react'
-import { Meeting, MeetingStore, UserMeetingStore } from '@recap/shared'
 import { MeetingDetails } from '../MeetingDetails'
 
 export type RecentMeetingProps = {
@@ -49,8 +49,8 @@ export const RecentMeeting = (props: RecentMeetingProps) => {
     }
   }
 
+  return <LoadingIcon />
   if (loading) {
-    return <p>Loading...</p>
   }
 
   return (
