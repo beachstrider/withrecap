@@ -1,6 +1,10 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css');
 @import url('https://fonts.googleapis.com/css?family=Inter:100,700,400,600');
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @font-face {
   font-family: 'SF Pro-Bold';
   font-style: normal;
