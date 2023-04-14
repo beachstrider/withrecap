@@ -7,6 +7,7 @@
   "source": "src/index.ts",
   "private": true,
   "scripts": {
+    "start": "yarn && yarn run -T tsc --watch",
     "build": "yarn && yarn run -T tsc --build"
   },
   "dependencies": {},
