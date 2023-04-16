@@ -16,7 +16,6 @@ export const AutoSharing = () => {
 
   const userStore = useMemo(() => new UserStore(), [])
 
-  const [loading, setLoading] = useState<boolean>()
   const [toggle, setToggle] = useState<boolean>(false)
 
   const nextStep = useCallback(() => {
@@ -27,16 +26,12 @@ export const AutoSharing = () => {
   }, [navigate])
 
   useEffect(() => {
-    setLoading(true)
-
     userStore.get(user.uid).then((u) => {
       if (u.autoSharing) {
         setToggle(true)
       }
-
-      setLoading(false)
     })
-  }, [userStore, nextStep, user.uid])
+  }, [userStore, user.uid])
 
   const toggleAutoSharing = async () => {
     setToggle(!toggle)
