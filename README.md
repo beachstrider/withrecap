@@ -42,13 +42,18 @@ To fix the formatting issues you can run:
 $ yarn prettier:fix
 ```
 
+To run unit tests:
+
+```sh
+$ yarn test
+```
+
 ### Structure
 
 All the code can be found in the `packages/` directory and is split like so:
 
 - `/packages`
   - `app` - The reCap web application
-  - `app-old` - [DEPRECATED] The reCap web application
   - `extensions` - contains the code for the Browser Extension
-  - `functions` - list of Firebase Functions
+  - `engine` - reCap's back-end
   - `shared` - a library of front-end components and reusable code
