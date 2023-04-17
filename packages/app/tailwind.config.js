@@ -4,6 +4,9 @@ module.exports = {
   theme: {
     container: {
       center: true
+    },
+    fontFamily: {
+      'inter': ['"Inter"']
     }
   },
   plugins: []

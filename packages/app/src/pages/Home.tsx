@@ -12,7 +12,7 @@ export default function Index() {
 
   return (
     <Layout>
-      <div className="container xl:max-w-[1200px] sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">
+      <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">
         <div className="flex gap-[20px] sm:mb-[80px] mb-[60px]">
           <img src={`${user?.photoURL}`} alt="" className="w-[64px] h-[64px] rounded-full" />
           <div className="">

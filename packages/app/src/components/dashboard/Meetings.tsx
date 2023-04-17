@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import exitArrow from '../../assets/img/exit-arrow-right.svg'
-import purpleMessage from '../../assets/img/purple-message.png'
+import purpleMessage from '../../assets/img/purpleMessage.svg'
 
 import jeff from '../../assets/img/jeff.png'
 import jessica from '../../assets/img/jessica.png'
