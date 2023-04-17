@@ -10,7 +10,7 @@ export class MeetingSummary {
 
     const response = await this.api.createCompletion({
       model: 'text-davinci-003',
-      prompt: `Can you summarize this transcript in less than 500 words: \n${transcript}`,
+      prompt: `Can you summarize this transcript in around 1000 words: \n${transcript}`,
       temperature: 0,
       max_tokens: 64,
       top_p: 1.0,
