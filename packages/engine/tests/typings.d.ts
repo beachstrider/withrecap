@@ -1,10 +1,4 @@
-import { DecodedIdToken } from 'firebase-admin/auth'
-
-declare module 'express' {
-  interface Request {
-    user?: DecodedIdToken
-  }
-}
+export {}
 
 interface CustomMatchers<R = unknown> {
   toMatchGolden(filename: string): R

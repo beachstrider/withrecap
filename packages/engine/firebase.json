@@ -3,7 +3,7 @@
     {
       "source": "./",
       "codebase": "default",
-      "ignore": ["node_modules", ".git", "*-debug.log", "*-debug.*.log", "tsconfig.tsbuildinfo", "yarn.lock"],
+      "ignore": ["node_modules", "tests", ".git", "*-debug.log", "*-debug.*.log", "tsconfig.tsbuildinfo", "yarn.lock"],
       "predeploy": ["yarn build"]
     }
   ],

@@ -1,6 +1,6 @@
 import { FieldValue } from 'firebase-admin/firestore'
 
-import { db } from '../../config/firebase'
+import { db } from '../../config'
 
 // TODO: Copied from extension/common, refactor this
 export type Entry = {

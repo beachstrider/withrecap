@@ -1,22 +1,33 @@
-import * as bodyParser from 'body-parser'
 import * as functions from 'firebase-functions'
-import cookieParser from 'cookie-parser'
-import cors from 'cors'
-import express from 'express'
+import { MeetingSummary } from './services/summary'
 
-import { addEntry } from './services/entries'
-import { ValidateFirebaseIdToken } from './services/auth/middleware'
+import { openai } from './config'
+import { TranscriptService } from './services/transcript'
 
-const app = express()
+export const engine = functions.firestore.document('meetings/{docId}').onUpdate(async (change, context) => {
+  functions.logger.debug('engine called')
 
-app.use(cors())
-app.use(cookieParser())
-app.use(bodyParser.json())
-app.use(ValidateFirebaseIdToken)
+  const newValue = change.after.data()
+  if (newValue.meetingEnded) {
+    functions.logger.debug('meeting ended, generating summary...')
 
-functions.logger.debug('app is about to start, middleware are loaded ')
+    const transcript = new TranscriptService(newValue.conversation)
+    const meetingSummary = new MeetingSummary(openai, transcript)
 
-app.get('/', (_req, res) => res.status(200).send('Hey there!'))
-app.post('/meetings/:id/entries', addEntry)
+    const summary = await meetingSummary.build()
+    functions.logger.debug('generated')
 
-exports.app = functions.https.onRequest(app)
+    if (summary.choices.length) {
+      const smartSummary = summary.choices[0].text
+      functions.logger.debug('summary', smartSummary)
+
+      // Update values on the database
+      return change.after.ref.set(
+        {
+          smartSummary: smartSummary || ''
+        },
+        { merge: true }
+      )
+    }
+  }
+})

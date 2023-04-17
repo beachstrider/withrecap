@@ -1,8 +1,4 @@
-type Message = {
-  speaker: string
-  text: string
-}
-export type Transcript = Array<Message>
+import { Transcript } from '../types'
 
 /**
  * Uses Jaccard Index to compute the similarity between two strings

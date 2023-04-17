@@ -1,5 +1,6 @@
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
+import { Configuration, OpenAIApi } from 'openai'
 
 admin.initializeApp({
   credential: admin.credential.cert({
@@ -11,4 +12,10 @@ admin.initializeApp({
 })
 
 const db = admin.firestore()
-export { admin, db }
+
+const configuration = new Configuration({
+  apiKey: functions.config().config.chatgptapikey
+})
+const openai = new OpenAIApi(configuration)
+
+export { admin, db, openai }

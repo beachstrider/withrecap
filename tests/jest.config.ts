@@ -5,11 +5,16 @@ const config: Config.InitialOptions = {
   projects: [
     {
       rootDir: 'packages/engine',
-      testMatch: ['<rootDir>/src/**/*.test.ts'],
+      testMatch: ['<rootDir>/tests/**/*.test.ts'],
       displayName: { name: 'Engine', color: 'green' },
       testEnvironment: 'node',
       transform: {
-        '^.+\\.tsx?$': require.resolve('ts-jest')
+        '^.+\\.tsx?$': [
+          'ts-jest',
+          {
+            tsconfig: '<rootDir>/tests/tsconfig.json'
+          }
+        ]
       },
       clearMocks: true,
       setupFilesAfterEnv: ['<rootDir>/tests/setup.ts']

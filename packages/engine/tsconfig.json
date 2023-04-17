@@ -10,6 +10,6 @@
     "sourceMap": true
   },
   "compileOnSave": true,
-  "include": ["src", "src/**/*.json", "tests/setup.ts"],
+  "include": ["src"],
   "exclude": ["lib", "node_modules"]
 }
