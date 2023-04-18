@@ -119,7 +119,7 @@ const PublicSection = () => {
     // If user log in is detected on public home page, user redirects to their dashboard
     const unsubscribe = auth.onAuthStateChanged((u: any) => {
       if (u !== null) {
-        console.log('you are logged in!')
+        console.debug('you are logged in!')
         navigate('/meetings')
       }
     })
