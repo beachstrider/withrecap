@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import gift from '../../assets/img/Gift.svg'
-import { Button } from '../buttons'
+import gift from '../../../assets/img/Gift.svg'
+import { Button } from '../../buttons'
 
 export default function MeetingTimeSaved() {
   const [savingTime, setSavingTime] = useState(0)

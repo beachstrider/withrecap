@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { useAuth } from '../../auth/AuthProvider'
-import MeetingTimeSaved from '../../components/dashboard/MeetingTimeSaved'
-import Meetings from '../../components/dashboard/Meetings'
+import Meetings from '../../components/dashboard/Meeting/List'
+import MeetingTimeSaved from '../../components/dashboard/Meeting/MeetingTimeSaved'
 import Layout from '../../components/layouts'
 
 export default function Index() {
