@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
-import Badge from '../components/display/Badge'
+import { Button } from '../components/buttons'
 import Layout from '../components/layouts'
 import Footer from '../components/layouts/Footer'
 import Loading from '../components/layouts/Loading'
@@ -77,7 +77,7 @@ export default function Index() {
                   </div>
                 </div>
               </div>
-              <div className="sm:block hidden absolute right-[200px] bottom-[200px] flex flex-end">
+              <div className="sm:block absolute right-[200px] bottom-[200px] flex flex-end">
                 <div className="absolute right-0 bottom-[150px]">
                   <div
                     className="px-[14px] py-[10px] bg-white flex gap-[8px] rounded-[16px] rotate-[16deg]"
@@ -140,10 +140,10 @@ export default function Index() {
               </div>
               <div className="flex sm:flex-row flex-col items-center gap-[20px]">
                 <Link to="#">
-                  <Badge className="!px-[16px] !py-[14px] !rounded-[14px]">
+                  <Button className="!px-[16px] !py-[14px] !rounded-[14px]">
                     <img src={google} alt="" />
                     Add to Chrome
-                  </Badge>
+                  </Button>
                 </Link>
                 <div className="text-gray-500">Unlimited meetings notes, for free!</div>
               </div>
@@ -163,10 +163,10 @@ export default function Index() {
             </div>
 
             <Link to="#">
-              <Badge className="!px-[16px] !py-[14px] !rounded-[14px]">
+              <Button className="!px-[16px] !py-[14px] !rounded-[14px]">
                 <img src={google} alt="" />
                 Add to Chrome
-              </Badge>
+              </Button>
             </Link>
           </div>
         </div>
