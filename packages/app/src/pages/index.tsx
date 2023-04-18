@@ -1,29 +1,25 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
-import Badge from '../components/display/Badge'
+import { Button } from '../components/buttons'
 import Layout from '../components/layouts'
 import Footer from '../components/layouts/Footer'
 import Loading from '../components/layouts/Loading'
 
 import { SIGNING_IN } from '../constants/routes'
 
-import add from '../assets/img/Add.png'
-import bgGrad from '../assets/img/bg-grad.png'
-import bgGlad1 from '../assets/img/bgGrad1.png'
-import browserLeft from '../assets/img/browserLeft.png'
-import BrowserMiddle from '../assets/img/browserMiddle.png'
-import browserRight from '../assets/img/browserRight.png'
-import cara from '../assets/img/cara_mini.png'
+import cara from '../assets/img/cara.png'
 import google from '../assets/img/google.png'
 import greenCheck from '../assets/img/greenCheck.png'
 import jeff from '../assets/img/jeff.png'
-import jessica from '../assets/img/jessica.png'
-import josh from '../assets/img/josh.png'
+import jessica from '../assets/img/jessica2x.png'
+import josh from '../assets/img/josh2x.png'
 import lock from '../assets/img/lock.png'
 import max from '../assets/img/max.png'
+import add from '../assets/img/plus.svg'
 import summaryList from '../assets/img/summaryList.png'
 import unchecked from '../assets/img/unchecked.png'
+import { HomeBlock1, HomeBlock2 } from '../components/blocks'
 
 export default function Index() {
   const location = useLocation()
@@ -81,7 +77,7 @@ export default function Index() {
                   </div>
                 </div>
               </div>
-              <div className="sm:block hidden absolute right-[200px] bottom-[200px] flex flex-end">
+              <div className="sm:block absolute right-[200px] bottom-[200px] flex flex-end">
                 <div className="absolute right-0 bottom-[150px]">
                   <div
                     className="px-[14px] py-[10px] bg-white flex gap-[8px] rounded-[16px] rotate-[16deg]"
@@ -128,7 +124,13 @@ export default function Index() {
                 Supercharge Google Meet
               </div>
               <div className="flex sm:flex-row flex-col items-center gap-[8px] sm:text-[56px] text-[42px] leading-[67px] font-bold text-gray-800 sm:mb-[24px] mb-[18px]">
-                Meeting notes, <span className="bg-gray-100 sm:rounded-[14px] rounded-[10px] ">on autopilot.</span>
+                Meeting notes,{' '}
+                <span
+                  className="sm:rounded-[14px] rounded-[10px] px-[3px]"
+                  style={{ background: 'linear-gradient(180deg, #F1F3F5 0%, rgba(241, 243, 245, 0.2) 100%)' }}
+                >
+                  on autopilot.
+                </span>
                 <div className="w-[4px] rounded-[3px] bg-purple-500"></div>
               </div>
               <div className="sm:text-[22px] text-[17px] text-gray-500 max-w-[645px] sm:mb-[62px] mb-[44px]">
@@ -138,54 +140,17 @@ export default function Index() {
               </div>
               <div className="flex sm:flex-row flex-col items-center gap-[20px]">
                 <Link to="#">
-                  <Badge className="!px-[16px] !py-[14px] !rounded-[14px]">
+                  <Button className="!px-[16px] !py-[14px] !rounded-[14px]">
                     <img src={google} alt="" />
                     Add to Chrome
-                  </Badge>
+                  </Button>
                 </Link>
                 <div className="text-gray-500">Unlimited meetings notes, for free!</div>
               </div>
             </div>
           </div>
         </div>
-        <div className="sm:px-[60px] px-[20px] sm:mb-[140px] mb-[110px] ">
-          <div className="relative sm:px-[112px] px-[20px] sm:py-[80px] py-[60px] sm:rounded-[60px] rounded-[45px] bg-black text-white overflow-hidden">
-            <div className="flex flex-col sm:gap-[50px] gap-[36px]">
-              <div className="sm:text-[53px] text-[30px] font-bold leading-[58px]">
-                Recap in one,
-                <br />
-                two, three!
-              </div>
-              <div className="sm:text-[18px] text-[13px]">
-                Add to Google Chrome
-                <div className="leading-[26px] sm:text-[18px] text-[13px] opacity-[0.7] mt-[6px]">
-                  Recap works with only with browsers running Chrome.
-                  <br />
-                  Yes, that includes support Arc!
-                </div>
-              </div>
-              <div className="sm:text-[18px] text-[13px]">
-                Connect your meeting apps
-                <div className="leading-[26px] sm:text-[18px] text-[13px] opacity-[0.7] mt-[6px]">
-                  We support Zoom, Google Meet, Microsoft Teams,
-                  <br />
-                  Webex, and much more!
-                </div>
-              </div>
-              <div className="sm:text-[18px] text-[13px]">
-                That’s really it!
-                <div className="leading-[26px] sm:text-[18px] text-[13px] opacity-[0.7] mt-[6px]">
-                  Next time you take your call using your browser, Recap
-                  <br />
-                  will be taking notes for you and your team.
-                </div>
-              </div>
-            </div>
-            <div className="absolute top-0 right-0 hidden sm:block">
-              <img src={bgGrad} alt="" />
-            </div>
-          </div>
-        </div>
+        <HomeBlock1 />
         <div className="sm:px-[60px] px-[20px] mb-[74px]">
           <div className="flex flex-col items-center text-center gap-[20px]">
             <div className="sm:text-[56px] text-[42px] font-bold text-gray-900">
@@ -198,10 +163,10 @@ export default function Index() {
             </div>
 
             <Link to="#">
-              <Badge className="!px-[16px] !py-[14px] !rounded-[14px]">
+              <Button className="!px-[16px] !py-[14px] !rounded-[14px]">
                 <img src={google} alt="" />
                 Add to Chrome
-              </Badge>
+              </Button>
             </Link>
           </div>
         </div>
@@ -237,7 +202,7 @@ export default function Index() {
                   <div>Jessica to walk through storyboard with design team</div>
                 </div>
                 <div className="flex items-center gap-[20px] text-gray-500 font-semibold">
-                  <img src={add} alt="" className="w-[28px] h-[28px]" />
+                  <img src={add} alt="" className="ml-[4px] w-[20px] h-[20px]" />
                   <div>Add</div>
                 </div>
               </div>
@@ -287,7 +252,7 @@ export default function Index() {
                       '0px 2px 8px rgba(0, 0, 0, 0.01), 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 2px 22px rgba(0, 0, 0, 0.04)'
                   }}
                 >
-                  <img src={max} alt="" className="w-[55px] h-[55px]" />
+                  <img src={cara} alt="" className="w-[55px] h-[55px]" />
                   <div className="font-semibold text-[27px]">Cara</div>
                   <div className="rounded-[6px] text-[20px] bg-gray-100 px-[7px] py-[4px] font-bold text-gray-500">
                     50%
@@ -366,30 +331,13 @@ export default function Index() {
         <div className="sm:px-[60px] px-[20px] mb-[60px]">
           <div className="flex flex-col items-center gap-[20px] text-center">
             <img src={lock} alt="" />
-            <div className="sm:text-[56px] text-[42px] font-bold">Secure, by design</div>
-            <div className="text-[22px] text-gray-500 max-w-[645px]">
+            <h1 className="font-bold">Secure, by design</h1>
+            <div className="sm:text-[22px] text-[18px] text-gray-500 max-w-[645px]">
               Your meeting transcripts are never ready by anyone, and are securely encrypted within Google Chrome.
             </div>
           </div>
         </div>
-        <div className="sm:px-[60px] px-[20px] sm:h-[440px] mb-[20px]">
-          <div className="relative sm:rounded-[60px] rounded-[45px] bg-black overflow-hidden h-full">
-            <img src={bgGlad1} alt="" className="w-full  sm:h-[440px] sm:block hidden" />
-            <div className="sm:absolute left-0 top-0 w-full h-full flex justify-center pt-[84px]">
-              <div className="relative max-w-[1288px] w-full mx-[20px] flex">
-                <div className="">
-                  <img src={browserLeft} alt="" />
-                </div>
-                <div className="grow">
-                  <img src={BrowserMiddle} alt="" className="w-full sm:h-full" />
-                </div>
-                <div className="">
-                  <img src={browserRight} alt="" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <HomeBlock2 />
       </Layout>
       <Footer />
     </>

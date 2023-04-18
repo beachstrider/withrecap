@@ -27,26 +27,48 @@
 }
 
 body {
-  font-family: 'Inter';
-  color: #222734;
+  @apply text-[16px] text-[#222734] font-inter;
 }
 
 .container {
-  padding-left: 20px;
-  padding-right: 20px;
+  @apply sm:px-0 px-[20px];
 }
 
-@media (min-width: 767px) {
-  .container {
-    padding-left: 0;
-    padding-right: 0;
-  }
+.container-sm {
+  @apply container xl:max-w-[1200px];
+}
+
+p {
+  @apply sm:text-[15px] sm:leading-[20px] text-[12px] leading-[15px];
+}
+
+h5 {
+  @apply sm:text-[20px] sm:leading-[24px] text-[15px] leading-[18px];
+}
+
+h4 {
+  @apply sm:text-[24px] sm:leading-[28px] text-[18px] leading-[21px];
+}
+
+h3 {
+  @apply sm:text-[28px] sm:leading-[34px] text-[21px] leading-[26px];
+}
+
+h2 {
+  @apply sm:text-[36px] sm:leading-[44px] text-[27px] leading-[33px];
+}
+
+h1 {
+  @apply sm:text-[56px] sm:leading-[68px] text-[42px] leading-[51px];
 }
 
 hr {
-  width: 100%;
-  height: 2px !important;
-  background-color: #f1f3f5;
+  @apply w-[100%] !h-[2px] bg-[#f1f3f5];
+}
+
+.card {
+  @apply bg-white rounded-[20px];
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.01), 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 2px 22px rgba(0, 0, 0, 0.04);
 }
 
 .menu-shadow {
