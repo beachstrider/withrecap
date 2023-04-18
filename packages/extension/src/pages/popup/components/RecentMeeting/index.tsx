@@ -61,7 +61,7 @@ export const RecentMeeting = (props: RecentMeetingProps) => {
   return (
     <div>
       <div>{displayRecentMeeting()}</div>
-      <AutomaticSharing />
+      <AutomaticSharing uid={props.uid} />
       <hr />
       <InviteFriends />
     </div>

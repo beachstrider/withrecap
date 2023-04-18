@@ -80,12 +80,21 @@ class GoogleMeetsService {
         console.error('an unexpected error happened, text and language could not be extracted. CALL HANGUP?')
         return
       }
-      console.log(`Language: ${language}\nSpeaker: ${speaker}\nText: ${text}`)
+
+      if (!language || !speaker || !text) {
+        return console.debug('message skipped, some information is missing', {
+          language: !!language,
+          speaker: !!speaker,
+          text: !!text
+        })
+      }
+
+      console.debug(`Language: ${language}\nSpeaker: ${speaker}\nText: ${text}`)
 
       const meetingMessage: MeetingMessage = {
-        language: language ? language : '',
-        speaker: speaker ? speaker : '',
-        text: text ? text : '',
+        language,
+        speaker,
+        text: text.trim(),
         timestamp: new Date().getTime()
       }
 

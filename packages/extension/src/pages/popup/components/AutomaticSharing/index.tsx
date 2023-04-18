@@ -1,9 +1,30 @@
-import { Switch } from '@recap/shared'
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Switch, UserStore } from '@recap/shared'
+
 import paperPlan from '../../../../assets/img/paperPlanPurple.svg'
 
-export const AutomaticSharing = () => {
+interface AutomaticSharingProps {
+  uid: string
+}
+
+export const AutomaticSharing = ({ uid }: AutomaticSharingProps) => {
+  const userStore = useMemo(() => new UserStore(), [])
+
   const [automaticSharing, setAutomaticSharing] = useState(false)
+
+  useEffect(() => {
+    userStore.get(uid).then((u) => {
+      if (u.autoSharing) {
+        setAutomaticSharing(true)
+      }
+    })
+  }, [userStore, uid])
+
+  const toggleAutoSharing = async () => {
+    setAutomaticSharing(!automaticSharing)
+
+    await userStore.update(uid, { autoSharing: !automaticSharing })
+  }
 
   return (
     <div className="py-[24px]">
@@ -13,7 +34,7 @@ export const AutomaticSharing = () => {
           <div className="font-semibold text-[15px]">Automatic Sharing</div>
         </div>
         <div>
-          <Switch checked={automaticSharing} onClick={() => setAutomaticSharing(!automaticSharing)} />
+          <Switch checked={automaticSharing} onClick={toggleAutoSharing} />
         </div>
       </div>
       <p className="text-gray-500">

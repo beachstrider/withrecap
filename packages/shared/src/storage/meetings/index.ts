@@ -1,11 +1,13 @@
 import { collection, doc, setDoc, getDoc, CollectionReference, DocumentData, deleteDoc } from 'firebase/firestore/lite'
 
 import { firestore } from '../firestore'
+import { type Conversation } from './conversation'
 
 export type MeetingAttendee = {
   email: string
   name?: string
   avatar?: string
+  time?: number
 }
 export type Meeting = {
   id: string
@@ -14,7 +16,10 @@ export type Meeting = {
   start: string
   end: string
   link: string
-  summary: string
+  title: string
+  summary?: string
+  ended?: boolean
+  conversation: Conversation
 }
 
 export class MeetingStore {

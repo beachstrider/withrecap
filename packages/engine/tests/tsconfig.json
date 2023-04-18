@@ -1,0 +1,10 @@
+{
+  "extends": "../../../tsconfig.shared.json",
+  "compilerOptions": {
+    "rootDir": "..",
+    "paths": {
+      "@recap/shared": ["../../shared/src/index.ts"]
+    }
+  },
+  "include": ["../tests/**/*", "../tests/**/testdata/*.json", "../src/**/*"]
+}
