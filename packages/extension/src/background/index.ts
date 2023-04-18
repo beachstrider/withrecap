@@ -41,11 +41,11 @@ class ChromeBackgroundService {
 
   startListener(): void {
     chrome.tabs.onRemoved.addListener(async (tid, _removeInfo) => {
-      const { tabId } = await chrome.storage.local.get(['tabId'])
+      const { tabId, meetingDetails } = await chrome.storage.local.get(['tabId', 'meetingDetails'])
 
       if (tid === tabId) {
         console.debug(`meeting ended since tab (${tid}) was closed.`)
-        await this.processMeetingEnd()
+        await this.processMeetingEnd(meetingDetails.mid)
       }
     })
 
@@ -68,7 +68,7 @@ class ChromeBackgroundService {
           this.processMeetingStart(request.meetingId, request.metadata, sender.tab!.id!).then(sendResponse)
           break
         case ExtensionMessages.MeetingEnded:
-          this.processMeetingEnd().then(sendResponse)
+          this.processMeetingEnd(request.meetingId).then(sendResponse)
           break
         case ExtensionMessages.MeetingState:
           this.processMeetingState().then(sendResponse)
@@ -130,6 +130,9 @@ class ChromeBackgroundService {
 
     if (!(await this.meetingStore.exists(meetingId))) {
       await this.meetingStore.create(meetingId, meetingDetails)
+    } else {
+      // In case the user rejoins the meeting after leaving
+      await this.meetingStore.update(meetingId, { ended: false })
     }
 
     const userMeetingStore = new UserMeetingStore(google.auth.currentUser!.uid)
@@ -140,8 +143,10 @@ class ChromeBackgroundService {
     await chrome.storage.local.set({ recording: true, meetingDetails })
   }
 
-  async processMeetingEnd() {
+  async processMeetingEnd(meetingId: string) {
     await chrome.storage.local.remove(['recording', 'meetingDetails', 'tabId'])
+
+    await this.meetingStore.update(meetingId, { ended: true })
   }
 
   async processMeetingMetadata(_meetingId: string, _metadata: MeetingMetadata) {}

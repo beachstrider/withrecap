@@ -1,4 +1,13 @@
-import { collection, doc, setDoc, getDoc, CollectionReference, DocumentData, deleteDoc } from 'firebase/firestore/lite'
+import {
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  CollectionReference,
+  DocumentData,
+  deleteDoc,
+  updateDoc
+} from 'firebase/firestore/lite'
 
 import { firestore } from '../firestore'
 import { type Conversation } from './conversation'
@@ -43,6 +52,10 @@ export class MeetingStore {
 
   public async create(mid: string, meeting: Meeting): Promise<void> {
     return setDoc(doc(this._db, mid), meeting)
+  }
+
+  public async update(mid: string, meeting: Partial<Meeting>): Promise<void> {
+    return updateDoc(doc(this._db, mid), { ...meeting })
   }
 
   public async delete(mid: string): Promise<void> {

@@ -12,11 +12,14 @@ export class GoogleCalendar {
   constructor(private accessToken: string) {}
 
   public async getMeetingDetails(mid: string): Promise<Meeting | undefined> {
-    const now = new Date().toISOString()
-    const inOneHour = new Date(Date.now() + 60 * 60 * 1000).toISOString()
+    // First we fetch the events of the day
+    const beginningOfDay = new Date()
+    beginningOfDay.setHours(0, 0, 0, 0)
+    const endOfDay = new Date()
+    endOfDay.setHours(23, 59, 59, 999)
 
     const response = await fetch(
-      `${GOOGLE_CALENDAR_BASE_URL}/calendars/primary/events?timeMin=${now}&timeMax=${inOneHour}&singleEvents=true`,
+      `${GOOGLE_CALENDAR_BASE_URL}/calendars/primary/events?timeMin=${beginningOfDay.toISOString()}&timeMax=${endOfDay.toISOString()}&singleEvents=true`,
       {
         headers: {
           Authorization: `Bearer ${this.accessToken}`
@@ -38,7 +41,7 @@ export class GoogleCalendar {
     return {
       mid,
       id: event.id!,
-      attendees: event.attendees?.map((a) => ({ email: a.email!, name: a.displayName! })) || [],
+      attendees: event.attendees?.map((a) => ({ email: a.email!, name: a.displayName || '' })) || [],
       start: event.start!.dateTime!,
       end: event.end!.dateTime!,
       link: event.hangoutLink!,

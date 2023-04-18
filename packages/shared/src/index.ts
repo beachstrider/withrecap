@@ -43,6 +43,12 @@ export type { UserMeetingConfig, UserMeetings } from './storage/users/meetings'
 export * from './calendar/google'
 
 //===========================================================
+// CONTACT
+//===========================================================
+
+export * from './contact/google'
+
+//===========================================================
 // UI COMPONENTS
 //===========================================================
 
