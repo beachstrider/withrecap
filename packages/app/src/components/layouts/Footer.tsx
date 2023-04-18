@@ -18,13 +18,13 @@ export default function Index({ className = '' }) {
         </div>
         <div className="flex sm:flex-row flex-col sm:items-center items-start sm:gap-[20px] gap-[40px]">
           <div className="flex sm:flex-row flex-col sm:items-center sm:gap-[20px] gap-[15px]">
-            <Link to="/signin" className="block text-[15px] font-semibold text-gray-500">
+            <Link to="#" className="block text-[15px] font-semibold text-gray-500">
               Terms and Conditions
             </Link>
-            <Link to="/signin" className="block text-[15px] font-semibold text-gray-500">
+            <Link to="#" className="block text-[15px] font-semibold text-gray-500">
               Privacy
             </Link>
-            <Link to="/signin" className="block text-[15px] font-semibold text-gray-500">
+            <Link to="#" className="block text-[15px] font-semibold text-gray-500">
               Sign in
             </Link>
           </div>

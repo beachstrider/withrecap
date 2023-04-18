@@ -6,6 +6,8 @@ import Integrations from './pages/Integrations'
 import Meetings from './pages/Meetings'
 
 import { AuthProvider } from './auth/AuthProvider'
+import { INTEGRATIONS, MEETINGS, MEETING_DETAIL } from './constants/routes'
+import MeetingDetail from './pages/Meetings/Detail'
 
 export default function App() {
   return (
@@ -15,8 +17,9 @@ export default function App() {
       </Routes>
       <AuthProvider>
         <Routes>
-          <Route path="/meetings" element={<Meetings />} />
-          <Route path="/integrations" element={<Integrations />} />
+          <Route path={MEETINGS} element={<Meetings />} />
+          <Route path={MEETING_DETAIL} element={<MeetingDetail />} />
+          <Route path={INTEGRATIONS} element={<Integrations />} />
         </Routes>
       </AuthProvider>
     </>

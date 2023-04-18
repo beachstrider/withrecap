@@ -17,7 +17,7 @@ import logo from '../../assets/img/logo.svg'
 import outbound from '../../assets/img/outbound.svg'
 import paperPlan from '../../assets/img/paperPlan.svg'
 import question from '../../assets/img/question.svg'
-import { SIGNING_IN } from '../../constants/routes'
+import { INTEGRATIONS, MEETINGS, SIGNING_IN } from '../../constants/routes'
 
 export default function Index({ isPublic = false }) {
   return (
@@ -40,12 +40,12 @@ const PrivateSection = () => {
   return (
     <>
       <div className="sm:flex hidden items-center gap-[18px]">
-        <NavLink to="/meetings">
+        <NavLink to={MEETINGS}>
           {({ isActive }) => (
             <Button className={isActive ? 'bg-white font-semibold text-gray-500' : ''}>Past Meetings</Button>
           )}
         </NavLink>
-        <NavLink to="/integrations">
+        <NavLink to={INTEGRATIONS}>
           {({ isActive }) => (
             <Button className={isActive ? 'bg-white font-semibold text-gray-500' : ''}>Ingetrations</Button>
           )}

@@ -10,6 +10,7 @@ import lindsey from '../../assets/img/Lindsey.png'
 import matt from '../../assets/img/matt.png'
 import sara from '../../assets/img/sara.png'
 import tom from '../../assets/img/tom.png'
+import { MEETINGS } from '../../constants/routes'
 
 export default function Index() {
   // dummy data
@@ -23,6 +24,7 @@ export default function Index() {
       },
       meetings: [
         {
+          id: 1,
           startTime: '8:15 AM',
           endTime: '8:45 AM',
           type: 'Conference',
@@ -39,6 +41,7 @@ export default function Index() {
           ]
         },
         {
+          id: 2,
           startTime: '7:00 AM',
           endTime: '7:30 AM',
           type: '1:1',
@@ -61,6 +64,7 @@ export default function Index() {
       },
       meetings: [
         {
+          id: 3,
           startTime: '8:30 AM',
           endTime: '9:00 AM',
           type: '1:1',
@@ -73,6 +77,7 @@ export default function Index() {
           ]
         },
         {
+          id: 4,
           startTime: '8:14 AM',
           endTime: '8:45 AM',
           type: 'Conference',
@@ -99,6 +104,7 @@ export default function Index() {
       },
       meetings: [
         {
+          id: 5,
           startTime: '8:30 AM',
           endTime: '9:00 AM',
           type: '1:1',
@@ -125,7 +131,7 @@ export default function Index() {
               <div className="text-gray-300">•</div>
               <div className="text-[15px]">{date.dayLetter}</div>
             </div>
-            <div className="flex grow items-center">
+            <div className="flex items-center grow">
               <hr />
             </div>
           </div>
@@ -137,9 +143,11 @@ export default function Index() {
                   <div className="font-semibold text-purple-500">{meeting.type}</div>
                 </div>
                 <div className="flex justify-between">
-                  <div className="sm:text-[20px] text-[15px] font-semibold">{meeting.name}</div>
+                  <Link to={`${MEETINGS}/${meeting.id}`} className="sm:text-[20px] text-[15px] font-semibold">
+                    {meeting.name}
+                  </Link>
                   <Link
-                    to="/"
+                    to={`${MEETINGS}/${meeting.id}`}
                     className="rounded-full w-[40px] h-[40px] flex justify-center items-center bg-gray-100 group-hover:visible invisible"
                   >
                     <img src={exitArrow} alt="" />
