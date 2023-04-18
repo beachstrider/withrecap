@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
-import Badge from '../display/Badge'
+import { Button } from '../buttons'
 
 import google from '../../assets/img/google.png'
 import logo from '../../assets/img/logo.svg'
@@ -30,10 +29,10 @@ export default function Index({ className = '' }) {
             </Link>
           </div>
           <Link to="#" className="sm:ml-[20px]">
-            <Badge>
+            <Button>
               <img src={google} alt="" />
               Add to Chrome
-            </Badge>
+            </Button>
           </Link>
         </div>
       </div>

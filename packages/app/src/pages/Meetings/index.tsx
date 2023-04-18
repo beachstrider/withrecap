@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { useAuth } from '../auth/AuthProvider'
-import MeetingSavings from '../components/dashboard/MeetingSavings'
-import Meetings from '../components/dashboard/Meetings'
-import Layout from '../components/layouts'
+import { useAuth } from '../../auth/AuthProvider'
+import MeetingSavings from '../../components/dashboard/MeetingSavings'
+import Meetings from '../../components/dashboard/Meetings'
+import Layout from '../../components/layouts'
 
 export default function Index() {
   const { user } = useAuth()

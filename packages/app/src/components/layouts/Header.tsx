@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 
 import { Menu } from '@headlessui/react'
 
@@ -8,7 +8,7 @@ import { signin, signout } from '../../auth/Google'
 import { auth } from '../../firebase'
 
 import { Switch } from '@recap/shared'
-import Badge from '../display/Badge'
+import { Button } from '../buttons'
 
 import arrowRight from '../../assets/img/arrowRight.svg'
 import danger from '../../assets/img/danger.svg'
@@ -40,8 +40,16 @@ const PrivateSection = () => {
   return (
     <>
       <div className="sm:flex hidden items-center gap-[18px]">
-        <Badge>Past Meetings</Badge>
-        <div className="px-[10px] py-[6px] font-semibold text-gray-500">Integrations</div>
+        <NavLink to="/meetings">
+          {({ isActive }) => (
+            <Button className={isActive ? 'bg-white font-semibold text-gray-500' : ''}>Past Meetings</Button>
+          )}
+        </NavLink>
+        <NavLink to="/integrations">
+          {({ isActive }) => (
+            <Button className={isActive ? 'bg-white font-semibold text-gray-500' : ''}>Ingetrations</Button>
+          )}
+        </NavLink>
       </div>
       <div className="relative">
         <Menu>
@@ -112,7 +120,7 @@ const PublicSection = () => {
     const unsubscribe = auth.onAuthStateChanged((u: any) => {
       if (u !== null) {
         console.log('you are logged in!')
-        navigate('/home')
+        navigate('/meetings')
       }
     })
 
@@ -131,10 +139,10 @@ const PublicSection = () => {
         Sign in
       </button>
       <Link to="#">
-        <Badge>
+        <Button>
           <img src={google} alt="" />
           Add to Chrome
-        </Badge>
+        </Button>
       </Link>
     </div>
   )

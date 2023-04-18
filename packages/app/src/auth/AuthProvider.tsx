@@ -10,7 +10,7 @@ type AuthContextType = {
   user: User | null
   loading: boolean
 }
-const AuthContext = createContext<AuthContextType | null>(null)
+const AuthContext = createContext<AuthContextType>({} as AuthContextType)
 
 export const useAuth = () => {
   return useContext(AuthContext)!
