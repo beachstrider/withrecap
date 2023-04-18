@@ -8,16 +8,14 @@ import Layout from '../../components/layouts'
 export default function Index() {
   const { user } = useAuth()
 
-  console.log(user)
-
   return (
     <Layout>
       <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">
         <div className="flex gap-[20px] sm:mb-[80px] mb-[60px]">
-          <img src={`${user?.photoURL}`} alt="" className="w-[64px] h-[64px] rounded-full" />
+          <img src={`${user.photoURL}`} alt="" className="w-[64px] h-[64px] rounded-full" />
           <div className="">
             <div className="sm:text-[24px] text-[18px] font-semibold mb-[8px]">
-              Afternoon, {user?.providerData[0]?.displayName?.split(' ')[0]}!
+              Afternoon, {user.displayName!.split(' ')[0]}!
             </div>
             <MeetingTimeSaved />
           </div>

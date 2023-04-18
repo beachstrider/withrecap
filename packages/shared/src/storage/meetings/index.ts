@@ -6,7 +6,12 @@ import {
   CollectionReference,
   DocumentData,
   deleteDoc,
-  updateDoc
+  updateDoc,
+  orderBy,
+  query,
+  where,
+  FieldPath,
+  getDocs
 } from 'firebase/firestore/lite'
 
 import { firestore } from '../firestore'
@@ -48,6 +53,23 @@ export class MeetingStore {
     const document = await getDoc(doc(this._db, mid))
 
     return document.data() as Meeting | undefined
+  }
+
+  public async getByIds(mids: string[]): Promise<Meeting[]> {
+    const q = query(this._db, where('mid', 'in', mids), orderBy('start', 'desc'))
+
+    const documents = await getDocs(q)
+
+    const meetings: Meeting[] = []
+    documents.forEach((doc) => {
+      const meeting = doc.data() as Meeting | undefined
+
+      if (meeting) {
+        meetings.push(meeting)
+      }
+    })
+
+    return meetings
   }
 
   public async create(mid: string, meeting: Meeting): Promise<void> {
