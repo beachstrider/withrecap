@@ -42,7 +42,8 @@ export class GoogleCalendar {
       start: event.start!.dateTime!,
       end: event.end!.dateTime!,
       link: event.hangoutLink!,
-      summary: event.summary!
+      title: event.summary!,
+      conversation: []
     }
   }
 }

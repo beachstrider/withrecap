@@ -27,7 +27,7 @@ export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
   }
 
   const Summary = () => {
-    return <h6 className="mb-[4px]">🌞 {meeting.summary}</h6>
+    return <h6 className="mb-[4px]">🌞 {meeting.title}</h6>
   }
 
   const Participants = () => {
