@@ -6,7 +6,7 @@ import purpleMessage from '../../assets/img/purpleMessage.svg'
 
 import jeff from '../../assets/img/jeff.png'
 import jessica from '../../assets/img/jessica.png'
-import lindsey from '../../assets/img/Lindsey.png'
+import lindsey from '../../assets/img/lindsey.png'
 import matt from '../../assets/img/matt.png'
 import sara from '../../assets/img/sara.png'
 import tom from '../../assets/img/tom.png'

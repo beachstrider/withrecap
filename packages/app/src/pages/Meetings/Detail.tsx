@@ -133,7 +133,11 @@ export default function MeetingDetail() {
                 </div>
               </div>
             </div>
-            <div>...</div>
+            <div>
+              <div className="flex justify-between">
+                <div className="flex gap-[12px]"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
