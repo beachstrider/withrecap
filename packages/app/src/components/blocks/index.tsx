@@ -60,17 +60,17 @@ export const HomeBlock1 = () => (
           <div className="flex px-[15px] py-[13px]">
             <img src={logo} alt="" className="w-[26px]" />
             <div className="mx-[11px] w-[1px] bg-gray-200"></div>
-            <p className="text-gray-950 font-bold">Mediation App Kickoff</p>
+            <p className="font-bold text-gray-950">Mediation App Kickoff</p>
           </div>
           <div className="container-sm sm:flex gap-[80px]">
             <div className="card sm:max-w-[340px] w-full grow-0 sm:p-[24px] p-[18px]">
               <div className="flex gap-[6px] mb-[24px]">
                 <img src={arrowLeft} alt="" />
-                <p className="text-gray-500 font-semibold">Back</p>
+                <p className="font-semibold text-gray-500">Back</p>
               </div>
               <div className="flex gap-[12px] mb-[26px]">
                 <img src={purpleMessage} alt="" />
-                <div className="text-purple-700 font-semibold">Conference</div>
+                <div className="font-semibold text-purple-700">Conference</div>
               </div>
               <h5 className="font-semibold mb-[12px]">Meditation App Kickoff</h5>
               <p className="font-semibold text-gray-500 mb-[24px]">Tue, Mar 23&nbsp;&nbsp;9:00 AM - 10:30 AM</p>
@@ -81,7 +81,7 @@ export const HomeBlock1 = () => (
               </div>
               <p className="text-gray-500 mb-[24px]">Ranked in order of speaker.</p>
               <div className="flex flex-col gap-[16px]">
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                   <div className="flex gap-[12px] items-center">
                     <img src={maxwell} alt="" className="w-[32px] h-[32px]" />
                     <div className="font-semibold">Maxwell</div>
@@ -90,7 +90,7 @@ export const HomeBlock1 = () => (
                     50%
                   </div>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                   <div className="flex gap-[12px] items-center">
                     <img src={lindsey} alt="" className="w-[32px] h-[32px]" />
                     <div className="font-semibold">Lindsey</div>
@@ -99,7 +99,7 @@ export const HomeBlock1 = () => (
                     28%
                   </div>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                   <div className="flex gap-[12px] items-center">
                     <img src={jessica} alt="" className="w-[32px] h-[32px]" />
                     <div className="font-semibold">Jessica</div>
@@ -108,7 +108,7 @@ export const HomeBlock1 = () => (
                     22%
                   </div>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                   <div className="flex gap-[12px] items-center">
                     <div className="w-[32px] h-[32px] bg-gray-100 flex justify-center items-center font-semibold text-[12px] text-gray-400 rounded-full">
                       J
@@ -273,7 +273,7 @@ export const HomeBlock2 = () => (
                 <img src={plus} alt="" className="pt-[10px]" />
               </div>
             </div>
-            <div className="bg-[#35363A] px-[22px] py-[18.5px] flex">
+            <div className="bg-[#35363A] px-[22px] py-[18.5px] flex items-center">
               <img src={back} alt="" className="mr-[32px]" />
               <img src={forward} alt="" className="mr-[26px]" />
               <img src={refresh} alt="" className="mr-[28px]" />
@@ -292,7 +292,7 @@ export const HomeBlock2 = () => (
               </div>
             </div>
           </div>
-          <div className="sm:bg-white bg-gray-100 h-full"></div>
+          <div className="h-full bg-gray-100 sm:bg-white"></div>
         </div>
       </div>
     </div>
