@@ -55,7 +55,7 @@ const PrivateSection = () => {
         <Menu>
           <Menu.Button className="flex items-center gap-[10px]">
             <img src={`${user?.photoURL}`} alt="" className="w-[32px] h-[32px] rounded-full" />
-            <div className="font-semibold rounded-full">{user?.providerData[0]?.displayName?.split(' ')[0]}</div>
+            <div className="font-semibold rounded-full">{user?.displayName?.split(' ')[0]}</div>
           </Menu.Button>
           <Menu.Items className="absolute flex flex-col mt-[28px] menu-shadow p-[20px] w-[300px] right-0 text-[13px] bg-white">
             <div className="mb-[20px]">

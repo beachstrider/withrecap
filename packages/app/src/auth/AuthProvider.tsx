@@ -39,6 +39,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             await userStore.create(u)
           }
 
+          if (!u.displayName) {
+            // Sometimes display name is null, but it is in providerData, weird
+            u.displayName = u.providerData[0].displayName
+          }
+
           setUser(u)
         })
       }
