@@ -7,6 +7,7 @@ import exitArrow from '../../../assets/img/exit-arrow-right.svg'
 import purpleMessage from '../../../assets/img/purpleMessage.svg'
 
 import { MEETINGS } from '../../../constants/routes'
+import UserAvatar from '../../display/UserAvatar'
 
 interface Props {
   meetingsByDate: { [date: string]: Meeting[] }
@@ -58,13 +59,12 @@ export default function Index({ meetingsByDate }: Props) {
                       {format(new Date(meeting.start), 'h:mm a')} - {format(new Date(meeting.end), 'h:mm a')}
                     </div>
                     <div className="flex mr-[8px]">
-                      {/** TODO: Should display a letter if avatar is null */}
                       {meeting.attendees.map((attendee, key) => (
-                        <img
+                        <UserAvatar
+                          className="border-solid border-[4px] border-white first:ml-0 ml-[-8px]"
                           key={key}
-                          src={attendee.avatar}
-                          alt=""
-                          className="w-[28px] h-[28px] rounded-full border-solid border-[4px] border-white first:ml-0 ml-[-8px]"
+                          name={attendee.name}
+                          avatar={attendee.avatar}
                         />
                       ))}
                     </div>
