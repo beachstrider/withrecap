@@ -23,8 +23,6 @@ export default function MeetingDetail() {
             <Info meetingDetails={meetingDetails} />
             <div className="grow">
               <Summary meetingDetails={meetingDetails} />
-              <Todos /> {/* TODO: waiting for firebase collection to be updated */}
-              <Highlights /> {/* TODO: waiting for firebase... */}
               <Transcript meetingDetails={meetingDetails} />
             </div>
           </div>

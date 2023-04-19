@@ -11,6 +11,14 @@ export const sanitize = (transcript: Transcript, similarityFactor: number = 0.8)
   const result: Transcript = []
 
   for (let i = 0; i < transcript.length; i++) {
+    const msgA = transcript[i]
+    const msgB = transcript[i + 1]
+
+    // If speaker or text is empty, skip
+    if (!msgA.speaker.trim() || !msgA.text.trim()) {
+      continue
+    }
+
     // We are at the last message, we can then include it to the transcript
     if (i + 1 >= transcript.length) {
       const lastMessage = transcript[i]
@@ -18,9 +26,6 @@ export const sanitize = (transcript: Transcript, similarityFactor: number = 0.8)
 
       continue
     }
-
-    const msgA = transcript[i]
-    const msgB = transcript[i + 1]
 
     // If the next message is from someone else, we can
     // include the current message to the transcript

@@ -23,7 +23,9 @@ export default function Summary({ meetingDetails: { summary } }: Props) {
           <img src={listInCircle} alt="" />
           <div className="font-semibold">Summary</div>
         </div>
-        <div className="flex gap-[12px]">
+        {/** TODO: Display thumbs up/down once we allow feature */}
+        {/**  <div className="flex gap-[12px]"> */}
+        <div className="hidden">
           <ThumbsDown checked={like === -1} onClick={() => onSetLike(-1)} />
           <ThumbsUp checked={like === 1} onClick={() => onSetLike(1)} />
         </div>

@@ -9,8 +9,8 @@ export type Metadata = {
 export class TranscriptService {
   private transcript: Transcript
 
-  constructor(transcript: Transcript) {
-    this.transcript = sanitize(transcript, 0.8)
+  constructor(conversation: Transcript) {
+    this.transcript = sanitize(conversation, 0.8)
   }
 
   public toString(): string {
@@ -23,10 +23,10 @@ export class TranscriptService {
 
   public metadata(): Metadata {
     let totalTime = 0
-    let timePerSpeaker: { [speaker: string]: number } = {}
+    let timePerSpeaker: Metadata = {}
 
     for (const msg of this.transcript) {
-      const time = approximateSpeechTime(msg.text)
+      const time = approximateSpeechTime(msg.text, 150)
 
       if (!timePerSpeaker[msg.speaker]) {
         timePerSpeaker[msg.speaker] = 0
