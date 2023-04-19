@@ -26,7 +26,9 @@ export default function Transcript({ meetingDetails: { start, end, transcript } 
           <div className="font-semibold">Transcript</div>
           <div className="font-semibold text-gray-500">{getTimeDiff(start, end)}</div>
         </div>
-        <div className="flex gap-[12px]">
+        {/** TODO: Display thumbs up/down once we allow feature */}
+        {/**  <div className="flex gap-[12px]"> */}
+        <div className="hidden">
           <ThumbsDown checked={like === -1} onClick={() => onSetLike(-1)} />
           <ThumbsUp checked={like === 1} onClick={() => onSetLike(1)} />
         </div>
