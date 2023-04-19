@@ -3,7 +3,7 @@ import { User } from 'firebase/auth'
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import Loading from '../components/layouts/Loading'
+import { LoadingScreen } from '@recap/shared'
 import { auth } from '../firebase'
 
 type AuthContextType = {
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, [userStore, location.pathname, navigate])
 
   if (!user) {
-    return <Loading />
+    return <LoadingScreen />
   }
 
   return (
