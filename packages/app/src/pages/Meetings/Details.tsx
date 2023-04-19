@@ -16,17 +16,19 @@ export default function MeetingDetail() {
 
   return (
     <Layout isLoading={loading}>
-      <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">
-        <div className="flex sm:flex-row flex-col items-start sm:gap-[80px] gap-[63px]">
-          <Info meetingDetails={meetingDetails} />
-          <div className="grow">
-            <Summary meetingDetails={meetingDetails} />
-            <Todos /> {/* TODO: waiting for firebase collection to be updated */}
-            <Highlights /> {/* TODO: waiting for firebase... */}
-            <Transcript meetingDetails={meetingDetails} />
+      {!loading && (
+        <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">
+          <div className="flex sm:flex-row flex-col items-start sm:gap-[80px] gap-[63px]">
+            <Info meetingDetails={meetingDetails} />
+            <div className="grow">
+              <Summary meetingDetails={meetingDetails} />
+              <Todos /> {/* TODO: waiting for firebase collection to be updated */}
+              <Highlights /> {/* TODO: waiting for firebase... */}
+              <Transcript meetingDetails={meetingDetails} />
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </Layout>
   )
 }

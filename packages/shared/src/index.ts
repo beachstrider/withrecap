@@ -60,3 +60,4 @@ export * from './components/spinner'
 //===========================================================
 
 export * from './utils/time'
+export * from './utils/string'
