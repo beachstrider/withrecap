@@ -54,3 +54,10 @@ export * from './contact/google'
 
 export * from './components/input'
 export * from './components/spinner'
+
+//===========================================================
+// UTILS
+//===========================================================
+
+export * from './utils/time'
+export * from './utils/string'

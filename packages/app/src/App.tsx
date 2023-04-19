@@ -6,22 +6,39 @@ import Integrations from './pages/Integrations'
 import Meetings from './pages/Meetings'
 
 import { AuthProvider } from './auth/AuthProvider'
-import { INTEGRATIONS, MEETINGS, MEETING_DETAIL } from './constants/routes'
-import MeetingDetail from './pages/Meetings/Detail'
+import { INTEGRATIONS, MEETINGS, MEETING_DETAILS } from './constants/routes'
+import MeetingDetails from './pages/Meetings/Details'
 
 export default function App() {
   return (
     <>
       <Routes>
-        <Route index element={<Website />} />
+        <Route path="/" index element={<Website />} />
+        <Route
+          path={MEETINGS}
+          element={
+            <AuthProvider>
+              <Meetings />
+            </AuthProvider>
+          }
+        />
+        <Route
+          path={MEETING_DETAILS}
+          element={
+            <AuthProvider>
+              <MeetingDetails />
+            </AuthProvider>
+          }
+        />
+        <Route
+          path={INTEGRATIONS}
+          element={
+            <AuthProvider>
+              <Integrations />
+            </AuthProvider>
+          }
+        />
       </Routes>
-      <AuthProvider>
-        <Routes>
-          <Route path={MEETINGS} element={<Meetings />} />
-          <Route path={MEETING_DETAIL} element={<MeetingDetail />} />
-          <Route path={INTEGRATIONS} element={<Integrations />} />
-        </Routes>
-      </AuthProvider>
     </>
   )
 }

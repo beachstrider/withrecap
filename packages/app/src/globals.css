@@ -27,7 +27,15 @@
 }
 
 body {
-  @apply sm:text-[16px] sm:leading-[24px] text-[12px] leading-[18px] text-[#222734] font-inter;
+  @apply relative min-h-screen sm:text-[16px] sm:leading-[24px] text-[12px] leading-[18px] text-[#222734] font-inter;
+}
+
+#app {
+  @apply flex flex-col min-h-screen;
+}
+
+main {
+  @apply grow flex flex-col;
 }
 
 .container {

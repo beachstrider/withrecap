@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { getUserFirstName } from '@recap/shared'
 import { useAuth } from '../../auth/AuthProvider'
 import Meetings from '../../components/dashboard/Meeting/List'
 import MeetingTimeSaved from '../../components/dashboard/Meeting/MeetingTimeSaved'
@@ -15,7 +16,7 @@ export default function Index() {
           <img src={`${user.photoURL}`} alt="" className="w-[64px] h-[64px] rounded-full" />
           <div className="">
             <div className="sm:text-[24px] text-[18px] font-semibold mb-[8px]">
-              Afternoon, {user.displayName!.split(' ')[0]}!
+              Afternoon, {getUserFirstName(user)}!
             </div>
             <MeetingTimeSaved />
           </div>

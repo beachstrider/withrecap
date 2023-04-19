@@ -29,7 +29,7 @@ export function ThumbsUp({ checked = false, to = '#', ...props }: ButtonThumbsPr
     <Link
       to={to}
       className={`pointer flex justify-center items-center w-[28px] h-[28px] rounded-full ${
-        checked ? 'bg-[#40A3FF]' : 'border-solid border border-gray-100'
+        checked ? 'bg-[#40A3FF]' : 'border-solid border border-gray-100 hover:border-gray-200'
       }`}
       {...props}
     >
@@ -48,7 +48,7 @@ export function ThumbsDown({ checked = false, to = '#', ...props }: ButtonThumbs
     <Link
       to={to}
       className={`pointer flex justify-center items-center w-[28px] h-[28px] rounded-full ${
-        checked ? 'bg-[#40A3FF]' : 'border-solid border border-gray-100'
+        checked ? 'bg-[#40A3FF]' : 'border-solid border border-gray-100 hover:border-gray-200'
       }`}
       {...props}
     >
