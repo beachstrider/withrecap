@@ -38,16 +38,22 @@ export class GoogleCalendar {
       return undefined
     }
 
+    const attendees =
+      event.attendees?.map((a) => {
+        return { email: a.email!, name: a.displayName || '' }
+      }) || []
+
     return {
       mid,
       id: event.id!,
-      attendees: event.attendees?.map((a) => ({ email: a.email!, name: a.displayName || '' })) || [],
+      attendees: attendees,
       start: event.start!.dateTime!,
       end: event.end!.dateTime!,
       link: event.hangoutLink!,
       title: event.summary!,
       description: event.description ?? undefined,
-      conversation: []
+      conversation: [],
+      ended: false
     }
   }
 }
