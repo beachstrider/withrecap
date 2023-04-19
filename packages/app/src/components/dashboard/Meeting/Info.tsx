@@ -1,12 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { Conversation, Meeting, getTimeRange } from '@recap/shared'
+import { Conversation, Meeting, Message, getTimeRange } from '@recap/shared'
 
 import { MEETINGS } from '../../../constants/routes'
+import UserAvatar from '../../display/UserAvatar'
 
 import arrowLeft from '../../../assets/img/arrowLeft.svg'
-import matt from '../../../assets/img/matt.png'
 import purpleMessage from '../../../assets/img/purpleMessage.svg'
 
 interface Props {
@@ -53,7 +53,7 @@ const Attendees: React.FC<{ transcript: Conversation }> = ({ transcript }) => {
   let attendees: any = {}
 
   // 1. Calculate speech frequencies of each attendees
-  transcript.forEach((msg) => {
+  transcript.forEach((msg: Message) => {
     if (!msg.speaker) {
       return
     } else if (attendees[msg.speaker] !== undefined) {
@@ -82,11 +82,11 @@ const Attendees: React.FC<{ transcript: Conversation }> = ({ transcript }) => {
     <>
       <p className="text-gray-500 mb-[24px]">Ranked in order of speaker.</p>
       <div className="flex flex-col gap-[16px]">
-        {attendees.map(({ name, speechPercentage }: any, key: string) => {
+        {attendees.map(({ name, avatar, speechPercentage }: any, key: string) => {
           return (
             <div key={key} className="flex items-center justify-between">
               <div className="flex gap-[12px] items-center">
-                <img src={matt} alt="" className="w-[32px] h-[32px]" />
+                <UserAvatar avatar={avatar} name={name} className="sm:w-[32px] sm:h-[32px] w-[24px] h-[24px]" />
                 <div className="font-semibold">{name}</div>
               </div>
               <div className="px-[6px] py-[4px] rounded-[26px] bg-gray-100 text-[12px] font-semibold text-gray-500">
