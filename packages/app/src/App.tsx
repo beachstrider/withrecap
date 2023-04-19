@@ -13,15 +13,32 @@ export default function App() {
   return (
     <>
       <Routes>
-        <Route index element={<Website />} />
+        <Route path="/" index element={<Website />} />
+        <Route
+          path={MEETINGS}
+          element={
+            <AuthProvider>
+              <Meetings />
+            </AuthProvider>
+          }
+        />
+        <Route
+          path={MEETING_DETAILS}
+          element={
+            <AuthProvider>
+              <MeetingDetails />
+            </AuthProvider>
+          }
+        />
+        <Route
+          path={INTEGRATIONS}
+          element={
+            <AuthProvider>
+              <Integrations />
+            </AuthProvider>
+          }
+        />
       </Routes>
-      <AuthProvider>
-        <Routes>
-          <Route path={MEETINGS} element={<Meetings />} />
-          <Route path={MEETING_DETAILS} element={<MeetingDetails />} />
-          <Route path={INTEGRATIONS} element={<Integrations />} />
-        </Routes>
-      </AuthProvider>
     </>
   )
 }
