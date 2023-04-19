@@ -35,8 +35,13 @@ export default function Index() {
               <button
                 disabled={!addon.available || isEnabled(id)}
                 onClick={async () => await enableAddon(id, addon)}
-                className={`px-[14px] py-[10px] rounded-[14px] sm:text-[15px] text-[12px] font-semibold ${
-                  addon.available ? 'bg-gray-950 text-white' : 'bg-gray-100 text-gray-500'
+                className={`px-[14px] py-[10px] rounded-[14px] sm:text-[15px] text-[12px] font-semibold 
+                ${
+                  isEnabled(id)
+                    ? 'bg-gray-950 text-white cursor-not-allowed' // Enabled
+                    : addon.available
+                    ? 'border-[3px] border-solid border-gray-950 bg-white hover:bg-gray-950 hover:text-white' // Connect
+                    : 'bg-gray-100 text-gray-500' // Coming Soon
                 }`}
               >
                 {isEnabled(id) ? 'Enabled' : addon.available ? 'Connect' : 'Coming Soon'}
