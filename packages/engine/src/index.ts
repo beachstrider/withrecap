@@ -7,8 +7,9 @@ import { TranscriptService } from './services/transcript'
 export const engine = functions.firestore.document('meetings/{docId}').onUpdate(async (change, context) => {
   functions.logger.debug('engine called')
 
+  const oldValue = change.before.data()
   const newValue = change.after.data()
-  if (newValue.ended === true) {
+  if (oldValue.ended === false && newValue.ended === true) {
     functions.logger.debug('meeting ended, generating summary...')
 
     const transcript = new TranscriptService(newValue.conversation)
