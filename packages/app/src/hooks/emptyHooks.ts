@@ -5,14 +5,7 @@ export function useEmpty() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  async function action() {
-    setData(null)
-    setError(null)
-    setLoading(false)
-  }
-
   useEffect(() => {
-    action()
   }, [])
 
   return { data, loading, error }
