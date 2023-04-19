@@ -32,15 +32,17 @@ export default function Transcript({ meetingDetails: { start, end, transcript } 
         </div>
       </div>
       <div className="flex flex-col sm:gap-[40px] gap-[30px]">
-        {(transcript || []).map((transcript, key) => (
-          <TranscriptItem key={key} transcript={transcript} />
+        {(transcript?.split('\n') || []).map((msg, key) => (
+          <TranscriptItem key={key} msg={msg} />
         ))}
       </div>
     </div>
   )
 }
 
-const TranscriptItem = ({ transcript: { speaker, text } }: any) => {
+const TranscriptItem = ({ msg }: { msg: string }) => {
+  const [speaker, text] = msg.split(': ')
+
   return (
     <div className="flex sm:gap-[16px] gap-[12px]">
       <img src={matt} alt="" className="sm:w-[24px] sm:h-[24px] w-[18px] h-[18px]" />
