@@ -16,30 +16,32 @@ interface Props {
 export default function Info({ meetingDetails }: Props) {
   return (
     <div className="card sm:max-w-[340px] sm:min-w-[340px] w-full grow-0 sm:p-[24px] p-[18px]">
-      <div className="flex gap-[6px] mb-[24px]">
-        <img src={arrowLeft} alt="" />
+      <div className="flex">
         <Link to={MEETINGS}>
-          <p className="font-semibold text-gray-500">Back</p>
+          <div className="flex gap-[6px] mb-[24px] justify-start">
+            <img src={arrowLeft} alt="" />
+            <p className="font-semibold text-gray-500">Back</p>
+          </div>
         </Link>
       </div>
       <div className="flex gap-[12px] mb-[26px]">
         <img src={purpleMessage} alt="" />
         <div className="font-semibold text-purple-700">
           {/* If attendees are more than 2, then set type 'conference' */}
-          {meetingDetails?.attendees.length > 2 ? 'Conference' : '1:1'}
+          {meetingDetails.attendees.length > 2 ? 'Conference' : '1:1'}
         </div>
       </div>
-      <h5 className="font-semibold mb-[12px]">{meetingDetails?.title}</h5>
+      <h5 className="font-semibold mb-[12px]">{meetingDetails.title}</h5>
       <p className="font-semibold text-gray-500 mb-[24px]">
         {/* Convert startTime, endTime of meeting to format EEE, MMM dd hh:mm aa - hh:mm aa */}
-        {getTimeRange(meetingDetails?.start, meetingDetails?.end)}
+        {getTimeRange(meetingDetails.start, meetingDetails.end)}
       </p>
 
       {/* TODO: there must be an attribute in meetings collection to represent the info below */}
       <p>A single to two lined description of what this meeting is about.</p>
       <div className="my-[28px] h-[2px] bg-[#F1F3F5]"></div>
       <div className="font-semibold mb-[6px]">
-        Participants&nbsp;&nbsp;<span className="text-gray-500">{meetingDetails?.attendees.length}</span>
+        Participants&nbsp;&nbsp;<span className="text-gray-500">{meetingDetails.attendees.length}</span>
       </div>
       {meetingDetails && <Attendees conversation={meetingDetails.conversation} />}
     </div>
@@ -47,6 +49,8 @@ export default function Info({ meetingDetails }: Props) {
 }
 
 const Attendees: React.FC<{ conversation: any }> = ({ conversation }) => {
+  //
+  // TODO: below logic will be moved to backend as it is for temporary purpose
   let attendees: any = {}
 
   // 1. Calculate speech frequencies of each attendees

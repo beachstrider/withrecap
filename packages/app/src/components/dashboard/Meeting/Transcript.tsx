@@ -4,6 +4,7 @@ import { Meeting, getTimeDiff } from '@recap/shared'
 
 import { ThumbsDown, ThumbsUp } from '../../buttons'
 
+import { Message } from '@recap/shared/src/storage/meetings/conversation'
 import listInCircle from '../../../assets/img/listInCircle.svg'
 import matt from '../../../assets/img/matt.png'
 
@@ -32,7 +33,7 @@ export default function Transcript({ meetingDetails: { start, end, conversation 
         </div>
       </div>
       <div className="flex flex-col sm:gap-[40px] gap-[30px]">
-        {conversation.map((transcript: any, key: number) => (
+        {conversation.map((transcript: Message, key: number) => (
           <TranscriptItem key={key} transcript={transcript} />
         ))}
       </div>
