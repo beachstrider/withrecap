@@ -1,10 +1,8 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 
-import Highlights from '../../components/dashboard/Meeting/Highlights'
 import Info from '../../components/dashboard/Meeting/Info'
 import Summary from '../../components/dashboard/Meeting/Summary'
-import Todos from '../../components/dashboard/Meeting/Todos'
 import Transcript from '../../components/dashboard/Meeting/Transcript'
 import Layout from '../../components/layouts'
 

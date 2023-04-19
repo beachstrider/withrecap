@@ -1,11 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-<<<<<<< HEAD
 import { Meeting, MeetingMetadata, getTimeRange } from '@recap/shared'
-=======
-import { Conversation, Meeting, Message, getTimeRange } from '@recap/shared'
->>>>>>> 8ebddd5 (fix(app): connect avatar in meeting details page to db)
 
 import { MEETINGS } from '../../../constants/routes'
 import UserAvatar from '../../display/UserAvatar'
@@ -61,7 +57,7 @@ const Metadata: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => {
             <div key={key} className="flex items-center justify-between">
               <div className="flex gap-[12px] items-center">
                 {/** TODO: We don't have access to avatar here */}
-              <UserAvatar avatar={undefined} name={speaker} className="sm:w-[32px] sm:h-[32px] w-[24px] h-[24px]" />
+                <UserAvatar avatar={undefined} name={speaker} className="sm:w-[32px] sm:h-[32px] w-[24px] h-[24px]" />
                 <div className="font-semibold">{speaker}</div>
               </div>
               <div className="px-[6px] py-[4px] rounded-[26px] bg-gray-100 text-[12px] font-semibold text-gray-500">
