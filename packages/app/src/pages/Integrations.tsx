@@ -7,7 +7,7 @@ import Layout from '../components/layouts'
 export default function Index() {
   const { user } = useAuth()
 
-  const userAddonStore = useMemo(() => new UserAddonStore(user?.uid!), [user?.uid])
+  const userAddonStore = useMemo(() => new UserAddonStore(user.uid), [user.uid])
   const addonStore = useMemo(() => new AddonStore(), [])
 
   const [addons, setAddons] = useState<Addons>({})

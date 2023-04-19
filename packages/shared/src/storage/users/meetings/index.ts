@@ -41,6 +41,19 @@ export class UserMeetingStore {
     return meetingId
   }
 
+  public async list(): Promise<string[]> {
+    const q = query(collection(this._db, this.uid, 'meetings'), orderBy('date', 'desc'))
+    const documents = await getDocs(q)
+
+    const meetingIds: string[] = []
+    documents.forEach((doc) => {
+      // Note: for some reason the id can contain trailing spaces
+      meetingIds.push(doc.id.trim())
+    })
+
+    return meetingIds
+  }
+
   public async exists(mid: string) {
     const document = await getDoc(doc(this._db, this.uid, 'meetings', mid))
 

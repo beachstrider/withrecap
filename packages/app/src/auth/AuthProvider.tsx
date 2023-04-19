@@ -7,8 +7,7 @@ import Loading from '../components/layouts/Loading'
 import { auth } from '../firebase'
 
 type AuthContextType = {
-  user: User | null
-  loading: boolean
+  user: User
 }
 const AuthContext = createContext<AuthContextType>({} as AuthContextType)
 
@@ -23,7 +22,6 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const userStore = useMemo(() => new UserStore(), [])
   const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState<boolean>(false)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -32,33 +30,31 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (u === null) {
         setUser(null)
 
-        if (location.pathname !== '/') navigate('/')
+        if (location.pathname !== '/') {
+          navigate('/')
+        }
       } else {
-        userStore.exists(u.uid).then((exists) => {
+        userStore.exists(u.uid).then(async (exists) => {
           if (!exists) {
-            console.debug('user must install an extension')
-            setUser(u)
-          } else {
-            console.debug('u.uid exist')
-            setUser(u)
+            await userStore.create(u)
           }
+
+          setUser(u)
         })
       }
-
-      setLoading(false)
     })
 
     return unsubscribe
-  }, [auth, userStore])
+  }, [userStore, location.pathname, navigate])
 
-  if (!user && location.pathname !== '/') return <Loading />
+  if (!user) {
+    return <Loading />
+  }
 
-  console.debug('u==', user)
   return (
     <AuthContext.Provider
       value={{
-        user,
-        loading
+        user
       }}
     >
       {children}
