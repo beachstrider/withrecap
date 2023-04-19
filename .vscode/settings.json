@@ -9,5 +9,6 @@
     ".parcelrc": "json"
   },
   "files.eol": "\n",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "turboConsoleLog.logType": "debug"
 }

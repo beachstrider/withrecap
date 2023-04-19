@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import dots from '../../../assets/img/dots.svg'
 
 import { Link } from 'react-router-dom'
@@ -8,6 +8,12 @@ import unchecked from '../../../assets/img/unchecked.png'
 import { ThumbsDown, ThumbsUp } from '../../../components/buttons'
 
 export default function Todos() {
+  const [like, setLike] = useState(0)
+
+  function onSetLike(v: 1 | -1 | 0) {
+    setLike(v)
+  }
+
   return (
     <div className="sm:mb-[82px] mb-[60px]">
       <div className="flex justify-between">
@@ -17,8 +23,8 @@ export default function Todos() {
           <div className="font-semibold text-gray-500">3</div>
         </div>
         <div className="flex gap-[12px]">
-          <ThumbsDown />
-          <ThumbsUp checked />
+          <ThumbsDown checked={like === -1} onClick={() => onSetLike(-1)} />
+          <ThumbsUp checked={like === 1} onClick={() => onSetLike(1)} />
         </div>
       </div>
       <div className="flex flex-col gap-[20px]">

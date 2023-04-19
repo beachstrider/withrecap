@@ -42,12 +42,12 @@ const PrivateSection = () => {
       <div className="sm:flex hidden items-center gap-[18px]">
         <NavLink to={MEETINGS}>
           {({ isActive }) => (
-            <Button className={isActive ? 'bg-white font-semibold text-gray-500' : ''}>Past Meetings</Button>
+            <Button className={isActive ? '' : 'bg-white font-semibold text-gray-500'}>Past Meetings</Button>
           )}
         </NavLink>
         <NavLink to={INTEGRATIONS}>
           {({ isActive }) => (
-            <Button className={isActive ? 'bg-white font-semibold text-gray-500' : ''}>Ingetrations</Button>
+            <Button className={isActive ? '' : 'bg-white font-semibold text-gray-500'}>Integrations</Button>
           )}
         </NavLink>
       </div>
