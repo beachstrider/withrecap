@@ -8,8 +8,6 @@ import Layout from '../../components/layouts'
 export default function Index() {
   const { user } = useAuth()
 
-  console.log(user)
-
   return (
     <Layout>
       <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">

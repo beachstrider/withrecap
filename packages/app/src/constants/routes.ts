@@ -1,6 +1,6 @@
 // main routes
 export const MEETINGS = '/meetings'
-export const MEETING_DETAIL = '/meetings/:id'
+export const MEETING_DETAILS = '/meetings/:mid'
 export const INTEGRATIONS = '/integrations'
 
 // fake hash routes

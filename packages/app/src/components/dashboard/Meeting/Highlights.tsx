@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { ThumbsDown, ThumbsUp } from '../../buttons'
 
@@ -6,6 +6,12 @@ import matt from '../../../assets/img/matt.png'
 import tetragram from '../../../assets/img/tetragram.svg'
 
 export default function Highlights() {
+  const [like, setLike] = useState(0)
+
+  function onSetLike(v: 1 | -1 | 0) {
+    setLike(v)
+  }
+
   return (
     <div className="sm:mb-[82px] mb-[60px]">
       <div className="flex justify-between sm:mb-[34px] mb-[24px]">
@@ -15,8 +21,8 @@ export default function Highlights() {
           <div className="font-semibold text-gray-500">6</div>
         </div>
         <div className="flex gap-[12px]">
-          <ThumbsDown />
-          <ThumbsUp checked />
+          <ThumbsDown checked={like === -1} onClick={() => onSetLike(-1)} />
+          <ThumbsUp checked={like === 1} onClick={() => onSetLike(1)} />
         </div>
       </div>
       <div className="grid sm:grid-cols-3 sm:gap-[20px] gap-[15px]">

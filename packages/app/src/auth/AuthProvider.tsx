@@ -35,12 +35,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         if (location.pathname !== '/') navigate('/')
       } else {
         userStore.exists(u.uid).then((exists) => {
-          console.log('.....')
           if (!exists) {
-            console.info('user must install an extension')
+            console.debug('user must install an extension')
             setUser(u)
           } else {
-            console.log('u.uid exist')
+            console.debug('u.uid exist')
             setUser(u)
           }
         })
@@ -54,7 +53,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   if (!user && location.pathname !== '/') return <Loading />
 
-  console.log('u==', user)
+  console.debug('u==', user)
   return (
     <AuthContext.Provider
       value={{
