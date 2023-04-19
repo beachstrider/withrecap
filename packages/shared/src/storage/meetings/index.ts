@@ -10,7 +10,6 @@ import {
   orderBy,
   query,
   where,
-  FieldPath,
   getDocs
 } from 'firebase/firestore/lite'
 
@@ -22,6 +21,9 @@ export type MeetingAttendee = {
   name?: string
   avatar?: string
   time?: number
+}
+export type MeetingMetadata = {
+  percentage: { [speaker: string]: number }
 }
 export type Meeting = {
   id: string
@@ -36,6 +38,7 @@ export type Meeting = {
   conversation: Conversation
   description?: string
   transcript?: Conversation
+  metadata?: MeetingMetadata
 }
 
 export class MeetingStore {

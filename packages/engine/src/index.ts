@@ -19,20 +19,17 @@ export const engine = functions.firestore.document('meetings/{docId}').onUpdate(
     functions.logger.debug('generated', JSON.stringify(response, undefined, 4))
 
     if (response.choices.length) {
-      const metadata = transcript.metadata()
-      const attendees = [...newValue.attendees]
+      const percentage = transcript.metadata()
       const summary = response.choices[0].text
 
       functions.logger.debug('summary', summary)
-
-      attendees.map((a) => ({ ...a, time: metadata[a.name] }))
 
       // Update values on the database
       return change.after.ref.set(
         {
           summary: summary || '',
           transcript: transcript.toTranscript(),
-          attendees: attendees
+          metadata: { percentage: percentage }
         },
         { merge: true }
       )
