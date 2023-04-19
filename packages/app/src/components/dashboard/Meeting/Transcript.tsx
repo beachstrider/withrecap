@@ -4,6 +4,7 @@ import { Meeting, Message, getTimeDiff } from '@recap/shared'
 
 import { ThumbsDown, ThumbsUp } from '../../buttons'
 
+import { Message } from '@recap/shared/src/storage/meetings/conversation'
 import listInCircle from '../../../assets/img/listInCircle.svg'
 import matt from '../../../assets/img/matt.png'
 
