@@ -1,4 +1,4 @@
-import { useAuth } from '@recap/shared'
+import { toast, useAuth } from '@recap/shared'
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import google from '../../../../assets/img/google.svg'
@@ -14,6 +14,14 @@ export const SignIn = () => {
     }
   }, [user, navigate])
 
+  const signIn = async () => {
+    try {
+      await login()
+    } catch (err) {
+      toast.error('An error occurred while signing in', err)
+    }
+  }
+
   return (
     <>
       <h1 className="sm:mb-[16px] mb-[12px]">Create your account</h1>
@@ -22,7 +30,7 @@ export const SignIn = () => {
       </p>
       <button
         className="w-full rounded-[14px] bg-gray-100 flex justify-center items-center gap-[10px] sm:text-[15px] text-[12px] py-[14px] font-semibold sm:mb-[20px] mb-[15px]"
-        onClick={login}
+        onClick={signIn}
       >
         <img src={google} alt="" />
         Sign In with Google

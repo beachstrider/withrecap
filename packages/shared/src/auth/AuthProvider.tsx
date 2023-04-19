@@ -3,6 +3,7 @@ import { User } from 'firebase/auth'
 
 import { UserStore } from '../storage/users'
 import { BaseAuthProvider } from '.'
+import { toast } from '../components/toast'
 
 type AuthProviderContextType = {
   token: string | null
@@ -37,17 +38,24 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
         return
       }
 
-      userStore.exists(u.uid).then((exists) => {
-        if (!exists) {
-          userStore.create(u).then(() => {
+      userStore
+        .exists(u.uid)
+        .then((exists) => {
+          if (!exists) {
+            userStore.create(u).then(() => {
+              setUser(u)
+              setToken(t)
+            })
+          } else {
             setUser(u)
             setToken(t)
-          })
-        } else {
-          setUser(u)
-          setToken(t)
-        }
-      })
+          }
+        })
+        .catch(async (err) => {
+          toast.error('An error occurred while authenticating', err)
+          // If we cannot save the user info in the DB, we have to log the user out
+          await auth.logout()
+        })
     })
 
     return unsubscribe

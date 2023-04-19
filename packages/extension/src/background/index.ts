@@ -113,7 +113,6 @@ class ChromeBackgroundService {
 
   async processTranscriptionMessage(meetingId: string, message: MeetingMessage): Promise<void> {
     if (message.speaker === 'You' && google.auth.currentUser) {
-      // TODO: Find out if we can have something better here
       message.speaker = google.auth.currentUser.displayName || google.auth.currentUser.email || 'Unknown'
     }
 
