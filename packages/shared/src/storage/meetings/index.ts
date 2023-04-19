@@ -35,6 +35,7 @@ export type Meeting = {
   ended?: boolean
   conversation: Conversation
   description?: string
+  transcript?: Conversation
 }
 
 export class MeetingStore {

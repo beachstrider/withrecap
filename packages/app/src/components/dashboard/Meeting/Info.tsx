@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { Meeting, getTimeRange } from '@recap/shared'
+import { Conversation, Meeting, getTimeRange } from '@recap/shared'
 
 import { MEETINGS } from '../../../constants/routes'
 
@@ -37,24 +37,23 @@ export default function Info({ meetingDetails }: Props) {
         {getTimeRange(meetingDetails.start, meetingDetails.end)}
       </p>
 
-      {/* TODO: there must be an attribute in meetings collection to represent the info below */}
-      <p>A single to two lined description of what this meeting is about.</p>
+      <p>{meetingDetails.description}</p>
       <div className="my-[28px] h-[2px] bg-[#F1F3F5]"></div>
       <div className="font-semibold mb-[6px]">
         Participants&nbsp;&nbsp;<span className="text-gray-500">{meetingDetails.attendees.length}</span>
       </div>
-      {meetingDetails && <Attendees conversation={meetingDetails.conversation} />}
+      {meetingDetails && <Attendees transcript={meetingDetails.transcript ?? []} />}
     </div>
   )
 }
 
-const Attendees: React.FC<{ conversation: any }> = ({ conversation }) => {
+const Attendees: React.FC<{ transcript: Conversation }> = ({ transcript }) => {
   //
   // TODO: below logic will be moved to backend as it is for temporary purpose
   let attendees: any = {}
 
   // 1. Calculate speech frequencies of each attendees
-  conversation.forEach((item: any) => {
+  transcript.forEach((item: any) => {
     if (typeof attendees[item.speaker] !== 'undefined') {
       attendees[item.speaker].speechPercentage++
     } else {

@@ -4,7 +4,6 @@ import { Meeting, getTimeDiff } from '@recap/shared'
 
 import { ThumbsDown, ThumbsUp } from '../../buttons'
 
-import { Message } from '@recap/shared/src/storage/meetings/conversation'
 import listInCircle from '../../../assets/img/listInCircle.svg'
 import matt from '../../../assets/img/matt.png'
 
@@ -12,7 +11,7 @@ interface Props {
   meetingDetails: Meeting
 }
 
-export default function Transcript({ meetingDetails: { start, end, conversation } }: Props) {
+export default function Transcript({ meetingDetails: { start, end, transcript } }: Props) {
   const [like, setLike] = useState(0)
 
   function onSetLike(v: 1 | -1 | 0) {
@@ -33,7 +32,7 @@ export default function Transcript({ meetingDetails: { start, end, conversation 
         </div>
       </div>
       <div className="flex flex-col sm:gap-[40px] gap-[30px]">
-        {conversation.map((transcript: Message, key: number) => (
+        {(transcript || []).map((transcript, key) => (
           <TranscriptItem key={key} transcript={transcript} />
         ))}
       </div>
