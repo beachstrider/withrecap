@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { Meeting, MeetingStore } from '@recap/shared/'
 
 export function useMeetings() {}
 
 export function useMeetingDetails(mid: string) {
-  const meetingStore = new MeetingStore()
+  const meetingStore = useMemo(() => new MeetingStore(), [])
 
   const [data, setData] = useState<Meeting>()
   const [loading, setLoading] = useState(true)
@@ -17,7 +17,7 @@ export function useMeetingDetails(mid: string) {
       setLoading(false)
       setError(null)
     })
-  }, [])
+  }, [meetingStore, mid])
 
   return { meetingDetails: data, loading, error }
 }
