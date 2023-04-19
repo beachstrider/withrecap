@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
+import { LoadingScreen } from '@recap/shared'
 import { Button } from '../components/buttons'
 import Layout from '../components/layouts'
-import Loading from '../components/layouts/Loading'
 
 import { SIGNING_IN } from '../constants/routes'
 
@@ -25,7 +25,7 @@ export default function Index() {
 
   return (
     <>
-      {location.hash === SIGNING_IN && <Loading />}
+      {location.hash === SIGNING_IN && <LoadingScreen />}
       <Layout isPublic>
         <div className="relative sm:mb-[160px] mb-[120px] sm:pt-[140px] pt-[100px] sm:pb-[200px] pb-[150px]">
           <div className="">
