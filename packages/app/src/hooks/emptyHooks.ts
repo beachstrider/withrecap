@@ -5,8 +5,7 @@ export function useEmpty() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  useEffect(() => {
-  }, [])
+  useEffect(() => {}, [])
 
   return { data, loading, error }
 }
