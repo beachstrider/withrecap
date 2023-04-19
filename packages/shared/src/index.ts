@@ -25,7 +25,7 @@ export { MeetingStore } from './storage/meetings'
 export type { Meeting, MeetingAttendee } from './storage/meetings'
 
 export { ConversationStore } from './storage/meetings/conversation'
-export type { Conversation } from './storage/meetings/conversation'
+export type { Conversation, Message } from './storage/meetings/conversation'
 
 export { UserStore } from './storage/users'
 export type { User } from './storage/users'

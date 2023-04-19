@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Meeting, getTimeDiff } from '@recap/shared'
+import { Meeting, Message, getTimeDiff } from '@recap/shared'
 
 import { ThumbsDown, ThumbsUp } from '../../buttons'
 
@@ -32,7 +32,7 @@ export default function Transcript({ meetingDetails: { start, end, transcript } 
         </div>
       </div>
       <div className="flex flex-col sm:gap-[40px] gap-[30px]">
-        {(transcript?.split('\n') || []).map((msg, key) => (
+        {(transcript || []).map((msg, key) => (
           <TranscriptItem key={key} msg={msg} />
         ))}
       </div>
@@ -40,15 +40,13 @@ export default function Transcript({ meetingDetails: { start, end, transcript } 
   )
 }
 
-const TranscriptItem = ({ msg }: { msg: string }) => {
-  const [speaker, text] = msg.split(': ')
-
+const TranscriptItem = ({ msg }: { msg: Message }) => {
   return (
     <div className="flex sm:gap-[16px] gap-[12px]">
       <img src={matt} alt="" className="sm:w-[24px] sm:h-[24px] w-[18px] h-[18px]" />
       <div className="flex flex-col sm:gap-[10px] gap-[6px]">
-        <div className="font-semibold">{speaker}</div>
-        <div className="text-gray-500">{text}</div>
+        <div className="font-semibold">{msg.speaker}</div>
+        <div className="text-gray-500">{msg.text}</div>
       </div>
     </div>
   )
