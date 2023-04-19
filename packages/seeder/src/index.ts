@@ -7,7 +7,7 @@ const meeting = async () => {
   const newMeeting: Meeting = {
     id: 'sdfsdf-=324sdfsdf23423sdf',
     mid: 'jva-fbxb-jca',
-    title: '1:1',
+    title: 'Onboarding',
     attendees: [
       {
         email: 'kevin@kevin.com',
@@ -21,7 +21,8 @@ const meeting = async () => {
     start: '2023-04-16T12:00:00-04:00',
     end: '2023-04-16T14:00:00-04:00',
     link: 'https://meet.google.com/jva-fbxb-jca',
-    conversation: conversation
+    conversation: conversation,
+    description: "Let's discuss the onboarding process and all."
   }
 
   return store.create(newMeeting.mid, newMeeting)
