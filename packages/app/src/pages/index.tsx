@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom'
 
 import { Button } from '../components/buttons'
 import Layout from '../components/layouts'
-import Footer from '../components/layouts/Footer'
 import Loading from '../components/layouts/Loading'
 
 import { SIGNING_IN } from '../constants/routes'
@@ -339,7 +338,6 @@ export default function Index() {
         </div>
         <HomeBlock2 />
       </Layout>
-      <Footer />
     </>
   )
 }
