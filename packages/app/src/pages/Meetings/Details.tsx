@@ -13,6 +13,7 @@ import { useMeetingDetails } from '../../hooks/meetings'
 export default function MeetingDetail() {
   const { mid } = useParams()
   const { meetingDetails, loading } = useMeetingDetails(mid!)
+  console.debug('=======  meetingDetails:', meetingDetails)
 
   return (
     <Layout isLoading={loading}>
