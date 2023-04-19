@@ -31,7 +31,7 @@ export const engine = functions.firestore.document('meetings/{docId}').onUpdate(
       return change.after.ref.set(
         {
           summary: summary || '',
-          transcript: transcript.toString(),
+          transcript: transcript.toTranscript(),
           attendees: attendees
         },
         { merge: true }
