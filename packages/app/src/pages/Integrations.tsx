@@ -1,42 +1,17 @@
-import { Addon, AddonStore, Addons, UserAddonConfig, UserAddonStore, UserAddons } from '@recap/shared'
-import React, { useEffect, useMemo, useState } from 'react'
+import React from 'react'
 
-import { useAuth } from '../auth/AuthProvider'
 import Layout from '../components/layouts'
+import { useIntegrations } from '../hooks/integrations'
 
 export default function Index() {
-  const { user } = useAuth()
-
-  const userAddonStore = useMemo(() => new UserAddonStore(user.uid), [user.uid])
-  const addonStore = useMemo(() => new AddonStore(), [])
-
-  const [addons, setAddons] = useState<Addons>({})
-  const [userAddons, setUserAddons] = useState<UserAddons>({})
-
-  useEffect(() => {
-    // TODO: Handle errors
-    addonStore.list().then((a) => {
-      userAddonStore.list().then((ua) => {
-        setUserAddons(ua)
-        setAddons(a)
-      })
-    })
-  }, [addonStore, userAddonStore])
-
-  const enableAddon = async (id: string, addon: Addon) => {
-    const config: UserAddonConfig = { url: addon.url, regex: addon.regex, enabled: true }
-    await userAddonStore.insert(id, config)
-
-    userAddons[id] = config
-    setUserAddons({ ...userAddons })
-  }
+  const { addons, userAddons, enableAddon, loading } = useIntegrations()
 
   const isEnabled = (id: string): boolean => {
     return userAddons[id]?.enabled
   }
 
   return (
-    <Layout>
+    <Layout isLoading={loading}>
       <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">
         <div className="sm:mb-[58px] mb-[42px]">
           <h4 className="font-semibold mb-[10px]">Integrations</h4>

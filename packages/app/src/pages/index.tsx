@@ -1,10 +1,9 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
+import { LoadingScreen } from '@recap/shared'
 import { Button } from '../components/buttons'
 import Layout from '../components/layouts'
-import Footer from '../components/layouts/Footer'
-import Loading from '../components/layouts/Loading'
 
 import { SIGNING_IN } from '../constants/routes'
 
@@ -26,7 +25,7 @@ export default function Index() {
 
   return (
     <>
-      {location.hash === SIGNING_IN && <Loading />}
+      {location.hash === SIGNING_IN && <LoadingScreen />}
       <Layout isPublic>
         <div className="relative sm:mb-[160px] mb-[120px] sm:pt-[140px] pt-[100px] sm:pb-[200px] pb-[150px]">
           <div className="">
@@ -77,7 +76,7 @@ export default function Index() {
                   </div>
                 </div>
               </div>
-              <div className="sm:block absolute right-[200px] bottom-[200px] flex flex-end">
+              <div className="sm:block hidden right-[200px] bottom-[200px] flex flex-end">
                 <div className="absolute right-0 bottom-[150px]">
                   <div
                     className="px-[14px] py-[10px] bg-white flex gap-[8px] rounded-[16px] rotate-[16deg]"
@@ -153,12 +152,12 @@ export default function Index() {
         <HomeBlock1 />
         <div className="sm:px-[60px] px-[20px] mb-[74px]">
           <div className="flex flex-col items-center text-center gap-[20px]">
-            <div className="sm:text-[56px] text-[42px] font-bold text-gray-900">
+            <h1 className="sm:text-[56px] text-[42px] font-bold text-gray-900">
               Meeting notes can be
               <br className="hidden sm:block" />
               smart, fun, and automated.
-            </div>
-            <div className="sm:text-[22px] text-[18px] text-gray-500">
+            </h1>
+            <div className="sm:text-[22px] text-[18px] leading-tight text-gray-500">
               (at least that’s how we feel when we use Recap)
             </div>
 
@@ -332,14 +331,13 @@ export default function Index() {
           <div className="flex flex-col items-center gap-[20px] text-center">
             <img src={lock} alt="" />
             <h1 className="font-bold">Secure, by design</h1>
-            <div className="sm:text-[22px] text-[18px] text-gray-500 max-w-[645px]">
+            <div className="sm:text-[22px] text-[18px] leading-tight text-gray-500 max-w-[645px]">
               Your meeting transcripts are never ready by anyone, and are securely encrypted within Google Chrome.
             </div>
           </div>
         </div>
         <HomeBlock2 />
       </Layout>
-      <Footer />
     </>
   )
 }

@@ -26,28 +26,23 @@
   src: url('assets/fonts/SF-Pro-Rounded-Bold.otf') format('opentype');
 }
 
-body {
-  @apply relative min-h-screen sm:text-[16px] sm:leading-[24px] text-[12px] leading-[18px] text-[#222734] font-inter;
+* {
+  @apply sm:text-[16px] sm:leading-normal text-[12px] leading-[18px];
 }
 
-#app {
-  @apply flex flex-col min-h-screen;
+body {
+  @apply relative h-screen  text-[#222734] font-inter;
 }
 
 main {
   @apply grow flex flex-col;
 }
 
-.container {
-  @apply sm:px-0 px-[20px];
-}
-
-.container-sm {
-  @apply container xl:max-w-[1200px];
-}
-
 p {
   @apply sm:text-[15px] sm:leading-[20px] text-[12px] leading-[15px];
+}
+
+div {
 }
 
 h5 {
@@ -72,6 +67,18 @@ h1 {
 
 hr {
   @apply w-[100%] !h-[2px] bg-[#f1f3f5];
+}
+
+#app {
+  @apply flex flex-col min-h-screen;
+}
+
+.container {
+  @apply sm:px-0 px-[20px];
+}
+
+.container-sm {
+  @apply container xl:max-w-[1200px];
 }
 
 .card {

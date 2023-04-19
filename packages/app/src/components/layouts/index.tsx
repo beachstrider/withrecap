@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { LoadingIcon } from '@recap/shared'
+import Footer from './Footer'
 import Header from './Header'
 
 interface Props {
@@ -15,6 +16,7 @@ export default function Index({ children, isPublic = false, isLoading = false, .
     <>
       <Header isPublic={isPublic} />
       <main {...rest}>{isLoading ? <Loading /> : children}</main>
+      {isPublic && <Footer />}
     </>
   )
 }

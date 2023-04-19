@@ -1,76 +1,23 @@
-import { Meeting, MeetingStore, UserMeetingStore } from '@recap/shared'
-import { format, formatRelative } from 'date-fns'
-import { enUS } from 'date-fns/locale'
-import React, { useEffect, useMemo, useState } from 'react'
+import { Meeting, getFormattedDate } from '@recap/shared'
+import { format } from 'date-fns'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
 import exitArrow from '../../../assets/img/exit-arrow-right.svg'
 import purpleMessage from '../../../assets/img/purpleMessage.svg'
 
-import { useAuth } from '../../../auth/AuthProvider'
 import { MEETINGS } from '../../../constants/routes'
+import UserAvatar from '../../display/UserAvatar'
 
-export default function Index() {
-  const { user } = useAuth()
+interface Props {
+  meetingsByDate: { [date: string]: Meeting[] }
+}
 
-  const meetingStore = useMemo(() => new MeetingStore(), [])
-  const userMeetingStore = useMemo(() => new UserMeetingStore(user.uid), [user.uid])
-
-  const [meetings, setMeetings] = useState<Meeting[]>([])
-  const [meetingsByDate, setMeetingsByDate] = useState<{ [date: string]: Meeting[] }>({})
-
-  useEffect(() => {
-    userMeetingStore.list().then((mids) => {
-      meetingStore.getByIds(mids).then(setMeetings)
-    })
-  }, [userMeetingStore, meetingStore])
-
-  useEffect(() => {
-    if (meetings.length) {
-      console.log('meetings', meetings)
-      const byDate: { [date: string]: Meeting[] } = {}
-      for (const meeting of meetings) {
-        const date = format(new Date(meeting.start), 'MM-dd-yy')
-
-        if (!byDate[date]) {
-          byDate[date] = []
-        }
-
-        byDate[date].push(meeting)
-      }
-
-      setMeetingsByDate(byDate)
-    }
-  }, [meetings])
-
-  const formatDate = (date: string): { weekDay: string; day: string; relativeDate: string } => {
-    // See: https://github.com/date-fns/date-fns/issues/1218
-    const formatRelativeLocale: { [token: string]: string } = {
-      lastWeek: "'Last' eeee",
-      yesterday: "'Yesterday'",
-      today: "'Today'",
-      other: 'dd.MM.yyyy'
-    }
-
-    const locale = {
-      ...enUS,
-      formatRelative: (token: string) => formatRelativeLocale[token]
-    }
-
-    // See: https://date-fns.org/v2.29.3/docs/format
-    return {
-      weekDay: format(new Date(date), 'EEE'),
-      day: format(new Date(date), 'd'),
-      relativeDate: formatRelative(new Date(date), new Date(), { locale })
-    }
-  }
-
-  console.debug('---meetings', meetingsByDate)
-
+export default function Index({ meetingsByDate }: Props) {
   return (
     <>
       {Object.entries(meetingsByDate).map(([date, meetings], key) => {
-        const formattedDate = formatDate(date)
+        const formattedDate = getFormattedDate(date)
 
         return (
           <div key={key}>
@@ -112,13 +59,12 @@ export default function Index() {
                       {format(new Date(meeting.start), 'h:mm a')} - {format(new Date(meeting.end), 'h:mm a')}
                     </div>
                     <div className="flex mr-[8px]">
-                      {/** TODO: Should display a letter if avatar is null */}
                       {meeting.attendees.map((attendee, key) => (
-                        <img
+                        <UserAvatar
+                          className="border-solid border-[4px] border-white first:ml-0 ml-[-8px]"
                           key={key}
-                          src={attendee.avatar}
-                          alt=""
-                          className="w-[28px] h-[28px] rounded-full border-solid border-[4px] border-white first:ml-0 ml-[-8px]"
+                          name={attendee.name}
+                          avatar={attendee.avatar}
                         />
                       ))}
                     </div>
