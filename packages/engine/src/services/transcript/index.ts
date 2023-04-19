@@ -17,6 +17,10 @@ export class TranscriptService {
     return this.transcript.map((m) => `${m.speaker}: ${m.text}`).join('\n')
   }
 
+  public toTranscript(): Transcript {
+    return this.transcript
+  }
+
   public metadata(): Metadata {
     let totalTime = 0
     let timePerSpeaker: { [speaker: string]: number } = {}

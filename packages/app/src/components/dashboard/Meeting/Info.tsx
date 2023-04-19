@@ -42,7 +42,7 @@ export default function Info({ meetingDetails }: Props) {
       <div className="font-semibold mb-[6px]">
         Participants&nbsp;&nbsp;<span className="text-gray-500">{meetingDetails.attendees.length}</span>
       </div>
-      {meetingDetails && <Attendees transcript={meetingDetails.transcript ?? []} />}
+      {meetingDetails && <Attendees transcript={meetingDetails.transcript || []} />}
     </div>
   )
 }
@@ -53,18 +53,20 @@ const Attendees: React.FC<{ transcript: Conversation }> = ({ transcript }) => {
   let attendees: any = {}
 
   // 1. Calculate speech frequencies of each attendees
-  transcript.forEach((item: any) => {
-    if (typeof attendees[item.speaker] !== 'undefined') {
-      attendees[item.speaker].speechPercentage++
+  transcript.forEach((msg) => {
+    if (!msg.speaker) {
+      return
+    } else if (attendees[msg.speaker] !== undefined) {
+      attendees[msg.speaker].speechPercentage++
     } else {
-      attendees[item.speaker] = {}
-      attendees[item.speaker].speechPercentage = 1
+      attendees[msg.speaker] = {}
+      attendees[msg.speaker].speechPercentage = 1
     }
   })
 
   // 2. Convert speech frequencies to percentage
   Object.keys(attendees).forEach((key) => {
-    const speechPercentage = ((attendees[key].speechPercentage / conversation.length) * 100).toFixed(0)
+    const speechPercentage = ((attendees[key].speechPercentage / transcript.length) * 100).toFixed(0)
     attendees[key].speechPercentage = speechPercentage
   })
 
