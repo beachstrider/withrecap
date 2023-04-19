@@ -15,7 +15,7 @@ export default function Index() {
           <img src={`${user.photoURL}`} alt="" className="w-[64px] h-[64px] rounded-full" />
           <div className="">
             <div className="sm:text-[24px] text-[18px] font-semibold mb-[8px]">
-              Afternoon, {user.displayName!.split(' ')[0]}!
+              Afternoon, {user.displayName?.split(' ')[0]}!
             </div>
             <MeetingTimeSaved />
           </div>

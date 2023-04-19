@@ -1,14 +1,14 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { enUS } from 'date-fns/locale'
-import { format, formatRelative } from 'date-fns'
-import { Link } from 'react-router-dom'
 import { Meeting, MeetingStore, UserMeetingStore } from '@recap/shared'
+import { format, formatRelative } from 'date-fns'
+import { enUS } from 'date-fns/locale'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 import exitArrow from '../../../assets/img/exit-arrow-right.svg'
 import purpleMessage from '../../../assets/img/purpleMessage.svg'
 
-import { MEETINGS } from '../../../constants/routes'
 import { useAuth } from '../../../auth/AuthProvider'
+import { MEETINGS } from '../../../constants/routes'
 
 export default function Index() {
   const { user } = useAuth()
@@ -64,6 +64,8 @@ export default function Index() {
       relativeDate: formatRelative(new Date(date), new Date(), { locale })
     }
   }
+
+  console.debug('---meetings', meetingsByDate)
 
   return (
     <>
