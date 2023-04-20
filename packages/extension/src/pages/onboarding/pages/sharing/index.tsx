@@ -1,4 +1,4 @@
-import { UserStore, useAuthGuard } from '@recap/shared'
+import { UserStore, toast, useAuthGuard } from '@recap/shared'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -26,19 +26,28 @@ export const AutoSharing = () => {
   }, [navigate])
 
   useEffect(() => {
-    userStore.get(user.uid).then((u) => {
-      if (u.autoSharing) {
-        setToggle(true)
-      }
-    })
+    userStore
+      .get(user.uid)
+      .then((u) => {
+        if (u.autoSharing) {
+          setToggle(true)
+        }
+      })
+      .catch((err) => {
+        toast.error('An error occurred while fetching your profile', err)
+      })
   }, [userStore, user.uid])
 
   const toggleAutoSharing = async () => {
-    setToggle(!toggle)
+    try {
+      await userStore.update(user.uid, { autoSharing: !toggle })
 
-    await userStore.update(user.uid, { autoSharing: !toggle })
+      setToggle(!toggle)
 
-    return nextStep()
+      return nextStep()
+    } catch (err) {
+      toast.error("Settings couldn't be saved", err)
+    }
   }
 
   return (

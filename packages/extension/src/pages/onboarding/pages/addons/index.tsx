@@ -1,4 +1,13 @@
-import { Addon, AddonStore, Addons, UserAddonConfig, UserAddonStore, UserAddons, useAuthGuard } from '@recap/shared'
+import {
+  Addon,
+  AddonStore,
+  Addons,
+  UserAddonConfig,
+  UserAddonStore,
+  UserAddons,
+  useAuthGuard,
+  toast
+} from '@recap/shared'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -16,25 +25,38 @@ export const AddonsSelection = () => {
   const [userAddons, setUserAddons] = useState<UserAddons>({})
 
   useEffect(() => {
-    // TODO: Handle errors
-    addonStore.list().then((a) => {
-      userAddonStore.list().then((ua) => {
-        setUserAddons(ua)
-        setAddons(a)
+    addonStore
+      .list()
+      .then((a) => {
+        userAddonStore
+          .list()
+          .then((ua) => {
+            setUserAddons(ua)
+            setAddons(a)
+          })
+          .catch((err) => {
+            toast.error('An error occurred while fetching your integrations', err)
+          })
       })
-    })
+      .catch((err) => {
+        toast.error('An error occurred while fetching the list of integrations', err)
+      })
   }, [addonStore, userAddonStore])
 
   const enableAddon = async (id: string, addon: Addon) => {
-    const config: UserAddonConfig = { url: addon.url, regex: addon.regex, enabled: true }
-    await userAddonStore.insert(id, config)
+    try {
+      const config: UserAddonConfig = { url: addon.url, regex: addon.regex, enabled: true }
+      await userAddonStore.insert(id, config)
 
-    userAddons[id] = config
-    setUserAddons({ ...userAddons })
+      userAddons[id] = config
+      setUserAddons({ ...userAddons })
 
-    // Note: For now, since we only have Google Meet working, we redirect
-    // the user automatically to the next step once he enables it
-    return navigate(ROUTES.Sharing)
+      // Note: For now, since we only have Google Meet working, we redirect
+      // the user automatically to the next step once he enables it
+      return navigate(ROUTES.Sharing)
+    } catch (err) {
+      toast.error("Settings couldn't be saved", err)
+    }
   }
 
   const isEnabled = (id: string): boolean => {

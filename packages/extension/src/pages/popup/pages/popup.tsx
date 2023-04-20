@@ -4,6 +4,7 @@ import { Meeting, useAuthGuard } from '@recap/shared'
 import { ExtensionMessages } from '../../../common/models'
 import { MeetingDetails } from '../components/MeetingDetails'
 import { RecentMeeting } from '../components/RecentMeeting'
+import { AutomaticSharing } from '../components/AutomaticSharing'
 
 const Popup = () => {
   const { user } = useAuthGuard()
@@ -29,18 +30,21 @@ const Popup = () => {
       return (
         <>
           <MeetingDetails meeting={meeting} ended={false} />
+          <AutomaticSharing uid={user.uid} />
         </>
       )
     } else {
       return (
         <div>
-          <p>cannot record this meeting as it's not part of your calendar</p>
+          {/** TODO: This should be improved */}
+          <p>Cannot record this meeting as it's not part of your calendar</p>
         </div>
       )
     }
   }
 
   if (loading) {
+    // TODO: Use same spinner as app
     return <p>Loading...</p>
   }
 

@@ -51,7 +51,7 @@ export class GoogleCalendar {
       end: event.end!.dateTime!,
       link: event.hangoutLink!,
       title: event.summary!,
-      description: event.description ?? undefined,
+      description: event.description || '',
       conversation: [],
       ended: false
     }

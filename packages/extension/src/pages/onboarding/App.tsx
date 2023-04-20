@@ -28,7 +28,6 @@ export const App = () => {
     }
   }
 
-  // TODO: Could probably be refactored
   return (
     <Routes>
       <Route element={<Layout />}>

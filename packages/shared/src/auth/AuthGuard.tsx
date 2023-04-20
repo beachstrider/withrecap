@@ -7,6 +7,7 @@ import { BaseAuthProvider } from '.'
 type AuthGuardContextType = {
   token: string
   user: User
+  error: Error | null
 }
 export const AuthGuardContext = createContext<AuthGuardContextType>({} as AuthGuardContextType)
 
@@ -26,26 +27,40 @@ export const AuthGuard = ({ children, onNeedAuth, provider }: AuthGuardProps) =>
 
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(null)
+  const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((u, t) => {
       if (u === null || t === null) {
         setUser(null)
         setToken(null)
+        setError(null)
         return onNeedAuth()
       }
 
-      userStore.exists(u.uid).then((exists) => {
-        if (!exists) {
-          userStore.create(u).then(() => {
+      userStore
+        .exists(u.uid)
+        .then(async (exists) => {
+          if (!exists) {
+            await userStore.create(u)
             setUser(u)
             setToken(t)
-          })
-        } else {
-          setUser(u)
-          setToken(t)
-        }
-      })
+          } else {
+            setUser(u)
+            setToken(t)
+          }
+
+          setError(null)
+        })
+        .catch(async (err) => {
+          const message = 'An error occurred while authenticating'
+
+          console.error(message, err)
+          setError(new Error(message))
+
+          // If we cannot save the user info in the DB, we have to log the user out
+          await auth.logout()
+        })
     })
 
     return unsubscribe
@@ -59,7 +74,8 @@ export const AuthGuard = ({ children, onNeedAuth, provider }: AuthGuardProps) =>
     <AuthGuardContext.Provider
       value={{
         token,
-        user
+        user,
+        error
       }}
     >
       {children}
