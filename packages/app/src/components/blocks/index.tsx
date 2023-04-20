@@ -263,7 +263,7 @@ export const HomeBlock2 = () => (
                 <div className="rounded-full w-[20px] h-[20px] bg-[#27CA40] border-solid border-[#3EAF3F]"></div>
               </div>
               <div className="flex items-center bg-[#202124] pt-[13.5px]">
-                <div className="bg-[#35363A] rounded-t-[13px] pl-[13px] pr-[22px] py-[15px] flex gap-[15px] text-[20px] text-white">
+                <div className="bg-[#35363A] rounded-t-[13px] pl-[13px] pr-[22px] py-[15px] flex items-center gap-[15px] text-[20px] text-white">
                   <img src={google} alt="" className="w-[27px] h-[27px]" />
                   <div className="truncate">Meditation App Kickoff Call</div>
                   <img src={close} alt="" className="ml-[8px]" />
