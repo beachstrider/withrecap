@@ -69,8 +69,14 @@ class GoogleMeetsService {
     }
   }
 
-  private hideCaption(ccDiv: HTMLDivElement): void {
+  private hideCaption(ccDiv: HTMLDivElement, callDiv: HTMLDivElement): void {
     ccDiv.style.visibility = 'hidden'
+
+    // Disable click on caption button
+    const buttons = callDiv.getElementsByTagName('button')
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].disabled = true
+    }
   }
 
   private listenOnNewMessage(ccDiv: HTMLDivElement): MutationObserver {
@@ -200,7 +206,7 @@ class GoogleMeetsService {
     }
 
     this.enableCaption(ccDiv, callDiv)
-    this.hideCaption(ccDiv)
+    this.hideCaption(ccDiv, callDiv)
 
     const ccDivObserver = this.listenOnNewMessage(ccDiv)
     const participantsDivObserver = this.listenOnParticipantChange(participantsDiv)
