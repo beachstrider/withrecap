@@ -61,6 +61,10 @@ export class MeetingStore {
   }
 
   public async getByIds(mids: string[]): Promise<Meeting[]> {
+    if (mids.length === 0) {
+      return []
+    }
+
     const q = query(this._db, where('mid', 'in', mids), orderBy('start', 'desc'))
 
     const documents = await getDocs(q)

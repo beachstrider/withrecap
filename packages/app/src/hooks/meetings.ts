@@ -14,30 +14,33 @@ export function useMeetings() {
   const [meetingsByDate, setMeetingsByDate] = useState<{ [date: string]: Meeting[] }>({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+
   useEffect(() => {
     userMeetingStore.list().then((mids) => {
-      if (mids.length) meetingStore.getByIds(mids).then(setMeetings)
-      else setLoading(false)
+      meetingStore.getByIds(mids).then((m) => {
+        setMeetings(m)
+
+        if (m.length === 0) {
+          setLoading(false)
+        }
+      })
     })
   }, [userMeetingStore, meetingStore])
 
   useEffect(() => {
-    if (meetings.length) {
-      const byDate: { [date: string]: Meeting[] } = {}
-      for (const meeting of meetings) {
-        const date = format(new Date(meeting.start), 'MM-dd-yy')
+    const byDate: { [date: string]: Meeting[] } = {}
+    for (const meeting of meetings) {
+      const date = format(new Date(meeting.start), 'MM-dd-yy')
 
-        if (!byDate[date]) {
-          byDate[date] = []
-        }
-
-        byDate[date].push(meeting)
+      if (!byDate[date]) {
+        byDate[date] = []
       }
 
-      setMeetingsByDate(byDate)
-
-      setLoading(false)
+      byDate[date].push(meeting)
     }
+
+    setMeetingsByDate(byDate)
+    setLoading(false)
   }, [meetings])
 
   return {
