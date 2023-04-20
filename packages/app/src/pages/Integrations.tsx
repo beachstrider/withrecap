@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { Addon } from '@recap/shared'
 import Layout from '../components/layouts'
 import { useIntegrations } from '../hooks/integrations'
 
@@ -18,7 +19,7 @@ export default function Index() {
           <div className="text-gray-500">Manage which video call apps Recap will take your notes from.</div>
         </div>
         <div className="flex flex-col sm:gap-[16px] gap-[12px]">
-          {Object.entries(addons).map(([id, addon]) => (
+          {Object.entries(addons).map(([id, addon]: [string, Addon]) => (
             <div
               className={`flex justify-between items-center w-full px-[24px] py-[16px] rounded-[16px] ${
                 addon.available ? 'bg-gray-100' : ''
@@ -26,7 +27,9 @@ export default function Index() {
               key={id}
             >
               <div className="flex gap-[12px] items-center">
-                <img src={addon.logo} alt={`${addon.name} Logo`} className="w-[50px] h-[50px]" />
+                <div className="flex w-[50px] h-[50px] rounded-full border-[2px] border-solid border-gray-100 overflow-hidden">
+                  <img src={addon.logo} alt={`${addon.name} Logo`} className="flex-1" />
+                </div>
                 <div className="flex flex-col gap-[1px]">
                   <div className="sm:text-[17px] text-[12px] font-semibold">{addon.name}</div>
                   {addon.popular ? <div className="text-gray-500">Most Popular</div> : ''}
