@@ -21,9 +21,8 @@ export const AutomaticSharing = ({ uid }: AutomaticSharingProps) => {
   }, [userStore, uid])
 
   const toggleAutoSharing = async () => {
-    setAutomaticSharing(!automaticSharing)
-
     await userStore.update(uid, { autoSharing: !automaticSharing })
+    setAutomaticSharing(!automaticSharing)
   }
 
   return (
