@@ -13,7 +13,7 @@ import greenCheck from '../assets/img/greenCheck.png'
 import jeff from '../assets/img/jeff.png'
 import jessica from '../assets/img/jessica2x.png'
 import josh from '../assets/img/josh2x.png'
-import lock from '../assets/img/lock.png'
+import lock_76x52 from '../assets/img/lock_76x52.svg'
 import max from '../assets/img/max.png'
 import add from '../assets/img/plus.svg'
 import summaryList from '../assets/img/summaryList.png'
@@ -328,9 +328,9 @@ export default function Index() {
           </div>
         </div>
         <div className="sm:px-[60px] px-[20px] mb-[60px]">
-          <div className="flex flex-col items-center gap-[20px] text-center">
-            <img src={lock} alt="" />
-            <h1 className="font-bold">Secure, by design</h1>
+          <div className="flex flex-col items-center sm:gap-[20px] gap-[15px] text-center">
+            <img src={lock_76x52} alt="" />
+            <h1 className="font-bold sm:mb-[8px] mb-[6px]">Secure, by design</h1>
             <div className="sm:text-[22px] text-[18px] leading-tight text-gray-500 max-w-[645px]">
               Your meeting transcripts are never ready by anyone, and are securely encrypted within Google Chrome.
             </div>
