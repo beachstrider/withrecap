@@ -10,7 +10,7 @@ export const SignIn = () => {
 
   useEffect(() => {
     if (user) {
-      return navigate(ROUTES.Addon)
+      return //navigate(ROUTES.Addon)
     }
   }, [user, navigate])
 
@@ -26,6 +26,12 @@ export const SignIn = () => {
     } catch (err) {
       toast.error('An error occurred while signing in', err)
     }
+  }
+
+  const openRecapApp = async (e: React.MouseEvent<HTMLSpanElement>, page: '/privacy-policy' | '/terms-conditions') => {
+    e.preventDefault()
+
+    return chrome.tabs.create({ url: `${process.env.RECAP_APP_BASE_URL}/${page}` })
   }
 
   return (
@@ -45,9 +51,16 @@ export const SignIn = () => {
         Unlimited meeting notes for free!
       </p>
       <small className="text-center text-gray-500">
-        By signing up, you agree to our Terms of Service
+        By signing up, you agree to our{' '}
+        <span onClick={(e) => openRecapApp(e, '/terms-conditions')} className="cursor-pointer">
+          Terms of Service
+        </span>
         <br />
-        and Privacy Policy.
+        and{' '}
+        <span onClick={(e) => openRecapApp(e, '/privacy-policy')} className="cursor-pointer">
+          Privacy Policy
+        </span>
+        .
       </small>
     </>
   )
