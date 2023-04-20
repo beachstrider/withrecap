@@ -60,11 +60,7 @@ export const AddonsSelection = () => {
           disabled={!addon.available || isEnabled(id)}
           onClick={async () => await enableAddon(id, addon)}
           className={`px-[14px] py-[10px] rounded-[14px] sm:text-[15px] text-[12px] font-semibold ${
-            isEnabled(id)
-              ? 'bg-gray-950 text-white' // Enabled
-              : addon.available
-              ? 'border-[3px] border-solid border-gray-950 bg-white hover:bg-gray-200 cursor-pointer' // Connect
-              : 'bg-gray-100 text-gray-500' // Coming Soon
+            addon.available ? 'bg-gray-950 text-white' : 'bg-gray-100 text-gray-500'
           }`}
         >
           {isEnabled(id) ? 'Enabled' : addon.available ? 'Connect' : 'Coming Soon'}
