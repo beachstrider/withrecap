@@ -1,21 +1,27 @@
 import React from 'react'
 
+import { Link } from 'react-router-dom'
+
 import arrowLeft from '../../assets/img/arrowLeft.svg'
 import back from '../../assets/img/back.svg'
 import close from '../../assets/img/close.svg'
 import forward from '../../assets/img/forward.svg'
 import google from '../../assets/img/googleOutline.png'
+import google_16x16 from '../../assets/img/google_16x16.svg'
 import home from '../../assets/img/home.svg'
 import jessica from '../../assets/img/josh.png'
 import lindsey from '../../assets/img/lindsey.png'
 import listInCircle from '../../assets/img/listInCircle.svg'
-import lock from '../../assets/img/lock.svg'
+import lock_14x17 from '../../assets/img/lock_14x17.svg'
 import logo from '../../assets/img/logo.svg'
 import maxwell from '../../assets/img/matt.png'
 import navRightUser3dots from '../../assets/img/nav-right-user-3dots.png'
+import outboundLinkWhite from '../../assets/img/outboundLinkWhite.svg'
 import plus from '../../assets/img/plus.svg'
 import purpleMessage from '../../assets/img/purpleMessage.svg'
+import recapLogoWhite from '../../assets/img/recapLogoWhite.svg'
 import refresh from '../../assets/img/refresh.svg'
+import rightExtensionUser3Dots from '../../assets/img/rightExtensionUser3Dots.svg'
 import star from '../../assets/img/star.svg'
 
 export const HomeBlock1 = () => (
@@ -280,7 +286,7 @@ export const HomeBlock2 = () => (
               <img src={home} alt="" className="mr-[25px]" />
               <div className="bg-[#202124] rounded-[24px] grow flex items-center h-[47px]">
                 <div className="flex justify-center items-center w-[56px]">
-                  <img src={lock} alt="" />
+                  <img src={lock_14x17} alt="" />
                 </div>
                 <div className="grow text-[23px] text-white">meet.google.com/</div>
                 <div className="flex justify-center items-center w-[56px]">
@@ -294,6 +300,48 @@ export const HomeBlock2 = () => (
           </div>
           <div className="h-full bg-gray-100 sm:bg-white"></div>
         </div>
+      </div>
+    </div>
+  </div>
+)
+
+export const ExtensionInstallationAlert = () => (
+  <div className="sm:mb-[102] mb-[75] pt-[42] rounded-[16] bg-[#F1F3F5] sm:h-[237] h-[474] relative overflow-hidden sm:grid sm:grid-cols-2 flex flex-col">
+    <div className="w-full">
+      <div className="relative sm:max-w-[450] max-w-[340] w-full">
+        <div className="">
+          <div className="bg-[#DEE1E6] rounded-tr-[8] overflow-hidden flex h-[42]"></div>
+          <div className="bg-white py-[5] flex items-center">
+            <div className="bg-[#F1F3F4] rounded-r-[14] grow flex items-center h-[28] text-[14]"></div>
+            <div className="flex items-center mx-[8]">
+              <img src={rightExtensionUser3Dots} alt="" />
+            </div>
+          </div>
+        </div>
+        <div className="bg-[#202124] pl-[24] pr-[69] pt-[24] h-[115] overflow-hidden">
+          <div className="bg-[#333437]" style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.35)' }}>
+            <div className="flex justify-between p-[20] border-solid border-b border-gray-600">
+              <img src={recapLogoWhite} alt="" />
+              <button className="px-[10] py-[6] bg-[#3F4043] rounded-[12] text-[15] text-white font-semibold">
+                <div className="flex items-center gap-[7]">
+                  <span>Open Recap</span>
+                  <img src={outboundLinkWhite} alt="" />
+                </div>
+              </button>
+            </div>
+            <div className="p-[20]"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div className="grow px-[22] sm:py-[22px] py-[66px] flex flex-col sm:items-start items-center text-center sm:gap-0 gap-[10]">
+      <h5 className="font-semibold sm:mb-[12] mb-[8]">Don’t forget the Recap Chrome extension</h5>
+      <div className="text-gray-500 sm:mb-[12] mb-[8]">Recap only take notes in Chrome with our extension added.</div>
+      <div className="flex justify-start">
+        <Link to="#" className="px-[10] py-[6] text-[15] font-semibold flex items-center gap-[4] rounded-[12] bg-white">
+          <img src={google_16x16} alt="" />
+          <span className="leading-[20px]">Add to Chrome</span>
+        </Link>
       </div>
     </div>
   </div>

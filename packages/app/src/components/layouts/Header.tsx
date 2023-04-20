@@ -74,7 +74,7 @@ const PrivateSection = () => {
             <img src={`${user?.photoURL}`} alt="" className="w-[32px] h-[32px] rounded-full" />
             <div className="font-semibold rounded-full">{getUserFirstName(user)}</div>
           </Menu.Button>
-          <Menu.Items className="absolute flex flex-col mt-[28px] menu-shadow p-[20px] w-[300px] right-0 text-[13px] bg-white">
+          <Menu.Items className="z-[1000] absolute flex flex-col mt-[28px] menu-shadow p-[20px] w-[300px] right-0 text-[13px] bg-white sm:rounded-[20px] rounded-[15px]">
             <div className="mb-[20px]">
               <div className="flex justify-between items-center mb-[8px]">
                 <div className="flex gap-[10px] grow">

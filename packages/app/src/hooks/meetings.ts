@@ -14,10 +14,10 @@ export function useMeetings() {
   const [meetingsByDate, setMeetingsByDate] = useState<{ [date: string]: Meeting[] }>({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-
   useEffect(() => {
     userMeetingStore.list().then((mids) => {
-      meetingStore.getByIds(mids).then(setMeetings)
+      if (mids.length) meetingStore.getByIds(mids).then(setMeetings)
+      else setLoading(false)
     })
   }, [userMeetingStore, meetingStore])
 
