@@ -52,7 +52,7 @@ const Metadata: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => {
     <>
       <p className="text-gray-500 mb-[24px]">Ranked in order of speaker.</p>
       <div className="flex flex-col gap-[16px]">
-        {Object.entries(metadata.percentage).map(([speaker, percentage]: any, key) => {
+        {Object.entries(metadata.percentage).map(([speaker, percentage], key) => {
           return (
             <div key={key} className="flex items-center justify-between">
               <div className="flex gap-[12px] items-center">
