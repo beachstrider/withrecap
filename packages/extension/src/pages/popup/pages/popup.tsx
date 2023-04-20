@@ -4,6 +4,7 @@ import { Meeting, useAuthGuard } from '@recap/shared'
 import { ExtensionMessages } from '../../../common/models'
 import { MeetingDetails } from '../components/MeetingDetails'
 import { RecentMeeting } from '../components/RecentMeeting'
+import { AutomaticSharing } from '../components/AutomaticSharing'
 
 const Popup = () => {
   const { user } = useAuthGuard()
@@ -29,6 +30,7 @@ const Popup = () => {
       return (
         <>
           <MeetingDetails meeting={meeting} ended={false} />
+          <AutomaticSharing uid={user.uid} />
         </>
       )
     } else {
