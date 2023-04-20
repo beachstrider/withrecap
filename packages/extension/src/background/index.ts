@@ -39,13 +39,25 @@ class ChromeBackgroundService {
     return meetingDetails
   }
 
+  private async handleError(error: unknown): Promise<void> {
+    console.error(error)
+    // TODO: Remove once we have better tooling like Sentry
+    console.trace(error)
+
+    return chrome.storage.local.set({ error })
+  }
+
   startListener(): void {
     chrome.tabs.onRemoved.addListener(async (tid, _removeInfo) => {
-      const { tabId, meetingDetails } = await chrome.storage.local.get(['tabId', 'meetingDetails'])
+      try {
+        const { tabId, meetingDetails } = await chrome.storage.local.get(['tabId', 'meetingDetails'])
 
-      if (tid === tabId) {
-        console.debug(`meeting ended since tab (${tid}) was closed.`)
-        await this.processMeetingEnd(meetingDetails.mid)
+        if (tid === tabId) {
+          console.debug(`meeting ended since tab (${tid}) was closed.`)
+          await this.processMeetingEnd(meetingDetails.mid)
+        }
+      } catch (err) {
+        this.handleError(`An error occurred while processing meeting ended event: ${err}`)
       }
     })
 
@@ -59,22 +71,26 @@ class ChromeBackgroundService {
 
       switch (request.type) {
         case ExtensionMessages.MeetingMessage:
-          this.processTranscriptionMessage(request.meetingId, request.message).then(sendResponse)
+          this.processTranscriptionMessage(request.meetingId, request.message)
+            .then(sendResponse)
+            .catch(this.handleError)
           break
         case ExtensionMessages.MeetingMetadata:
-          this.processMeetingMetadata(request.meetingId, request.metadata).then(sendResponse)
+          this.processMeetingMetadata(request.meetingId, request.metadata).then(sendResponse).catch(this.handleError)
           break
         case ExtensionMessages.MeetingStarted:
-          this.processMeetingStart(request.meetingId, request.metadata, sender.tab!.id!).then(sendResponse)
+          this.processMeetingStart(request.meetingId, request.metadata, sender.tab!.id!)
+            .then(sendResponse)
+            .catch(this.handleError)
           break
         case ExtensionMessages.MeetingEnded:
-          this.processMeetingEnd(request.meetingId).then(sendResponse)
+          this.processMeetingEnd(request.meetingId).then(sendResponse).catch(this.handleError)
           break
         case ExtensionMessages.MeetingState:
-          this.processMeetingState().then(sendResponse)
+          this.processMeetingState().then(sendResponse).catch(this.handleError)
           break
         case ExtensionMessages.AddonSupported:
-          this.processAddonEnabled(request.addonId).then(sendResponse)
+          this.processAddonEnabled(request.addonId).then(sendResponse).catch(this.handleError)
           break
       }
 
@@ -84,30 +100,44 @@ class ChromeBackgroundService {
   }
 
   async processAddonEnabled(addonId: string): Promise<boolean> {
-    return new Promise((resolve) => {
-      chrome.tabs.query({ active: true, lastFocusedWindow: true }).then(async (tabs) => {
-        if (!tabs || tabs.length === 0) {
-          return resolve(false)
-        }
+    return new Promise((resolve, reject) => {
+      chrome.tabs
+        .query({ active: true, lastFocusedWindow: true })
+        .then(async (tabs) => {
+          if (!tabs || tabs.length === 0) {
+            return resolve(false)
+          }
 
-        if (!this.google.auth.currentUser) {
-          return resolve(false)
-        }
+          if (!this.google.auth.currentUser) {
+            return resolve(false)
+          }
 
-        const userAddonStore = new UserAddonStore(this.google.auth.currentUser.uid)
-        const addon = await userAddonStore.get(addonId)
+          try {
+            const userAddonStore = new UserAddonStore(this.google.auth.currentUser.uid)
+            const addon = await userAddonStore.get(addonId)
 
-        return resolve(!!addon)
-      })
+            return resolve(!!addon)
+          } catch (err) {
+            reject(`An error occurred while fetching user addons: ${err}`)
+          }
+        })
+        .catch((err) => {
+          reject(`Couldn't query active tab information: ${err}`)
+        })
     })
   }
 
   async processMeetingState(): Promise<any> {
-    const { recording, meetingDetails } = await chrome.storage.local.get(['recording', 'meetingDetails'])
+    const { recording, meetingDetails, error } = await chrome.storage.local.get([
+      'recording',
+      'meetingDetails',
+      'error'
+    ])
 
     return {
       recording,
-      meetingDetails
+      meetingDetails,
+      error
     }
   }
 
@@ -127,25 +157,37 @@ class ChromeBackgroundService {
       return this.meetingStore.delete(meetingId)
     }
 
-    if (!(await this.meetingStore.exists(meetingId))) {
-      await this.meetingStore.create(meetingId, meetingDetails)
-    } else {
-      // In case the user rejoins the meeting after leaving
-      await this.meetingStore.update(meetingId, { ended: false })
+    try {
+      if (!(await this.meetingStore.exists(meetingId))) {
+        await this.meetingStore.create(meetingId, meetingDetails)
+      } else {
+        // In case the user rejoins the meeting after leaving
+        await this.meetingStore.update(meetingId, { ended: false })
+      }
+    } catch (err) {
+      throw new Error(`An error occurred while trying to store meeting information: ${err}`)
     }
 
-    const userMeetingStore = new UserMeetingStore(this.google.auth.currentUser!.uid)
-    if (!(await userMeetingStore.exists(meetingId))) {
-      await userMeetingStore.create(meetingId)
+    try {
+      const userMeetingStore = new UserMeetingStore(this.google.auth.currentUser!.uid)
+      if (!(await userMeetingStore.exists(meetingId))) {
+        await userMeetingStore.create(meetingId)
+      }
+    } catch (err) {
+      throw new Error(`An error occurred while trying to associate meeting with user: ${err}`)
     }
 
     await chrome.storage.local.set({ recording: true, meetingDetails })
   }
 
   async processMeetingEnd(meetingId: string) {
-    await chrome.storage.local.remove(['recording', 'meetingDetails', 'tabId'])
+    await chrome.storage.local.remove(['recording', 'meetingDetails', 'tabId', 'error'])
 
-    await this.meetingStore.update(meetingId, { ended: true })
+    try {
+      await this.meetingStore.update(meetingId, { ended: true })
+    } catch (err) {
+      this.handleError(`An error occurred while updating meeting on meeting ended: ${err}`)
+    }
   }
 
   async processMeetingMetadata(_meetingId: string, _metadata: MeetingMetadata) {}
@@ -161,4 +203,4 @@ chrome.runtime.onInstalled.addListener((object) => {
   }
 })
 
-console.log('Background service started')
+console.debug('Background service started')
