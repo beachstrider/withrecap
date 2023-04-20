@@ -10,7 +10,7 @@ export const SignIn = () => {
 
   useEffect(() => {
     if (user) {
-      return //navigate(ROUTES.Addon)
+      return navigate(ROUTES.Addon)
     }
   }, [user, navigate])
 
