@@ -35,13 +35,14 @@ const Popup = () => {
       return (
         <div>
           {/** TODO: This should be improved */}
-          <p>cannot record this meeting as it's not part of your calendar</p>
+          <p>Cannot record this meeting as it's not part of your calendar</p>
         </div>
       )
     }
   }
 
   if (loading) {
+    // TODO: Use same spinner as app
     return <p>Loading...</p>
   }
 
