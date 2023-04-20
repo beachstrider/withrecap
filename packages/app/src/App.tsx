@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
+import { AuthGuard, AuthProvider, GoogleAuthProvider } from '@recap/shared'
 
 import { INTEGRATIONS, MEETINGS, MEETING_DETAILS, PRIVACY_POLICY, TERMS_CONDITIONS } from './constants/routes'
 
@@ -9,38 +10,59 @@ import Meetings from './pages/Meetings'
 import MeetingDetails from './pages/Meetings/Details'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 
-import { AuthProvider } from './auth/AuthProvider'
 import TermsConditions from './pages/TermsConditions'
 
 export default function App() {
   return (
     <>
       <Routes>
-        <Route path="/" index element={<Website />} />
-        <Route path={PRIVACY_POLICY} element={<PrivacyPolicy />} />
-        <Route path={TERMS_CONDITIONS} element={<TermsConditions />} />
+        <Route
+          path="/"
+          index
+          element={
+            <AuthProvider provider={GoogleAuthProvider}>
+              <Website />
+            </AuthProvider>
+          }
+        />
+        <Route
+          path={PRIVACY_POLICY}
+          element={
+            <AuthProvider provider={GoogleAuthProvider}>
+              <PrivacyPolicy />
+            </AuthProvider>
+          }
+        />
+        <Route
+          path={TERMS_CONDITIONS}
+          element={
+            <AuthProvider provider={GoogleAuthProvider}>
+              <TermsConditions />
+            </AuthProvider>
+          }
+        />
         <Route
           path={MEETINGS}
           element={
-            <AuthProvider>
+            <AuthGuard provider={GoogleAuthProvider}>
               <Meetings />
-            </AuthProvider>
+            </AuthGuard>
           }
         />
         <Route
           path={MEETING_DETAILS}
           element={
-            <AuthProvider>
+            <AuthGuard provider={GoogleAuthProvider}>
               <MeetingDetails />
-            </AuthProvider>
+            </AuthGuard>
           }
         />
         <Route
           path={INTEGRATIONS}
           element={
-            <AuthProvider>
+            <AuthGuard provider={GoogleAuthProvider}>
               <Integrations />
-            </AuthProvider>
+            </AuthGuard>
           }
         />
       </Routes>

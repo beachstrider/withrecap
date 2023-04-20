@@ -5,8 +5,9 @@ import { UserStore } from '../storage/users'
 import { BaseAuthProvider } from '.'
 
 type AuthGuardContextType = {
-  token: string
+  token: string | null
   user: User
+  logout: BaseAuthProvider['logout']
   error: Error | null
 }
 export const AuthGuardContext = createContext<AuthGuardContextType>({} as AuthGuardContextType)
@@ -18,7 +19,7 @@ export const useAuthGuard = () => {
 interface AuthGuardProps {
   provider: new () => BaseAuthProvider
   children: JSX.Element
-  onNeedAuth: () => void
+  onNeedAuth?: () => void
 }
 
 export const AuthGuard = ({ children, onNeedAuth, provider }: AuthGuardProps) => {
@@ -31,11 +32,14 @@ export const AuthGuard = ({ children, onNeedAuth, provider }: AuthGuardProps) =>
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((u, t) => {
-      if (u === null || t === null) {
+      if (u === null) {
         setUser(null)
         setToken(null)
         setError(null)
-        return onNeedAuth()
+
+        onNeedAuth?.()
+
+        return
       }
 
       userStore
@@ -66,7 +70,7 @@ export const AuthGuard = ({ children, onNeedAuth, provider }: AuthGuardProps) =>
     return unsubscribe
   }, [auth, userStore, onNeedAuth])
 
-  if (!user || !token) {
+  if (!user) {
     return null
   }
 
@@ -75,7 +79,8 @@ export const AuthGuard = ({ children, onNeedAuth, provider }: AuthGuardProps) =>
       value={{
         token,
         user,
-        error
+        error,
+        logout: auth.logout
       }}
     >
       {children}

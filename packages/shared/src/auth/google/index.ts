@@ -1,5 +1,13 @@
 import { FirebaseApp } from 'firebase/app'
-import { getAuth, onAuthStateChanged, signInWithCredential, GoogleAuthProvider, Auth, Unsubscribe } from 'firebase/auth'
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithCredential,
+  GoogleAuthProvider as AuthProvider,
+  Auth,
+  Unsubscribe,
+  signInWithRedirect
+} from 'firebase/auth'
 
 import { firebase, FirebaseUser } from '../firebase'
 import { BaseAuthProvider } from '..'
@@ -52,12 +60,44 @@ export class GoogleIdentityAuthProvider implements BaseAuthProvider {
     try {
       try {
         this._accessToken = await this._login({ interactive: !silent })
-        await signInWithCredential(this.auth, GoogleAuthProvider.credential(null, this._accessToken))
+        await signInWithCredential(this.auth, AuthProvider.credential(null, this._accessToken))
       } catch (err) {
         throw new Error(`SSO ended with an error: ${err}`)
       }
     } catch (err) {
       throw new Error(`Could not persist auth in local storage: ${err}`)
+    }
+  }
+
+  public logout = async () => {
+    return this.auth.signOut()
+  }
+}
+
+export class GoogleAuthProvider implements BaseAuthProvider {
+  private firebase: FirebaseApp
+  public auth: Auth
+
+  constructor() {
+    this.firebase = firebase
+    this.auth = getAuth(this.firebase)
+  }
+
+  public onAuthStateChanged = (callback: (user: FirebaseUser | null, token: string | null) => void): Unsubscribe => {
+    return onAuthStateChanged(this.auth, (user) => callback(user, null))
+  }
+
+  public login = async ({ silent }: { silent: boolean } = { silent: false }) => {
+    const provider = new AuthProvider()
+    // Add scope to read signed in user info
+    provider.addScope('https://www.googleapis.com/auth/userinfo.email')
+    // Add scope to read user calendar events
+    provider.addScope('https://www.googleapis.com/auth/calendar.events.readonly')
+
+    try {
+      await signInWithRedirect(this.auth, provider)
+    } catch (err) {
+      throw new Error(`SSO ended with an error: ${err}`)
     }
   }
 

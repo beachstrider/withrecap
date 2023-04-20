@@ -1,13 +1,15 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Button } from '../buttons'
+import { useAuth } from '@recap/shared'
 
+import { Button } from '../buttons'
 import google from '../../assets/img/google.png'
 import logo from '../../assets/img/logo.svg'
-import { signin } from '../../auth/Google'
 import { PRIVACY_POLICY, SIGNING_IN, TERMS_CONDITIONS } from '../../constants/routes'
 
 export default function Index({ className = '' }) {
+  const { login } = useAuth()
+
   const navigate = useNavigate()
 
   return (
@@ -29,9 +31,10 @@ export default function Index({ className = '' }) {
               Privacy
             </Link>
             <button
-              onClick={() => {
+              onClick={async () => {
                 navigate(`/${SIGNING_IN}`)
-                signin()
+                // TODO: Handle errors
+                await login()
               }}
               className="block text-[15px] font-semibold text-gray-500"
             >

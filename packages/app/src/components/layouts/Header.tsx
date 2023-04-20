@@ -1,13 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-
 import { Menu } from '@headlessui/react'
+import { Switch, UserStore, getUserFirstName, useAuth, useAuthGuard } from '@recap/shared'
 
-import { useAuth } from '../../auth/AuthProvider'
-import { signin, signout } from '../../auth/Google'
-import { auth } from '../../firebase'
-
-import { Switch, UserStore, getUserFirstName } from '@recap/shared'
 import { Button } from '../buttons'
 
 import arrowRight from '../../assets/img/arrowRight.svg'
@@ -34,7 +29,7 @@ export default function Index({ isPublic = false }) {
 }
 
 const PrivateSection = () => {
-  const { user } = useAuth()
+  const { user, logout } = useAuthGuard()
 
   const userStore = useMemo(() => new UserStore(), [])
 
@@ -71,7 +66,7 @@ const PrivateSection = () => {
       <div className="relative">
         <Menu>
           <Menu.Button className="flex items-center gap-[10px]">
-            <img src={`${user?.photoURL}`} alt="" className="w-[32px] h-[32px] rounded-full" />
+            <img src={`${user.photoURL}`} alt="" className="w-[32px] h-[32px] rounded-full" />
             <div className="font-semibold rounded-full">{getUserFirstName(user)}</div>
           </Menu.Button>
           <Menu.Items className="z-[1000] absolute flex flex-col mt-[28px] menu-shadow p-[20px] w-[300px] right-0 text-[13px] bg-white sm:rounded-[20px] rounded-[15px]">
@@ -100,8 +95,8 @@ const PrivateSection = () => {
             </div>
             <div className="mb-[20px]">
               <div
-                onClick={() => {
-                  signout()
+                onClick={async () => {
+                  await logout()
                   window.location.href = '/'
                 }}
                 className="flex items-center justify-between cursor-pointer"
@@ -130,26 +125,26 @@ const PrivateSection = () => {
 }
 
 const PublicSection = () => {
+  const { onAuthStateChanged, login } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
-    // If user log in is detected on public home page, user redirects to their dashboard
-    const unsubscribe = auth.onAuthStateChanged((u: any) => {
+    // If user already logged in we redirect to meetings page
+    const unsubscribe = onAuthStateChanged((u: any) => {
       if (u !== null) {
-        console.debug('you are logged in!')
         navigate('/meetings')
       }
     })
 
     return unsubscribe
-  }, [auth])
+  }, [navigate, onAuthStateChanged])
 
   return (
     <div className="flex items-center sm:gap-[20px] gap-[15px]">
       <button
-        onClick={() => {
+        onClick={async () => {
           navigate(`/${SIGNING_IN}`)
-          signin()
+          await login()
         }}
         className="text-[15px] font-semibold text-gray-500"
       >

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-
 import { LoadingScreen } from '@recap/shared'
+
 import { Button } from '../components/buttons'
 import Layout from '../components/layouts'
 
