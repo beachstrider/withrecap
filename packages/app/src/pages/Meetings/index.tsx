@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { getUserFirstName } from '@recap/shared'
-import { useAuth } from '../../auth/AuthProvider'
+import { getUserFirstName, useAuthGuard } from '@recap/shared'
+
 import { ExtensionInstallationAlert } from '../../components/blocks'
 import Meetings from '../../components/dashboard/Meeting/List'
 import MeetingTimeSaved from '../../components/dashboard/Meeting/MeetingTimeSaved'
@@ -10,7 +10,7 @@ import { useIntegrations } from '../../hooks/integrations'
 import { useMeetings } from '../../hooks/meetings'
 
 export default function Index() {
-  const { user } = useAuth()
+  const { user } = useAuthGuard()
   const { meetingsByDate, loading: loadingMeetings } = useMeetings()
   const { userAddons, loading: loadingAddons } = useIntegrations()
 

@@ -1,9 +1,8 @@
-import { Addon, AddonStore, Addons, UserAddonConfig, UserAddonStore, UserAddons } from '@recap/shared'
+import { Addon, AddonStore, Addons, UserAddonConfig, UserAddonStore, UserAddons, useAuthGuard } from '@recap/shared'
 import { useEffect, useMemo, useState } from 'react'
-import { useAuth } from '../auth/AuthProvider'
 
 export function useIntegrations() {
-  const { user } = useAuth()
+  const { user } = useAuthGuard()
 
   const userAddonStore = useMemo(() => new UserAddonStore(user.uid), [user.uid])
   const addonStore = useMemo(() => new AddonStore(), [])

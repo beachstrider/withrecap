@@ -10,7 +10,7 @@ export { AuthGuard, useAuthGuard } from './auth/AuthGuard'
 export { firebase } from './auth/firebase'
 export type { FirebaseUser } from './auth/firebase'
 
-export { GoogleIdentityAuthProvider } from './auth/google'
+export { GoogleIdentityAuthProvider, GoogleAuthProvider } from './auth/google'
 
 //===========================================================
 // STORAGE

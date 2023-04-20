@@ -1,11 +1,9 @@
-import { Meeting, MeetingStore, UserMeetingStore } from '@recap/shared/'
+import { Meeting, MeetingStore, UserMeetingStore, useAuthGuard } from '@recap/shared/'
 import { format } from 'date-fns'
 import { useEffect, useMemo, useState } from 'react'
 
-import { useAuth } from '../auth/AuthProvider'
-
 export function useMeetings() {
-  const { user } = useAuth()
+  const { user } = useAuthGuard()
 
   const meetingStore = useMemo(() => new MeetingStore(), [])
   const userMeetingStore = useMemo(() => new UserMeetingStore(user.uid), [user.uid])
