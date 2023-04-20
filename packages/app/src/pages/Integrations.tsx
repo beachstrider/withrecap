@@ -27,7 +27,9 @@ export default function Index() {
               key={id}
             >
               <div className="flex gap-[12px] items-center">
-                <img src={addon.logo} alt={`${addon.name} Logo`} className="w-[50px] h-[50px]" />
+                <div className="flex w-[50px] h-[50px] rounded-full border-[2px] border-solid border-gray-100 overflow-hidden">
+                  <img src={addon.logo} alt={`${addon.name} Logo`} className="flex-1" />
+                </div>
                 <div className="flex flex-col gap-[1px]">
                   <div className="sm:text-[17px] text-[12px] font-semibold">{addon.name}</div>
                   {addon.popular ? <div className="text-gray-500">Most Popular</div> : ''}
