@@ -69,17 +69,16 @@ class GoogleMeetsService {
     }
   }
 
+  private hideCaption(ccDiv: HTMLDivElement): void {
+    ccDiv.style.visibility = 'hidden'
+  }
+
   private listenOnNewMessage(ccDiv: HTMLDivElement): MutationObserver {
     const ccDivObserver = new MutationObserver(() => {
       console.debug('change happened')
       const language = ccDiv.querySelector<HTMLSpanElement>(SELECTOR_LANGUAGE)?.textContent
       const speaker = ccDiv.querySelector<HTMLDivElement>(SELECTOR_SPEAKER)?.textContent
       const text = ccDiv.querySelector<HTMLDivElement>(SELECTOR_TEXT)?.textContent
-
-      if (!language && !text) {
-        console.error('an unexpected error happened, text and language could not be extracted. CALL HANGUP?')
-        return
-      }
 
       if (!language || !speaker || !text) {
         return console.debug('message skipped, some information is missing', {
@@ -201,6 +200,7 @@ class GoogleMeetsService {
     }
 
     this.enableCaption(ccDiv, callDiv)
+    this.hideCaption(ccDiv)
 
     const ccDivObserver = this.listenOnNewMessage(ccDiv)
     const participantsDivObserver = this.listenOnParticipantChange(participantsDiv)
