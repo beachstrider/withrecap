@@ -56,6 +56,7 @@ const Metadata: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => {
           return (
             <div key={key} className="flex items-center justify-between">
               <div className="flex gap-[12px] items-center">
+                {/** TODO: We don't have access to avatar here */}
                 <UserAvatar avatar={undefined} name={speaker} className="sm:w-[32px] sm:h-[32px] w-[24px] h-[24px]" />
                 <div className="font-semibold">{speaker}</div>
               </div>

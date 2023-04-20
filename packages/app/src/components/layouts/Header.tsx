@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 
 import { Menu } from '@headlessui/react'
@@ -7,7 +7,7 @@ import { useAuth } from '../../auth/AuthProvider'
 import { signin, signout } from '../../auth/Google'
 import { auth } from '../../firebase'
 
-import { Switch, getUserFirstName } from '@recap/shared'
+import { Switch, UserStore, getUserFirstName } from '@recap/shared'
 import { Button } from '../buttons'
 
 import arrowRight from '../../assets/img/arrowRight.svg'
@@ -34,10 +34,25 @@ export default function Index({ isPublic = false }) {
 }
 
 const PrivateSection = () => {
-  const { user } = useAuth() ?? {}
+  const { user } = useAuth()
+
+  const userStore = useMemo(() => new UserStore(), [])
+
   const [automaticSharing, setAutomaticSharing] = useState(false)
 
-  if (!user) return <></>
+  useEffect(() => {
+    userStore.get(user.uid).then((u) => {
+      if (u.autoSharing) {
+        setAutomaticSharing(true)
+      }
+    })
+  }, [userStore, user.uid])
+
+  const toggleAutoSharing = async () => {
+    setAutomaticSharing(!automaticSharing)
+
+    await userStore.update(user.uid, { autoSharing: !automaticSharing })
+  }
 
   return (
     <>
@@ -67,7 +82,7 @@ const PrivateSection = () => {
                   <div className="font-semibold text-[15px]">Automatic Sharing</div>
                 </div>
                 <div>
-                  <Switch checked={automaticSharing} onClick={() => setAutomaticSharing(!automaticSharing)} />
+                  <Switch checked={automaticSharing} onClick={toggleAutoSharing} />
                 </div>
               </div>
               <div className="text-gray-500">

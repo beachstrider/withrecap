@@ -14,7 +14,7 @@ export default function UserAvatar({ className, name, avatar }: Props) {
       {avatar && <img src={avatar} alt="" className="flex-1" />}
       {!avatar && (
         <div className="flex items-center justify-center flex-1 font-semibold bg-gray-200">
-          {typeof name !== 'undefined' ? name.substring(0, 1) : '?'}
+          {name?.substring(0, 1) || '?'}
         </div>
       )}
     </div>
