@@ -54,7 +54,7 @@ export * from './contact/google'
 
 export * from './components/input'
 export * from './components/spinner'
-export * from './components/toast'
+export { ToastContainer, toast } from './components/toast'
 
 //===========================================================
 // UTILS

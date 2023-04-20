@@ -5,7 +5,7 @@ import google from '../../../../assets/img/google.svg'
 import { ROUTES } from '../../App'
 
 export const SignIn = () => {
-  const { user, login } = useAuth()
+  const { user, login, error } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -13,6 +13,12 @@ export const SignIn = () => {
       return navigate(ROUTES.Addon)
     }
   }, [user, navigate])
+
+  useEffect(() => {
+    if (error) {
+      toast.error('An error occurred while authenticating', error)
+    }
+  }, [error])
 
   const signIn = async () => {
     try {

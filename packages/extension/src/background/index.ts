@@ -10,25 +10,25 @@ import {
 
 import { ExtensionMessages, MeetingMessage, MeetingMetadata } from '../common/models'
 
-const google = new GoogleIdentityAuthProvider()
-
 class ChromeBackgroundService {
   private meetingStore: MeetingStore
   private conversationStore: ConversationStore
+  private google: GoogleIdentityAuthProvider
 
   constructor() {
     this.meetingStore = new MeetingStore()
     this.conversationStore = new ConversationStore()
+    this.google = new GoogleIdentityAuthProvider()
   }
 
   private async getMeetingDetails(meetingId: string): Promise<Meeting | undefined> {
-    await google.login({ silent: true })
+    await this.google.login({ silent: true })
 
-    if (!google.accessToken) {
+    if (!this.google.accessToken) {
       throw Error('an error must have occurred while authenticating, no access token could be fetched')
     }
 
-    const calendar = new GoogleCalendar(google.accessToken)
+    const calendar = new GoogleCalendar(this.google.accessToken)
     const meetingDetails = await calendar.getMeetingDetails(meetingId)
 
     if (!meetingDetails) {
@@ -90,11 +90,11 @@ class ChromeBackgroundService {
           return resolve(false)
         }
 
-        if (!google.auth.currentUser) {
+        if (!this.google.auth.currentUser) {
           return resolve(false)
         }
 
-        const userAddonStore = new UserAddonStore(google.auth.currentUser.uid)
+        const userAddonStore = new UserAddonStore(this.google.auth.currentUser.uid)
         const addon = await userAddonStore.get(addonId)
 
         return resolve(!!addon)
@@ -112,8 +112,8 @@ class ChromeBackgroundService {
   }
 
   async processTranscriptionMessage(meetingId: string, message: MeetingMessage): Promise<void> {
-    if (message.speaker === 'You' && google.auth.currentUser) {
-      message.speaker = google.auth.currentUser.displayName || google.auth.currentUser.email || 'Unknown'
+    if (message.speaker === 'You' && this.google.auth.currentUser) {
+      message.speaker = this.google.auth.currentUser.displayName || this.google.auth.currentUser.email || 'Unknown'
     }
 
     return this.conversationStore.add(meetingId, message)
@@ -134,7 +134,7 @@ class ChromeBackgroundService {
       await this.meetingStore.update(meetingId, { ended: false })
     }
 
-    const userMeetingStore = new UserMeetingStore(google.auth.currentUser!.uid)
+    const userMeetingStore = new UserMeetingStore(this.google.auth.currentUser!.uid)
     if (!(await userMeetingStore.exists(meetingId))) {
       await userMeetingStore.create(meetingId)
     }

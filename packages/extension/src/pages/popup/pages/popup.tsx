@@ -34,6 +34,7 @@ const Popup = () => {
     } else {
       return (
         <div>
+          {/** TODO: This should be improved */}
           <p>cannot record this meeting as it's not part of your calendar</p>
         </div>
       )
