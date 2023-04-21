@@ -88,6 +88,15 @@ export class GoogleAuthProvider implements BaseAuthProvider {
     return onAuthStateChanged(this.auth, (user) => callback(user, null))
   }
 
+  /**
+   * NOTE: We have an issue where we don't know which scopes we granted to us
+   * since Firebase Authentication doesn't expose this information (even though
+   * we request it using the custom parameter)
+   * For reference: https://www.google.com/search?q=Firebase+Authentication+does+not+provide+the+%22granted+scopes%22
+   *
+   * Since the extension authentication mechanism rely on the Google Identity API
+   * we are covered because it will request all missing scopes once the user installs it
+   */
   public login = async () => {
     try {
       const provider = new AuthProvider()
