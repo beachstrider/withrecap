@@ -6,7 +6,8 @@ import {
   GoogleAuthProvider as AuthProvider,
   Auth,
   Unsubscribe,
-  signInWithRedirect
+  signInWithRedirect,
+  AuthError
 } from 'firebase/auth'
 
 import { firebase, FirebaseUser } from '../firebase'
@@ -58,14 +59,12 @@ export class GoogleIdentityAuthProvider implements BaseAuthProvider {
 
   public login = async ({ silent }: { silent: boolean } = { silent: false }) => {
     try {
-      try {
-        this._accessToken = await this._login({ interactive: !silent })
-        await signInWithCredential(this.auth, AuthProvider.credential(null, this._accessToken))
-      } catch (err) {
-        throw new Error(`SSO ended with an error: ${err}`)
-      }
+      this._accessToken = await this._login({ interactive: !silent })
+      await signInWithCredential(this.auth, AuthProvider.credential(null, this._accessToken))
     } catch (err) {
-      throw new Error(`Could not persist auth in local storage: ${err}`)
+      const error = err as AuthError
+
+      throw new Error(`SSO ended with an error: ${error}`)
     }
   }
 
@@ -74,6 +73,8 @@ export class GoogleIdentityAuthProvider implements BaseAuthProvider {
   }
 }
 
+// TODO: Add access token if necessary by following step 5 here:
+// https://firebase.google.com/docs/auth/web/google-signin#handle_the_sign-in_flow_with_the_firebase_sdk
 export class GoogleAuthProvider implements BaseAuthProvider {
   private firebase: FirebaseApp
   public auth: Auth
@@ -87,17 +88,25 @@ export class GoogleAuthProvider implements BaseAuthProvider {
     return onAuthStateChanged(this.auth, (user) => callback(user, null))
   }
 
-  public login = async ({ silent }: { silent: boolean } = { silent: false }) => {
-    const provider = new AuthProvider()
-    // Add scope to read signed in user info
-    provider.addScope('https://www.googleapis.com/auth/userinfo.email')
-    // Add scope to read user calendar events
-    provider.addScope('https://www.googleapis.com/auth/calendar.events.readonly')
-
+  public login = async () => {
     try {
+      const provider = new AuthProvider()
+
+      // Add scope to read signed in user info
+      provider.addScope('https://www.googleapis.com/auth/userinfo.email')
+      provider.addScope('https://www.googleapis.com/auth/userinfo.profile')
+      // Add scope to read user calendar events
+      provider.addScope('https://www.googleapis.com/auth/calendar.events.readonly')
+
+      provider.setCustomParameters({
+        include_granted_scopes: 'true'
+      })
+
       await signInWithRedirect(this.auth, provider)
     } catch (err) {
-      throw new Error(`SSO ended with an error: ${err}`)
+      const error = err as AuthError
+
+      throw new Error(`SSO ended with an error: ${error}`)
     }
   }
 

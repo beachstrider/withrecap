@@ -7,8 +7,8 @@ import { BaseAuthProvider } from '.'
 type AuthGuardContextType = {
   token: string | null
   user: User
-  logout: BaseAuthProvider['logout']
   error: Error | null
+  logout: BaseAuthProvider['logout']
 }
 export const AuthGuardContext = createContext<AuthGuardContextType>({} as AuthGuardContextType)
 
