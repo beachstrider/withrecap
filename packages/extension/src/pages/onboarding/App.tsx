@@ -1,10 +1,10 @@
-import React from 'react'
-import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom'
 import { AuthGuard, AuthProvider, GoogleIdentityAuthProvider } from '@recap/shared'
+import React from 'react'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 
-import { SignIn } from './pages/signin'
 import { AddonsSelection } from './pages/addons'
 import { AutoSharing } from './pages/sharing'
+import { SignIn } from './pages/signin'
 
 import Layout from './components/Layout'
 import { Done } from './pages/done'
@@ -12,8 +12,8 @@ import { Done } from './pages/done'
 export const ROUTES = {
   Login: '/1',
   Addon: '/2',
-  Sharing: '/3',
-  Done: '/4'
+  Sharing: '/30',
+  Done: '/3'
 }
 
 const provider = GoogleIdentityAuthProvider

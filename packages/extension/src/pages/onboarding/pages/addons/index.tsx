@@ -5,8 +5,8 @@ import {
   UserAddonConfig,
   UserAddonStore,
   UserAddons,
-  useAuthGuard,
-  toast
+  toast,
+  useAuthGuard
 } from '@recap/shared'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -53,7 +53,11 @@ export const AddonsSelection = () => {
 
       // Note: For now, since we only have Google Meet working, we redirect
       // the user automatically to the next step once he enables it
-      return navigate(ROUTES.Sharing)
+
+      // Just to make navigation user friendly
+      return setTimeout(() => {
+        navigate(ROUTES.Done)
+      }, 1000)
     } catch (err) {
       toast.error("Settings couldn't be saved", err)
     }
@@ -100,7 +104,7 @@ export const AddonsSelection = () => {
       <h1 className="sm:mb-[64px] mb-[48px]">Add Recap to your video call apps</h1>
       <div className="flex flex-col gap-[16px] sm:mb-[64px] mb-[48px]">{renderAddonList()}</div>
       <div className="flex justify-center">
-        <SkipButton onClick={() => navigate(ROUTES.Sharing)} />
+        <SkipButton onClick={() => navigate(ROUTES.Done)} />
       </div>
     </>
   )

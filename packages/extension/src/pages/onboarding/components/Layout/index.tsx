@@ -23,7 +23,7 @@ const Layout = () => {
             <img src={logo} alt="" />
             <h1 className="sm:text-[30px] text-[24px] font-semibold">Recap</h1>
           </div>
-          <p className="sm:text-[15px] text-[12px]">Step {step} of 4</p>
+          <p className="sm:text-[15px] text-[12px]">Step {step} of 3</p>
         </header>
         <div>
           <Outlet />
