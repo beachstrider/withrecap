@@ -70,7 +70,7 @@ const PrivateSection = () => {
             <div className="font-semibold rounded-full">{getUserFirstName(user)}</div>
           </Menu.Button>
           <Menu.Items className="z-[1000] absolute flex flex-col mt-[28px] menu-shadow p-[20px] w-[300px] right-0 text-[13px] bg-white sm:rounded-[20px] rounded-[15px]">
-            <div className="mb-[20px]">
+            {/* <div className="mb-[20px]">
               <div className="flex justify-between items-center mb-[8px]">
                 <div className="flex gap-[10px] grow">
                   <img src={paperPlan} alt="" className="w-[20px] h-[20px]" />
@@ -83,7 +83,7 @@ const PrivateSection = () => {
               <div className="text-gray-500">
                 Recap will automatically send meeting notes to all participants after each meeting.
               </div>
-            </div>
+            </div> */}
             <div className="mb-[20px]">
               <Link to="#" className="flex items-center justify-between">
                 <div className="flex gap-[10px] grow">

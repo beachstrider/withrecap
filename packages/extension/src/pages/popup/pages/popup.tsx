@@ -1,10 +1,10 @@
+import { LoadingIcon, Meeting, useAuthGuard } from '@recap/shared'
 import React, { useEffect, useState } from 'react'
-import { Meeting, useAuthGuard } from '@recap/shared'
 
 import { ExtensionMessages } from '../../../common/models'
+import { AutomaticSharing } from '../components/AutomaticSharing'
 import { MeetingDetails } from '../components/MeetingDetails'
 import { RecentMeeting } from '../components/RecentMeeting'
-import { AutomaticSharing } from '../components/AutomaticSharing'
 
 const Popup = () => {
   const { user } = useAuthGuard()
@@ -45,10 +45,14 @@ const Popup = () => {
 
   if (loading) {
     // TODO: Use same spinner as app
-    return <p>Loading...</p>
+    return (
+      <div className="flex items-center justify-center flex-1">
+        <LoadingIcon />
+      </div>
+    )
   }
 
-  return <div>{!meeting ? <RecentMeeting uid={user.uid} /> : displayMeetingDetails()}</div>
+  return <>{!meeting ? <RecentMeeting uid={user.uid} /> : displayMeetingDetails()}</>
 }
 
 export default Popup
