@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Layout from '../components/layouts'
-import { SUPPORT_TERMS_CONDITIONS_REQUEST } from '../constants/routes'
+import { SUPPORT_TERMS_CONDITIONS_REQUEST } from '../constants/links'
 
 export default function TermsConditions() {
   useEffect(() => {
@@ -275,7 +275,7 @@ export default function TermsConditions() {
         <h5 className="font-semibold sm:mb-[8px] mb-[6px]">CONTACT US</h5>
         <div>
           Please address your questions and feedback to&nbsp;
-          <Link target="_bland" to={SUPPORT_TERMS_CONDITIONS_REQUEST}>
+          <Link target="_blank" to={SUPPORT_TERMS_CONDITIONS_REQUEST}>
             support@withrecap.com
           </Link>
         </div>

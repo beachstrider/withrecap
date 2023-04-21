@@ -11,7 +11,8 @@ import google from '../../assets/img/google.svg'
 import logo from '../../assets/img/logo.svg'
 import outbound from '../../assets/img/outbound.svg'
 import question from '../../assets/img/question.svg'
-import { DELETE_ACCOUNT_REQUEST, INTEGRATIONS, MEETINGS, SIGNING_IN, SUPPORT_REQUEST } from '../../constants/routes'
+import { DELETE_ACCOUNT_REQUEST, SUPPORT_REQUEST } from '../../constants/links'
+import { INTEGRATIONS, MEETINGS, SIGNING_IN } from '../../constants/routes'
 
 export default function Index({ isPublic = false }) {
   return (

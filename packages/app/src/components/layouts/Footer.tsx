@@ -4,7 +4,8 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import google from '../../assets/img/google.svg'
 import logo from '../../assets/img/logo.svg'
-import { PRIVACY_POLICY, SIGNING_IN, SUPPORT_REQUEST, TERMS_CONDITIONS } from '../../constants/routes'
+import { SUPPORT_REQUEST } from '../../constants/links'
+import { PRIVACY_POLICY, SIGNING_IN, TERMS_CONDITIONS } from '../../constants/routes'
 import { Button } from '../buttons'
 
 export default function Index({ className = '' }) {
