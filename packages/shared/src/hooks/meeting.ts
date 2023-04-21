@@ -16,8 +16,8 @@ export function useMeetings() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    userMeetingStore.list().then((mids: string[]) => {
-      meetingStore.getByIds(mids).then((m: Meeting[]) => {
+    userMeetingStore.list().then((mids) => {
+      meetingStore.getByIds(mids).then((m) => {
         setMeetings(m)
 
         if (m.length === 0) {
@@ -59,7 +59,7 @@ export function useMeeting(mid: string) {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    meetingStore.get(mid).then((meeting?: Meeting) => {
+    meetingStore.get(mid).then((meeting) => {
       setData(meeting)
       setLoading(false)
       setError(null)
@@ -83,7 +83,7 @@ export function useRecentMeeting() {
 
     userMeetingStore
       .recent()
-      .then((recentMeetingId?: string) => {
+      .then((recentMeetingId) => {
         if (!recentMeetingId) {
           return
         }
