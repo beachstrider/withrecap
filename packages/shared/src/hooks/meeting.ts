@@ -1,6 +1,8 @@
-import { Meeting, MeetingStore, UserMeetingStore, useAuthGuard } from '@recap/shared/'
 import { format } from 'date-fns'
 import { useEffect, useMemo, useState } from 'react'
+import { useAuthGuard } from '../auth/AuthGuard'
+import { Meeting, MeetingStore } from '../storage/meetings'
+import { UserMeetingStore } from '../storage/users/meetings'
 
 export function useMeetings() {
   const { user } = useAuthGuard()
@@ -15,7 +17,7 @@ export function useMeetings() {
 
   useEffect(() => {
     userMeetingStore.list().then((mids: string[]) => {
-      meetingStore.getByIds(mids).then((m) => {
+      meetingStore.getByIds(mids).then((m: Meeting[]) => {
         setMeetings(m)
 
         if (m.length === 0) {
@@ -57,7 +59,7 @@ export function useMeeting(mid: string) {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    meetingStore.get(mid).then((meeting) => {
+    meetingStore.get(mid).then((meeting?: Meeting) => {
       setData(meeting)
       setLoading(false)
       setError(null)
@@ -81,7 +83,7 @@ export function useRecentMeeting() {
 
     userMeetingStore
       .recent()
-      .then((recentMeetingId: string) => {
+      .then((recentMeetingId?: string) => {
         if (!recentMeetingId) {
           return
         }
