@@ -1,6 +1,6 @@
+import { LoadingScreen } from '@recap/shared'
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { LoadingScreen } from '@recap/shared'
 
 import { Button } from '../components/buttons'
 import Layout from '../components/layouts'
@@ -8,7 +8,7 @@ import Layout from '../components/layouts'
 import { SIGNING_IN } from '../constants/routes'
 
 import cara from '../assets/img/cara.png'
-import google from '../assets/img/google.png'
+import google from '../assets/img/google.svg'
 import greenCheck from '../assets/img/greenCheck.png'
 import jeff from '../assets/img/jeff.png'
 import jessica from '../assets/img/jessica2x.png'
@@ -76,7 +76,7 @@ export default function Index() {
                   </div>
                 </div>
               </div>
-              <div className="sm:block hidden right-[200px] bottom-[200px] flex flex-end">
+              <div className="sm:block right-[200px] bottom-[200px] flex flex-end">
                 <div className="absolute right-0 bottom-[150px]">
                   <div
                     className="px-[14px] py-[10px] bg-white flex gap-[8px] rounded-[16px] rotate-[16deg]"
@@ -169,14 +169,14 @@ export default function Index() {
             </Link>
           </div>
         </div>
-        <div className="sm:px-[60px] px-[20px] sm:grid grid-cols-3 gap-[40px]">
+        <div className="sm:px-[60px] px-[20px] sm:grid grid-cols-3 gap-[40px] sm:mb-[16px] mb-[12px]">
           <div
             className="col-span-2 pt-[60px] pb-[100px] sm:rounded-[60px] rounded-[45px] flex flex-col items-center gap-[68px]"
             style={{ background: 'linear-gradient(180deg, #F2ECFF 0%, #F9FBFD 100%)' }}
           >
             <div className="sm:text-[30px] text-[22px] font-semibold">So, what's the next step?</div>
             <div
-              className="sm:min-w-[724px] p-[26px] bg-white rounded-[30px]"
+              className="sm:min-w-[724px] p-[26px] bg-white sm:rounded-[24px] rounded-[18px]"
               style={{
                 boxShadow:
                   '0px 2.7218px 10.8872px rgba(0, 0, 0, 0.01), 0px 0px 5.44361px rgba(0, 0, 0, 0.04), 0px 2.7218px 29.9398px rgba(0, 0, 0, 0.04)'
@@ -213,7 +213,7 @@ export default function Index() {
           >
             <div className="sm:text-[30px] text-[22px] font-semibold">Highlighted moments</div>
             <div
-              className="min-w-[386px] p-[26px] bg-white rounded-[30px] flex flex-col sm:gap-[16px] gap-[12px]"
+              className="min-w-[386px] p-[26px] bg-white sm:rounded-[24px] rounded-[18px] flex flex-col sm:gap-[16px] gap-[12px]"
               style={{
                 boxShadow:
                   '0px 2.7218px 10.8872px rgba(0, 0, 0, 0.01), 0px 0px 5.44361px rgba(0, 0, 0, 0.04), 0px 2.7218px 29.9398px rgba(0, 0, 0, 0.04)'
@@ -245,7 +245,7 @@ export default function Index() {
             <div className="">
               <div className="flex mb-[36px]">
                 <div
-                  className="px-[14px] py-[10px] bg-white flex items-center gap-[12px] rounded-[16px] rotate-[-6deg]"
+                  className="sm:px-[24px] sm:py-[14px] px-[18px] py-[10px] bg-white flex items-center gap-[12px] sm:rounded-[28] rounded-[21px] rotate-[-6deg]"
                   style={{
                     boxShadow:
                       '0px 2px 8px rgba(0, 0, 0, 0.01), 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 2px 22px rgba(0, 0, 0, 0.04)'
@@ -253,14 +253,14 @@ export default function Index() {
                 >
                   <img src={cara} alt="" className="w-[55px] h-[55px]" />
                   <div className="font-semibold text-[27px]">Cara</div>
-                  <div className="rounded-[6px] text-[20px] bg-gray-100 px-[7px] py-[4px] font-bold text-gray-500">
+                  <div className="sm:rounded-[10px] rounded-[6px] text-[20px] bg-gray-100 px-[7px] py-[4px] font-bold text-gray-500">
                     50%
                   </div>
                 </div>
               </div>
               <div className="flex mb-[30px] ml-[60px]">
                 <div
-                  className="px-[14px] py-[10px] bg-white flex items-center gap-[12px] rounded-[16px]  rotate-[5deg]"
+                  className="sm:px-[24px] sm:py-[14px] px-[18px] py-[10px] bg-white flex items-center gap-[12px] sm:rounded-[28] rounded-[21px]  rotate-[5deg]"
                   style={{
                     boxShadow:
                       '0px 2px 8px rgba(0, 0, 0, 0.01), 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 2px 22px rgba(0, 0, 0, 0.04)'
@@ -268,14 +268,14 @@ export default function Index() {
                 >
                   <img src={jessica} alt="" className="w-[55px] h-[55px]" />
                   <div className="font-semibold text-[27px]">Jessica</div>
-                  <div className="rounded-[6px] text-[20px] bg-gray-100 px-[7px] py-[4px] font-bold text-gray-500">
+                  <div className="sm:rounded-[10px] rounded-[6px] text-[20px] bg-gray-100 px-[7px] py-[4px] font-bold text-gray-500">
                     28%
                   </div>
                 </div>
               </div>
               <div className="flex">
                 <div
-                  className="px-[14px] py-[10px] bg-white flex items-center gap-[12px] rounded-[16px] rotate-[-5deg]"
+                  className="sm:px-[24px] sm:py-[14px] px-[18px] py-[10px] bg-white flex items-center gap-[12px] sm:rounded-[28] rounded-[21px] rotate-[-5deg]"
                   style={{
                     boxShadow:
                       '0px 2px 8px rgba(0, 0, 0, 0.01), 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 2px 22px rgba(0, 0, 0, 0.04)'
@@ -283,7 +283,7 @@ export default function Index() {
                 >
                   <img src={josh} alt="" className="w-[55px] h-[55px]" />
                   <div className="font-semibold text-[27px]">Josh</div>
-                  <div className="rounded-[6px] text-[20px] bg-gray-100 px-[7px] py-[4px] font-bold text-gray-500">
+                  <div className="sm:rounded-[10px] rounded-[6px] text-[20px] bg-gray-100 px-[7px] py-[4px] font-bold text-gray-500">
                     22%
                   </div>
                 </div>
@@ -295,13 +295,8 @@ export default function Index() {
             style={{ background: 'linear-gradient(180deg, #F2ECFF 0%, #F9FBFD 100%)' }}
           >
             <div className="sm:text-[30px] text-[22px] font-semibold">Missing a meeting shouldn’t be a problem</div>
-            <div
-              className="max-w-[601px] w-full p-[26px] bg-white rounded-[30px]"
-              style={{
-                boxShadow:
-                  '0px 2.7218px 10.8872px rgba(0, 0, 0, 0.01), 0px 0px 5.44361px rgba(0, 0, 0, 0.04), 0px 2.7218px 29.9398px rgba(0, 0, 0, 0.04)'
-              }}
-            >
+            <div className="opacity-gradient-box-shadow max-w-[601px] w-full p-[26px] bg-white sm:rounded-[24px] rounded-[18px]">
+              <div className="sh"></div>
               <div className="flex sm:gap-[16px] gap-[12px] items-center mb-[35px]">
                 <img src={summaryList} alt="" className="w-[26px] h-[26px]" />
                 <div className="sm:text-[21px] text-[15px] font-semibold">Summary</div>

@@ -1,13 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { Menu } from '@headlessui/react'
 import { Switch, UserStore, getUserFirstName, useAuth, useAuthGuard } from '@recap/shared'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 
 import { Button } from '../buttons'
 
 import arrowRight from '../../assets/img/arrowRight.svg'
 import danger from '../../assets/img/danger.svg'
-import google from '../../assets/img/google.png'
+import google from '../../assets/img/google.svg'
 import logo from '../../assets/img/logo.svg'
 import outbound from '../../assets/img/outbound.svg'
 import paperPlan from '../../assets/img/paperPlan.svg'

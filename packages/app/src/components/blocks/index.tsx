@@ -6,8 +6,8 @@ import arrowLeft from '../../assets/img/arrowLeft.svg'
 import back from '../../assets/img/back.svg'
 import close from '../../assets/img/close.svg'
 import forward from '../../assets/img/forward.svg'
-import google from '../../assets/img/googleOutline.png'
-import google_16x16 from '../../assets/img/google_16x16.svg'
+import google from '../../assets/img/google.svg'
+import googleOutline from '../../assets/img/googleOutline.svg'
 import home from '../../assets/img/home.svg'
 import jessica from '../../assets/img/josh.png'
 import lindsey from '../../assets/img/lindsey.png'
@@ -270,7 +270,7 @@ export const HomeBlock2 = () => (
               </div>
               <div className="flex items-center bg-[#202124] pt-[13.5px]">
                 <div className="bg-[#35363A] rounded-t-[13px] pl-[13px] pr-[22px] py-[15px] flex items-center gap-[15px] text-[20px] text-white">
-                  <img src={google} alt="" className="w-[27px] h-[27px]" />
+                  <img src={googleOutline} alt="" className="w-[27px] h-[27px]" />
                   <div className="truncate">Meditation App Kickoff Call</div>
                   <img src={close} alt="" className="ml-[8px]" />
                 </div>
@@ -339,7 +339,7 @@ export const ExtensionInstallationAlert = () => (
       <div className="text-gray-500 sm:mb-[12] mb-[8]">Recap only take notes in Chrome with our extension added.</div>
       <div className="flex justify-start">
         <Link to="#" className="px-[10] py-[6] text-[15] font-semibold flex items-center gap-[4] rounded-[12] bg-white">
-          <img src={google_16x16} alt="" />
+          <img src={google} alt="" />
           <span className="leading-[20px]">Add to Chrome</span>
         </Link>
       </div>

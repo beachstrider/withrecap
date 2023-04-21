@@ -1,11 +1,11 @@
+import { useAuth } from '@recap/shared'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '@recap/shared'
 
-import { Button } from '../buttons'
-import google from '../../assets/img/google.png'
+import google from '../../assets/img/google.svg'
 import logo from '../../assets/img/logo.svg'
 import { PRIVACY_POLICY, SIGNING_IN, TERMS_CONDITIONS } from '../../constants/routes'
+import { Button } from '../buttons'
 
 export default function Index({ className = '' }) {
   const { login } = useAuth()
@@ -30,13 +30,16 @@ export default function Index({ className = '' }) {
             <Link to={PRIVACY_POLICY} className="block text-[15px] font-semibold text-gray-500">
               Privacy
             </Link>
+            <Link to="#" className="block text-[15px] font-semibold text-gray-500">
+              Support
+            </Link>
             <button
               onClick={async () => {
                 navigate(`/${SIGNING_IN}`)
                 // TODO: Handle errors
                 await login()
               }}
-              className="block text-[15px] font-semibold text-gray-500"
+              className="block text-[15px] font-semibold text-gray-500 text-start"
             >
               Sign in
             </button>
