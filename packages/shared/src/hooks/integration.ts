@@ -16,8 +16,8 @@ export function useIntegrations() {
 
   useEffect(() => {
     // TODO: Handle errors
-    addonStore.list().then((a: Addons) => {
-      userAddonStore.list().then((ua: UserAddons) => {
+    addonStore.list().then((a) => {
+      userAddonStore.list().then((ua) => {
         setUserAddons(ua)
         setAddons(a)
         setLoading(false)
