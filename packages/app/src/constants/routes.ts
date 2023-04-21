@@ -8,3 +8,13 @@ export const INTEGRATIONS = '/integrations'
 
 // fake hash routes
 export const SIGNING_IN = '#signin' // if firebase is still processing auth status, this hash route is used to show spinner on page
+
+// popup email links
+export const SUPPORT_REQUEST = `mailto:support@withrecap.com?subject=${encodeURIComponent(
+  'Request for Assistance'
+)}&body=${encodeURIComponent(``)}
+`
+
+export const DELETE_ACCOUNT_REQUEST = `mailto:support@withrecap.com?subject=${encodeURIComponent(
+  'Delete my account'
+)}&body=${encodeURIComponent(``)}`

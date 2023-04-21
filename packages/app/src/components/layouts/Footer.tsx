@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import google from '../../assets/img/google.svg'
 import logo from '../../assets/img/logo.svg'
-import { PRIVACY_POLICY, SIGNING_IN, TERMS_CONDITIONS } from '../../constants/routes'
+import { PRIVACY_POLICY, SIGNING_IN, SUPPORT_REQUEST, TERMS_CONDITIONS } from '../../constants/routes'
 import { Button } from '../buttons'
 
 export default function Index({ className = '' }) {
@@ -30,7 +30,7 @@ export default function Index({ className = '' }) {
             <Link to={PRIVACY_POLICY} className="block text-[15px] font-semibold text-gray-500">
               Privacy
             </Link>
-            <Link to="#" className="block text-[15px] font-semibold text-gray-500">
+            <Link target="_blank" to={SUPPORT_REQUEST} className="block text-[15px] font-semibold text-gray-500">
               Support
             </Link>
             <button
