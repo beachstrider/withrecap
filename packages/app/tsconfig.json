@@ -15,6 +15,6 @@
 
     "types": ["@recap/shared", "node"]
   },
-  "include": ["src"],
+  "include": ["src", "../shared/src/hooks"],
   "exclude": ["dist", "node_modules", "config"]
 }

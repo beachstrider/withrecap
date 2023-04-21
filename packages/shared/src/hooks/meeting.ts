@@ -14,7 +14,7 @@ export function useMeetings() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    userMeetingStore.list().then((mids) => {
+    userMeetingStore.list().then((mids: string[]) => {
       meetingStore.getByIds(mids).then((m) => {
         setMeetings(m)
 
@@ -49,7 +49,7 @@ export function useMeetings() {
   }
 }
 
-export function useMeetingDetails(mid: string) {
+export function useMeeting(mid: string) {
   const meetingStore = useMemo(() => new MeetingStore(), [])
 
   const [data, setData] = useState<Meeting>()
@@ -64,5 +64,40 @@ export function useMeetingDetails(mid: string) {
     })
   }, [meetingStore, mid])
 
-  return { meetingDetails: data, loading, error }
+  return { meeting: data, loading, error }
+}
+
+export function useRecentMeeting() {
+  const { user } = useAuthGuard()
+
+  const userMeetingStore = useMemo(() => new UserMeetingStore(user.uid), [user.uid])
+  const meetingStore = useMemo(() => new MeetingStore(), [])
+
+  const [recentMeeting, setRecentMeeting] = useState<Meeting | undefined>()
+  const [loading, setLoading] = useState<boolean>(false)
+
+  useEffect(() => {
+    setLoading(true)
+
+    userMeetingStore
+      .recent()
+      .then((recentMeetingId: string) => {
+        if (!recentMeetingId) {
+          return
+        }
+
+        meetingStore
+          .get(recentMeetingId)
+          .then(setRecentMeeting)
+          .finally(() => setLoading(false))
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [userMeetingStore, meetingStore])
+
+  return {
+    recentMeeting,
+    loading
+  }
 }

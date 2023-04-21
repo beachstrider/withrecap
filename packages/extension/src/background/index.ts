@@ -1,7 +1,7 @@
 import {
   ConversationStore,
-  GoogleIdentityAuthProvider,
   GoogleCalendar,
+  GoogleIdentityAuthProvider,
   Meeting,
   MeetingStore,
   UserAddonStore,

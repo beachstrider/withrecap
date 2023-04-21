@@ -1,8 +1,7 @@
 import React from 'react'
 
-import { Addon } from '@recap/shared'
+import { Addon, useIntegrations } from '@recap/shared'
 import Layout from '../components/layouts'
-import { useIntegrations } from '../hooks/integrations'
 
 export default function Index() {
   const { addons, userAddons, enableAddon, loading } = useIntegrations()

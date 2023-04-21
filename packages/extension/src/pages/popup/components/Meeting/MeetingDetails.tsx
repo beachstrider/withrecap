@@ -27,7 +27,7 @@ export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
   }
 
   const Summary = () => {
-    return <h6 className="mb-[4px]">🌞 {meeting.title}</h6>
+    return <h6 className="mb-[4px] capitalize">🌞 {meeting.title}</h6>
   }
 
   const Participants = () => {
@@ -47,6 +47,12 @@ export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
       </span>
     )
   }
+
+  const Body = () => (
+    <p className="text-gray-500 mb-[14px]">
+      <Time /> • <Participants />
+    </p>
+  )
 
   const Footer = () => {
     if (ended) {
@@ -68,9 +74,7 @@ export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
     <div className="bg-gray-100 p-[16px] rounded-[16px]">
       <Header />
       <Summary />
-      <p className="text-gray-500 mb-[24px]">
-        <Time /> • <Participants />
-      </p>
+      <Body />
       <Footer />
     </div>
   )
