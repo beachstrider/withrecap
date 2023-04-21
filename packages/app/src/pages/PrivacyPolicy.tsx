@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import Layout from '../components/layouts'
+import { SUPPORT_PRIVACY_REQUEST } from '../constants/links'
 
 export default function PrivacyPolicy() {
   useEffect(() => {
@@ -228,8 +230,15 @@ export default function PrivacyPolicy() {
           may retain some information for as long as necessary to evaluate Service usage, troubleshoot issues, resolve
           disputes and collect any fees owed. If you have any questions or wish to ask to access, modify or delete any
           of your personal data on our Service, please contact us. Note that we can deny your request if we think it
-          would violate any law or cause the information to be incorrect. Contact us with any questions at
-          support@withrecap.com
+          would violate any law or cause the information to be incorrect.
+        </div>
+        <br />
+        <h5 className="font-semibold sm:mb-[8px] mb-[6px]">CONTACT US</h5>
+        <div>
+          Please address your questions and feedback to&nbsp;
+          <Link target="_blank" to={SUPPORT_PRIVACY_REQUEST}>
+            support@withrecap.com
+          </Link>
         </div>
         <div>
           <br />

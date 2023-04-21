@@ -4,7 +4,7 @@ import gift from '../../../../assets/img/gift.svg'
 
 export const InviteFriends = () => {
   return (
-    <div className="flex flex-col items-start pt-[24px]">
+    <div className="flex flex-col items-start py-[24px]">
       <h6 className="mb-[8px]">Invite Friends</h6>
       <p className="text-gray-500 mb-[18px]">Recap saved you 8 hours of meeting notes.</p>
       <Link

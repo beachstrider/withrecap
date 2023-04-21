@@ -11,7 +11,7 @@ import { useMeetingDetails } from '../../hooks/meetings'
 export default function MeetingDetail() {
   const { mid } = useParams()
   const { meetingDetails, loading } = useMeetingDetails(mid!)
-  console.debug('=======  meetingDetails:', meetingDetails)
+  console.debug('=======  meetingDetails:', meetingDetails, loading)
 
   return (
     <Layout isLoading={loading}>
@@ -25,6 +25,9 @@ export default function MeetingDetail() {
             </div>
           </div>
         </div>
+      )}
+      {!loading && !meetingDetails && (
+        <div className="flex justify-center py-[80px]">Sorry, there is no such meeting.</div>
       )}
     </Layout>
   )

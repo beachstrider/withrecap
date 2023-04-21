@@ -1,17 +1,17 @@
+import { Menu } from '@headlessui/react'
+import { UserStore, getUserFirstName, useAuth, useAuthGuard } from '@recap/shared'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { Menu } from '@headlessui/react'
-import { Switch, UserStore, getUserFirstName, useAuth, useAuthGuard } from '@recap/shared'
 
 import { Button } from '../buttons'
 
 import arrowRight from '../../assets/img/arrowRight.svg'
 import danger from '../../assets/img/danger.svg'
-import google from '../../assets/img/google.png'
+import google from '../../assets/img/google.svg'
 import logo from '../../assets/img/logo.svg'
 import outbound from '../../assets/img/outbound.svg'
-import paperPlan from '../../assets/img/paperPlan.svg'
 import question from '../../assets/img/question.svg'
+import { DELETE_ACCOUNT_REQUEST, SUPPORT_REQUEST } from '../../constants/links'
 import { INTEGRATIONS, MEETINGS, SIGNING_IN } from '../../constants/routes'
 
 export default function Index({ isPublic = false }) {
@@ -70,7 +70,7 @@ const PrivateSection = () => {
             <div className="font-semibold rounded-full">{getUserFirstName(user)}</div>
           </Menu.Button>
           <Menu.Items className="z-[1000] absolute flex flex-col mt-[28px] menu-shadow p-[20px] w-[300px] right-0 text-[13px] bg-white sm:rounded-[20px] rounded-[15px]">
-            <div className="mb-[20px]">
+            {/* <div className="mb-[20px]">
               <div className="flex justify-between items-center mb-[8px]">
                 <div className="flex gap-[10px] grow">
                   <img src={paperPlan} alt="" className="w-[20px] h-[20px]" />
@@ -83,9 +83,9 @@ const PrivateSection = () => {
               <div className="text-gray-500">
                 Recap will automatically send meeting notes to all participants after each meeting.
               </div>
-            </div>
+            </div> */}
             <div className="mb-[20px]">
-              <Link to="#" className="flex items-center justify-between">
+              <Link target="_blank" to={SUPPORT_REQUEST} className="flex items-center justify-between">
                 <div className="flex gap-[10px] grow">
                   <img src={question} alt="" className="w-[20px] h-[20px]" />
                   <div className="font-semibold text-[15px]">Support</div>
@@ -110,7 +110,7 @@ const PrivateSection = () => {
             </div>
             <div className="flex w-full mb-[20px] border-t border-solid border-gray-100"></div>
             <div className="">
-              <Link to="#" className="flex items-center justify-between">
+              <Link target="_blank" to={DELETE_ACCOUNT_REQUEST} className="flex items-center justify-between">
                 <div className="flex gap-[10px] grow">
                   <img src={danger} alt="" className="w-[20px] h-[20px]" />
                   <div className="font-semibold text-[15px] text-[#F12858]">Delete Account</div>

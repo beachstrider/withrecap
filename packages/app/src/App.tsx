@@ -1,6 +1,6 @@
-import React from 'react'
-import { Route, Routes } from 'react-router-dom'
 import { AuthGuard, AuthProvider, GoogleAuthProvider } from '@recap/shared'
+import React from 'react'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 
 import { INTEGRATIONS, MEETINGS, MEETING_DETAILS, PRIVACY_POLICY, TERMS_CONDITIONS } from './constants/routes'
 
@@ -13,6 +13,12 @@ import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsConditions from './pages/TermsConditions'
 
 export default function App() {
+  const navigate = useNavigate()
+
+  const onNeedAuth = () => {
+    return navigate('/')
+  }
+
   return (
     <>
       <Routes>
@@ -44,7 +50,7 @@ export default function App() {
         <Route
           path={MEETINGS}
           element={
-            <AuthGuard provider={GoogleAuthProvider}>
+            <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider}>
               <Meetings />
             </AuthGuard>
           }
@@ -52,7 +58,7 @@ export default function App() {
         <Route
           path={MEETING_DETAILS}
           element={
-            <AuthGuard provider={GoogleAuthProvider}>
+            <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider}>
               <MeetingDetails />
             </AuthGuard>
           }
@@ -60,7 +66,7 @@ export default function App() {
         <Route
           path={INTEGRATIONS}
           element={
-            <AuthGuard provider={GoogleAuthProvider}>
+            <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider}>
               <Integrations />
             </AuthGuard>
           }

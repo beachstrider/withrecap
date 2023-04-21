@@ -38,13 +38,13 @@ export const RecentMeeting = (props: RecentMeetingProps) => {
   const displayRecentMeeting = () => {
     if (recentMeeting) {
       return (
-        <div>
+        <div className="py-[24px]">
           <MeetingDetails meeting={recentMeeting} ended />
         </div>
       )
     } else {
       return (
-        <div>
+        <div className="py-[24px]">
           <p>No recent meeting</p>
         </div>
       )
@@ -53,7 +53,7 @@ export const RecentMeeting = (props: RecentMeetingProps) => {
 
   if (loading)
     return (
-      <div className="flex justify-center">
+      <div className="flex items-center justify-center flex-1">
         <LoadingIcon />
       </div>
     )

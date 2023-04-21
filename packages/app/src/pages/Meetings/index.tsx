@@ -15,7 +15,7 @@ export default function Index() {
   const { userAddons, loading: loadingAddons } = useIntegrations()
 
   return (
-    <Layout isLoading={loadingMeetings && loadingAddons}>
+    <Layout isLoading={loadingMeetings || loadingAddons}>
       <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">
         {!Object.keys(userAddons).length && !loadingAddons && <ExtensionInstallationAlert />}
         <div className="flex gap-[20px] sm:mb-[80px] mb-[60px]">

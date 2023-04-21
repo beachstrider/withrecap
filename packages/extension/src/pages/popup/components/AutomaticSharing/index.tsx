@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react'
 import { Switch, UserStore } from '@recap/shared'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import paperPlan from '../../../../assets/img/paperPlanPurple.svg'
 
@@ -26,7 +26,7 @@ export const AutomaticSharing = ({ uid }: AutomaticSharingProps) => {
   }
 
   return (
-    <div className="py-[24px]">
+    <div className="hidden py-[24px]">
       <div className="flex justify-between items-center mb-[8px]">
         <div className="flex gap-[10px] grow">
           <img src={paperPlan} alt="" className="w-[20px] h-[20px]" />

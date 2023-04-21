@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply w-[360px] min-h-[390px] text-[#222734] font-inter;
+    @apply w-[360px] min-h-[297px] text-[#222734] font-inter flex flex-col;
   }
   hr {
     @apply w-full h-[1px] bg-gray-100;
@@ -22,5 +22,9 @@
 
   h6 {
     @apply text-[16px] leading-[24px] font-semibold;
+  }
+
+  #app-container {
+    @apply flex flex-col flex-1;
   }
 }
