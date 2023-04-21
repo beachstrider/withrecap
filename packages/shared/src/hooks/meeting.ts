@@ -1,6 +1,8 @@
-import { Meeting, MeetingStore, UserMeetingStore, useAuthGuard } from '@recap/shared/'
 import { format } from 'date-fns'
 import { useEffect, useMemo, useState } from 'react'
+import { useAuthGuard } from '../auth/AuthGuard'
+import { Meeting, MeetingStore } from '../storage/meetings'
+import { UserMeetingStore } from '../storage/users/meetings'
 
 export function useMeetings() {
   const { user } = useAuthGuard()
@@ -14,8 +16,8 @@ export function useMeetings() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    userMeetingStore.list().then((mids) => {
-      meetingStore.getByIds(mids).then((m) => {
+    userMeetingStore.list().then((mids: string[]) => {
+      meetingStore.getByIds(mids).then((m: Meeting[]) => {
         setMeetings(m)
 
         if (m.length === 0) {
@@ -49,7 +51,7 @@ export function useMeetings() {
   }
 }
 
-export function useMeetingDetails(mid: string) {
+export function useMeeting(mid: string) {
   const meetingStore = useMemo(() => new MeetingStore(), [])
 
   const [data, setData] = useState<Meeting>()
@@ -57,12 +59,47 @@ export function useMeetingDetails(mid: string) {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    meetingStore.get(mid).then((meeting) => {
+    meetingStore.get(mid).then((meeting?: Meeting) => {
       setData(meeting)
       setLoading(false)
       setError(null)
     })
   }, [meetingStore, mid])
 
-  return { meetingDetails: data, loading, error }
+  return { meeting: data, loading, error }
+}
+
+export function useRecentMeeting() {
+  const { user } = useAuthGuard()
+
+  const userMeetingStore = useMemo(() => new UserMeetingStore(user.uid), [user.uid])
+  const meetingStore = useMemo(() => new MeetingStore(), [])
+
+  const [recentMeeting, setRecentMeeting] = useState<Meeting | undefined>()
+  const [loading, setLoading] = useState<boolean>(false)
+
+  useEffect(() => {
+    setLoading(true)
+
+    userMeetingStore
+      .recent()
+      .then((recentMeetingId?: string) => {
+        if (!recentMeetingId) {
+          return
+        }
+
+        meetingStore
+          .get(recentMeetingId)
+          .then(setRecentMeeting)
+          .finally(() => setLoading(false))
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [userMeetingStore, meetingStore])
+
+  return {
+    recentMeeting,
+    loading
+  }
 }

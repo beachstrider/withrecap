@@ -1,5 +1,7 @@
-import { Addon, AddonStore, Addons, UserAddonConfig, UserAddonStore, UserAddons, useAuthGuard } from '@recap/shared'
 import { useEffect, useMemo, useState } from 'react'
+import { useAuthGuard } from '../auth/AuthGuard'
+import { Addon, AddonStore, Addons } from '../storage/addons'
+import { UserAddonConfig, UserAddonStore, UserAddons } from '../storage/users/addons'
 
 export function useIntegrations() {
   const { user } = useAuthGuard()
@@ -14,8 +16,8 @@ export function useIntegrations() {
 
   useEffect(() => {
     // TODO: Handle errors
-    addonStore.list().then((a) => {
-      userAddonStore.list().then((ua) => {
+    addonStore.list().then((a: Addons) => {
+      userAddonStore.list().then((ua: UserAddons) => {
         setUserAddons(ua)
         setAddons(a)
         setLoading(false)

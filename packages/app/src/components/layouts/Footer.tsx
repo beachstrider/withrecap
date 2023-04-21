@@ -21,7 +21,7 @@ export default function Index({ className = '' }) {
             <img src={logo} alt="" />
             <div className="text-[18px] font-bold">Recap</div>
           </Link>
-          <div className="sm:ml-[42px] sm:text-[15px] text-[12px] text-gray-500">© 2023 Recap Labs, Inc.</div>
+          <div className="sm:ml-[42px] sm:text-[15px] text-[12px] text-gray-500">© 2023 System D Labs, LLC.</div>
         </div>
         <div className="flex sm:flex-row flex-col sm:items-center items-start sm:gap-[20px] gap-[40px]">
           <div className="flex sm:flex-row flex-col sm:items-center sm:gap-[20px] gap-[15px]">

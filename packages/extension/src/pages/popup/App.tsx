@@ -1,11 +1,11 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
 import { AuthGuard, GoogleIdentityAuthProvider } from '@recap/shared'
+import React from 'react'
+import { Route, Routes } from 'react-router-dom'
 
 import Layout from './components/Layout'
 
-import Popup from './pages/popup'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import Popup from './pages/popup'
 
 export const App = () => {
   const onNeedAuth = () => {
