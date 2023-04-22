@@ -53,7 +53,8 @@ $ yarn test
 All the code can be found in the `packages/` directory and is split like so:
 
 - `/packages`
-  - `app` - The reCap web application
+  - `app` - the reCap web application
   - `extensions` - contains the code for the Browser Extension
   - `engine` - reCap's back-end
+  - `seeder` - meeting seeder for Firestore
   - `shared` - a library of front-end components and reusable code
