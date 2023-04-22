@@ -3,7 +3,8 @@
     {
       "source": "./",
       "codebase": "default",
-      "ignore": ["node_modules", "tests", ".git", "*-debug.log", "*-debug.*.log", "tsconfig.tsbuildinfo", "yarn.lock"]
+      "ignore": ["node_modules", "config", "tests", "*-debug.log", "*-debug.*.log"],
+      "predeploy": ["yarn build"]
     }
   ],
   "emulators": {
@@ -20,5 +21,12 @@
       "enabled": true
     },
     "singleProjectMode": true
+  },
+  "firestore": {
+    "rules": "config/firestore.rules",
+    "indexes": "config/firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "config/storage.rules"
   }
 }

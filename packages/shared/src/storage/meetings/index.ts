@@ -5,12 +5,8 @@ import {
   deleteDoc,
   doc,
   getDoc,
-  getDocs,
-  orderBy,
-  query,
   setDoc,
-  updateDoc,
-  where
+  updateDoc
 } from 'firebase/firestore/lite'
 
 import { firestore } from '../firestore'
