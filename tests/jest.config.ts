@@ -12,11 +12,11 @@ const config: Config.InitialOptions = {
         '^.+\\.tsx?$': [
           'ts-jest',
           {
-            tsconfig: '<rootDir>/tests/tsconfig.json'
+            tsconfig: '<rootDir>/tests/tsconfig.json',
+            isolatedModules: true // Fixes an issue where Jest takes an excessive amount of RAM and time to complete
           }
         ]
       },
-      clearMocks: true,
       setupFilesAfterEnv: ['<rootDir>/tests/setup.ts']
     }
   ]

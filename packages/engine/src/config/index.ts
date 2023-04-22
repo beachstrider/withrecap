@@ -1,6 +1,8 @@
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
 import { Configuration, OpenAIApi } from 'openai'
+import formData from 'form-data'
+import Mailgun from 'mailgun.js'
 
 admin.initializeApp({
   credential: admin.credential.cert({
@@ -18,4 +20,10 @@ const configuration = new Configuration({
 })
 const openai = new OpenAIApi(configuration)
 
-export { admin, db, openai }
+const mailgun = new Mailgun(formData)
+const mail = mailgun.client({ username: 'api', key: functions.config().config.mailgunapikey })
+
+const DOMAIN = functions.config().config.domain
+const BASE_URL = `https://${DOMAIN}`
+
+export { admin, db, openai, mail, DOMAIN, BASE_URL }

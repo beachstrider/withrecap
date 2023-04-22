@@ -24,6 +24,11 @@ export type MeetingAttendee = {
 }
 export type MeetingMetadata = {
   percentage: { [speaker: string]: number }
+  title: string
+  start: string
+  end: string
+  participants: number
+  url: string
 }
 export type Meeting = {
   id: string

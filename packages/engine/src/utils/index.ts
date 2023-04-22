@@ -3,8 +3,12 @@
  * https://en.wikipedia.org/wiki/Jaccard_index
  */
 export const similarity = (s1: string, s2: string): number => {
-  const union = new Set(s1.split('').concat(s2.split('')))
-  const intersection = new Set(s1.split('').filter((v) => new Set(s2).has(v)))
+  const token1 = s1.split('')
+  const token2 = s2.split('')
+  const set2 = new Set(token2)
+
+  const union = new Set(token1.concat(token2))
+  const intersection = new Set(token1.filter((v) => set2.has(v)))
 
   return (1.0 * intersection.size) / union.size
 }

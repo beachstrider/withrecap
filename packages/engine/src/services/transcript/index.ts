@@ -1,15 +1,12 @@
-import { Transcript } from '../../types'
+import { Conversation, MeetingMetadata } from '@recap/shared'
+
 import { sanitize } from '../../utils/sanitize'
 import { approximateSpeechTime } from '../../utils/speech'
 
-export type Metadata = {
-  [speaker: string]: number
-}
-
 export class TranscriptService {
-  private transcript: Transcript
+  private transcript: Conversation
 
-  constructor(conversation: Transcript) {
+  constructor(conversation: Conversation) {
     this.transcript = sanitize(conversation, 0.8)
   }
 
@@ -17,13 +14,13 @@ export class TranscriptService {
     return this.transcript.map((m) => `${m.speaker}: ${m.text}`).join('\n')
   }
 
-  public toTranscript(): Transcript {
+  public toTranscript(): Conversation {
     return this.transcript
   }
 
-  public metadata(): Metadata {
+  public metadata(): MeetingMetadata['percentage'] {
     let totalTime = 0
-    let timePerSpeaker: Metadata = {}
+    let timePerSpeaker: MeetingMetadata['percentage'] = {}
 
     for (const msg of this.transcript) {
       const time = approximateSpeechTime(msg.text, 150)
