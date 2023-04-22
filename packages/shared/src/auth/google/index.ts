@@ -28,6 +28,17 @@ export class GoogleIdentityAuthProvider implements BaseAuthProvider {
     return this._accessToken
   }
 
+  private _addMissingData(user: FirebaseUser): FirebaseUser {
+    const userData = { ...user }
+
+    // Sometimes display name is null, but it is in providerData
+    if (!user.displayName) {
+      userData.displayName = user.providerData[0].displayName
+    }
+
+    return userData
+  }
+
   private _login = async (details: chrome.identity.TokenDetails) => {
     return new Promise<string>(async (resolve, reject) => {
       chrome.identity.getAuthToken(details, (token) => {
@@ -43,6 +54,8 @@ export class GoogleIdentityAuthProvider implements BaseAuthProvider {
   public onAuthStateChanged = (callback: (user: FirebaseUser | null, token: string | null) => void): Unsubscribe => {
     return onAuthStateChanged(this.auth, (user) => {
       if (user) {
+        user = this._addMissingData(user)
+
         if (this._accessToken === null) {
           this._login({ interactive: false }).then((token) => {
             this._accessToken = token
@@ -84,8 +97,25 @@ export class GoogleAuthProvider implements BaseAuthProvider {
     this.auth = getAuth(this.firebase)
   }
 
+  private _addMissingData(user: FirebaseUser): FirebaseUser {
+    const userData = { ...user }
+
+    // Sometimes display name is null, but it is in providerData
+    if (!user.displayName) {
+      userData.displayName = user.providerData[0].displayName
+    }
+
+    return userData
+  }
+
   public onAuthStateChanged = (callback: (user: FirebaseUser | null, token: string | null) => void): Unsubscribe => {
-    return onAuthStateChanged(this.auth, (user) => callback(user, null))
+    return onAuthStateChanged(this.auth, (user) => {
+      if (user) {
+        user = this._addMissingData(user)
+      }
+
+      callback(user, null)
+    })
   }
 
   /**

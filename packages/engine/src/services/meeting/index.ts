@@ -10,7 +10,7 @@ export class MeetingService {
     const endTime = format(new Date(this.meeting.end), 'h:mm a')
 
     const metadata: Omit<MeetingMetadata, 'percentage'> = {
-      participants: this.meeting.attendees?.length || 1,
+      participants: Object.keys(this.meeting.attendees).length || 1,
       title: this.meeting.title,
       start: startTime,
       end: endTime,

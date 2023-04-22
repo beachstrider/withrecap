@@ -1,8 +1,7 @@
-import { User } from 'firebase/auth'
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 import { BaseAuthProvider } from '.'
-import { UserStore } from '../storage/users'
+import { UserStore, User } from '../storage/users'
 
 type AuthGuardContextType = {
   token: string | null
@@ -45,15 +44,15 @@ export const AuthGuard = ({ children, onNeedAuth, provider }: AuthGuardProps) =>
       userStore
         .exists(u.uid)
         .then(async (exists) => {
+          let user: User
+
           if (!exists) {
-            await userStore.create(u)
+            user = await userStore.create(u)
+          } else {
+            user = await userStore.get(u.uid)
           }
 
-          // Sometimes display name is null, but it is in providerData, weird
-          const userData = { ...u }
-          if (!userData.displayName) userData.displayName = u.providerData[0].displayName
-
-          setUser(userData)
+          setUser(user)
           setToken(t)
           setError(null)
         })

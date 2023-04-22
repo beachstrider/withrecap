@@ -8,16 +8,17 @@ const meeting = async () => {
     id: 'sdfsdf-=324sdfsdf23423sdf',
     mid: 'jva-fbxb-jca',
     title: 'Onboarding',
-    attendees: [
-      {
+    attendees: {
+      'kevin@kevin.com': {
         email: 'kevin@kevin.com',
         name: 'Kevin Tremblay'
       },
-      {
+      'nathalie@notkevin.com': {
         email: 'nathalie@notkevin.com',
         name: 'Nathalie Boucher'
       }
-    ],
+    },
+    emails: ['kevin@kevin.com', 'nathalie@notkevin.com'],
     start: '2023-04-16T12:00:00-04:00',
     end: '2023-04-16T14:00:00-04:00',
     link: 'https://meet.google.com/jva-fbxb-jca',

@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { User } from 'firebase/auth'
 
-import { UserStore } from '../storage/users'
+import { User, UserStore } from '../storage/users'
 import { BaseAuthProvider } from '.'
 
 type AuthProviderContextType = {
@@ -43,15 +42,16 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
       userStore
         .exists(u.uid)
         .then(async (exists) => {
+          let user: User
+
           if (!exists) {
-            await userStore.create(u)
-            setUser(u)
-            setToken(t)
+            user = await userStore.create(u)
           } else {
-            setUser(u)
-            setToken(t)
+            user = await userStore.get(u.uid)
           }
 
+          setUser(user)
+          setToken(t)
           setError(null)
         })
         .catch(async (err) => {

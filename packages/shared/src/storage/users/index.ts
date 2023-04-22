@@ -7,7 +7,12 @@ type CustomUserConfigs = {
   // Add custom configurations here
   autoSharing: boolean
 }
-type BaseUserConfigs = Pick<FirebaseUser, 'displayName' | 'email' | 'uid' | 'photoURL'>
+type BaseUserConfigs = {
+  uid: string
+  email: string
+  displayName?: string
+  photoURL?: string
+}
 
 export type User = BaseUserConfigs & CustomUserConfigs
 
@@ -30,14 +35,18 @@ export class UserStore {
     return document.data() as User
   }
 
-  public async create(user: BaseUserConfigs) {
-    return setDoc(doc(this._db, user.uid), {
-      displayName: user.displayName || null,
-      email: user.email,
-      photoURL: user.photoURL,
+  public async create(user: FirebaseUser): Promise<User> {
+    const createdUser: User = {
       uid: user.uid,
+      email: user.email!,
+      displayName: user.displayName || '',
+      photoURL: user.photoURL || '',
       autoSharing: false
-    })
+    }
+
+    await setDoc(doc(this._db, user.uid), createdUser)
+
+    return createdUser
   }
 
   public async update(uid: string, user: CustomUserConfigs) {

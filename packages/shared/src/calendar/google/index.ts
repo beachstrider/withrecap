@@ -39,14 +39,35 @@ export class GoogleCalendar {
     }
 
     const attendees =
-      event.attendees?.map((a) => {
-        return { email: a.email!, name: a.displayName || '' }
-      }) || []
+      event.attendees?.reduce((acc, obj) => {
+        const { email, displayName } = obj
+
+        acc[email!] = {
+          email: email!,
+          name: displayName || ''
+        }
+
+        return acc
+      }, {} as Meeting['attendees']) || {}
+
+    // adding creator to the list of attendees if not already there
+    if (event.creator) {
+      attendees[event.creator.email!] = {
+        email: event.creator.email!,
+        name: event.creator.displayName!
+      }
+    }
+
+    const emails: string[] = []
+    for (const email of Object.keys(attendees)) {
+      emails.push(email)
+    }
 
     return {
       mid,
       id: event.id!,
       attendees: attendees,
+      emails: emails,
       start: event.start!.dateTime!,
       end: event.end!.dateTime!,
       link: event.hangoutLink!,

@@ -20,7 +20,6 @@ export type MeetingAttendee = {
   email: string
   name?: string
   avatar?: string
-  time?: number
 }
 export type MeetingMetadata = {
   percentage: { [speaker: string]: number }
@@ -33,7 +32,11 @@ export type MeetingMetadata = {
 export type Meeting = {
   id: string
   mid: string
-  attendees: Array<MeetingAttendee>
+  // Note: Indexing attendees by email so it's easier to query and add rules in Firestore
+  attendees: { [email: string]: MeetingAttendee }
+  // Emails contains a list of attendees emails including the creator of the meeting
+  // so it's easier to query and add rules in Firestore
+  emails: string[]
   start: string
   end: string
   link: string
@@ -42,6 +45,7 @@ export type Meeting = {
   ended?: boolean
   conversation: Conversation
   description?: string
+  // A transcript is a conversation sanitized (duplicated and irrelevant messages are removed). See engine for more details
   transcript?: Conversation
   metadata?: MeetingMetadata
 }
@@ -63,27 +67,6 @@ export class MeetingStore {
     const document = await getDoc(doc(this._db, mid))
 
     return document.data() as Meeting | undefined
-  }
-
-  public async getByIds(mids: string[]): Promise<Meeting[]> {
-    if (mids.length === 0) {
-      return []
-    }
-
-    const q = query(this._db, where('mid', 'in', mids), orderBy('start', 'desc'))
-
-    const documents = await getDocs(q)
-
-    const meetings: Meeting[] = []
-    documents.forEach((doc) => {
-      const meeting = doc.data() as Meeting | undefined
-
-      if (meeting) {
-        meetings.push(meeting)
-      }
-    })
-
-    return meetings
   }
 
   public async create(mid: string, meeting: Meeting): Promise<void> {

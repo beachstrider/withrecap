@@ -7,8 +7,7 @@ import { UserMeetingStore } from '../storage/users/meetings'
 export function useMeetings() {
   const { user } = useAuthGuard()
 
-  const meetingStore = useMemo(() => new MeetingStore(), [])
-  const userMeetingStore = useMemo(() => new UserMeetingStore(user.uid), [user.uid])
+  const userMeetingStore = useMemo(() => new UserMeetingStore(user.email), [user.email])
 
   const [meetings, setMeetings] = useState<Meeting[]>([])
   const [meetingsByDate, setMeetingsByDate] = useState<{ [date: string]: Meeting[] }>({})
@@ -16,16 +15,15 @@ export function useMeetings() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    userMeetingStore.list().then((mids) => {
-      meetingStore.getByIds(mids).then((m) => {
-        setMeetings(m)
+    userMeetingStore.list().then((m) => {
+      setMeetings(m)
+      setError(null)
 
-        if (m.length === 0) {
-          setLoading(false)
-        }
-      })
+      if (m.length === 0) {
+        setLoading(false)
+      }
     })
-  }, [userMeetingStore, meetingStore])
+  }, [userMeetingStore])
 
   useEffect(() => {
     const byDate: { [date: string]: Meeting[] } = {}
@@ -72,8 +70,7 @@ export function useMeeting(mid: string) {
 export function useRecentMeeting() {
   const { user } = useAuthGuard()
 
-  const userMeetingStore = useMemo(() => new UserMeetingStore(user.uid), [user.uid])
-  const meetingStore = useMemo(() => new MeetingStore(), [])
+  const userMeetingStore = useMemo(() => new UserMeetingStore(user.email), [user.email])
 
   const [recentMeeting, setRecentMeeting] = useState<Meeting | undefined>()
   const [loading, setLoading] = useState<boolean>(false)
@@ -83,20 +80,9 @@ export function useRecentMeeting() {
 
     userMeetingStore
       .recent()
-      .then((recentMeetingId) => {
-        if (!recentMeetingId) {
-          return
-        }
-
-        meetingStore
-          .get(recentMeetingId)
-          .then(setRecentMeeting)
-          .finally(() => setLoading(false))
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [userMeetingStore, meetingStore])
+      .then(setRecentMeeting)
+      .finally(() => setLoading(false))
+  }, [userMeetingStore])
 
   return {
     recentMeeting,
