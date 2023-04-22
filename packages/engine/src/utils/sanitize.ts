@@ -1,5 +1,6 @@
+import { Conversation } from '@recap/shared'
+
 import { includes, normalize, similarity } from '.'
-import { type Transcript } from '../types'
 
 /**
  * Removes duplicates from a list of messages in order to have a readable and meaningful transcript.
@@ -7,8 +8,8 @@ import { type Transcript } from '../types'
  * @param similarityFactor At which point should we consider two messages to be different ones. Note a similarity factor of 0 means that two messages in the transcript are entirely different and 1 means they are the same message
  * @returns
  */
-export const sanitize = (transcript: Transcript, similarityFactor: number = 0.8): Transcript => {
-  const result: Transcript = []
+export const sanitize = (transcript: Conversation, similarityFactor: number = 0.8): Conversation => {
+  const result: Conversation = []
 
   for (let i = 0; i < transcript.length; i++) {
     const msgA = transcript[i]

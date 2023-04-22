@@ -1,4 +1,9 @@
 {
+  "references": [
+    {
+      "path": "../shared"
+    }
+  ],
   "extends": "../../tsconfig.shared.json",
   "compilerOptions": {
     "rootDir": "src",
