@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {    
+    function isUserLoggedIn() {
+      return request.auth != null;
+    }
+    
+    // Allow users to read addons and meetings
+    match /addons/{addonId} {
+      allow get, list: if isUserLoggedIn();
+    }
+    
+    // Allow users to read and write their own user info
+    match /users/{uid} {
+      function isCurrentUser() {
+        return isUserLoggedIn() && request.auth.uid == uid;
+      }
+
+      allow get, create, update : if isCurrentUser();
+      
+      // Allow users to read and write their own addons
+      match /addons/{addonId} {
+      	function addonExists() {
+        	return exists(/databases/$(database)/documents/addons/$(addonId));
+        }
+      
+      	allow get, list, update: if isCurrentUser();
+        allow create: if isCurrentUser() && addonExists();
+      }
+    }
+
+    // Allow users to read and write meetings where they are part of
+    match /meetings/{mid} {     
+			function isAttendee() {
+      	return request.auth.token.email in resource.data.emails;
+      }
+
+      allow get, list, create, update: if isUserLoggedIn() &&
+                      isAttendee();
+    }
+
+    // Deny delete operations for all documents
+    match /{document=**} {
+      allow delete: if false;
+    }
+  }
+}
