@@ -89,7 +89,7 @@ export class GoogleAuthProvider implements BaseAuthProvider {
   }
 
   /**
-   * NOTE: We have an issue where we don't know which scopes we granted to us
+   * NOTE: We have an issue where we don't know which scopes was granted to us
    * since Firebase Authentication doesn't expose this information (even though
    * we request it using the custom parameter)
    * For reference: https://www.google.com/search?q=Firebase+Authentication+does+not+provide+the+%22granted+scopes%22
