@@ -6,12 +6,11 @@ import {
   query,
   orderBy,
   limit,
-  setDoc,
-  doc,
-  getDoc
+  where
 } from 'firebase/firestore/lite'
 
 import { firestore } from '../../firestore'
+import { Meeting } from '../../meetings'
 
 export type UserMeetingConfig = {
   date: string
@@ -24,45 +23,31 @@ export type UserMeetings = {
 export class UserMeetingStore {
   private _db: CollectionReference<DocumentData>
 
-  constructor(public readonly uid: string) {
-    this._db = collection(firestore, 'users')
+  constructor(private readonly email: string) {
+    this._db = collection(firestore, 'meetings')
   }
 
-  public async recent(): Promise<string | undefined> {
-    const q = query(collection(this._db, this.uid, 'meetings'), orderBy('date', 'desc'), limit(1))
+  public async recent(): Promise<Meeting | undefined> {
+    const q = query(this._db, where('emails', 'array-contains', this.email), orderBy('start', 'desc'), limit(1))
     const documents = await getDocs(q)
 
-    let meetingId: string | undefined
+    let meeting: Meeting | undefined
     documents.forEach((doc) => {
-      // Note: for some reason the id can contain trailing spaces at the beginning of the ID
-      meetingId = doc.id.trim()
+      meeting = doc.data() as Meeting
     })
 
-    return meetingId
+    return meeting
   }
 
-  public async list(): Promise<string[]> {
-    const q = query(collection(this._db, this.uid, 'meetings'), orderBy('date', 'desc'))
+  public async list(): Promise<Meeting[]> {
+    const q = query(this._db, where('emails', 'array-contains', this.email), orderBy('start', 'desc'))
     const documents = await getDocs(q)
 
-    const meetingIds: string[] = []
+    const meetings: Meeting[] = []
     documents.forEach((doc) => {
-      // Note: for some reason the id can contain trailing spaces
-      meetingIds.push(doc.id.trim())
+      meetings.push(doc.data() as Meeting)
     })
 
-    return meetingIds
-  }
-
-  public async exists(mid: string) {
-    const document = await getDoc(doc(this._db, this.uid, 'meetings', mid))
-
-    return document.exists()
-  }
-
-  public async create(mid: string) {
-    return setDoc(doc(this._db, this.uid, 'meetings', mid), {
-      date: new Date()
-    })
+    return meetings
   }
 }

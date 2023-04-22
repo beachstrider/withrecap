@@ -1,4 +1,4 @@
-import { Meeting, getFormattedDate } from '@recap/shared'
+import { Meeting, MeetingAttendee, getFormattedDate } from '@recap/shared'
 import { format } from 'date-fns'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -14,6 +14,18 @@ interface Props {
 }
 
 export default function Index({ meetingsByDate }: Props) {
+  const displayNames = (selectedAttendees: MeetingAttendee[], otherAttendeesCount: number) => {
+    const names = selectedAttendees.map((attendee) => attendee.name).join(', ')
+
+    if (otherAttendeesCount > 0) {
+      const others = otherAttendeesCount > 1 ? 'others' : 'other'
+
+      return <div>{`${names}, ${otherAttendeesCount} ${others}`}</div>
+    }
+
+    return <div>{names}</div>
+  }
+
   return (
     <>
       {Object.entries(meetingsByDate).map(([date, meetings], key) => {
@@ -35,43 +47,51 @@ export default function Index({ meetingsByDate }: Props) {
               </div>
             </div>
             <div className="flex flex-col sm:gap-[54px] gap-[40px]">
-              {meetings.map((meeting, key) => (
-                <div className="group flex flex-col gap-[12px]" key={key}>
-                  <div className="flex items-center gap-[12px]">
-                    <img src={purpleMessage} alt="" />
-                    <div className="font-semibold text-purple-500">
-                      {meeting.attendees?.length > 2 ? 'Conference' : '1:1'}
+              {meetings.map((meeting, key) => {
+                // We only want to display a maximum of two avatars
+                const attendees = Object.values(meeting.attendees)
+                const selectedAttendees = attendees.slice(0, 2)
+                const otherAttendeesCount = attendees.length - 2
+
+                return (
+                  <div className="group flex flex-col gap-[12px]" key={key}>
+                    <div className="flex items-center gap-[12px]">
+                      <img src={purpleMessage} alt="" />
+                      <div className="font-semibold text-purple-500">
+                        {meeting.emails.length > 2 ? 'Conference' : '1:1'}
+                      </div>
+                    </div>
+                    <div className="flex justify-between">
+                      <Link to={`${MEETINGS}/${meeting.mid}`} className="sm:text-[20px] text-[15px] font-semibold">
+                        {meeting.title}
+                      </Link>
+                      <Link
+                        to={`${MEETINGS}/${meeting.mid}`}
+                        className="rounded-full w-[40px] h-[40px] flex justify-center items-center bg-gray-100 group-hover:visible invisible"
+                      >
+                        <img src={exitArrow} alt="" />
+                      </Link>
+                    </div>
+                    <div className="text-[15px] font-semibold flex items-center text-gray-500">
+                      <div className="mr-[16px]">
+                        {/** TODO: Move to util and reuse everywhere we format dates this way */}
+                        {format(new Date(meeting.start), 'h:mm a')} - {format(new Date(meeting.end), 'h:mm a')}
+                      </div>
+                      <div className="flex mr-[8px]">
+                        {selectedAttendees.map((attendee, key) => (
+                          <UserAvatar
+                            className="border-solid border-[4px] border-white first:ml-0 ml-[-8px]"
+                            key={key}
+                            name={attendee.name}
+                            avatar={attendee.avatar}
+                          />
+                        ))}
+                      </div>
+                      <div>{displayNames(selectedAttendees, otherAttendeesCount)}</div>
                     </div>
                   </div>
-                  <div className="flex justify-between">
-                    <Link to={`${MEETINGS}/${meeting.mid}`} className="sm:text-[20px] text-[15px] font-semibold">
-                      {meeting.title}
-                    </Link>
-                    <Link
-                      to={`${MEETINGS}/${meeting.mid}`}
-                      className="rounded-full w-[40px] h-[40px] flex justify-center items-center bg-gray-100 group-hover:visible invisible"
-                    >
-                      <img src={exitArrow} alt="" />
-                    </Link>
-                  </div>
-                  <div className="text-[15px] font-semibold flex items-center text-gray-500">
-                    <div className="mr-[16px]">
-                      {format(new Date(meeting.start), 'h:mm a')} - {format(new Date(meeting.end), 'h:mm a')}
-                    </div>
-                    <div className="flex mr-[8px]">
-                      {meeting.attendees.map((attendee, key) => (
-                        <UserAvatar
-                          className="border-solid border-[4px] border-white first:ml-0 ml-[-8px]"
-                          key={key}
-                          name={attendee.name}
-                          avatar={attendee.avatar}
-                        />
-                      ))}
-                    </div>
-                    <div>{meeting.attendees.map((attendee) => attendee.name).join(', ')}</div>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         )

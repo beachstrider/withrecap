@@ -52,11 +52,11 @@ export const Engine = functions.firestore.document('meetings/{docId}').onUpdate(
         functions.logger.debug('sending emails to attendees')
         const mail = new MailService(mailgun, settings.domain)
         // TODO: Who should we email?
-        for (const attendee of newValue.attendees) {
-          functions.logger.debug(`sending email to ${attendee.email}...`)
+        for (const email of newValue.emails) {
+          functions.logger.debug(`sending email to ${email}...`)
 
           await mail.send(Templates.MeetingEnd, {
-            email: attendee.email,
+            email: email,
             meetingMetadata: {
               title: metadata.title,
               participants: metadata.participants,

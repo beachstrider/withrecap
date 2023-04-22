@@ -28,7 +28,7 @@ export default function Info({ meetingDetails }: Props) {
         <img src={purpleMessage} alt="" />
         <div className="font-semibold text-purple-700">
           {/* If attendees are more than 2, then set type 'conference' */}
-          {meetingDetails.attendees.length > 2 ? 'Conference' : '1:1'}
+          {meetingDetails.emails.length > 2 ? 'Conference' : '1:1'}
         </div>
       </div>
       <h5 className="font-semibold mb-[12px]">{meetingDetails.title}</h5>
@@ -40,7 +40,7 @@ export default function Info({ meetingDetails }: Props) {
       <p>{meetingDetails.description}</p>
       <div className="my-[28px] h-[2px] bg-[#F1F3F5]"></div>
       <div className="font-semibold mb-[6px]">
-        Participants&nbsp;&nbsp;<span className="text-gray-500">{meetingDetails.attendees.length}</span>
+        Participants&nbsp;&nbsp;<span className="text-gray-500">{meetingDetails.emails.length}</span>
       </div>
       {meetingDetails.metadata && <Metadata metadata={meetingDetails.metadata} />}
     </div>

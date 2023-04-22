@@ -31,10 +31,7 @@ export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
   }
 
   const Participants = () => {
-    // Includes the meeting creator
-    const nbAttendees = meeting.attendees.length + 1
-
-    return <span>{nbAttendees} Participants</span>
+    return <span>{meeting.emails.length} Participants</span>
   }
 
   const Time = () => {

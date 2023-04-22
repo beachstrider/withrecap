@@ -4,8 +4,7 @@ import {
   GoogleIdentityAuthProvider,
   Meeting,
   MeetingStore,
-  UserAddonStore,
-  UserMeetingStore
+  UserAddonStore
 } from '@recap/shared'
 
 import { ExtensionMessages, MeetingMessage, MeetingMetadata } from '../common/models'
@@ -134,6 +133,8 @@ class ChromeBackgroundService {
       'error'
     ])
 
+    // TODO: Detect meeting that ended long ago and clear the local storage
+
     return {
       recording,
       meetingDetails,
@@ -166,15 +167,6 @@ class ChromeBackgroundService {
       }
     } catch (err) {
       throw new Error(`An error occurred while trying to store meeting information: ${err}`)
-    }
-
-    try {
-      const userMeetingStore = new UserMeetingStore(this.google.auth.currentUser!.uid)
-      if (!(await userMeetingStore.exists(meetingId))) {
-        await userMeetingStore.create(meetingId)
-      }
-    } catch (err) {
-      throw new Error(`An error occurred while trying to associate meeting with user: ${err}`)
     }
 
     await chrome.storage.local.set({ recording: true, meetingDetails })
