@@ -1,11 +1,6 @@
 module.exports = {
   extends: 'react-app',
-  parserOptions: {
-    project: ['./tsconfig.shared.json'],
-    tsconfigRootDir: __dirname,
-    sourceType: 'module'
-  },
-  ignorePatterns: ['*.js', '**/dist/**'],
+  ignorePatterns: ['*.js', '**/dist/**', '**/lib/**'],
   globals: {
     chrome: 'readonly'
   }
