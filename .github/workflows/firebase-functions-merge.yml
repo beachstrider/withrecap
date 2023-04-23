@@ -21,13 +21,13 @@ jobs:
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
       - name: Authenticate with Firebase
-        run: |
-          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_RECAP_381618 }}' > service-account.json
-          cat service-account.json
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_RECAP_381618 }}' > service-account.json
       - name: Deploy Firebase functions, Firestore rules, and indexes
         run: |
+          firebase use --debug --non-interactive $FIREBASE_PROJECT_ID
           firebase functions:config:set --debug --non-interactive config.chatgptapikey="$CHATGPT_API_KEY" config.mailgunapikey="$MAILGUN_API_KEY" config.domain="$DOMAIN" private.key="$FIREBASE_PRIVATE_KEY" project.id="$FIREBASE_PROJECT_ID" client.email="$FIREBASE_EMAIL" --project $FIREBASE_PROJECT_ID
-          yarn workspace @recap/engine deploy:all
+          yarn deploy:all
+        working-directory: packages/engine
         env:
           CHATGPT_API_KEY: ${{ secrets.CHATGPT_API_KEY }}
           MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
