@@ -6,7 +6,9 @@
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
   "files.associations": {
-    ".parcelrc": "json"
+    ".parcelrc": "json",
+    ".postcssrc": "json",
+    ".firebaserc": "json"
   },
   "files.eol": "\n",
   "typescript.enablePromptUseWorkspaceTsdk": true,

@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "start": "parcel watch src/manifest.json --host localhost",
-    "prebuild": "rm -rf dist && yarn workspace @recap/shared build ",
+    "clean": "rimraf dist",
+    "prebuild": "yarn clean && yarn workspace @recap/shared build",
     "build": "NODE_ENV=production parcel build src/manifest.json --no-content-hash --no-cache --no-source-maps --detailed-report 0",
     "package": "zip -r dist.zip dist"
   },
