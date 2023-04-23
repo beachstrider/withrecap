@@ -10,7 +10,7 @@ import Layout from '../../components/layouts'
 export default function MeetingDetail() {
   const { mid } = useParams()
   const { meeting, loading, error } = useMeeting(mid!)
-  console.debug('=======  mid, meeting, loading, error:', mid, meeting, loading, error)
+  console.debug('======  mid, meeting, loading, error:', mid, meeting, loading, error)
 
   return (
     <Layout isLoading={loading}>
