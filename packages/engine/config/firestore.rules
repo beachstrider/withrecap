@@ -35,8 +35,9 @@ service cloud.firestore {
       	return request.auth.token.email in resource.data.emails;
       }
 
-      allow get, list, create, update: if isUserLoggedIn() &&
+      allow list, create, update: if isUserLoggedIn() &&
                       isAttendee();
+      allow get: if isUserLoggedIn();
     }
 
     // Deny delete operations for all documents
