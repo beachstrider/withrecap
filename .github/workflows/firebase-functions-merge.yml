@@ -24,9 +24,8 @@ jobs:
         run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_RECAP_381618 }}' > service-account.json
       - name: Deploy Firebase functions, Firestore rules, and indexes
         run: |
-          firebase use --debug --non-interactive $FIREBASE_PROJECT_ID
-          firebase functions:config:set --debug --non-interactive config.chatgptapikey="$CHATGPT_API_KEY" config.mailgunapikey="$MAILGUN_API_KEY" config.domain="$DOMAIN" private.key="$FIREBASE_PRIVATE_KEY" project.id="$FIREBASE_PROJECT_ID" client.email="$FIREBASE_EMAIL" --project $FIREBASE_PROJECT_ID
-          yarn deploy:all
+          firebase functions:config:set --non-interactive config.chatgptapikey="$CHATGPT_API_KEY" config.mailgunapikey="$MAILGUN_API_KEY" config.domain="$DOMAIN" private.key="$FIREBASE_PRIVATE_KEY" project.id="$FIREBASE_PROJECT_ID" client.email="$FIREBASE_EMAIL" --project $FIREBASE_PROJECT_ID
+          yarn deploy:all --non-interactive
         working-directory: packages/engine
         env:
           CHATGPT_API_KEY: ${{ secrets.CHATGPT_API_KEY }}
