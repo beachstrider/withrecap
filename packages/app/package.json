@@ -6,7 +6,7 @@
   "source": "src/index.html",
   "scripts": {
     "start": "parcel",
-    "build": "rm -rf dist && yarn workspace @recap/shared build && NODE_ENV=production parcel build src/index.html --public-url ./ --no-content-hash --no-cache --no-source-maps --detailed-report 0"
+    "build": "rm -rf dist && yarn workspace @recap/shared build && NODE_ENV=production parcel build src/index.html --public-url / --no-content-hash --no-cache --no-source-maps --detailed-report 0"
   },
   "dependencies": {
     "@recap/shared": "0.0.1",
