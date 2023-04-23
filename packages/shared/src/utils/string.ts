@@ -1,4 +1,4 @@
-import { User } from 'firebase/auth'
+import { User } from '@recap/shared'
 
 // Input: User, Output: its first name
 export const getUserFirstName = (user: User) => {

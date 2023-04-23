@@ -15,14 +15,11 @@ export function useMeetings() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    userMeetingStore.list().then((m) => {
-      setMeetings(m)
-      setError(null)
-
-      if (m.length === 0) {
-        setLoading(false)
-      }
-    })
+    userMeetingStore
+      .list()
+      .then((m) => setMeetings(m))
+      .catch((err) => setError(err))
+      .finally(() => setLoading(false))
   }, [userMeetingStore])
 
   useEffect(() => {
@@ -38,7 +35,6 @@ export function useMeetings() {
     }
 
     setMeetingsByDate(byDate)
-    setLoading(false)
   }, [meetings])
 
   return {
@@ -57,11 +53,11 @@ export function useMeeting(mid: string) {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    meetingStore.get(mid).then((meeting) => {
-      setData(meeting)
-      setLoading(false)
-      setError(null)
-    })
+    meetingStore
+      .get(mid)
+      .then((meeting) => setData(meeting))
+      .catch((err) => setError(err))
+      .finally(() => setLoading(false))
   }, [meetingStore, mid])
 
   return { meeting: data, loading, error }
@@ -73,7 +69,8 @@ export function useRecentMeeting() {
   const userMeetingStore = useMemo(() => new UserMeetingStore(user.email), [user.email])
 
   const [recentMeeting, setRecentMeeting] = useState<Meeting | undefined>()
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     setLoading(true)
@@ -81,11 +78,13 @@ export function useRecentMeeting() {
     userMeetingStore
       .recent()
       .then(setRecentMeeting)
+      .catch((err) => setError(err))
       .finally(() => setLoading(false))
   }, [userMeetingStore])
 
   return {
     recentMeeting,
-    loading
+    loading,
+    error
   }
 }

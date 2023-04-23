@@ -132,7 +132,7 @@ const PublicSection = () => {
     // If user already logged in we redirect to meetings page
     const unsubscribe = onAuthStateChanged((u: any) => {
       if (u !== null) {
-        navigate('/meetings')
+        navigate(MEETINGS)
       }
     })
 
