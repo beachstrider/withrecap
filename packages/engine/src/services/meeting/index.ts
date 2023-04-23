@@ -14,7 +14,7 @@ export class MeetingService {
       title: this.meeting.title,
       start: startTime,
       end: endTime,
-      url: `${settings.baseURL}/meetings/${this.meeting.mid}`
+      url: `${settings.baseURL}/app/meetings/${this.meeting.mid}`
     }
 
     return metadata
