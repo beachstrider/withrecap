@@ -55,7 +55,6 @@ export class MeetingStore {
 
   public async exists(uid: string): Promise<boolean> {
     const document = await getDoc(doc(this._db, uid))
-
     return document.exists()
   }
 

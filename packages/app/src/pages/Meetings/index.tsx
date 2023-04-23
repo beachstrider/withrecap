@@ -9,14 +9,13 @@ import Layout from '../../components/layouts'
 
 export default function Index() {
   const { user } = useAuthGuard()
-  console.debug('=======  user:', user)
   const { meetingsByDate, loading: loadingMeetings } = useMeetings()
   const { userAddons, loading: loadingAddons } = useIntegrations()
 
   return (
     <Layout isLoading={loadingMeetings || loadingAddons}>
       <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">
-        {!Object.keys(userAddons).length && !loadingAddons && <ExtensionInstallationAlert />}
+        {!Object.keys(userAddons).length && <ExtensionInstallationAlert />}
         <div className="flex gap-[20px] sm:mb-[80px] mb-[60px]">
           <img src={`${user.photoURL}`} alt="" className="w-[64px] h-[64px] rounded-full" />
           <div className="">

@@ -31,7 +31,7 @@
 }
 
 body {
-  @apply relative h-screen  text-[#222734] font-inter;
+  @apply relative h-screen  text-[#222734] font-inter overflow-x-hidden;
 }
 
 main {
