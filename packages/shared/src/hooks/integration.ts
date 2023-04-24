@@ -11,27 +11,33 @@ export function useIntegrations() {
 
   const [addons, setAddons] = useState<Addons>({})
   const [userAddons, setUserAddons] = useState<UserAddons>({})
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
-    // TODO: Handle errors
-    addonStore.list().then((a) => {
-      userAddonStore.list().then((ua) => {
-        setUserAddons(ua)
-        setAddons(a)
-        setLoading(false)
-        setError(null)
+    addonStore
+      .list()
+      .then((a) => {
+        userAddonStore.list().then((ua) => {
+          setUserAddons(ua)
+          setAddons(a)
+          setError(null)
+        })
       })
-    })
+      .catch(setError)
+      .finally(() => setLoading(false))
   }, [addonStore, userAddonStore])
 
   const enableAddon = async (id: string, addon: Addon) => {
-    const config: UserAddonConfig = { url: addon.url, regex: addon.regex, enabled: true }
-    await userAddonStore.insert(id, config)
+    try {
+      const config: UserAddonConfig = { url: addon.url, regex: addon.regex, enabled: true }
+      await userAddonStore.insert(id, config)
 
-    userAddons[id] = config
-    setUserAddons({ ...userAddons })
+      userAddons[id] = config
+      setUserAddons({ ...userAddons })
+    } catch (err) {
+      setError(err as Error)
+    }
   }
 
   return { addons, userAddons, enableAddon, loading, error }

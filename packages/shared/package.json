@@ -7,8 +7,10 @@
   "source": "src/index.ts",
   "private": true,
   "scripts": {
-    "start": "yarn && yarn run -T tsc --watch",
-    "build": "yarn && yarn run -T tsc --build"
+    "clean": "rimraf dist",
+    "start": "yarn run -T tsc --watch",
+    "perbuild": "yarn clean",
+    "build": "yarn run -T tsc --build"
   },
   "dependencies": {},
   "devDependencies": {}

@@ -1,6 +1,6 @@
 import { Menu } from '@headlessui/react'
-import { UserStore, getUserFirstName, useAuth, useAuthGuard } from '@recap/shared'
-import React, { useEffect, useMemo, useState } from 'react'
+import { getUserFirstName, useAuth, useAuthGuard } from '@recap/shared'
+import React, { useEffect } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 
 import { Button } from '../buttons'
@@ -31,23 +31,21 @@ export default function Index({ isPublic = false }) {
 const PrivateSection = () => {
   const { user, logout } = useAuthGuard()
 
-  const userStore = useMemo(() => new UserStore(), [])
+  // TODO: Re-enable once we support auto-sharing
+  // const userStore = useMemo(() => new UserStore(), [])
+  // const [automaticSharing, setAutomaticSharing] = useState(false)
+  // useEffect(() => {
+  //   userStore.get(user.uid).then((u) => {
+  //     if (u.autoSharing) {
+  //       setAutomaticSharing(true)
+  //     }
+  //   })
+  // }, [userStore, user.uid])
+  // const toggleAutoSharing = async () => {
+  //   setAutomaticSharing(!automaticSharing)
 
-  const [automaticSharing, setAutomaticSharing] = useState(false)
-
-  useEffect(() => {
-    userStore.get(user.uid).then((u) => {
-      if (u.autoSharing) {
-        setAutomaticSharing(true)
-      }
-    })
-  }, [userStore, user.uid])
-
-  const toggleAutoSharing = async () => {
-    setAutomaticSharing(!automaticSharing)
-
-    await userStore.update(user.uid, { autoSharing: !automaticSharing })
-  }
+  //   await userStore.update(user.uid, { autoSharing: !automaticSharing })
+  // }
 
   return (
     <>

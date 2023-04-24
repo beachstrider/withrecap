@@ -4,7 +4,8 @@
   "description": "Simple data seeder for Firestore",
   "private": true,
   "scripts": {
-    "prestart": "rm -rf dist && yarn workspace @recap/shared build ",
+    "clean": "rimraf dist",
+    "prestart": "yarn clean && yarn workspace @recap/shared build ",
     "start": "yarn parcel build src/index.ts",
     "poststart": "node dist/index.js"
   },

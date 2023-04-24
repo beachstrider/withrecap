@@ -6,7 +6,7 @@ module.exports = {
       center: true
     },
     fontFamily: {
-      'inter': ['"Inter"']
+      inter: ['"Inter"']
     }
   },
   plugins: []
