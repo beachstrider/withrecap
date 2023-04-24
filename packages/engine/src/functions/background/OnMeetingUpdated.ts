@@ -7,7 +7,7 @@ import { MeetingService } from '../../services/meeting'
 import { MeetingSummary } from '../../services/summary'
 import { TranscriptService } from '../../services/transcript'
 
-export const OnMeetingUpdate = functions.firestore.document('meetings/{docId}').onUpdate(async (change, context) => {
+export const OnMeetingUpdated = functions.firestore.document('meetings/{docId}').onUpdate(async (change, context) => {
   try {
     functions.logger.debug('engine called')
 
