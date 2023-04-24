@@ -1,13 +1,13 @@
-import * as functions from 'firebase-functions'
 import { Meeting, MeetingMetadata } from '@recap/shared'
+import * as functions from 'firebase-functions'
 
-import { MeetingSummary } from '../services/summary'
-import { openai, mail as mailgun, settings } from '../config'
-import { TranscriptService } from '../services/transcript'
-import { MailService, Templates } from '../services/mail'
-import { MeetingService } from '../services/meeting'
+import { mail as mailgun, openai, settings } from '../../config'
+import { MailService, Templates } from '../../services/mail'
+import { MeetingService } from '../../services/meeting'
+import { MeetingSummary } from '../../services/summary'
+import { TranscriptService } from '../../services/transcript'
 
-export const Engine = functions.firestore.document('meetings/{docId}').onUpdate(async (change, context) => {
+export const OnMeetingUpdated = functions.firestore.document('meetings/{docId}').onUpdate(async (change, context) => {
   try {
     functions.logger.debug('engine called')
 

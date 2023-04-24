@@ -1,10 +1,10 @@
-import * as functions from 'firebase-functions'
 import { User } from '@recap/shared'
+import * as functions from 'firebase-functions'
 
-import { MailService, Templates } from '../services/mail'
-import { mail as mailgun, settings } from '../config'
+import { mail as mailgun, settings } from '../../config'
+import { MailService, Templates } from '../../services/mail'
 
-export const UserCreated = functions.firestore.document('users/{userId}').onCreate(async (snapshot, context) => {
+export const OnUserCreated = functions.firestore.document('users/{userId}').onCreate(async (snapshot, context) => {
   try {
     functions.logger.debug('new user signed up')
 

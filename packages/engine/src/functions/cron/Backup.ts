@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions'
 
-import { auth, db, settings } from '../config'
+import { auth, db, settings } from '../../config'
 
 export const BackupFirestore = functions.pubsub.schedule('every day 00:00').onRun(async (_context) => {
   const timestamp = new Date().toISOString()
