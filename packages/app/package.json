@@ -6,6 +6,7 @@
   "source": "src/index.html",
   "scripts": {
     "start": "parcel",
+    "start:emulator": "USE_EMULATOR=true parcel",
     "clean": "rimraf dist",
     "prebuild": "yarn clean && yarn workspace @recap/shared build",
     "build": "NODE_ENV=production parcel build --no-content-hash --no-cache --no-source-maps --detailed-report 0"
