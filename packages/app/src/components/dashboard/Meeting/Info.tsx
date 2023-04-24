@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { Meeting, MeetingMetadata, getTimeRange } from '@recap/shared'
+import { Meeting, MeetingAttendee, MeetingMetadata, getTimeRange } from '@recap/shared'
 
 import { MEETINGS } from '../../../constants/routes'
 import UserAvatar from '../../display/UserAvatar'
@@ -26,28 +26,32 @@ export default function Info({ meetingDetails }: Props) {
       </div>
       <div className="flex gap-[12px] mb-[26px]">
         <img src={purpleMessage} alt="" />
-        <div className="font-semibold text-purple-700">
-          {/* If attendees are more than 2, then set type 'conference' */}
-          {meetingDetails.emails.length > 2 ? 'Conference' : '1:1'}
-        </div>
+        <div className="font-semibold text-purple-700">{meetingDetails.emails.length > 2 ? 'Conference' : '1:1'}</div>
       </div>
       <h5 className="font-semibold mb-[12px]">{meetingDetails.title}</h5>
-      <p className="font-semibold text-gray-500 mb-[24px]">
-        {/* Convert startTime, endTime of meeting to format EEE, MMM dd hh:mm aa - hh:mm aa */}
-        {getTimeRange(meetingDetails.start, meetingDetails.end)}
-      </p>
+      <p className="font-semibold text-gray-500 mb-[24px]">{getTimeRange(meetingDetails.start, meetingDetails.end)}</p>
 
       <p>{meetingDetails.description}</p>
       <div className="my-[28px] h-[2px] bg-[#F1F3F5]"></div>
       <div className="font-semibold mb-[6px]">
         Participants&nbsp;&nbsp;<span className="text-gray-500">{meetingDetails.emails.length}</span>
       </div>
-      {meetingDetails.metadata && <Metadata metadata={meetingDetails.metadata} />}
+      {meetingDetails.metadata && (
+        <Metadata metadata={meetingDetails.metadata} attendees={Object.values(meetingDetails.attendees)} />
+      )}
     </div>
   )
 }
 
-const Metadata: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => {
+const Metadata: React.FC<{ metadata: MeetingMetadata; attendees: MeetingAttendee[] }> = ({ metadata, attendees }) => {
+  const getAvatar = (speaker: string): string | undefined => {
+    return attendees.find((a) => a.name === speaker)?.avatar
+  }
+
+  const formatPercentage = (percentage: number): string => {
+    return (percentage * 100).toFixed(0)
+  }
+
   return (
     <>
       <p className="text-gray-500 mb-[24px]">Ranked in order of speaker.</p>
@@ -56,12 +60,15 @@ const Metadata: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => {
           return (
             <div key={key} className="flex items-center justify-between">
               <div className="flex gap-[12px] items-center">
-                {/** TODO: We don't have access to avatar here */}
-                <UserAvatar avatar={undefined} name={speaker} className="sm:w-[32px] sm:h-[32px] w-[24px] h-[24px]" />
+                <UserAvatar
+                  avatar={getAvatar(speaker)}
+                  name={speaker}
+                  className="sm:w-[32px] sm:h-[32px] w-[24px] h-[24px]"
+                />
                 <div className="font-semibold">{speaker}</div>
               </div>
               <div className="px-[6px] py-[4px] rounded-[26px] bg-gray-100 text-[12px] font-semibold text-gray-500">
-                {(percentage * 100).toFixed(0)}%
+                {formatPercentage(percentage)}%
               </div>
             </div>
           )

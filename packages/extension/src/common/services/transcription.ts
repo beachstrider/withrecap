@@ -65,7 +65,6 @@ export class TranscriptionService {
     }
     //if same speaker, check if the new message is a continuation of the last message
     else if (message.text.startsWith(lastMessage!.text)) {
-      // TODO: Maybe use something more flexible than startsWith
       // What if the previous message ends with a dot and the new
       // one with a comma since the user paused and then resumed speaking
       // replace the last message in that case

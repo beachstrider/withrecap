@@ -230,7 +230,6 @@ class GoogleMeetsService {
 }
 
 //TODO: Once we support more addons, find out which service we're on and initialize the right service
-//TODO: Hide transcript display on production
 
 const meetingService = new GoogleMeetsService()
 meetingService.prepareListener()

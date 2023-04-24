@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Meeting, Message, getTimeDiff } from '@recap/shared'
+import { Meeting, MeetingAttendee, Message, getTimeDiff } from '@recap/shared'
 
 import { ThumbsDown, ThumbsUp } from '../../buttons'
 
@@ -11,7 +11,7 @@ interface Props {
   meetingDetails: Meeting
 }
 
-export default function Transcript({ meetingDetails: { start, end, transcript } }: Props) {
+export default function Transcript({ meetingDetails: { start, end, transcript, attendees } }: Props) {
   const [like, setLike] = useState(0)
 
   function onSetLike(v: 1 | -1 | 0) {
@@ -35,20 +35,23 @@ export default function Transcript({ meetingDetails: { start, end, transcript } 
       </div>
       <div className="flex flex-col sm:gap-[40px] gap-[30px]">
         {(transcript || []).map((msg, key) => (
-          <TranscriptItem key={key} msg={msg} />
+          <TranscriptItem key={key} msg={msg} attendees={Object.values(attendees)} />
         ))}
       </div>
     </div>
   )
 }
 
-const TranscriptItem = ({ msg }: { msg: Message }) => {
+const TranscriptItem = ({ msg, attendees }: { msg: Message; attendees: MeetingAttendee[] }) => {
+  const getAvatar = (speaker: string): string | undefined => {
+    return attendees.find((a) => a.name === speaker)?.avatar
+  }
+
   return (
     <div className="flex sm:gap-[16px] gap-[12px]">
-      {/* TODO: avatar will be set by choosing one in attendees later once it has proper identify (email) */}
       <UserAvatar
         name={msg.speaker}
-        avatar={undefined}
+        avatar={getAvatar(msg.speaker)}
         className="sm:w-[24px] sm:h-[24px] w-[18px] h-[18px] sm:text-[10px] text-[7px]"
       />
       <div className="flex flex-col sm:gap-[10px] gap-[6px]">

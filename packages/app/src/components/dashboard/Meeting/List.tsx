@@ -1,4 +1,4 @@
-import { Meeting, MeetingAttendee, getFormattedDate } from '@recap/shared'
+import { Meeting, MeetingAttendee, getFormattedDate, getTime } from '@recap/shared'
 import { format } from 'date-fns'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -74,8 +74,7 @@ export default function Index({ meetingsByDate }: Props) {
                     </div>
                     <div className="text-[15px] font-semibold flex items-center text-gray-500">
                       <div className="mr-[16px]">
-                        {/** TODO: Move to util and reuse everywhere we format dates this way */}
-                        {format(new Date(meeting.start), 'h:mm a')} - {format(new Date(meeting.end), 'h:mm a')}
+                        {getTime(meeting.start)} - {getTime(meeting.end)}
                       </div>
                       <div className="flex mr-[8px]">
                         {selectedAttendees.map((attendee, key) => (

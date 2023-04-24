@@ -43,13 +43,13 @@ class ChromeBackgroundService {
     // TODO: Remove once we have better tooling like Sentry
     console.trace(error)
 
-    return chrome.storage.local.set({ error })
+    return chrome.storage.session.set({ error })
   }
 
   startListener(): void {
     chrome.tabs.onRemoved.addListener(async (tid, _removeInfo) => {
       try {
-        const { tabId, meetingDetails } = await chrome.storage.local.get(['tabId', 'meetingDetails'])
+        const { tabId, meetingDetails } = await chrome.storage.session.get(['tabId', 'meetingDetails'])
 
         if (tid === tabId) {
           console.debug(`meeting ended since tab (${tid}) was closed.`)
@@ -127,13 +127,13 @@ class ChromeBackgroundService {
   }
 
   async processMeetingState(): Promise<any> {
-    const { recording, meetingDetails, error } = await chrome.storage.local.get([
+    const { recording, meetingDetails, error } = await chrome.storage.session.get([
       'recording',
       'meetingDetails',
       'error'
     ])
 
-    // TODO: Detect meeting that ended long ago and clear the local storage
+    // TODO: Detect meeting that ended long ago and clear the session storage
 
     return {
       recording,
@@ -151,7 +151,7 @@ class ChromeBackgroundService {
   }
 
   async processMeetingStart(meetingId: string, _metadata: MeetingMetadata, tabId: number): Promise<void> {
-    await chrome.storage.local.set({ tabId })
+    await chrome.storage.session.set({ tabId })
 
     const meetingDetails = await this.getMeetingDetails(meetingId)
     if (!meetingDetails) {
@@ -169,11 +169,11 @@ class ChromeBackgroundService {
       throw new Error(`An error occurred while trying to store meeting information: ${err}`)
     }
 
-    await chrome.storage.local.set({ recording: true, meetingDetails })
+    await chrome.storage.session.set({ recording: true, meetingDetails })
   }
 
   async processMeetingEnd(meetingId: string) {
-    await chrome.storage.local.remove(['recording', 'meetingDetails', 'tabId', 'error'])
+    await chrome.storage.session.remove(['recording', 'meetingDetails', 'tabId', 'error'])
 
     try {
       await this.meetingStore.update(meetingId, { ended: true })
