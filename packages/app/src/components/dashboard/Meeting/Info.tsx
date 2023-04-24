@@ -14,6 +14,16 @@ interface Props {
 }
 
 export default function Info({ meetingDetails }: Props) {
+  const formatDescription = (description: string) => {
+    const maxChars = 75
+
+    if (description.length <= maxChars) {
+      return description
+    } else {
+      return `${description.substring(0, maxChars).trim()}...`
+    }
+  }
+
   return (
     <div className="card sm:max-w-[340px] sm:min-w-[340px] w-full grow-0 sm:p-[24px] p-[18px]">
       <div className="flex">
@@ -37,7 +47,7 @@ export default function Info({ meetingDetails }: Props) {
         {getTimeRange(meetingDetails.start, meetingDetails.end)}
       </p>
 
-      <p>{meetingDetails.description}</p>
+      <p>{formatDescription(meetingDetails.description || '')}</p>
       <div className="my-[28px] h-[2px] bg-[#F1F3F5]"></div>
       <div className="font-semibold mb-[6px]">
         Participants&nbsp;&nbsp;<span className="text-gray-500">{meetingDetails.emails.length}</span>
