@@ -21,7 +21,7 @@ export default function App() {
   return (
     <>
       <Routes>
-        {/* Website routes */}
+        {/* Website Routes */}
         <Route path="/">
           <Route
             index
