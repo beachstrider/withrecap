@@ -1,14 +1,25 @@
 import { format, formatDistance, formatRelative } from 'date-fns'
 import { enUS } from 'date-fns/locale'
 
-// Convert 2 timestamp inputs to proper format, ex; Mon, Apr 17  01:00 AM - 03:00 AM
+/**
+ * Extracts time from a date and formats it. E.g. 9:00 AM
+ */
+export const getTime = (date: string): string => {
+  return format(new Date(date), 'h:mm a')
+}
+
+/**
+ * Convert 2 timestamp inputs to proper format. E.g. Mon, Apr 17  01:00 AM - 03:00 AM
+ */
 export const getTimeRange = (start: string, end: string) => {
   const startTime = new Date(start)
   const endTime = new Date(end)
   return format(startTime, 'EEE, MMM dd \u00A0\u00A0 hh:mm aa - ') + format(endTime, 'hh:mm aa')
 }
 
-// Get time difference from 2 timestamp inputs, ex; about 2 hours
+/**
+ * Get time difference from 2 timestamp inputs. E.g. about 2 hours
+ */
 export const getTimeDiff = (start: string, end: string) => {
   const startTime = new Date(start)
   const endTime = new Date(end)

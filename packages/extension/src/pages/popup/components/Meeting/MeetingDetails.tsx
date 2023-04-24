@@ -1,4 +1,4 @@
-import { Meeting } from '@recap/shared'
+import { Meeting, getTime } from '@recap/shared'
 import { format, formatDistance } from 'date-fns'
 import React from 'react'
 
@@ -35,8 +35,8 @@ export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
   }
 
   const Time = () => {
-    const startTime = format(new Date(meeting.start), 'h:mm a')
-    const endTime = format(new Date(meeting.end), 'h:mm a')
+    const startTime = getTime(meeting.start)
+    const endTime = getTime(meeting.end)
 
     return (
       <span>
