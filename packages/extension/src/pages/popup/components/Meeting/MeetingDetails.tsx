@@ -54,7 +54,7 @@ export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
   const Footer = () => {
     if (ended) {
       const openRecapApp = async () => {
-        return chrome.tabs.create({ url: `${process.env.RECAP_APP_BASE_URL}/meetings/${meeting.mid}` })
+        return chrome.tabs.create({ url: `${process.env.RECAP_APP_BASE_URL}/app/meetings/${meeting.mid}` })
       }
 
       return (
