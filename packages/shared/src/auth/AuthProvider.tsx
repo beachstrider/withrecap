@@ -2,11 +2,12 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from '
 
 import { User, UserStore } from '../storage/users'
 import { BaseAuthProvider } from '.'
+import { useErrors } from '../hooks/error'
 
 type AuthProviderContextType = {
   token: string | null
   user: User | null
-  error: Error | null
+  error: ReturnType<typeof useErrors>['error']
   login: BaseAuthProvider['login']
   logout: BaseAuthProvider['logout']
   onAuthStateChanged: BaseAuthProvider['onAuthStateChanged']
@@ -19,7 +20,7 @@ export const useAuth = () => {
 
 interface AuthProviderProps {
   provider: new () => BaseAuthProvider
-  children: JSX.Element
+  children: React.ReactNode
 }
 
 export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
@@ -28,7 +29,7 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
 
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(null)
-  const [error, setError] = useState<Error | null>(null)
+  const { error, setError } = useErrors(null)
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((u, t) => {
@@ -58,7 +59,7 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
           const message = 'An error occurred while authenticating'
 
           console.error(message, err)
-          setError(new Error(message))
+          setError({ message, err })
 
           // If we cannot save the user info in the DB, we have to log the user out
           await auth.logout()
@@ -66,7 +67,7 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
     })
 
     return unsubscribe
-  }, [auth, userStore])
+  }, [auth, userStore, setError])
 
   return (
     <AuthProviderContext.Provider

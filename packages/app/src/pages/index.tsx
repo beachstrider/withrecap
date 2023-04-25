@@ -158,7 +158,7 @@ export default function Index() {
               smart, fun, and automated.
             </h1>
             <div className="sm:text-[22px] text-[18px] leading-tight text-gray-500">
-              (at least that’s how we feel when we use Recap)
+              (at least that's how we feel when we use Recap)
             </div>
 
             <Link to="#">

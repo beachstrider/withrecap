@@ -1,6 +1,6 @@
-import { useAuth } from '@recap/shared'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast, useAuth } from '@recap/shared'
 
 import google from '../../assets/img/google.svg'
 import logo from '../../assets/img/logo.svg'
@@ -9,9 +9,15 @@ import { PRIVACY_POLICY, SIGNING_IN, TERMS_CONDITIONS } from '../../constants/ro
 import { Button } from '../buttons'
 
 export default function Index({ className = '' }) {
-  const { login } = useAuth()
+  const { login, error } = useAuth()
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message, error.err)
+    }
+  }, [error])
 
   return (
     <footer className={`container sm:py-[100px] py-[75px] ${className}`}>
@@ -37,7 +43,7 @@ export default function Index({ className = '' }) {
             <button
               onClick={async () => {
                 navigate(`/${SIGNING_IN}`)
-                // TODO: Handle errors
+
                 await login()
               }}
               className="block text-[15px] font-semibold text-gray-500 text-start"

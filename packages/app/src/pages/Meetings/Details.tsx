@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { useMeeting } from '@recap/shared'
+import { toast, useMeeting } from '@recap/shared'
+
 import Info from '../../components/dashboard/Meeting/Info'
 import Summary from '../../components/dashboard/Meeting/Summary'
 import Transcript from '../../components/dashboard/Meeting/Transcript'
@@ -10,7 +11,12 @@ import Layout from '../../components/layouts'
 export default function MeetingDetail() {
   const { mid } = useParams()
   const { meeting, loading, error } = useMeeting(mid!)
-  console.debug('======  mid, meeting, loading, error:', mid, meeting, loading, error)
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message, error.err)
+    }
+  }, [error])
 
   return (
     <Layout isLoading={loading}>
