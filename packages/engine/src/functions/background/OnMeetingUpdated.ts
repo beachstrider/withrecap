@@ -18,6 +18,7 @@ export const OnMeetingUpdated = functions.firestore.document('meetings/{docId}')
 
       const transcript = new TranscriptService(newValue.conversation)
       const meetingSummary = new MeetingSummary(openai, transcript)
+
       const meetingService = new MeetingService(newValue)
 
       const response = await meetingSummary.build()
