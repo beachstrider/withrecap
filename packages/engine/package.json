@@ -5,7 +5,7 @@
     "build": "yarn clean && NODE_ENV=production parcel build src/index.ts --dist-dir lib",
     "build:watch": "parcel watch src/index.ts --dist-dir lib",
     "clean": "rimraf lib",
-    "serve": "yarn build && firebase emulators:start --only functions",
+    "serve": "yarn build && set GOOGLE_APPLICATION_CREDENTIALS=key.json && firebase emulators:start --only functions",
     "shell": "yarn build && firebase functions:shell",
     "start": "yarn shell",
     "deploy:all": "firebase deploy --only functions,firestore:rules,firestore:indexes",

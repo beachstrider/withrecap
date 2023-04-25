@@ -1,3 +1,4 @@
+import { sendInviteEmails } from '@recap/shared'
 import React, { useState } from 'react'
 import gift from '../../../../assets/img/gift.svg'
 
@@ -6,7 +7,10 @@ export const InviteFriends = () => {
   const [status, setStatus] = useState<'inactive' | 'active' | 'done'>('inactive')
 
   const send = () => {
-    setStatus('done')
+    sendInviteEmails({ emails }).then((res) => {
+      setStatus('done')
+      console.log('res:', res)
+    })
   }
 
   return (
@@ -32,6 +36,8 @@ export const InviteFriends = () => {
               rows={1}
               className="grow rounded-[12px] bg-white border-[2px] border-solid border-gray-200 px-[12px] py-[8px] text-[15px]"
               placeholder="john@doe.com, jane@brown"
+              value={emails}
+              onChange={(e) => setEmails(e.target.value)}
             />
             <button onClick={send} className="bg-gray-950 text-white rounded-[12px] px-[13.5px] py-[8px] text-[15px]">
               Send
