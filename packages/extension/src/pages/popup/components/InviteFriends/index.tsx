@@ -1,15 +1,42 @@
-import { sendInviteEmails } from '@recap/shared'
 import React, { useState } from 'react'
+
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
+
+import { sendInviteEmails } from '@recap/shared'
 import gift from '../../../../assets/img/gift.svg'
 
+const schema = yup.object().shape({
+  emails: yup
+    .string()
+    .required('This field is required')
+    .test('isValidEmails', 'One or more emails are invalid', function (value) {
+      // Split the comma-separated string into an array of strings
+      const emails = value.split(',').map((email) => email.trim())
+
+      // Check if each email in the array is a valid email address
+      return emails.every((email) => yup.string().email().isValidSync(email))
+    })
+})
+
 export const InviteFriends = () => {
-  const [emails, setEmails] = useState('')
   const [status, setStatus] = useState<'inactive' | 'active' | 'done'>('inactive')
 
-  const send = () => {
-    sendInviteEmails({ emails }).then((res) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitSuccessful }
+  } = useForm({
+    resolver: yupResolver(schema)
+  })
+
+  const onSubmit = (data: any) => {
+    // Convert string type emails seperated by comma to email array
+    const emails = data.emails.split(',').map((email: string) => email.trim())
+
+    sendInviteEmails({ emails }).then(() => {
       setStatus('done')
-      console.log('res:', res)
     })
   }
 
@@ -31,18 +58,24 @@ export const InviteFriends = () => {
           </>
         )}
         {status === 'active' && (
-          <div className="grow flex flex-col w-full gap-[14px]">
+          <form className="grow flex flex-col w-full gap-[14px]" onSubmit={handleSubmit(onSubmit)}>
             <textarea
+              {...register('emails')}
               rows={1}
-              className="grow rounded-[12px] bg-white border-[2px] border-solid border-gray-200 px-[12px] py-[8px] text-[15px]"
+              className={`grow rounded-[12px] bg-white border-[2px] border-solid ${
+                errors.emails ? 'border-red-500' : 'border-gray-200'
+              }  px-[12px] py-[8px] text-[15px]`}
               placeholder="john@doe.com, jane@brown"
-              value={emails}
-              onChange={(e) => setEmails(e.target.value)}
             />
-            <button onClick={send} className="bg-gray-950 text-white rounded-[12px] px-[13.5px] py-[8px] text-[15px]">
+            <button
+              type="submit"
+              className={`${
+                isSubmitSuccessful ? 'bg-gray-300' : 'bg-gray-950'
+              } text-white rounded-[12px] px-[13.5px] py-[8px] text-[15px]`}
+            >
               Send
             </button>
-          </div>
+          </form>
         )}
         {status === 'done' && <div className="text-[15px]">We've sent an invitation to the emails!</div>}
       </div>

@@ -5,6 +5,10 @@
 @tailwind utilities;
 
 @layer base {
+  * {
+    @apply outline-none;
+  }
+
   body {
     @apply w-[360px] min-h-[297px] text-[#222734] font-inter flex flex-col;
   }
