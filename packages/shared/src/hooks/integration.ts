@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
+
 import { useAuthGuard } from '../auth/AuthGuard'
 import { Addon, AddonStore, Addons } from '../storage/addons'
 import { UserAddonConfig, UserAddonStore, UserAddons } from '../storage/users/addons'
+import { useErrors } from './error'
 
 export function useIntegrations() {
   const { user } = useAuthGuard()
+  const { error, setError } = useErrors(null)
 
   const userAddonStore = useMemo(() => new UserAddonStore(user.uid), [user.uid])
   const addonStore = useMemo(() => new AddonStore(), [])
@@ -12,7 +15,6 @@ export function useIntegrations() {
   const [addons, setAddons] = useState<Addons>({})
   const [userAddons, setUserAddons] = useState<UserAddons>({})
   const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
     addonStore
@@ -22,11 +24,11 @@ export function useIntegrations() {
           setUserAddons(ua)
           setAddons(a)
           setError(null)
+          setLoading(false)
         })
       })
-      .catch(setError)
-      .finally(() => setLoading(false))
-  }, [addonStore, userAddonStore])
+      .catch((err: Error) => setError({ message: 'An error occurred while fetching your integrations', err }))
+  }, [addonStore, userAddonStore, setError])
 
   const enableAddon = async (id: string, addon: Addon) => {
     try {
@@ -35,8 +37,9 @@ export function useIntegrations() {
 
       userAddons[id] = config
       setUserAddons({ ...userAddons })
+      setError(null)
     } catch (err) {
-      setError(err as Error)
+      setError({ message: 'An error occurred while enabling integration', err: err as Error })
     }
   }
 

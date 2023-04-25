@@ -8,7 +8,7 @@ import Meetings from './pages/Meetings'
 import MeetingDetails from './pages/Meetings/Details'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 
-import NoPage from './pages/NoPage'
+import NotFound from './pages/NotFound'
 import TermsConditions from './pages/TermsConditions'
 
 export default function App() {
@@ -78,7 +78,7 @@ export default function App() {
         </Route>
 
         {/* 404 page */}
-        <Route path="*" element={<NoPage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   )

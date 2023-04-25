@@ -1,7 +1,7 @@
-import { Meeting, MeetingAttendee, getFormattedDate, getTime } from '@recap/shared'
-import { format } from 'date-fns'
 import React from 'react'
 import { Link } from 'react-router-dom'
+
+import { Meeting, MeetingAttendee, getFormattedDate, getTime } from '@recap/shared'
 
 import exitArrow from '../../../assets/img/exit-arrow-right.svg'
 import purpleMessage from '../../../assets/img/purpleMessage.svg'

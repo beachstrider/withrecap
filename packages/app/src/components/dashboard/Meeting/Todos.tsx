@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import dots from '../../../assets/img/dots.svg'
-
 import { Link } from 'react-router-dom'
+
+import dots from '../../../assets/img/dots.svg'
 import greenCheck from '../../../assets/img/greenCheck.png'
 import add from '../../../assets/img/plus.svg'
 import unchecked from '../../../assets/img/unchecked.png'

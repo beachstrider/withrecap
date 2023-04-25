@@ -1,5 +1,5 @@
 import { Menu } from '@headlessui/react'
-import { getUserFirstName, useAuth, useAuthGuard } from '@recap/shared'
+import { getUserFirstName, toast, useAuth, useAuthGuard } from '@recap/shared'
 import React, { useEffect } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 
@@ -29,7 +29,13 @@ export default function Index({ isPublic = false }) {
 }
 
 const PrivateSection = () => {
-  const { user, logout } = useAuthGuard()
+  const { user, logout, error } = useAuthGuard()
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message, error.err)
+    }
+  }, [error])
 
   // TODO: Re-enable once we support auto-sharing
   // const userStore = useMemo(() => new UserStore(), [])
@@ -95,6 +101,7 @@ const PrivateSection = () => {
               <div
                 onClick={async () => {
                   await logout()
+
                   window.location.href = '/'
                 }}
                 className="flex items-center justify-between cursor-pointer"
@@ -123,8 +130,14 @@ const PrivateSection = () => {
 }
 
 const PublicSection = () => {
-  const { onAuthStateChanged, login } = useAuth()
+  const { onAuthStateChanged, login, error } = useAuth()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message, error.err)
+    }
+  }, [error])
 
   useEffect(() => {
     // If user already logged in we redirect to meetings page
