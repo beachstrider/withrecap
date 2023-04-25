@@ -12,6 +12,7 @@ type BaseUserConfigs = {
   email: string
   displayName?: string
   photoURL?: string
+  created: string
 }
 
 export type User = BaseUserConfigs & CustomUserConfigs
@@ -41,7 +42,8 @@ export class UserStore {
       email: user.email!,
       displayName: user.displayName || '',
       photoURL: user.photoURL || '',
-      autoSharing: false
+      autoSharing: false,
+      created: new Date().toISOString()
     }
 
     await setDoc(doc(this._db, user.uid), createdUser)

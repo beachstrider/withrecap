@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions'
 
-import { auth, db, settings } from '../../config'
+import { auth, firestore, settings } from '../../config'
 
 export const BackupFirestore = functions.pubsub.schedule('every day 00:00').onRun(async (_context) => {
   const timestamp = new Date().toISOString()
@@ -9,7 +9,7 @@ export const BackupFirestore = functions.pubsub.schedule('every day 00:00').onRu
 
   await auth.authorize()
 
-  return db.projects.databases.exportDocuments({
+  return firestore.projects.databases.exportDocuments({
     name: `projects/${settings.projectId}/databases/(default)`,
     requestBody: {
       outputUriPrefix: `gs://${settings.projectId}-firestore-backups/backups/${timestamp}`
