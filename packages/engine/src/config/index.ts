@@ -1,8 +1,9 @@
+import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
-import { Configuration, OpenAIApi } from 'openai'
 import formData from 'form-data'
-import Mailgun from 'mailgun.js'
 import { google } from 'googleapis'
+import Mailgun from 'mailgun.js'
+import { Configuration, OpenAIApi } from 'openai'
 
 const settings = {
   privateKey: functions.config().private.key.replace(/\\n/gm, '\n'),
@@ -23,12 +24,15 @@ const db = google.firestore({
   auth: auth
 })
 
+const firestore = admin.initializeApp().firestore()
+
 const configuration = new Configuration({
   apiKey: functions.config().config.chatgptapikey
 })
+
 const openai = new OpenAIApi(configuration)
 
 const mailgun = new Mailgun(formData)
 const mail = mailgun.client({ username: 'api', key: functions.config().config.mailgunapikey })
 
-export { auth, db, openai, mail, settings }
+export { auth, db, openai, mail, settings, firestore }

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
+import { sendInviteEmails } from '@recap/shared'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
-import { sendInviteEmails } from '@recap/shared'
 import gift from '../../../../assets/img/gift.svg'
 
 const schema = yup.object().shape({
@@ -35,9 +35,11 @@ export const InviteFriends = () => {
     // Convert string type emails seperated by comma to email array
     const emails = data.emails.split(',').map((email: string) => email.trim())
 
-    sendInviteEmails({ emails }).then(() => {
-      setStatus('done')
-    })
+    sendInviteEmails({ emails })
+      .then(() => {
+        setStatus('done')
+      })
+      .catch((err) => console.error(err))
   }
 
   return (
