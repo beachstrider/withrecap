@@ -1,6 +1,7 @@
-import { Meeting } from '@recap/shared'
 import ReactMarkdown from 'react-markdown'
 import React, { useState } from 'react'
+
+import { Meeting } from '@recap/shared'
 
 import { ThumbsDown, ThumbsUp } from '../../../components/buttons'
 

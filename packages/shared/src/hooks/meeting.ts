@@ -1,28 +1,33 @@
 import { format } from 'date-fns'
 import { useEffect, useMemo, useState } from 'react'
+
 import { useAuthGuard } from '../auth/AuthGuard'
 import { Meeting, MeetingStore } from '../storage/meetings'
 import { UserMeetingStore } from '../storage/users/meetings'
+import { useErrors } from './error'
 
 type MeetingByDate = { [date: string]: Meeting[] }
 
 export function useMeetings() {
   const { user } = useAuthGuard()
+  const { error, setError } = useErrors(null)
 
   const userMeetingStore = useMemo(() => new UserMeetingStore(user.email), [user.email])
 
   const [meetings, setMeetings] = useState<Meeting[]>([])
   const [meetingsByDate, setMeetingsByDate] = useState<MeetingByDate>({})
   const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
     userMeetingStore
       .list()
-      .then((m) => setMeetings(m))
-      .catch((err) => setError(err))
+      .then((m) => {
+        setMeetings(m)
+        setError(null)
+      })
+      .catch((err: Error) => setError({ message: 'An error occurred while fetching the meetings', err }))
       .finally(() => setLoading(false))
-  }, [userMeetingStore])
+  }, [userMeetingStore, setError])
 
   useEffect(() => {
     try {
@@ -38,10 +43,11 @@ export function useMeetings() {
       }
 
       setMeetingsByDate(byDate)
+      setError(null)
     } catch (err) {
-      setError(err as Error)
+      setError({ message: 'An error occurred while processing meeting information', err: err as Error })
     }
-  }, [meetings])
+  }, [meetings, setError])
 
   return {
     meetings,
@@ -53,40 +59,44 @@ export function useMeetings() {
 
 export function useMeeting(mid: string) {
   const meetingStore = useMemo(() => new MeetingStore(), [])
+  const { error, setError } = useErrors(null)
 
   const [data, setData] = useState<Meeting>()
   const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
     meetingStore
       .get(mid)
-      .then((meeting) => setData(meeting))
-      .catch((err) => setError(err))
+      .then((meeting) => {
+        setData(meeting)
+        setError(null)
+      })
+      .catch((err: Error) => setError({ message: 'An error occurred while fetching meeting information', err }))
       .finally(() => setLoading(false))
-  }, [meetingStore, mid])
+  }, [meetingStore, mid, setError])
 
   return { meeting: data, loading, error }
 }
 
 export function useRecentMeeting() {
   const { user } = useAuthGuard()
+  const { error, setError } = useErrors(null)
 
   const userMeetingStore = useMemo(() => new UserMeetingStore(user.email), [user.email])
 
   const [recentMeeting, setRecentMeeting] = useState<Meeting | undefined>()
-  const [loading, setLoading] = useState<boolean>(false)
-  const [error, setError] = useState<Error | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
-    setLoading(true)
-
     userMeetingStore
       .recent()
-      .then(setRecentMeeting)
-      .catch((err) => setError(err))
+      .then((m) => {
+        setRecentMeeting(m)
+        setError(null)
+      })
+      .catch((err: Error) => setError({ message: 'An error occurred while fetching meeting information', err }))
       .finally(() => setLoading(false))
-  }, [userMeetingStore])
+  }, [userMeetingStore, setError])
 
   return {
     recentMeeting,
