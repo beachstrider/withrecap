@@ -1,6 +1,7 @@
 import {
   CollectionReference,
   DocumentData,
+  Timestamp,
   collection,
   deleteDoc,
   doc,
@@ -9,7 +10,7 @@ import {
   updateDoc
 } from 'firebase/firestore/lite'
 
-import { firestore } from '../firestore'
+import { Timestamps, firestore } from '../firestore'
 import { type Conversation } from './conversation'
 
 export type MeetingAttendee = {
@@ -44,7 +45,7 @@ export type Meeting = {
   // A transcript is a conversation sanitized (duplicated and irrelevant messages are removed). See engine for more details
   transcript?: Conversation
   metadata?: MeetingMetadata
-}
+} & Timestamps
 
 export class MeetingStore {
   private _db: CollectionReference<DocumentData>
@@ -65,11 +66,15 @@ export class MeetingStore {
   }
 
   public async create(mid: string, meeting: Meeting): Promise<void> {
-    return setDoc(doc(this._db, mid), meeting)
+    return setDoc(doc(this._db, mid), {
+      ...meeting,
+      created: Timestamp.fromDate(new Date()),
+      updated: Timestamp.fromDate(new Date())
+    })
   }
 
   public async update(mid: string, meeting: Partial<Meeting>): Promise<void> {
-    return updateDoc(doc(this._db, mid), { ...meeting })
+    return updateDoc(doc(this._db, mid), { ...meeting, updated: Timestamp.fromDate(new Date()) })
   }
 
   public async delete(mid: string): Promise<void> {
