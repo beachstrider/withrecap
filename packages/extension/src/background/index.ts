@@ -73,19 +73,42 @@ class ChromeBackgroundService {
         case ExtensionMessages.MeetingMessage:
           this.processTranscriptionMessage(request.meetingId, request.message)
             .then(sendResponse)
-            .catch(this.handleError)
+            .catch((err) => {
+              this.handleError(err)
+              sendResponse({ error: err })
+            })
           break
         case ExtensionMessages.MeetingStarted:
-          this.processMeetingStart(request.meetingId, sender.tab!.id!).then(sendResponse).catch(this.handleError)
+          this.processMeetingStart(request.meetingId, sender.tab!.id!)
+            .then(sendResponse)
+            .catch((err) => {
+              this.handleError(err)
+              sendResponse({ error: err })
+            })
           break
         case ExtensionMessages.MeetingEnded:
-          this.processMeetingEnd(request.meetingId).then(sendResponse).catch(this.handleError)
+          this.processMeetingEnd(request.meetingId)
+            .then(sendResponse)
+            .catch((err) => {
+              this.handleError(err)
+              sendResponse({ error: err })
+            })
           break
         case ExtensionMessages.MeetingState:
-          this.processMeetingState().then(sendResponse).catch(this.handleError)
+          this.processMeetingState()
+            .then(sendResponse)
+            .catch((err) => {
+              this.handleError(err)
+              sendResponse({ error: err })
+            })
           break
         case ExtensionMessages.AddonSupported:
-          this.processAddonEnabled(request.addonId).then(sendResponse).catch(this.handleError)
+          this.processAddonEnabled(request.addonId)
+            .then(sendResponse)
+            .catch((err) => {
+              this.handleError(err)
+              sendResponse({ error: err })
+            })
           break
       }
 
@@ -94,24 +117,24 @@ class ChromeBackgroundService {
     })
   }
 
-  async processAddonEnabled(addonId: string): Promise<boolean> {
+  async processAddonEnabled(addonId: string): Promise<{ isEnabled: boolean }> {
     return new Promise((resolve, reject) => {
       chrome.tabs
         .query({ active: true, lastFocusedWindow: true })
         .then(async (tabs) => {
           if (!tabs || tabs.length === 0) {
-            return resolve(false)
+            return reject('active tab not found')
           }
 
           if (!this.google.auth.currentUser) {
-            return resolve(false)
+            return reject('user is unauthenticated')
           }
 
           try {
             const userAddonStore = new UserAddonStore(this.google.auth.currentUser.uid)
             const addon = await userAddonStore.get(addonId)
 
-            return resolve(!!addon)
+            return resolve({ isEnabled: !!addon })
           } catch (err) {
             reject(`An error occurred while fetching user addons: ${err}`)
           }
@@ -122,7 +145,7 @@ class ChromeBackgroundService {
     })
   }
 
-  async processMeetingState(): Promise<any> {
+  async processMeetingState(): Promise<{ recording: boolean; meetingDetails: Meeting; error: unknown }> {
     const { recording, meetingDetails, error } = await chrome.storage.session.get([
       'recording',
       'meetingDetails',

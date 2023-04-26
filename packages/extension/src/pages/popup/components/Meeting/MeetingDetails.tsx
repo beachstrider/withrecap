@@ -1,5 +1,5 @@
 import { Meeting, getTime } from '@recap/shared'
-import { format, formatDistance } from 'date-fns'
+import { formatDistance } from 'date-fns'
 import React from 'react'
 
 interface MeetingDetailsProps {

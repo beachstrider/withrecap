@@ -9,13 +9,22 @@ const SELECTOR_SPEAKER = "div[class='zs7s8d jxFHg']"
 const SELECTOR_TEXT = "div[jsname='YSxPC']"
 const SELECTOR_END_CALL = "div[jscontroller='m1IMT']"
 
+const retry = async (callback: () => Promise<any>, time: number) => {
+  let retry = true
+  while (retry) {
+    try {
+      await callback()
+      retry = false
+    } catch (err) {
+      console.error('An error occurred, retrying soon...', err)
+
+      await new Promise((resolve) => setTimeout(resolve, time))
+    }
+  }
+}
+
 class GoogleMeetsService {
   private callBar: HTMLDivElement | null = null
-
-  public isOnCall(): boolean {
-    // if call bar is available this means the call started
-    return this.callBar ? true : false
-  }
 
   private getMeetingId(): string {
     return window.location.pathname.slice(1)
@@ -41,7 +50,6 @@ class GoogleMeetsService {
 
   private listenOnNewMessage(ccDiv: HTMLDivElement): MutationObserver {
     const ccDivObserver = new MutationObserver(() => {
-      console.debug('change happened')
       const language = ccDiv.querySelector<HTMLSpanElement>(SELECTOR_LANGUAGE)?.textContent
       const speaker = ccDiv.querySelector<HTMLDivElement>(SELECTOR_SPEAKER)?.textContent
       const text = ccDiv.querySelector<HTMLDivElement>(SELECTOR_TEXT)?.textContent
@@ -81,59 +89,66 @@ class GoogleMeetsService {
     return ccDivObserver
   }
 
-  public prepareListener(): void {
-    chrome.runtime.sendMessage<any, any>(
-      {
-        addonId: 'meet',
-        type: ExtensionMessages.AddonSupported
-      },
-      (isEnabled) => {
-        if (!isEnabled || chrome.runtime.lastError) {
-          return
-        }
+  public async prepareListener(): Promise<void> {
+    const { isEnabled, error } = await chrome.runtime.sendMessage<any, any>({
+      addonId: 'meet',
+      type: ExtensionMessages.AddonSupported
+    })
 
-        const docObserver = new MutationObserver(() => {
-          this.callBar = document.body.querySelector(SELECTOR_CALL_BAR)
+    if (error) {
+      throw new Error(error)
+    }
 
-          if (this.callBar) {
-            console.debug('call started')
+    if (!isEnabled) {
+      return console.debug('not recording, addon is disabled')
+    }
 
-            // Note: this is a semi hack to make sure all element are displayed properly so we can interact with the UI
-            setTimeout(() => {
-              // this will also be useful even if you rejoin a meeting
-              // for example the meeting was ended through tab close, but then you joined again - this will nullify the metadata's endTimestamp
-              chrome.runtime.sendMessage({
-                meetingId: this.getMeetingId(),
-                type: ExtensionMessages.MeetingStarted
-              })
+    const docObserver = new MutationObserver((_mutations: MutationRecord[], observer: MutationObserver) => {
+      this.callBar = document.body.querySelector(SELECTOR_CALL_BAR)
 
-              // click on the cc button and start transcribing
-              this.startTranscribing()
-            }, 800)
+      if (this.callBar) {
+        observer.disconnect()
 
-            docObserver.disconnect()
-          }
-        })
+        console.debug('call started')
 
-        docObserver.observe(document.body, {
-          childList: true,
-          subtree: true
-        })
+        // Note: this is a semi hack to make sure all element are displayed properly so we can interact with the UI
+        setTimeout(() => {
+          // this will also be useful even if you rejoin a meeting
+          // for example the meeting was ended through tab close, but then you joined again - this will nullify the metadata's endTimestamp
+          chrome.runtime.sendMessage(
+            {
+              meetingId: this.getMeetingId(),
+              type: ExtensionMessages.MeetingStarted
+            },
+            () => {}
+          )
+
+          // click on the cc button and start transcribing
+          retry(this.startTranscribing.bind(this), 2000)
+        }, 800)
       }
-    )
+    })
+
+    docObserver.observe(document.body, {
+      childList: true,
+      subtree: true
+    })
   }
 
-  public startTranscribing(): void {
+  public async startTranscribing(): Promise<void> {
     const ccDiv = document.querySelector<HTMLDivElement>(SELECTOR_CC_DIV)
     const endCallDiv = document.querySelector<HTMLDivElement>(SELECTOR_END_CALL)
     const callDiv = this.callBar
 
     if (!ccDiv || !endCallDiv || !callDiv) {
-      return console.error('some required visual components are missing', {
+      const error = 'some required visual components are missing'
+      console.error(error, {
         ccDiv: !!ccDiv,
         endCallDiv: !!endCallDiv,
         callDiv: !!callDiv
       })
+
+      throw new Error(error)
     }
 
     this.enableCaption(ccDiv, callDiv)
@@ -141,20 +156,28 @@ class GoogleMeetsService {
     const ccDivObserver = this.listenOnNewMessage(ccDiv)
 
     endCallDiv.onclick = () => {
-      console.debug('ending call')
-
-      chrome.runtime.sendMessage({
-        meetingId: this.getMeetingId(),
-        type: ExtensionMessages.MeetingEnded
-      })
-
       // Remove observers are they are not needed anymore
       ccDivObserver.disconnect()
+      endCallDiv.onclick = null
+
+      console.debug('ending call')
+
+      chrome.runtime.sendMessage(
+        {
+          meetingId: this.getMeetingId(),
+          type: ExtensionMessages.MeetingEnded
+        },
+        () => {}
+      )
     }
   }
 }
 
-//TODO: Once we support more addons, find out which service we're on and initialize the right service
+const main = async () => {
+  //TODO: Once we support more addons, find out which service we're on and initialize the right service
+  const meetingService = new GoogleMeetsService()
 
-const meetingService = new GoogleMeetsService()
-meetingService.prepareListener()
+  await retry(meetingService.prepareListener.bind(meetingService), 1000)
+}
+
+main()
