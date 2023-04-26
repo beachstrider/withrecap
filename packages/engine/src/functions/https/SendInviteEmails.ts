@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions'
 
-import { firestore, mail as mailgun, settings } from '../../config'
+import { db, mail as mailgun, settings } from '../../config'
 import { MailService, Templates } from '../../services/mail'
 
 export const SendInviteEmails = functions.https.onCall(async ({ emails }, context) => {
@@ -13,7 +13,7 @@ export const SendInviteEmails = functions.https.onCall(async ({ emails }, contex
 
     const mail = new MailService(mailgun, settings.domain)
 
-    const userData = await (await firestore.collection('users').doc(context.auth.uid).get()).data()
+    const userData = await (await db.collection('users').doc(context.auth.uid).get()).data()
 
     await mail.send(Templates.Invite, { email: emails, inviterName: userData?.displayName })
 

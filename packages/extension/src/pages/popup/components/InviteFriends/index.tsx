@@ -30,7 +30,7 @@ export const InviteFriends = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful }
+    formState: { errors, isSubmitting }
   } = useForm<Form>({
     resolver: yupResolver(schema)
   })
@@ -77,7 +77,7 @@ export const InviteFriends = () => {
             <button
               type="submit"
               className={`${
-                isSubmitSuccessful ? 'bg-gray-300' : 'bg-gray-950'
+                isSubmitting ? 'bg-gray-300' : 'bg-gray-950'
               } text-white rounded-[12px] px-[13.5px] py-[8px] text-[15px]`}
             >
               Send

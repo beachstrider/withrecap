@@ -3,11 +3,10 @@
   "version": "0.0.1",
   "scripts": {
     "build": "yarn clean && NODE_ENV=production parcel build src/index.ts --dist-dir lib",
+    "build:dev": "parcel build src/index.ts --dist-dir lib",
     "build:watch": "parcel watch src/index.ts --dist-dir lib",
     "clean": "rimraf lib",
-    "serve": "yarn build && cross-env GOOGLE_APPLICATION_CREDENTIALS=key.json && firebase emulators:start --only functions",
-    "shell": "yarn build && cross-env GOOGLE_APPLICATION_CREDENTIALS=key.json && firebase functions:shell",
-    "start": "yarn shell",
+    "start": "yarn build:dev && firebase functions:config:get > .runtimeconfig.json && firebase emulators:start --only functions",
     "deploy:all": "firebase deploy --only functions,firestore:rules,firestore:indexes",
     "deploy:functions": "firebase deploy --only functions",
     "deploy:firestore": "firebase deploy --only firestore",
