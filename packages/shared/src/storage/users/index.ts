@@ -10,7 +10,7 @@ import {
   Timestamp
 } from 'firebase/firestore/lite'
 
-import { firestore } from '../firestore'
+import { Timestamps, firestore } from '../firestore'
 
 type CustomUserConfigs = {
   // Add custom configurations here
@@ -22,7 +22,7 @@ type BaseUserConfigs = {
   displayName?: string
   photoURL?: string
   created: Timestamp
-}
+} & Timestamps
 
 export type User = BaseUserConfigs & CustomUserConfigs
 
@@ -52,7 +52,8 @@ export class UserStore {
       displayName: user.displayName || '',
       photoURL: user.photoURL || '',
       autoSharing: false,
-      created: Timestamp.fromDate(new Date())
+      created: Timestamp.fromDate(new Date()),
+      updated: Timestamp.fromDate(new Date())
     }
 
     await setDoc(doc(this._db, user.uid), createdUser)
@@ -62,7 +63,8 @@ export class UserStore {
 
   public async update(uid: string, user: CustomUserConfigs) {
     return updateDoc(doc(this._db, uid), {
-      autoSharing: user.autoSharing
+      autoSharing: user.autoSharing,
+      updated: Timestamp.fromDate(new Date())
     })
   }
 }
