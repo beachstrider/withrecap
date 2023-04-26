@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { Outlet } from 'react-router-dom'
 
 import { BaseAuthProvider } from '.'
-import { UserStore, User } from '../storage/users'
 import { useErrors } from '../hooks/error'
+import { User, UserStore } from '../storage/users'
 
 type AuthGuardContextType = {
   token: string | null
@@ -18,11 +19,12 @@ export const useAuthGuard = () => {
 
 interface AuthGuardProps {
   provider: new () => BaseAuthProvider
-  children: React.ReactNode
+  children?: React.ReactNode
+  loadingComponent?: React.ReactNode
   onNeedAuth?: () => void
 }
 
-export const AuthGuard = ({ children, onNeedAuth, provider }: AuthGuardProps) => {
+export const AuthGuard = ({ children, loadingComponent, onNeedAuth, provider }: AuthGuardProps) => {
   const auth = useMemo(() => new provider(), [provider])
   const userStore = useMemo(() => new UserStore(), [])
 
@@ -72,6 +74,8 @@ export const AuthGuard = ({ children, onNeedAuth, provider }: AuthGuardProps) =>
   }, [auth, userStore, onNeedAuth, setError])
 
   if (!user) {
+    if (loadingComponent) return <>{loadingComponent}</>
+
     return null
   }
 
@@ -84,7 +88,10 @@ export const AuthGuard = ({ children, onNeedAuth, provider }: AuthGuardProps) =>
         logout: auth.logout
       }}
     >
-      {children}
+      {/* If it is used as a parent component */}
+      {children && children}
+      {/* If it is used as an element prop of Route */}
+      {!children && <Outlet />}
     </AuthGuardContext.Provider>
   )
 }

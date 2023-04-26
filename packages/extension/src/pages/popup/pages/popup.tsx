@@ -7,11 +7,9 @@ import { RecentMeeting } from '../components/Meeting/RecentMeeting'
 
 const Popup = () => {
   const [meeting, setMeeting] = useState<Meeting | undefined>()
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
-    setLoading(true)
-
     chrome.runtime
       .sendMessage<any, { recording: boolean; meetingDetails?: Meeting }>({
         type: ExtensionMessages.MeetingState

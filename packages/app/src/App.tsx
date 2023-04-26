@@ -1,4 +1,4 @@
-import { AuthGuard, AuthProvider, GoogleAuthProvider } from '@recap/shared'
+import { AuthGuard, AuthProvider, GoogleAuthProvider, LoadingScreen } from '@recap/shared'
 import React from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 
@@ -18,63 +18,29 @@ export default function App() {
     return navigate('/')
   }
 
+  const loadingComponent = <LoadingScreen />
+
+  const authProvider = <AuthProvider provider={GoogleAuthProvider} />
+
+  const authGuard = (
+    <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider} loadingComponent={loadingComponent} />
+  )
+
   return (
     <>
       <Routes>
         {/* Website Routes */}
-        <Route path="/">
-          <Route
-            index
-            element={
-              <AuthProvider provider={GoogleAuthProvider}>
-                <Website />
-              </AuthProvider>
-            }
-          />
-          <Route
-            path="privacy-policy"
-            element={
-              <AuthProvider provider={GoogleAuthProvider}>
-                <PrivacyPolicy />
-              </AuthProvider>
-            }
-          />
-          <Route
-            path="terms-conditions"
-            element={
-              <AuthProvider provider={GoogleAuthProvider}>
-                <TermsConditions />
-              </AuthProvider>
-            }
-          />
+        <Route path="/" element={authProvider}>
+          <Route index element={<Website />} />
+          <Route path="privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="terms-conditions" element={<TermsConditions />} />
         </Route>
 
         {/* App routes */}
-        <Route path="/app/">
-          <Route
-            path="meetings"
-            element={
-              <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider}>
-                <Meetings />
-              </AuthGuard>
-            }
-          />
-          <Route
-            path="meetings/:mid"
-            element={
-              <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider}>
-                <MeetingDetails />
-              </AuthGuard>
-            }
-          />
-          <Route
-            path="integrations"
-            element={
-              <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider}>
-                <Integrations />
-              </AuthGuard>
-            }
-          />
+        <Route path="/app/" element={authGuard}>
+          <Route path="meetings" element={<Meetings />} />
+          <Route path="meetings/:mid" element={<MeetingDetails />} />
+          <Route path="integrations" element={<Integrations />} />
         </Route>
 
         {/* 404 page */}
