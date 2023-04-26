@@ -5,7 +5,8 @@ import { MailgunMessageData, MessagesSendResult } from 'mailgun.js/interfaces/Me
 export enum Templates {
   Welcome = 'welcome',
   MeetingEnd = 'meeting-end',
-  GettingStarted = 'getting-started'
+  GettingStarted = 'getting-started',
+  Invite = 'invite'
 }
 
 interface Options {
@@ -15,6 +16,7 @@ interface Options {
     meetingMetadata: Pick<MeetingMetadata, 'end' | 'participants' | 'start' | 'title' | 'url'>
   }
   [Templates.GettingStarted]: { email: string }
+  [Templates.Invite]: { email: string[]; inviterName: string }
 }
 
 const BASE_DATA: { [key in Templates]: Partial<MailgunMessageData> } = {
@@ -26,6 +28,9 @@ const BASE_DATA: { [key in Templates]: Partial<MailgunMessageData> } = {
   },
   [Templates.GettingStarted]: {
     subject: 'Getting Started'
+  },
+  [Templates.Invite]: {
+    subject: 'Join Recap'
   }
 }
 
@@ -47,6 +52,11 @@ export class MailService {
         }
         break
       case Templates.GettingStarted:
+        break
+      case Templates.Invite:
+        if ('inviterName' in options) {
+          data['h:X-Mailgun-Variables'] = JSON.stringify({ inviterName: options.inviterName })
+        }
         break
       default:
         break

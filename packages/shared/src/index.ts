@@ -37,6 +37,12 @@ export { UserMeetingStore } from './storage/users/meetings'
 export type { UserMeetingConfig, UserMeetings } from './storage/users/meetings'
 
 //===========================================================
+// HTTPS CALLABLE FUNCTIONS
+//===========================================================
+
+export { sendInviteEmails } from './functions/index'
+
+//===========================================================
 // CALENDAR
 //===========================================================
 

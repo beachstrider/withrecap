@@ -1,10 +1,10 @@
-import { config } from 'firebase-functions'
 import * as admin from 'firebase-admin'
+import { config } from 'firebase-functions'
 
-import { Configuration, OpenAIApi } from 'openai'
 import formData from 'form-data'
-import Mailgun from 'mailgun.js'
 import { google } from 'googleapis'
+import Mailgun from 'mailgun.js'
+import { Configuration, OpenAIApi } from 'openai'
 
 const settings = {
   projectId: config().project.id,
@@ -28,6 +28,7 @@ const firestore = google.firestore({
 const configuration = new Configuration({
   apiKey: config().config.chatgptapikey
 })
+
 const openai = new OpenAIApi(configuration)
 
 const mailgun = new Mailgun(formData)
