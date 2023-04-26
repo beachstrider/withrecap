@@ -1,4 +1,4 @@
-import { AuthGuard, AuthProvider, GoogleAuthProvider } from '@recap/shared'
+import { AuthGuard, AuthProvider, GoogleAuthProvider, LoadingScreen } from '@recap/shared'
 import React from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 
@@ -17,6 +17,8 @@ export default function App() {
   const onNeedAuth = () => {
     return navigate('/')
   }
+
+  const loadingComponent = <LoadingScreen />
 
   return (
     <>
@@ -54,7 +56,7 @@ export default function App() {
           <Route
             path="meetings"
             element={
-              <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider}>
+              <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider} loadingComponent={loadingComponent}>
                 <Meetings />
               </AuthGuard>
             }
@@ -62,7 +64,7 @@ export default function App() {
           <Route
             path="meetings/:mid"
             element={
-              <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider}>
+              <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider} loadingComponent={loadingComponent}>
                 <MeetingDetails />
               </AuthGuard>
             }
@@ -70,7 +72,7 @@ export default function App() {
           <Route
             path="integrations"
             element={
-              <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider}>
+              <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider} loadingComponent={loadingComponent}>
                 <Integrations />
               </AuthGuard>
             }
