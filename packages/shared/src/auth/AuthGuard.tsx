@@ -88,7 +88,9 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, provider }: 
         logout: auth.logout
       }}
     >
+      {/* If it is used as a parent component */}
       {children && children}
+      {/* If it is used as an element prop of Route */}
       {!children && <Outlet />}
     </AuthGuardContext.Provider>
   )

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import logo from '../../../../assets/img/logo.svg'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -25,10 +25,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           </div>
           <p className="sm:text-[15px] text-[12px]">Step {step} of 3</p>
         </header>
-        <div>
-          {children}
-          <Outlet />
-        </div>
+        <div>{children}</div>
       </div>
     </div>
   )

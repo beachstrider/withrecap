@@ -81,7 +81,9 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
         onAuthStateChanged: auth.onAuthStateChanged
       }}
     >
+      {/* If it is used as a parent component */}
       {children && children}
+      {/* If it is used as an element prop of Route */}
       {!children && <Outlet />}
     </AuthProviderContext.Provider>
   )
