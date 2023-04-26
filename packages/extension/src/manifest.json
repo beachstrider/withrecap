@@ -11,7 +11,11 @@
     "page": "pages/onboarding/index.html",
     "open_in_tab": true
   },
-  "permissions": ["identity", "tabs", "storage"],
+  "permissions": [
+    "identity",
+    "tabs",
+    "storage"
+  ],
   "action": {
     "default_popup": "pages/popup/index.html",
     "default_icon": "assets/img/icon-34.png"
@@ -21,14 +25,21 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["assets/img/icon-128.png", "assets/img/icon-34.png"],
+      "resources": [
+        "assets/img/icon-128.png",
+        "assets/img/icon-34.png"
+      ],
       "matches": []
     }
   ],
   "content_scripts": [
     {
-      "matches": ["https://meet.google.com/*"],
-      "js": ["content/index.ts"]
+      "matches": [
+        "https://meet.google.com/*"
+      ],
+      "js": [
+        "content/index.ts"
+      ]
     }
   ],
   "content_security_policy": {
