@@ -1,5 +1,14 @@
 import { User as FirebaseUser } from 'firebase/auth'
-import { collection, doc, setDoc, getDoc, CollectionReference, DocumentData, updateDoc } from 'firebase/firestore/lite'
+import {
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  CollectionReference,
+  DocumentData,
+  updateDoc,
+  Timestamp
+} from 'firebase/firestore/lite'
 
 import { firestore } from '../firestore'
 
@@ -12,7 +21,7 @@ type BaseUserConfigs = {
   email: string
   displayName?: string
   photoURL?: string
-  created: string
+  created: Timestamp
 }
 
 export type User = BaseUserConfigs & CustomUserConfigs
@@ -43,7 +52,7 @@ export class UserStore {
       displayName: user.displayName || '',
       photoURL: user.photoURL || '',
       autoSharing: false,
-      created: new Date().toISOString()
+      created: Timestamp.fromDate(new Date())
     }
 
     await setDoc(doc(this._db, user.uid), createdUser)
