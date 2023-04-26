@@ -54,7 +54,7 @@ export class GoogleCalendar {
     if (event.creator) {
       attendees[event.creator.email!] = {
         email: event.creator.email!,
-        name: event.creator.displayName!
+        name: event.creator.displayName || ''
       }
     }
 
