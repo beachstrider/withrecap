@@ -20,63 +20,27 @@ export default function App() {
 
   const loadingComponent = <LoadingScreen />
 
+  const authProvider = <AuthProvider provider={GoogleAuthProvider} />
+
+  const authGuard = (
+    <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider} loadingComponent={loadingComponent} />
+  )
+
   return (
     <>
       <Routes>
         {/* Website Routes */}
-        <Route path="/">
-          <Route
-            index
-            element={
-              <AuthProvider provider={GoogleAuthProvider}>
-                <Website />
-              </AuthProvider>
-            }
-          />
-          <Route
-            path="privacy-policy"
-            element={
-              <AuthProvider provider={GoogleAuthProvider}>
-                <PrivacyPolicy />
-              </AuthProvider>
-            }
-          />
-          <Route
-            path="terms-conditions"
-            element={
-              <AuthProvider provider={GoogleAuthProvider}>
-                <TermsConditions />
-              </AuthProvider>
-            }
-          />
+        <Route path="/" element={authProvider}>
+          <Route index element={<Website />} />
+          <Route path="privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="terms-conditions" element={<TermsConditions />} />
         </Route>
 
         {/* App routes */}
-        <Route path="/app/">
-          <Route
-            path="meetings"
-            element={
-              <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider} loadingComponent={loadingComponent}>
-                <Meetings />
-              </AuthGuard>
-            }
-          />
-          <Route
-            path="meetings/:mid"
-            element={
-              <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider} loadingComponent={loadingComponent}>
-                <MeetingDetails />
-              </AuthGuard>
-            }
-          />
-          <Route
-            path="integrations"
-            element={
-              <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider} loadingComponent={loadingComponent}>
-                <Integrations />
-              </AuthGuard>
-            }
-          />
+        <Route path="/app/" element={authGuard}>
+          <Route path="meetings" element={<Meetings />} />
+          <Route path="meetings/:mid" element={<MeetingDetails />} />
+          <Route path="integrations" element={<Integrations />} />
         </Route>
 
         {/* 404 page */}

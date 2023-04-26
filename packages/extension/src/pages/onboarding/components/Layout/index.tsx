@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import logo from '../../../../assets/img/logo.svg'
 
-const Layout = () => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation()
 
   const [step, setStep] = useState<number>(1)
@@ -26,6 +26,7 @@ const Layout = () => {
           <p className="sm:text-[15px] text-[12px]">Step {step} of 3</p>
         </header>
         <div>
+          {children}
           <Outlet />
         </div>
       </div>

@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { Outlet } from 'react-router-dom'
 
-import { User, UserStore } from '../storage/users'
 import { BaseAuthProvider } from '.'
 import { useErrors } from '../hooks/error'
+import { User, UserStore } from '../storage/users'
 
 type AuthProviderContextType = {
   token: string | null
@@ -20,7 +21,7 @@ export const useAuth = () => {
 
 interface AuthProviderProps {
   provider: new () => BaseAuthProvider
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
@@ -80,7 +81,8 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
         onAuthStateChanged: auth.onAuthStateChanged
       }}
     >
-      {children}
+      {children && children}
+      {!children && <Outlet />}
     </AuthProviderContext.Provider>
   )
 }

@@ -1,9 +1,8 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
 import logo from '../../../../assets/img/logo_32x24.svg'
 import outboundLink from '../../../../assets/img/outboundLink.svg'
 
-const Layout = ({ children }: { children?: React.ReactNode }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   const openRecapApp = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
 
@@ -21,10 +20,7 @@ const Layout = ({ children }: { children?: React.ReactNode }) => {
           </div>
         </button>
       </header>
-      <div className="flex flex-col px-[20px] grow">
-        <Outlet />
-        {children && children}
-      </div>
+      <div className="flex flex-col px-[20px] grow">{children}</div>
     </div>
   )
 }

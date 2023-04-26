@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { Outlet } from 'react-router-dom'
 
 import { BaseAuthProvider } from '.'
 import { useErrors } from '../hooks/error'
@@ -18,7 +19,7 @@ export const useAuthGuard = () => {
 
 interface AuthGuardProps {
   provider: new () => BaseAuthProvider
-  children: React.ReactNode
+  children?: React.ReactNode
   loadingComponent?: React.ReactNode
   onNeedAuth?: () => void
 }
@@ -87,7 +88,8 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, provider }: 
         logout: auth.logout
       }}
     >
-      {children}
+      {children && children}
+      {!children && <Outlet />}
     </AuthGuardContext.Provider>
   )
 }

@@ -8,11 +8,9 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import Popup from './pages/popup'
 
 const loadingComponent = (
-  <Layout>
-    <div className="flex items-center justify-center flex-1">
-      <LoadingIcon />
-    </div>
-  </Layout>
+  <div className="flex items-center justify-center flex-1">
+    <LoadingIcon />
+  </div>
 )
 
 export const App = () => {
@@ -22,13 +20,13 @@ export const App = () => {
 
   return (
     <ErrorBoundary>
-      <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleIdentityAuthProvider} loadingComponent={loadingComponent}>
-        <Routes>
-          <Route path="*" element={<Layout />}>
+      <Layout>
+        <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleIdentityAuthProvider} loadingComponent={loadingComponent}>
+          <Routes>
             <Route path="*" element={<Popup />} />
-          </Route>
-        </Routes>
-      </AuthGuard>
+          </Routes>
+        </AuthGuard>
+      </Layout>
     </ErrorBoundary>
   )
 }
