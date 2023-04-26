@@ -7,6 +7,10 @@ import * as yup from 'yup'
 
 import gift from '../../../../assets/img/gift.svg'
 
+interface Form {
+  emails: string
+}
+
 const schema = yup.object().shape({
   emails: yup
     .string()
@@ -27,19 +31,20 @@ export const InviteFriends = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitSuccessful }
-  } = useForm({
+  } = useForm<Form>({
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = (data: any) => {
-    // Convert string type emails seperated by comma to email array
-    const emails = data.emails.split(',').map((email: string) => email.trim())
+  const onSubmit = async (data: Form) => {
+    try {
+      // Convert string type emails separated by comma to email array
+      const emails = data.emails.split(',').map((email) => email.trim())
 
-    sendInviteEmails({ emails })
-      .then(() => {
-        setStatus('done')
-      })
-      .catch((err) => console.error(err))
+      await sendInviteEmails({ emails })
+      setStatus('done')
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   return (
