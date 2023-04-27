@@ -13,7 +13,7 @@ export const OnUserCreated = functions.firestore.document('users/{userId}').onCr
 
     functions.logger.debug('sending welcome email...')
 
-    await mail.send(Templates.Welcome, { email: user.email! })
+    await mail.send(Templates.Welcome, { email: user.email })
 
     functions.logger.debug('welcome email sent with success')
   } catch (err) {

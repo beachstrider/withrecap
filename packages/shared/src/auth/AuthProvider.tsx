@@ -49,6 +49,8 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
           if (!exists) {
             user = await userStore.create(u)
           } else {
+            await userStore.update(u.uid, { displayName: u.displayName || '', photoURL: u.photoURL || '' })
+
             user = await userStore.get(u.uid)
           }
 
