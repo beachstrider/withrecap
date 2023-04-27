@@ -1,8 +1,14 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
+    // Allow authenticated users to get images
+    match /images/{allPaths=**} {
+      allow get: if request.auth!=null;
+    }
+
+    // Deny delete operations for all documents
     match /{allPaths=**} {
-      allow read, write: if request.auth!=null;
+      allow delete, create, update: if false;
     }
   }
 }
