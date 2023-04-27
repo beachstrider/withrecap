@@ -1,4 +1,5 @@
-import { ExtensionMessages, MeetingMetadata, MeetingMessage } from '../common/models'
+import { Message } from '@recap/shared'
+import { ExtensionMessages } from '../common'
 
 const SELECTOR_CALL_BAR = "div[jscontroller='kAPMuc']"
 const SELECTOR_CC_DIV = '.a4cQT'
@@ -6,53 +7,27 @@ const SELECTOR_CC_BUTTON = "button[jscontroller='xzbRj']"
 const SELECTOR_LANGUAGE = "span[jsname='V67aGc']"
 const SELECTOR_SPEAKER = "div[class='zs7s8d jxFHg']"
 const SELECTOR_TEXT = "div[jsname='YSxPC']"
-const SELECTOR_TITLE = "div[jscontroller='yEvoid']"
-const SELECTOR_PARTICIPANTS = "div[jscontroller='SKibOb']"
 const SELECTOR_END_CALL = "div[jscontroller='m1IMT']"
+
+const retry = async (callback: () => Promise<any>, time: number) => {
+  let retry = true
+  while (retry) {
+    try {
+      await callback()
+      retry = false
+    } catch (err) {
+      console.error('An error occurred, retrying soon...', err)
+
+      await new Promise((resolve) => setTimeout(resolve, time))
+    }
+  }
+}
 
 class GoogleMeetsService {
   private callBar: HTMLDivElement | null = null
 
-  private meetingStartTimestamp?: number
-  private meetingEndTimestamp?: number
-
-  public isOnCall(): boolean {
-    // if call bar is available this means the call started
-    return this.callBar ? true : false
-  }
-
-  private getMeetingTitle(): string {
-    const divTitle = document.querySelector<HTMLDivElement>(SELECTOR_TITLE)
-
-    if (!divTitle?.textContent) {
-      console.error('title of the meeting could not be found.')
-    }
-
-    return divTitle?.textContent ?? ''
-  }
-
   private getMeetingId(): string {
     return window.location.pathname.slice(1)
-  }
-
-  private getMeetingMetadata(): MeetingMetadata {
-    const nbParticipantsText = document.querySelector<HTMLDivElement>(SELECTOR_PARTICIPANTS)?.textContent
-    console.debug(`Number of participants: ${nbParticipantsText}`)
-    // We try to convert the text input to a integer and fallback to 1 when undefined
-    const nbParticipants = nbParticipantsText ? parseInt(nbParticipantsText) : 1
-
-    if (!this.meetingStartTimestamp) {
-      this.meetingStartTimestamp = new Date().getTime()
-    }
-
-    const title = this.getMeetingTitle()
-
-    return {
-      title: title,
-      nbParticipants: nbParticipants,
-      startTimestamp: this.meetingStartTimestamp,
-      endTimestamp: this.meetingEndTimestamp
-    }
   }
 
   private enableCaption(ccDiv: HTMLDivElement, callDiv: HTMLDivElement): void {
@@ -63,25 +38,18 @@ class GoogleMeetsService {
       if (ccButton) {
         ccButton.click()
         console.debug('caption enabled')
+
+        // Disable button so it cannot be toggled manually
+        ccButton.disabled = true
+        console.debug('caption toggling disabled')
       } else {
         console.error("didn't find button trying to enable caption")
       }
     }
   }
 
-  private hideCaption(ccDiv: HTMLDivElement, callDiv: HTMLDivElement): void {
-    ccDiv.style.visibility = 'hidden'
-
-    // Disable click on caption button
-    const buttons = callDiv.getElementsByTagName('button')
-    for (var i = 0; i < buttons.length; i++) {
-      buttons[i].disabled = true
-    }
-  }
-
   private listenOnNewMessage(ccDiv: HTMLDivElement): MutationObserver {
     const ccDivObserver = new MutationObserver(() => {
-      console.debug('change happened')
       const language = ccDiv.querySelector<HTMLSpanElement>(SELECTOR_LANGUAGE)?.textContent
       const speaker = ccDiv.querySelector<HTMLDivElement>(SELECTOR_SPEAKER)?.textContent
       const text = ccDiv.querySelector<HTMLDivElement>(SELECTOR_TEXT)?.textContent
@@ -96,7 +64,7 @@ class GoogleMeetsService {
 
       console.debug(`Language: ${language}\nSpeaker: ${speaker}\nText: ${text}`)
 
-      const meetingMessage: MeetingMessage = {
+      const meetingMessage: Message = {
         language,
         speaker,
         text: text.trim(),
@@ -121,115 +89,95 @@ class GoogleMeetsService {
     return ccDivObserver
   }
 
-  private listenOnParticipantChange(participantsDiv: HTMLDivElement): MutationObserver {
-    console.debug('subscribing to observer')
-
-    const participantsDivObserver = new MutationObserver(() => {
-      console.debug('number of participants changed')
-
-      const metadata = this.getMeetingMetadata()
-      chrome.runtime.sendMessage({
-        meetingId: this.getMeetingId(),
-        metadata: metadata,
-        type: ExtensionMessages.MeetingMetadata
-      })
+  public async prepareListener(): Promise<void> {
+    const { isEnabled, error } = await chrome.runtime.sendMessage<any, any>({
+      addonId: 'meet',
+      type: ExtensionMessages.AddonSupported
     })
 
-    participantsDivObserver.observe(participantsDiv, {
-      characterData: true,
-      attributes: true,
+    if (error) {
+      throw new Error(error)
+    }
+
+    if (!isEnabled) {
+      return console.debug('not recording, addon is disabled')
+    }
+
+    const docObserver = new MutationObserver((_mutations: MutationRecord[], observer: MutationObserver) => {
+      this.callBar = document.body.querySelector(SELECTOR_CALL_BAR)
+
+      if (this.callBar) {
+        observer.disconnect()
+
+        console.debug('call started')
+
+        // Note: this is a semi hack to make sure all element are displayed properly so we can interact with the UI
+        setTimeout(() => {
+          // this will also be useful even if you rejoin a meeting
+          // for example the meeting was ended through tab close, but then you joined again - this will nullify the metadata's endTimestamp
+          chrome.runtime.sendMessage(
+            {
+              meetingId: this.getMeetingId(),
+              type: ExtensionMessages.MeetingStarted
+            },
+            () => {}
+          )
+
+          // click on the cc button and start transcribing
+          retry(this.startTranscribing.bind(this), 2000)
+        }, 800)
+      }
+    })
+
+    docObserver.observe(document.body, {
       childList: true,
       subtree: true
     })
-
-    return participantsDivObserver
   }
 
-  public prepareListener(): void {
-    chrome.runtime.sendMessage<any, any>(
-      {
-        addonId: 'meet',
-        type: ExtensionMessages.AddonSupported
-      },
-      (isEnabled) => {
-        if (!isEnabled || chrome.runtime.lastError) {
-          return
-        }
-
-        const docObserver = new MutationObserver(() => {
-          this.callBar = document.body.querySelector(SELECTOR_CALL_BAR)
-
-          if (this.callBar) {
-            console.debug('call started')
-            this.meetingStartTimestamp = new Date().getTime()
-
-            // Note: this is a semi hack to make sure all element are displayed properly so we can interact with the UI
-            setTimeout(() => {
-              // this will also be useful even if you rejoin a meeting
-              // for example the meeting was ended through tab close, but then you joined again - this will nullify the metadata's endTimestamp
-              const metadata = this.getMeetingMetadata()
-              chrome.runtime.sendMessage({
-                meetingId: this.getMeetingId(),
-                metadata: metadata,
-                type: ExtensionMessages.MeetingStarted
-              })
-
-              // click on the cc button and start transcribing
-              this.startTranscribing()
-            }, 800)
-
-            docObserver.disconnect()
-          }
-        })
-
-        docObserver.observe(document.body, {
-          childList: true,
-          subtree: true
-        })
-      }
-    )
-  }
-
-  public startTranscribing(): void {
+  public async startTranscribing(): Promise<void> {
     const ccDiv = document.querySelector<HTMLDivElement>(SELECTOR_CC_DIV)
-    const participantsDiv = document.querySelector<HTMLDivElement>(SELECTOR_PARTICIPANTS)
     const endCallDiv = document.querySelector<HTMLDivElement>(SELECTOR_END_CALL)
     const callDiv = this.callBar
 
-    if (!ccDiv || !participantsDiv || !endCallDiv || !callDiv) {
-      return console.error('some required visual components are missing', {
+    if (!ccDiv || !endCallDiv || !callDiv) {
+      const error = 'some required visual components are missing'
+      console.error(error, {
         ccDiv: !!ccDiv,
-        participantsDiv: !!participantsDiv,
         endCallDiv: !!endCallDiv,
         callDiv: !!callDiv
       })
+
+      throw new Error(error)
     }
 
     this.enableCaption(ccDiv, callDiv)
-    this.hideCaption(ccDiv, callDiv)
 
     const ccDivObserver = this.listenOnNewMessage(ccDiv)
-    const participantsDivObserver = this.listenOnParticipantChange(participantsDiv)
 
     endCallDiv.onclick = () => {
-      console.debug('ending call')
-      this.meetingEndTimestamp = new Date().getTime()
-
-      const metadata = this.getMeetingMetadata()
-      chrome.runtime.sendMessage({
-        meetingId: this.getMeetingId(),
-        metadata: metadata,
-        type: ExtensionMessages.MeetingEnded
-      })
-
       // Remove observers are they are not needed anymore
       ccDivObserver.disconnect()
-      participantsDivObserver.disconnect()
+      endCallDiv.onclick = null
+
+      console.debug('ending call')
+
+      chrome.runtime.sendMessage(
+        {
+          meetingId: this.getMeetingId(),
+          type: ExtensionMessages.MeetingEnded
+        },
+        () => {}
+      )
     }
   }
 }
 
-//TODO: Once we support more addons, find out which service we're on and initialize the right service
+const main = async () => {
+  //TODO: Once we support more addons, find out which service we're on and initialize the right service
+  const meetingService = new GoogleMeetsService()
 
-const meetingService = new GoogleMeetsService()
-meetingService.prepareListener()
+  await retry(meetingService.prepareListener.bind(meetingService), 1000)
+}
+
+main()

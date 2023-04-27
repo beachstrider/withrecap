@@ -4,10 +4,11 @@ import {
   GoogleIdentityAuthProvider,
   Meeting,
   MeetingStore,
+  Message,
   UserAddonStore
 } from '@recap/shared'
 
-import { ExtensionMessages, MeetingMessage, MeetingMetadata } from '../common/models'
+import { ExtensionMessages } from '../common'
 
 class ChromeBackgroundService {
   private meetingStore: MeetingStore
@@ -72,24 +73,42 @@ class ChromeBackgroundService {
         case ExtensionMessages.MeetingMessage:
           this.processTranscriptionMessage(request.meetingId, request.message)
             .then(sendResponse)
-            .catch(this.handleError)
-          break
-        case ExtensionMessages.MeetingMetadata:
-          this.processMeetingMetadata(request.meetingId, request.metadata).then(sendResponse).catch(this.handleError)
+            .catch((err) => {
+              this.handleError(err)
+              sendResponse({ error: err })
+            })
           break
         case ExtensionMessages.MeetingStarted:
-          this.processMeetingStart(request.meetingId, request.metadata, sender.tab!.id!)
+          this.processMeetingStart(request.meetingId, sender.tab!.id!)
             .then(sendResponse)
-            .catch(this.handleError)
+            .catch((err) => {
+              this.handleError(err)
+              sendResponse({ error: err })
+            })
           break
         case ExtensionMessages.MeetingEnded:
-          this.processMeetingEnd(request.meetingId).then(sendResponse).catch(this.handleError)
+          this.processMeetingEnd(request.meetingId)
+            .then(sendResponse)
+            .catch((err) => {
+              this.handleError(err)
+              sendResponse({ error: err })
+            })
           break
         case ExtensionMessages.MeetingState:
-          this.processMeetingState().then(sendResponse).catch(this.handleError)
+          this.processMeetingState()
+            .then(sendResponse)
+            .catch((err) => {
+              this.handleError(err)
+              sendResponse({ error: err })
+            })
           break
         case ExtensionMessages.AddonSupported:
-          this.processAddonEnabled(request.addonId).then(sendResponse).catch(this.handleError)
+          this.processAddonEnabled(request.addonId)
+            .then(sendResponse)
+            .catch((err) => {
+              this.handleError(err)
+              sendResponse({ error: err })
+            })
           break
       }
 
@@ -98,24 +117,24 @@ class ChromeBackgroundService {
     })
   }
 
-  async processAddonEnabled(addonId: string): Promise<boolean> {
+  async processAddonEnabled(addonId: string): Promise<{ isEnabled: boolean }> {
     return new Promise((resolve, reject) => {
       chrome.tabs
         .query({ active: true, lastFocusedWindow: true })
         .then(async (tabs) => {
           if (!tabs || tabs.length === 0) {
-            return resolve(false)
+            return reject('active tab not found')
           }
 
           if (!this.google.auth.currentUser) {
-            return resolve(false)
+            return reject('user is unauthenticated')
           }
 
           try {
             const userAddonStore = new UserAddonStore(this.google.auth.currentUser.uid)
             const addon = await userAddonStore.get(addonId)
 
-            return resolve(!!addon)
+            return resolve({ isEnabled: !!addon })
           } catch (err) {
             reject(`An error occurred while fetching user addons: ${err}`)
           }
@@ -126,7 +145,7 @@ class ChromeBackgroundService {
     })
   }
 
-  async processMeetingState(): Promise<any> {
+  async processMeetingState(): Promise<{ recording: boolean; meetingDetails: Meeting; error: unknown }> {
     const { recording, meetingDetails, error } = await chrome.storage.session.get([
       'recording',
       'meetingDetails',
@@ -142,7 +161,7 @@ class ChromeBackgroundService {
     }
   }
 
-  async processTranscriptionMessage(meetingId: string, message: MeetingMessage): Promise<void> {
+  async processTranscriptionMessage(meetingId: string, message: Message): Promise<void> {
     if (message.speaker === 'You' && this.google.auth.currentUser) {
       message.speaker = this.google.auth.currentUser.displayName || this.google.auth.currentUser.email || 'Unknown'
     }
@@ -150,7 +169,7 @@ class ChromeBackgroundService {
     return this.conversationStore.add(meetingId, message)
   }
 
-  async processMeetingStart(meetingId: string, _metadata: MeetingMetadata, tabId: number): Promise<void> {
+  async processMeetingStart(meetingId: string, tabId: number): Promise<void> {
     await chrome.storage.session.set({ tabId })
 
     const meetingDetails = await this.getMeetingDetails(meetingId)
@@ -166,7 +185,7 @@ class ChromeBackgroundService {
         await this.meetingStore.update(meetingId, { ended: false })
       }
     } catch (err) {
-      throw new Error(`An error occurred while trying to store meeting information: ${err}`)
+      this.handleError(`An error occurred while trying to store meeting information: ${err}`)
     }
 
     await chrome.storage.session.set({ recording: true, meetingDetails })
@@ -181,8 +200,6 @@ class ChromeBackgroundService {
       this.handleError(`An error occurred while updating meeting on meeting ended: ${err}`)
     }
   }
-
-  async processMeetingMetadata(_meetingId: string, _metadata: MeetingMetadata) {}
 }
 
 const backgroundService = new ChromeBackgroundService()

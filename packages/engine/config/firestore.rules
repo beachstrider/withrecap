@@ -31,12 +31,14 @@ service cloud.firestore {
 
     // Allow users to read and write meetings where they are part of
     match /meetings/{mid} {     
-			function isAttendee() {
-      	return request.auth.token.email in resource.data.emails;
+			function isAttendee(emails) {
+      	return request.auth.token.email in emails;
       }
 
-      allow list, create, update: if isUserLoggedIn() &&
-                      isAttendee();
+      allow list, update: if isUserLoggedIn() &&
+                      isAttendee(resource.data.emails);
+      allow create: if isUserLoggedIn() &&
+                      isAttendee(request.resource.data.emails);
       allow get: if isUserLoggedIn();
     }
 

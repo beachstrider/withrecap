@@ -1,7 +1,7 @@
 import { LoadingIcon, Meeting } from '@recap/shared'
 import React, { useEffect, useState } from 'react'
 
-import { ExtensionMessages } from '../../../common/models'
+import { ExtensionMessages } from '../../../common'
 import ActiveMeeting from '../components/Meeting/ActiveMeeting'
 import { RecentMeeting } from '../components/Meeting/RecentMeeting'
 
