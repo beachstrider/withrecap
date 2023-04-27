@@ -20,6 +20,10 @@ export const OnMeetingUpdated = functions.firestore.document('meetings/{docId}')
     if (oldValue.ended === false && newValue.ended === true) {
       functions.logger.debug('meeting ended, generating summary...')
 
+      if (newValue.conversation.length === 0) {
+        return functions.logger.warn('meeting conversation is empty, skipping processing...')
+      }
+
       const transcript = new TranscriptService(newValue.conversation)
       const meetingSummary = new MeetingSummary(openai, transcript)
 
