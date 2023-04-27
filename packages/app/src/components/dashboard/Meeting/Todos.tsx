@@ -19,7 +19,7 @@ export default function Todos() {
       <div className="flex justify-between">
         <div className="flex sm:gap-[16px] gap-[12px] items-center sm:mb-[34px] mb-[25px]">
           <img src={greenCheck} alt="" className="w-[28px] h-[28px]" />
-          <div className="font-semibold">Todos</div>
+          <div className="font-semibold">To-do's</div>
           <div className="font-semibold text-gray-500">3</div>
         </div>
         <div className="flex gap-[12px]">

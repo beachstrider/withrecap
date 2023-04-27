@@ -184,7 +184,7 @@ export default function Index() {
             >
               <div className="flex sm:gap-[16px] gap-[12px] items-center sm:mb-[46px] mb-[35px]">
                 <img src={greenCheck} alt="" className="w-[26px] h-[26px]" />
-                <div className="sm:text-[21px] text-[15px] font-semibold">Todos</div>
+                <div className="sm:text-[21px] text-[15px] font-semibold">To-do's</div>
                 <div className="sm:text-[21px] text-[15px] font-semibold text-gray-500">3</div>
               </div>
               <div className="flex flex-col gap-[20px]">
@@ -238,7 +238,7 @@ export default function Index() {
             style={{ background: 'linear-gradient(180deg, #F2ECFF 0%, #F9FBFD 100%)' }}
           >
             <div className="sm:text-[30px] text-[22px] font-semibold">
-              See who lead the discussion
+              See who led the discussion
               <br />
               and who listened
             </div>
@@ -327,7 +327,7 @@ export default function Index() {
             <img src={lock_76x52} alt="" />
             <h1 className="font-bold sm:mb-[8px] mb-[6px]">Secure, by design</h1>
             <div className="sm:text-[22px] text-[18px] leading-tight text-gray-500 max-w-[645px]">
-              Your meeting transcripts are never ready by anyone, and are securely encrypted within Google Chrome.
+              Your meeting transcripts are never read by anyone, and are securely encrypted within Google Chrome.
             </div>
           </div>
         </div>

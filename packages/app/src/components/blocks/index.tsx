@@ -66,7 +66,7 @@ export const HomeBlock1 = () => (
           <div className="flex px-[15px] py-[13px]">
             <img src={logo} alt="" className="w-[26px]" />
             <div className="mx-[11px] w-[1px] bg-gray-200"></div>
-            <p className="font-bold text-gray-950">Mediation App Kickoff</p>
+            <p className="font-bold text-gray-950">Meditation App Kickoff</p>
           </div>
           <div className="container-sm sm:flex gap-[80px]">
             <div className="card sm:max-w-[340px] w-full grow-0 sm:p-[24px] p-[18px]">
