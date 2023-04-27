@@ -13,12 +13,12 @@ export const SendInviteEmails = functions.https.onCall(async ({ emails }, contex
 
     const mail = new MailService(mailgun, settings.domain)
 
-    const userData = await (await db.collection('users').doc(context.auth.uid).get()).data()
+    const userData = (await db.collection('users').doc(context.auth.uid).get()).data()
 
     await mail.send(Templates.Invite, { email: emails, inviterName: userData?.displayName })
 
     return { msg: 'ok' }
   } catch (err) {
-    functions.logger.error('An error occurred while running user created', err)
+    functions.logger.error('An error occurred while running send invite emails', err)
   }
 })

@@ -15,16 +15,16 @@ import { Timestamps, firestore } from '../firestore'
 type CustomUserConfigs = {
   // Add custom configurations here
   autoSharing: boolean
+  timezone: string
 }
 type BaseUserConfigs = {
   uid: string
   email: string
-  displayName?: string
-  photoURL?: string
-  created: Timestamp
-} & Timestamps
+  displayName: string
+  photoURL: string
+}
 
-export type User = BaseUserConfigs & CustomUserConfigs
+export type User = BaseUserConfigs & CustomUserConfigs & Timestamps
 
 export class UserStore {
   private _db: CollectionReference<DocumentData>
@@ -52,6 +52,7 @@ export class UserStore {
       displayName: user.displayName || '',
       photoURL: user.photoURL || '',
       autoSharing: false,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       created: Timestamp.fromDate(new Date()),
       updated: Timestamp.fromDate(new Date())
     }
@@ -61,9 +62,17 @@ export class UserStore {
     return createdUser
   }
 
-  public async update(uid: string, user: CustomUserConfigs) {
+  public async update(uid: string, user: Partial<BaseUserConfigs & CustomUserConfigs>) {
+    const updatedUser: Partial<BaseUserConfigs & CustomUserConfigs> = {
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+    }
+
+    if (user.displayName) updatedUser['displayName'] = user.displayName
+    if (user.photoURL) updatedUser['photoURL'] = user.photoURL
+    if (user.autoSharing !== undefined) updatedUser['autoSharing'] = user.autoSharing
+
     return updateDoc(doc(this._db, uid), {
-      autoSharing: user.autoSharing,
+      ...updatedUser,
       updated: Timestamp.fromDate(new Date())
     })
   }

@@ -1,11 +1,14 @@
-import { Meeting, MeetingMetadata } from '@recap/shared'
 import * as functions from 'firebase-functions'
+import { Meeting, MeetingMetadata, User } from '@recap/shared'
+import { formatInTimeZone } from 'date-fns-tz'
 
-import { mail as mailgun, openai, settings } from '../../config'
+import { db, mail as mailgun, openai, settings } from '../../config'
 import { MailService, Templates } from '../../services/mail'
 import { MeetingService } from '../../services/meeting'
 import { MeetingSummary } from '../../services/summary'
 import { TranscriptService } from '../../services/transcript'
+
+export const DEFAULT_TIMEZONE = 'America/Montreal'
 
 export const OnMeetingUpdated = functions.firestore.document('meetings/{docId}').onUpdate(async (change, context) => {
   try {
@@ -13,6 +16,7 @@ export const OnMeetingUpdated = functions.firestore.document('meetings/{docId}')
 
     const oldValue = change.before.data() as Meeting
     const newValue = change.after.data() as Meeting
+
     if (oldValue.ended === false && newValue.ended === true) {
       functions.logger.debug('meeting ended, generating summary...')
 
@@ -36,7 +40,7 @@ export const OnMeetingUpdated = functions.firestore.document('meetings/{docId}')
 
         functions.logger.debug('metadata generated')
 
-        functions.logger.debug('updating meeting with relevant information')
+        functions.logger.debug('updating meeting with relevant information...')
 
         // Update values on the database
         await change.after.ref.set(
@@ -52,22 +56,42 @@ export const OnMeetingUpdated = functions.firestore.document('meetings/{docId}')
 
         functions.logger.debug('sending emails to attendees')
         const mail = new MailService(mailgun, settings.domain)
-        // TODO: Who should we email?
+
         for (const email of newValue.emails) {
-          functions.logger.debug(`sending email to ${email}...`)
+          try {
+            const document = await db.collection('users').where('email', '==', email).limit(1).get()
 
-          await mail.send(Templates.MeetingEnd, {
-            email: email,
-            meetingMetadata: {
-              title: metadata.title,
-              participants: metadata.participants,
-              start: metadata.start,
-              end: metadata.end,
-              url: metadata.url
+            let user: User | undefined
+            document.forEach((doc) => {
+              user = doc.data() as User
+            })
+
+            // We currently only send email to users with an account
+            if (!user) {
+              continue
             }
-          })
 
-          functions.logger.debug('email sent')
+            functions.logger.debug(`sending email to ${email}...`)
+
+            const timezone = user.timezone || DEFAULT_TIMEZONE
+            const startTime = formatInTimeZone(newValue.start, timezone, 'h:mm a')
+            const endTime = formatInTimeZone(newValue.end, timezone, 'h:mm a')
+
+            await mail.send(Templates.MeetingEnd, {
+              email: email,
+              meetingMetadata: {
+                title: newValue.title,
+                participants: metadata.participants,
+                start: startTime,
+                end: endTime,
+                url: metadata.url
+              }
+            })
+
+            functions.logger.debug('email sent')
+          } catch (err) {
+            functions.logger.error('An error occurred while sending an email to', email, err)
+          }
         }
       }
     }
