@@ -9,7 +9,8 @@ import { Configuration, OpenAIApi } from 'openai'
 const settings = {
   projectId: config().project.id,
   domain: config().config.domain,
-  baseURL: `https://${config().config.domain}`
+  baseURL: `https://${config().config.domain}`,
+  storeURL: '' // TODO: Remplace with Google Chrome Store URL
 }
 
 const db = admin.initializeApp().firestore()

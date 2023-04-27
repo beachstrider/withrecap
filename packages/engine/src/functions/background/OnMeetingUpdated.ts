@@ -89,7 +89,8 @@ export const OnMeetingUpdated = functions.firestore.document('meetings/{docId}')
                 start: startTime,
                 end: endTime,
                 url: metadata.url
-              }
+              },
+              appUrl: settings.baseURL
             })
 
             functions.logger.debug('email sent')
