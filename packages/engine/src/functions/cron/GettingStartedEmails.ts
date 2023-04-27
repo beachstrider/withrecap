@@ -30,7 +30,7 @@ export const GettingStartedEmails = functions.pubsub.schedule('every day 08:00')
     for (const user of users) {
       functions.logger.debug('sending email to:', user.email)
 
-      await mail.send(Templates.GettingStarted, { email: user.email })
+      await mail.send(Templates.GettingStarted, { email: user.email, appUrl: settings.baseURL })
 
       functions.logger.debug('email sent')
     }
