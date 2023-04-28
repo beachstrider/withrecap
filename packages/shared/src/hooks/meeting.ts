@@ -1,4 +1,4 @@
-import { differenceInSeconds, format, isThisWeek, secondsToHours } from 'date-fns'
+import { differenceInSeconds, isThisWeek, secondsToHours } from 'date-fns'
 import { useEffect, useMemo, useState } from 'react'
 
 import { useAuthGuard } from '../auth/AuthGuard'
@@ -37,17 +37,15 @@ export function useMeetings() {
       const byDate: { [date: string]: Meeting[] } = {}
 
       for (const meeting of meetings) {
-        const date = format(new Date(meeting.start), 'MM-dd-yy')
-
-        if (!byDate[date]) {
-          byDate[date] = []
+        if (!byDate[meeting.start]) {
+          byDate[meeting.start] = []
         }
 
         const diff = differenceInSeconds(new Date(meeting.end), new Date(meeting.start))
 
         if (isThisWeek(new Date(meeting.start))) saveTime += diff
 
-        byDate[date].push(meeting)
+        byDate[meeting.start].push(meeting)
       }
 
       setMeetingsByDate(byDate)
