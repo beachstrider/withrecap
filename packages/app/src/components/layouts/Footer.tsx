@@ -11,11 +11,11 @@ import { Button } from '../buttons'
 export default function Index({ className = '' }) {
   const { loginWithPopup, error } = useAuth()
 
-  const login = () => {
+  const login = async () => {
     try {
-      loginWithPopup()
+      await loginWithPopup()
     } catch (error) {
-      toast.error('Error occured during login.', error)
+      toast.error('An error occured during login.', error)
     }
   }
 

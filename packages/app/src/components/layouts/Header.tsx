@@ -133,11 +133,11 @@ const PublicSection = () => {
   const { onAuthStateChanged, loginWithPopup, error } = useAuth()
   const navigate = useNavigate()
 
-  const login = () => {
+  const login = async () => {
     try {
-      loginWithPopup()
+      await loginWithPopup()
     } catch (error) {
-      toast.error('Error occured during login.', error)
+      toast.error('An error occured during login.', error)
     }
   }
 
