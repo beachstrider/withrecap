@@ -137,7 +137,7 @@ const PublicSection = () => {
     try {
       await loginWithPopup()
     } catch (error) {
-      toast.error('An error occurred during login.', error)
+      toast.error('An error occurred during login', error)
     }
   }
 
