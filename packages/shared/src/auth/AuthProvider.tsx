@@ -10,6 +10,7 @@ type AuthProviderContextType = {
   user: User | null
   error: ReturnType<typeof useErrors>['error']
   login: BaseAuthProvider['login']
+  loginWithPopup: BaseAuthProvider['loginWithPopup']
   logout: BaseAuthProvider['logout']
   onAuthStateChanged: BaseAuthProvider['onAuthStateChanged']
 }
@@ -34,6 +35,7 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((u, t) => {
+      console.debug('=======  u:', u)
       if (u === null || t === null) {
         setUser(null)
         setToken(null)
@@ -77,6 +79,7 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
         user,
         error,
         login: auth.login,
+        loginWithPopup: auth.loginWithPopup,
         logout: auth.logout,
         onAuthStateChanged: auth.onAuthStateChanged
       }}

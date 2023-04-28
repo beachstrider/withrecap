@@ -1,11 +1,8 @@
-import { LoadingScreen } from '@recap/shared'
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { Button } from '../components/buttons'
 import Layout from '../components/layouts'
-
-import { SIGNING_IN } from '../constants/routes'
 
 import cara from '../assets/img/cara.png'
 import google from '../assets/img/google.svg'
@@ -21,11 +18,8 @@ import unchecked from '../assets/img/unchecked.png'
 import { HomeBlock1, HomeBlock2 } from '../components/blocks'
 
 export default function Index() {
-  const location = useLocation()
-
   return (
     <>
-      {location.hash === SIGNING_IN && <LoadingScreen />}
       <Layout isPublic>
         <div className="relative sm:mb-[160px] mb-[120px] sm:pt-[140px] pt-[100px] sm:pb-[200px] pb-[150px]">
           <div className="">

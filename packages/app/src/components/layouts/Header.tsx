@@ -12,7 +12,7 @@ import logo from '../../assets/img/logo.svg'
 import outbound from '../../assets/img/outbound.svg'
 import question from '../../assets/img/question.svg'
 import { DELETE_ACCOUNT_REQUEST, SUPPORT_REQUEST } from '../../constants/links'
-import { INTEGRATIONS, MEETINGS, SIGNING_IN } from '../../constants/routes'
+import { INTEGRATIONS, MEETINGS } from '../../constants/routes'
 
 export default function Index({ isPublic = false }) {
   return (
@@ -130,7 +130,7 @@ const PrivateSection = () => {
 }
 
 const PublicSection = () => {
-  const { onAuthStateChanged, login, error } = useAuth()
+  const { onAuthStateChanged, loginWithPopup, error } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -152,13 +152,7 @@ const PublicSection = () => {
 
   return (
     <div className="flex items-center sm:gap-[20px] gap-[15px]">
-      <button
-        onClick={async () => {
-          navigate(`/${SIGNING_IN}`)
-          await login()
-        }}
-        className="text-[15px] font-semibold text-gray-500"
-      >
+      <button onClick={loginWithPopup} className="text-[15px] font-semibold text-gray-500">
         Sign in
       </button>
       <Link to="#">
