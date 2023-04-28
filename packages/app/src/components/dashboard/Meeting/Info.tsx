@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { Meeting, MeetingAttendee, MeetingMetadata, getTimeRange } from '@recap/shared'
+import { getTimeRange, Meeting, MeetingAttendee, MeetingMetadata } from '@recap/shared'
 
 import { MEETINGS } from '../../../constants/routes'
 import UserAvatar from '../../display/UserAvatar'
@@ -75,7 +75,7 @@ const Metadata: React.FC<{ metadata: MeetingMetadata; attendees: MeetingAttendee
                   name={speaker}
                   className="sm:w-[32px] sm:h-[32px] w-[24px] h-[24px]"
                 />
-                <div className="font-semibold">{speaker}</div>
+                <div className="font-semibold sm:max-w-[200px] truncate">{speaker}</div>
               </div>
               <div className="px-[6px] py-[4px] rounded-[26px] bg-gray-100 text-[12px] font-semibold text-gray-500">
                 {formatPercentage(percentage)}%
