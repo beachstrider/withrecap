@@ -27,8 +27,11 @@ const schema = yup.object().shape({
     })
 })
 
-export default function MeetingTimeSaved() {
-  const [savingTime] = useState(8)
+interface MeetingTimeSavedProps {
+  weekSaveHours: number
+}
+
+export default function MeetingTimeSaved({ weekSaveHours }: MeetingTimeSavedProps) {
   const [openModal, setOpenModal] = useState<boolean>(false)
 
   const {
@@ -60,7 +63,11 @@ export default function MeetingTimeSaved() {
 
   return (
     <div className="flex sm:flex-row flex-col sm:items-center gap-[24px]">
-      <div className="text-[16px]">Recap saved you {savingTime} hours of meeting notes this week!</div>
+      <div className="text-[16px]">
+        {weekSaveHours > 0
+          ? `Recap saved you ${weekSaveHours} hours of meeting notes this week!`
+          : `Recap will help you save hours of time this week!`}
+      </div>
       <div className="flex">
         <Button onClick={() => setOpenModal(true)}>
           <img src={gift} alt="" className="w-[16px] h-[16px]" />

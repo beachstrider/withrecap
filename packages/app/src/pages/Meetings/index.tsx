@@ -9,8 +9,7 @@ import Layout from '../../components/layouts'
 
 export default function Index() {
   const { user } = useAuthGuard()
-
-  const { meetingsByDate, loading: loadingMeetings, error: meetingsError } = useMeetings()
+  const { meetingsByDate, weekSaveHours, loading: loadingMeetings, error: meetingsError } = useMeetings()
   const { userAddons, loading: loadingAddons, error: addonsError } = useIntegrations()
 
   useEffect(() => {
@@ -31,7 +30,7 @@ export default function Index() {
           <img src={user.photoURL} alt="" className="w-[64px] h-[64px] rounded-full" />
           <div className="">
             <div className="sm:text-[24px] text-[18px] font-semibold mb-[8px]">Afternoon, {getUserFirstName(user)}</div>
-            <MeetingTimeSaved />
+            <MeetingTimeSaved weekSaveHours={weekSaveHours} />
           </div>
         </div>
         <div className="flex flex-col sm:gap-[52px] gap-[40px]">
