@@ -62,7 +62,7 @@ export default function InviteFriends() {
       </Button>
       <Modal open={openModal} onClose={() => setOpenModal(false)}>
         <h5 className="font-semibold mb-[4px]">Send Recap invitation email</h5>
-        <p className=" mb-[20px]">Enter comma seperated multiple emails</p>
+        <p className=" mb-[20px]">Enter a list of emails (coma separated)</p>
         <form className="grow flex flex-col w-full gap-[14px]" onSubmit={handleSubmit(onSubmit)}>
           <textarea
             {...register('emails')}
