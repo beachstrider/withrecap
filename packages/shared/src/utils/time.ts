@@ -1,4 +1,4 @@
-import { format, formatDistance, formatRelative } from 'date-fns'
+import { format, formatDistance, formatRelative, parse } from 'date-fns'
 import { enUS } from 'date-fns/locale'
 
 /**
@@ -40,10 +40,12 @@ export const getFormattedDate = (date: string): { weekDay: string; day: string; 
     formatRelative: (token: string) => formatRelativeLocale[token]
   }
 
+  const dateObject = parse(date, 'MM-dd-yy', new Date())
+
   // See: https://date-fns.org/v2.29.3/docs/format
   return {
-    weekDay: format(new Date(date), 'EEE'),
-    day: format(new Date(date), 'd'),
-    relativeDate: formatRelative(new Date(date), new Date(), { locale })
+    weekDay: format(dateObject, 'EEE'),
+    day: format(dateObject, 'd'),
+    relativeDate: formatRelative(dateObject, new Date(), { locale })
   }
 }
