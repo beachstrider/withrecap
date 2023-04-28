@@ -12,7 +12,6 @@ import Layout from '../../components/layouts'
 export default function MeetingDetail() {
   const { mid } = useParams()
   const { meeting, loading, error } = useMeeting(mid!)
-  console.debug('=======  meeting:', meeting)
 
   useEffect(() => {
     if (error) {

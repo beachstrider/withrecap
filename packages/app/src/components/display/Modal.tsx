@@ -1,5 +1,6 @@
-import { Dialog, Transition } from '@headlessui/react' // (https://github.com/headlessui/react')
+import { Dialog, Transition } from '@headlessui/react'
 import React, { Fragment, useRef } from 'react'
+
 import NoScroll from '../styles/NoScroll'
 
 interface Props {

@@ -44,9 +44,9 @@ export default function InviteFriends() {
       await sendInviteEmails({ emails })
 
       setOpenModal(false)
-      toast.success("We've sent an invitation email to the emails!")
+      toast.success('Invitation emails sent.')
     } catch (err) {
-      console.error(err)
+      toast.error('Faild to send invitation emails', err)
     }
   }
 
@@ -61,7 +61,8 @@ export default function InviteFriends() {
         Help a friend save time
       </Button>
       <Modal open={openModal} onClose={() => setOpenModal(false)}>
-        <h5 className="font-semibold mb-[20px]">Send Recap invitation email to multiple users.</h5>
+        <h5 className="font-semibold mb-[4px]">Send Recap invitation email</h5>
+        <p className=" mb-[20px]">Enter comma seperated multiple emails</p>
         <form className="grow flex flex-col w-full gap-[14px]" onSubmit={handleSubmit(onSubmit)}>
           <textarea
             {...register('emails')}
