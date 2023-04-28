@@ -14,7 +14,6 @@ const dimention = {
 export const LoadingScreen = ({ size = 'lg' }: LoadingProps) => {
   return (
     <div className="w-full h-[100vh] fixed top-0 z-[10000] flex justify-center items-center bg-white">
-      {' '}
       <style>{`
         #app {
           height: 100vh;

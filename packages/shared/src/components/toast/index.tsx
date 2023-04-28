@@ -1,8 +1,9 @@
 import React from 'react'
 
-import { ToastContainer as Container, toast as toastify, ToastOptions } from 'react-toastify'
+import { toast as toastify, ToastContainer as Container, ToastOptions } from 'react-toastify'
 
 export const toast = {
+  success: toastify.success,
   error: (message: string, error: unknown, options?: ToastOptions<{}> | undefined) => {
     console.error(message, error)
 
