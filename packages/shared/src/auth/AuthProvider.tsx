@@ -35,7 +35,6 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((u, t) => {
-      console.debug('=======  u:', u)
       if (u === null || t === null) {
         setUser(null)
         setToken(null)

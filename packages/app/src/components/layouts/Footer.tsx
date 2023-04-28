@@ -11,6 +11,14 @@ import { Button } from '../buttons'
 export default function Index({ className = '' }) {
   const { loginWithPopup, error } = useAuth()
 
+  const login = () => {
+    try {
+      loginWithPopup()
+    } catch (error) {
+      toast.error('Error occured during login.', error)
+    }
+  }
+
   useEffect(() => {
     if (error) {
       toast.error(error.message, error.err)
@@ -38,7 +46,7 @@ export default function Index({ className = '' }) {
             <Link target="_blank" to={SUPPORT_REQUEST} className="block text-[15px] font-semibold text-gray-500">
               Support
             </Link>
-            <button onClick={loginWithPopup} className="block text-[15px] font-semibold text-gray-500 text-start">
+            <button onClick={login} className="block text-[15px] font-semibold text-gray-500 text-start">
               Sign in
             </button>
           </div>

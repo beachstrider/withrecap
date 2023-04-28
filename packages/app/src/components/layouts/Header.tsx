@@ -133,6 +133,14 @@ const PublicSection = () => {
   const { onAuthStateChanged, loginWithPopup, error } = useAuth()
   const navigate = useNavigate()
 
+  const login = () => {
+    try {
+      loginWithPopup()
+    } catch (error) {
+      toast.error('Error occured during login.', error)
+    }
+  }
+
   useEffect(() => {
     if (error) {
       toast.error(error.message, error.err)
@@ -152,7 +160,7 @@ const PublicSection = () => {
 
   return (
     <div className="flex items-center sm:gap-[20px] gap-[15px]">
-      <button onClick={loginWithPopup} className="text-[15px] font-semibold text-gray-500">
+      <button onClick={login} className="text-[15px] font-semibold text-gray-500">
         Sign in
       </button>
       <Link to="#">
