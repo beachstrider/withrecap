@@ -10,13 +10,14 @@ export enum Templates {
 }
 
 interface Options {
-  [Templates.Welcome]: { email: string }
+  [Templates.Welcome]: { email: string; appUrl: string }
   [Templates.MeetingEnd]: {
     email: string
     meetingMetadata: Pick<MeetingMetadata, 'end' | 'participants' | 'start' | 'title' | 'url'>
+    appUrl: string
   }
-  [Templates.GettingStarted]: { email: string }
-  [Templates.Invite]: { email: string[]; inviterName: string }
+  [Templates.GettingStarted]: { email: string; appUrl: string }
+  [Templates.Invite]: { email: string; inviterName: string; appUrl: string; storeUrl: string }
 }
 
 const BASE_DATA: { [key in Templates]: Partial<MailgunMessageData> } = {
@@ -34,6 +35,8 @@ const BASE_DATA: { [key in Templates]: Partial<MailgunMessageData> } = {
   }
 }
 
+const MAILGUN_CUSTOM_VARIABLE_HEADER = 'h:X-Mailgun-Variables'
+
 export class MailService {
   constructor(private mail: Client, private domain: string) {}
 
@@ -45,18 +48,25 @@ export class MailService {
 
     switch (template) {
       case Templates.Welcome:
+        if ('appUrl' in options) {
+          data[MAILGUN_CUSTOM_VARIABLE_HEADER] = JSON.stringify({ appUrl: options.appUrl })
+        }
         break
       case Templates.MeetingEnd:
-        if ('meetingMetadata' in options) {
-          data['h:X-Mailgun-Variables'] = JSON.stringify({ ...options.meetingMetadata })
+        if ('meetingMetadata' in options && 'appUrl' in options) {
+          data[MAILGUN_CUSTOM_VARIABLE_HEADER] = JSON.stringify({ ...options.meetingMetadata, appUrl: options.appUrl })
+        }
+        break
+      case Templates.Invite:
+        if ('inviterName' in options && 'appUrl' in options && 'storeUrl' in options) {
+          data[MAILGUN_CUSTOM_VARIABLE_HEADER] = JSON.stringify({
+            inviterName: options.inviterName,
+            appUrl: options.appUrl,
+            storeUrl: options.storeUrl
+          })
         }
         break
       case Templates.GettingStarted:
-        break
-      case Templates.Invite:
-        if ('inviterName' in options) {
-          data['h:X-Mailgun-Variables'] = JSON.stringify({ inviterName: options.inviterName })
-        }
         break
       default:
         break
