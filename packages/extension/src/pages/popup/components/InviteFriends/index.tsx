@@ -35,11 +35,8 @@ export const InviteFriends = () => {
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = async (data: Form) => {
+  const onSubmit = async ({ emails }: Form) => {
     try {
-      // Convert string type emails separated by comma to email array
-      const emails = data.emails.split(',').map((email) => email.trim())
-
       await sendInviteEmails({ emails })
       setStatus('done')
     } catch (err) {
