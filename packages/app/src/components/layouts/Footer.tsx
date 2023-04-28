@@ -15,7 +15,7 @@ export default function Index({ className = '' }) {
     try {
       await loginWithPopup()
     } catch (error) {
-      toast.error('An error occured during login.', error)
+      toast.error('An error occurred during login.', error)
     }
   }
 
