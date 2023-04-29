@@ -20,7 +20,7 @@ export default function Index() {
   return (
     <Layout isLoading={loadingMeetings}>
       <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[80px] py-[60px]">
-        {/* If any recorded meeting list them, otherwise welcome block */}
+        {/* If there is any recorded meeting, list them, otherwise display the welcome block */}
         {Object.keys(meetingsByDate).length ? (
           <>
             {browser?.name !== 'chrome' && <ExtensionInstallationAlert />}
