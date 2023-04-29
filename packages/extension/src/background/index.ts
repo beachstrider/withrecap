@@ -2,11 +2,13 @@ import {
   ConversationStore,
   GoogleCalendar,
   GoogleIdentityAuthProvider,
+  initSentry,
   Meeting,
   MeetingStore,
   Message,
   UserAddonStore
 } from '@recap/shared'
+import * as Sentry from '@sentry/browser'
 
 import { ExtensionMessages } from '../common'
 
@@ -41,8 +43,7 @@ class ChromeBackgroundService {
 
   private async handleError(error: unknown): Promise<void> {
     console.error(error)
-    // TODO: Remove once we have better tooling like Sentry
-    console.trace(error)
+    Sentry.captureException(error)
 
     return chrome.storage.session.set({ error })
   }
@@ -57,63 +58,67 @@ class ChromeBackgroundService {
           await this.processMeetingEnd(meetingDetails.mid)
         }
       } catch (err) {
-        this.handleError(`An error occurred while processing meeting ended event: ${err}`)
+        this.handleError(
+          new Error('An error occurred while processing meeting ended on meeting tab closed', { cause: err })
+        )
       }
     })
 
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      console.debug(
-        sender.tab
-          ? `messaged received from a content script: ${sender.tab.url}`
-          : 'messaged received from the extension',
-        request
-      )
+      return Sentry.wrap(() => {
+        console.debug(
+          sender.tab
+            ? `messaged received from a content script: ${sender.tab.url}`
+            : 'messaged received from the extension',
+          request
+        )
 
-      switch (request.type) {
-        case ExtensionMessages.MeetingMessage:
-          this.processTranscriptionMessage(request.meetingId, request.message)
-            .then(sendResponse)
-            .catch((err) => {
-              this.handleError(err)
-              sendResponse({ error: err })
-            })
-          break
-        case ExtensionMessages.MeetingStarted:
-          this.processMeetingStart(request.meetingId, sender.tab!.id!)
-            .then(sendResponse)
-            .catch((err) => {
-              this.handleError(err)
-              sendResponse({ error: err })
-            })
-          break
-        case ExtensionMessages.MeetingEnded:
-          this.processMeetingEnd(request.meetingId)
-            .then(sendResponse)
-            .catch((err) => {
-              this.handleError(err)
-              sendResponse({ error: err })
-            })
-          break
-        case ExtensionMessages.MeetingState:
-          this.processMeetingState()
-            .then(sendResponse)
-            .catch((err) => {
-              this.handleError(err)
-              sendResponse({ error: err })
-            })
-          break
-        case ExtensionMessages.AddonSupported:
-          this.processAddonEnabled(request.addonId)
-            .then(sendResponse)
-            .catch((err) => {
-              this.handleError(err)
-              sendResponse({ error: err })
-            })
-          break
-      }
+        switch (request.type) {
+          case ExtensionMessages.MeetingMessage:
+            this.processTranscriptionMessage(request.meetingId, request.message)
+              .then(() => sendResponse({ error: null }))
+              .catch((error) => {
+                this.handleError(error)
+                sendResponse({ error })
+              })
+            break
+          case ExtensionMessages.MeetingStarted:
+            this.processMeetingStart(request.meetingId, sender.tab!.id!)
+              .then(() => sendResponse({ error: null }))
+              .catch((error) => {
+                this.handleError(error)
+                sendResponse({ error })
+              })
+            break
+          case ExtensionMessages.MeetingEnded:
+            this.processMeetingEnd(request.meetingId)
+              .then(() => sendResponse({ error: null }))
+              .catch((error) => {
+                this.handleError(error)
+                sendResponse({ error })
+              })
+            break
+          case ExtensionMessages.MeetingState:
+            this.processMeetingState()
+              .then(sendResponse)
+              .catch((error) => {
+                this.handleError(error)
+                sendResponse({ error })
+              })
+            break
+          case ExtensionMessages.AddonEnabled:
+            this.processAddonEnabled(request.addonId)
+              .then(sendResponse)
+              .catch((error) => {
+                this.handleError(error)
+                sendResponse({ error })
+              })
+            break
+        }
 
-      // To tell the listener that we are async
-      return true
+        // To tell the listener that we are async
+        return true
+      })
     })
   }
 
@@ -123,7 +128,7 @@ class ChromeBackgroundService {
         .query({ active: true, lastFocusedWindow: true })
         .then(async (tabs) => {
           if (!tabs || tabs.length === 0) {
-            return reject('active tab not found')
+            return reject(new Error('active tab not found'))
           }
 
           if (!this.google.auth.currentUser) {
@@ -136,11 +141,11 @@ class ChromeBackgroundService {
 
             return resolve({ isEnabled: !!addon })
           } catch (err) {
-            reject(`An error occurred while fetching user addons: ${err}`)
+            reject(new Error('An error occurred while fetching user addons', { cause: err }))
           }
         })
         .catch((err) => {
-          reject(`Couldn't query active tab information: ${err}`)
+          reject(new Error("Couldn't query active tab information", { cause: err }))
         })
     })
   }
@@ -162,11 +167,15 @@ class ChromeBackgroundService {
   }
 
   async processTranscriptionMessage(meetingId: string, message: Message): Promise<void> {
-    if (message.speaker === 'You' && this.google.auth.currentUser) {
-      message.speaker = this.google.auth.currentUser.displayName || this.google.auth.currentUser.email || 'Unknown'
-    }
+    try {
+      if (message.speaker === 'You' && this.google.auth.currentUser) {
+        message.speaker = this.google.auth.currentUser.displayName || this.google.auth.currentUser.email || 'Unknown'
+      }
 
-    return this.conversationStore.add(meetingId, message)
+      return this.conversationStore.add(meetingId, message)
+    } catch (err) {
+      throw new Error('An error occurred while processing new message', { cause: err })
+    }
   }
 
   async processMeetingStart(meetingId: string, tabId: number): Promise<void> {
@@ -184,11 +193,11 @@ class ChromeBackgroundService {
         // In case the user rejoins the meeting after leaving
         await this.meetingStore.update(meetingId, { ended: false })
       }
-    } catch (err) {
-      this.handleError(`An error occurred while trying to store meeting information: ${err}`)
-    }
 
-    await chrome.storage.session.set({ recording: true, meetingDetails })
+      await chrome.storage.session.set({ recording: true, meetingDetails })
+    } catch (err) {
+      throw new Error('An error occurred while trying to store meeting information', { cause: err })
+    }
   }
 
   async processMeetingEnd(meetingId: string) {
@@ -197,10 +206,18 @@ class ChromeBackgroundService {
     try {
       await this.meetingStore.update(meetingId, { ended: true })
     } catch (err) {
-      this.handleError(`An error occurred while updating meeting on meeting ended: ${err}`)
+      throw new Error('An error occurred while updating meeting on meeting ended', { cause: err })
     }
   }
 }
+
+// Note: hack for sentry to work inside the background script
+// See: https://github.com/getsentry/sentry-javascript/issues/5289
+;(Sentry.WINDOW.document as any) = {
+  visibilityState: 'hidden',
+  addEventListener: () => {}
+}
+initSentry('extension:background')
 
 const backgroundService = new ChromeBackgroundService()
 backgroundService.startListener()

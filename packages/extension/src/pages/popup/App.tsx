@@ -4,7 +4,6 @@ import { Route, Routes } from 'react-router-dom'
 
 import Layout from './components/Layout'
 
-import { ErrorBoundary } from './components/ErrorBoundary'
 import Popup from './pages/popup'
 
 const loadingComponent = (
@@ -19,14 +18,12 @@ export const App = () => {
   }
 
   return (
-    <ErrorBoundary>
-      <Layout>
-        <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleIdentityAuthProvider} loadingComponent={loadingComponent}>
-          <Routes>
-            <Route path="*" element={<Popup />} />
-          </Routes>
-        </AuthGuard>
-      </Layout>
-    </ErrorBoundary>
+    <Layout>
+      <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleIdentityAuthProvider} loadingComponent={loadingComponent}>
+        <Routes>
+          <Route path="*" element={<Popup />} />
+        </Routes>
+      </AuthGuard>
+    </Layout>
   )
 }

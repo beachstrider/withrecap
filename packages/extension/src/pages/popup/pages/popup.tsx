@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { ExtensionMessages } from '../../../common'
 import ActiveMeeting from '../components/Meeting/ActiveMeeting'
 import { RecentMeeting } from '../components/Meeting/RecentMeeting'
+import { captureException } from '@sentry/browser'
 
 const Popup = () => {
   const [meeting, setMeeting] = useState<Meeting | undefined>()
@@ -19,6 +20,7 @@ const Popup = () => {
 
         setMeeting(response.meetingDetails)
       })
+      .catch(captureException)
       .finally(() => setLoading(false))
   }, [])
 

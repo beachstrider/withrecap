@@ -76,3 +76,9 @@ export * from './utils/browser'
 
 export * from './hooks/integration'
 export * from './hooks/meeting'
+
+//===========================================================
+// ERRORS
+//===========================================================
+
+export * from './errors/sentry'

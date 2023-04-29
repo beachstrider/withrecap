@@ -46,7 +46,7 @@ export default function InviteFriends() {
       setOpenModal(false)
       toast.success('Invitation emails sent.')
     } catch (err) {
-      toast.error('Faild to send invitation emails', err)
+      toast.error('Failed to send invitation emails', err)
     }
   }
 
