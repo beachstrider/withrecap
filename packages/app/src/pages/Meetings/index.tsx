@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { getUserFirstName, toast, useAuthGuard, useIntegrations, useMeetings } from '@recap/shared'
+import { browser, getUserFirstName, toast, useAuthGuard, useMeetings } from '@recap/shared'
 
 import { ExtensionInstallationAlert } from '../../components/blocks'
 import InviteFriends from '../../components/dashboard/Meeting/InviteFriends'
@@ -10,22 +10,17 @@ import Layout from '../../components/layouts'
 export default function Index() {
   const { user } = useAuthGuard()
   const { meetingsByDate, weekSaveHours, loading: loadingMeetings, error: meetingsError } = useMeetings()
-  const { userAddons, loading: loadingAddons, error: addonsError } = useIntegrations()
 
   useEffect(() => {
     if (meetingsError) {
       toast.error(meetingsError.message, meetingsError.err)
     }
-
-    if (addonsError) {
-      toast.error(addonsError.message, addonsError.err)
-    }
-  }, [meetingsError, addonsError])
+  }, [meetingsError])
 
   return (
-    <Layout isLoading={loadingMeetings || loadingAddons}>
-      <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">
-        {!loadingAddons && Object.keys(userAddons).length === 0 && <ExtensionInstallationAlert />}
+    <Layout isLoading={loadingMeetings}>
+      <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[80px] py-[60px]">
+        {browser?.name !== 'chrome' && <ExtensionInstallationAlert />}
         <div className="flex gap-[20px] sm:mb-[80px] mb-[60px]">
           <img src={user.photoURL} alt="" className="w-[64px] h-[64px] rounded-full" />
           <div className="">
