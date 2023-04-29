@@ -3,12 +3,13 @@ import React from 'react'
 import browser from '../../../../assets/img/browser.png'
 
 export const Done = () => {
-  const closeTab = () => {
-    chrome.tabs.getCurrent((tab) => {
-      if (tab?.id) {
-        chrome.tabs.remove(tab.id, () => {})
-      }
-    })
+  const closeTab = async () => {
+    await chrome.tabs.create({ url: `${process.env.RECAP_APP_BASE_URL}/app/meetings` })
+
+    const tab = await chrome.tabs.getCurrent()
+    if (tab?.id) {
+      await chrome.tabs.remove(tab.id)
+    }
   }
 
   return (
