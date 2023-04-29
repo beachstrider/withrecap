@@ -41,9 +41,9 @@ export function useMeetings() {
           byDate[meeting.start] = []
         }
 
-        const diff = differenceInSeconds(new Date(meeting.end), new Date(meeting.start))
-
-        if (isThisWeek(new Date(meeting.start))) saveTime += diff
+        if (isThisWeek(new Date(meeting.start))) {
+          saveTime += differenceInSeconds(new Date(meeting.end), new Date(meeting.start))
+        }
 
         byDate[meeting.start].push(meeting)
       }

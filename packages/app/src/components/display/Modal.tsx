@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
-import React, { Fragment, useRef } from 'react'
+import React, { Fragment } from 'react'
 
 import NoScroll from '../styles/NoScroll'
 
@@ -10,12 +10,10 @@ interface Props {
 }
 
 export const Modal = ({ children, open, onClose }: Props) => {
-  const closeButtonRef = useRef(null)
-
   return (
     <>
       <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="fixed z-10 w-screen h-screen" initialFocus={closeButtonRef} onClose={onClose}>
+        <Dialog as="div" className="fixed z-10 w-screen h-screen" onClose={onClose}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
