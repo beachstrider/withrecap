@@ -23,6 +23,7 @@ import recapLogoWhite from '../../assets/img/recapLogoWhite.svg'
 import refresh from '../../assets/img/refresh.svg'
 import rightExtensionUser3Dots from '../../assets/img/rightExtensionUser3Dots.svg'
 import star from '../../assets/img/star.svg'
+import welcomeBlock from '../../assets/img/welcomeBlock.svg'
 
 export const HomeBlock1 = () => (
   <div className="sm:px-[60px] px-[20px] sm:mb-[140px] mb-[110px]">
@@ -337,6 +338,25 @@ export const ExtensionInstallationAlert = () => (
     <div className="grow px-[22] sm:py-[22px] py-[66px] flex flex-col sm:items-start items-center text-center sm:gap-0 gap-[10]">
       <h5 className="font-semibold sm:mb-[12] mb-[8]">Don’t forget the Recap Chrome extension</h5>
       <div className="text-gray-500 sm:mb-[12] mb-[8]">Recap only take notes in Chrome with our extension added.</div>
+      <div className="flex justify-start">
+        <Link to="#" className="px-[10] py-[6] text-[15] font-semibold flex items-center gap-[4] rounded-[12] bg-white">
+          <img src={google} alt="" />
+          <span className="leading-[20px]">Add to Chrome</span>
+        </Link>
+      </div>
+    </div>
+  </div>
+)
+
+export const Welcome = () => (
+  <div className="sm:mb-[102] mb-[75] rounded-[16px] bg-[#F1F3F5] relative overflow-hidden sm:grid sm:grid-cols-2 flex flex-col">
+    <div className="relative w-full sm:h-auto h-[330px]">
+      <img src={welcomeBlock} alt="" className="absolute bottom-0" />
+    </div>
+    <div className="grow px-[22] sm:py-[145px] py-[100px] flex flex-col sm:items-start items-center sm:gap-[24px] gap-[18px]">
+      <div className="font-semibold">Welcome to Recap</div>
+      <h2 className="font-semibold">Recap will automatically take notes in your next Google Meeting</h2>
+      <div className="text-gray-500">Take your next meeting like usual, Recap does the rest.</div>
       <div className="flex justify-start">
         <Link to="#" className="px-[10] py-[6] text-[15] font-semibold flex items-center gap-[4] rounded-[12] bg-white">
           <img src={google} alt="" />
