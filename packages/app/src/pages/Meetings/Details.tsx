@@ -27,13 +27,22 @@ export default function MeetingDetail() {
             <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">
               <div className="flex sm:flex-row flex-col items-start sm:gap-[80px] gap-[63px]">
                 <Info meetingDetails={meeting} />
-                {meeting.ended && (
+
+                {/* Meeting is being recorded or processed */}
+                {(!meeting.ended || !meeting.transcript) && <Processing meeting={meeting} />}
+
+                {/* Meeting has conversations */}
+                {meeting.ended && meeting.transcript?.length > 0 && (
                   <div className="grow">
                     <Summary meetingDetails={meeting} />
                     <Transcript meetingDetails={meeting} />
                   </div>
                 )}
-                {!meeting.ended && <Processing meeting={meeting} />}
+
+                {/* Meeting has no conversations */}
+                {meeting.ended && !meeting.transcript?.length && (
+                  <div className="grow">This meeting has no conversation.</div>
+                )}
               </div>
             </div>
           )}

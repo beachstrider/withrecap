@@ -3,14 +3,13 @@ import React, { useEffect } from 'react'
 import { getUserFirstName, toast, useAuthGuard, useIntegrations, useMeetings } from '@recap/shared'
 
 import { ExtensionInstallationAlert } from '../../components/blocks'
+import InviteFriends from '../../components/dashboard/Meeting/InviteFriends'
 import Meetings from '../../components/dashboard/Meeting/List'
-import MeetingTimeSaved from '../../components/dashboard/Meeting/MeetingTimeSaved'
 import Layout from '../../components/layouts'
 
 export default function Index() {
   const { user } = useAuthGuard()
-
-  const { meetingsByDate, loading: loadingMeetings, error: meetingsError } = useMeetings()
+  const { meetingsByDate, weekSaveHours, loading: loadingMeetings, error: meetingsError } = useMeetings()
   const { userAddons, loading: loadingAddons, error: addonsError } = useIntegrations()
 
   useEffect(() => {
@@ -31,7 +30,10 @@ export default function Index() {
           <img src={user.photoURL} alt="" className="w-[64px] h-[64px] rounded-full" />
           <div className="">
             <div className="sm:text-[24px] text-[18px] font-semibold mb-[8px]">Afternoon, {getUserFirstName(user)}</div>
-            <MeetingTimeSaved />
+            <div className="flex sm:flex-row flex-col sm:items-center gap-[24px]">
+              {weekSaveHours > 0 ? `Recap saved you ${weekSaveHours} hours of meeting notes this week!` : ``}
+              <InviteFriends />
+            </div>
           </div>
         </div>
         <div className="flex flex-col sm:gap-[52px] gap-[40px]">

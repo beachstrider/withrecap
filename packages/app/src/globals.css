@@ -27,7 +27,7 @@
 }
 
 * {
-  @apply sm:text-[16px] sm:leading-normal text-[12px] leading-[18px];
+  @apply sm:text-[16px] sm:leading-normal text-[12px] leading-[18px] outline-none;
 }
 
 body {

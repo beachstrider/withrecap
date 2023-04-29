@@ -1,17 +1,18 @@
 import { FirebaseApp } from 'firebase/app'
 import {
+  Auth,
+  AuthError,
   getAuth,
+  GoogleAuthProvider as AuthProvider,
   onAuthStateChanged,
   signInWithCredential,
-  GoogleAuthProvider as AuthProvider,
-  Auth,
-  Unsubscribe,
+  signInWithPopup,
   signInWithRedirect,
-  AuthError
+  Unsubscribe
 } from 'firebase/auth'
 
-import { firebase, FirebaseUser } from '../firebase'
 import { BaseAuthProvider } from '..'
+import { firebase, FirebaseUser } from '../firebase'
 
 export class GoogleIdentityAuthProvider implements BaseAuthProvider {
   private _accessToken: string | null = null
@@ -142,6 +143,28 @@ export class GoogleAuthProvider implements BaseAuthProvider {
       })
 
       await signInWithRedirect(this.auth, provider)
+    } catch (err) {
+      const error = err as AuthError
+
+      throw new Error(`SSO ended with an error: ${error}`)
+    }
+  }
+
+  public loginWithPopup = async () => {
+    try {
+      const provider = new AuthProvider()
+
+      // Add scope to read signed in user info
+      provider.addScope('https://www.googleapis.com/auth/userinfo.email')
+      provider.addScope('https://www.googleapis.com/auth/userinfo.profile')
+      // Add scope to read user calendar events
+      provider.addScope('https://www.googleapis.com/auth/calendar.events.readonly')
+
+      provider.setCustomParameters({
+        include_granted_scopes: 'true'
+      })
+
+      await signInWithPopup(this.auth, provider)
     } catch (err) {
       const error = err as AuthError
 

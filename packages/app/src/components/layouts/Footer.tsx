@@ -1,17 +1,23 @@
-import React, { useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
 import { toast, useAuth } from '@recap/shared'
+import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 import google from '../../assets/img/google.svg'
 import logo from '../../assets/img/logo.svg'
 import { SUPPORT_REQUEST } from '../../constants/links'
-import { PRIVACY_POLICY, SIGNING_IN, TERMS_CONDITIONS } from '../../constants/routes'
+import { PRIVACY_POLICY, TERMS_CONDITIONS } from '../../constants/routes'
 import { Button } from '../buttons'
 
 export default function Index({ className = '' }) {
-  const { login, error } = useAuth()
+  const { loginWithPopup, error } = useAuth()
 
-  const navigate = useNavigate()
+  const login = async () => {
+    try {
+      await loginWithPopup()
+    } catch (error) {
+      toast.error('An error occurred during login', error)
+    }
+  }
 
   useEffect(() => {
     if (error) {
@@ -40,14 +46,7 @@ export default function Index({ className = '' }) {
             <Link target="_blank" to={SUPPORT_REQUEST} className="block text-[15px] font-semibold text-gray-500">
               Support
             </Link>
-            <button
-              onClick={async () => {
-                navigate(`/${SIGNING_IN}`)
-
-                await login()
-              }}
-              className="block text-[15px] font-semibold text-gray-500 text-start"
-            >
+            <button onClick={login} className="block text-[15px] font-semibold text-gray-500 text-start">
               Sign in
             </button>
           </div>

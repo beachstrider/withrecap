@@ -1,4 +1,4 @@
-import { format } from 'date-fns'
+import { differenceInSeconds, isThisWeek, secondsToHours } from 'date-fns'
 import { useEffect, useMemo, useState } from 'react'
 
 import { useAuthGuard } from '../auth/AuthGuard'
@@ -16,6 +16,7 @@ export function useMeetings() {
 
   const [meetings, setMeetings] = useState<Meeting[]>([])
   const [meetingsByDate, setMeetingsByDate] = useState<MeetingByDate>({})
+  const [weekSaveHours, setWeekSaveHours] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
@@ -31,18 +32,24 @@ export function useMeetings() {
 
   useEffect(() => {
     try {
-      const byDate: { [date: string]: Meeting[] } = {}
-      for (const meeting of meetings) {
-        const date = format(new Date(meeting.start), 'MM-dd-yy')
+      let saveTime = 0
 
-        if (!byDate[date]) {
-          byDate[date] = []
+      const byDate: { [date: string]: Meeting[] } = {}
+
+      for (const meeting of meetings) {
+        if (!byDate[meeting.start]) {
+          byDate[meeting.start] = []
         }
 
-        byDate[date].push(meeting)
+        if (isThisWeek(new Date(meeting.start))) {
+          saveTime += differenceInSeconds(new Date(meeting.end), new Date(meeting.start))
+        }
+
+        byDate[meeting.start].push(meeting)
       }
 
       setMeetingsByDate(byDate)
+      setWeekSaveHours(secondsToHours(saveTime))
       setError(null)
     } catch (err) {
       setError({ message: 'An error occurred while processing meeting information', err: err as Error })
@@ -52,6 +59,7 @@ export function useMeetings() {
   return {
     meetings,
     meetingsByDate,
+    weekSaveHours,
     loading,
     error
   }

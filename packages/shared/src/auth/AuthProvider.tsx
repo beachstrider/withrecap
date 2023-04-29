@@ -10,6 +10,7 @@ type AuthProviderContextType = {
   user: User | null
   error: ReturnType<typeof useErrors>['error']
   login: BaseAuthProvider['login']
+  loginWithPopup: BaseAuthProvider['loginWithPopup']
   logout: BaseAuthProvider['logout']
   onAuthStateChanged: BaseAuthProvider['onAuthStateChanged']
 }
@@ -79,6 +80,7 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
         user,
         error,
         login: auth.login,
+        loginWithPopup: auth.loginWithPopup,
         logout: auth.logout,
         onAuthStateChanged: auth.onAuthStateChanged
       }}
