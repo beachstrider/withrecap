@@ -41,7 +41,7 @@ export default function MeetingDetail() {
 
                 {/* Meeting has no conversations */}
                 {meeting.ended && !meeting.transcript?.length && (
-                  <div className="grow">This meeting doesn't have conversation.</div>
+                  <div className="grow">This meeting has no conversation.</div>
                 )}
               </div>
             </div>
