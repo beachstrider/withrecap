@@ -23,7 +23,7 @@ export default function Index() {
         {/* If there is any recorded meeting, list them, otherwise display the welcome block */}
         {Object.keys(meetingsByDate).length ? (
           <>
-            {typeof browser !== 'undefined' && browser?.name !== 'chrome' && <ExtensionInstallationAlert />}
+            {browser && browser.name !== 'chrome' && <ExtensionInstallationAlert />}
             <div className="flex gap-[20px] sm:mb-[80px] mb-[60px]">
               <img src={user.photoURL} alt="" className="w-[64px] h-[64px] rounded-full" />
               <div className="">
