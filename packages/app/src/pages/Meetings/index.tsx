@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 
-import { getUserFirstName, toast, useAuthGuard, useIntegrations, useMeetings } from '@recap/shared'
+import { browser, getUserFirstName, toast, useAuthGuard, useMeetings } from '@recap/shared'
 
-import { ExtensionInstallationAlert } from '../../components/blocks'
+import { ExtensionInstallationAlert, Welcome } from '../../components/blocks'
 import InviteFriends from '../../components/dashboard/Meeting/InviteFriends'
 import Meetings from '../../components/dashboard/Meeting/List'
 import Layout from '../../components/layouts'
@@ -10,35 +10,39 @@ import Layout from '../../components/layouts'
 export default function Index() {
   const { user } = useAuthGuard()
   const { meetingsByDate, weekSaveHours, loading: loadingMeetings, error: meetingsError } = useMeetings()
-  const { userAddons, loading: loadingAddons, error: addonsError } = useIntegrations()
 
   useEffect(() => {
     if (meetingsError) {
       toast.error(meetingsError.message, meetingsError.err)
     }
-
-    if (addonsError) {
-      toast.error(addonsError.message, addonsError.err)
-    }
-  }, [meetingsError, addonsError])
+  }, [meetingsError])
 
   return (
-    <Layout isLoading={loadingMeetings || loadingAddons}>
-      <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">
-        {!loadingAddons && Object.keys(userAddons).length === 0 && <ExtensionInstallationAlert />}
-        <div className="flex gap-[20px] sm:mb-[80px] mb-[60px]">
-          <img src={user.photoURL} alt="" className="w-[64px] h-[64px] rounded-full" />
-          <div className="">
-            <div className="sm:text-[24px] text-[18px] font-semibold mb-[8px]">Afternoon, {getUserFirstName(user)}</div>
-            <div className="flex sm:flex-row flex-col sm:items-center gap-[24px]">
-              {weekSaveHours > 0 ? `Recap saved you ${weekSaveHours} hours of meeting notes this week!` : ``}
-              <InviteFriends />
+    <Layout isLoading={loadingMeetings}>
+      <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[80px] py-[60px]">
+        {/* If there is any recorded meeting, list them, otherwise display the welcome block */}
+        {Object.keys(meetingsByDate).length ? (
+          <>
+            {browser && browser.name !== 'chrome' && <ExtensionInstallationAlert />}
+            <div className="flex gap-[20px] sm:mb-[80px] mb-[60px]">
+              <img src={user.photoURL} alt="" className="w-[64px] h-[64px] rounded-full" />
+              <div className="">
+                <div className="sm:text-[24px] text-[18px] font-semibold mb-[8px]">
+                  Afternoon, {getUserFirstName(user)}
+                </div>
+                <div className="flex sm:flex-row flex-col sm:items-center gap-[24px]">
+                  {weekSaveHours > 0 ? `Recap saved you ${weekSaveHours} hours of meeting notes this week!` : ``}
+                  <InviteFriends />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="flex flex-col sm:gap-[52px] gap-[40px]">
-          <Meetings meetingsByDate={meetingsByDate} />
-        </div>
+            <div className="flex flex-col sm:gap-[52px] gap-[40px]">
+              <Meetings meetingsByDate={meetingsByDate} />
+            </div>
+          </>
+        ) : (
+          <Welcome />
+        )}
       </div>
     </Layout>
   )
