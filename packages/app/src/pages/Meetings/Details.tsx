@@ -40,8 +40,7 @@ export default function MeetingDetail() {
 
 export const MeetingContent = ({ meeting }: { meeting: Meeting }) => {
   if (meeting.ended) {
-    if (meeting.transcript) {
-      if (meeting?.transcript.length) {
+    if (meeting.transcript?.length) {
         // If meeting has conversations
         return (
           <div className="grow">
