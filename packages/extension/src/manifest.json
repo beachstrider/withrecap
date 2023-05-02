@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Recap",
-  "version": "0.0.1",
+  "version": "0.1.3",
   "description": "Meeting notes, on autopilot.",
   "background": {
     "service_worker": "background/index.ts",
@@ -36,7 +36,7 @@
     "sandbox": "sandbox allow-scripts; script-src 'self' 'https://apis.google.com/' 'https://www.gstatic.com/' 'https://*.firebaseio.com' 'https://www.googleapis.com' 'https://ajax.googleapis.com'; object-src 'self'"
   },
   "oauth2": {
-    "client_id": "621133214709-ia6rs00uka8mke4t4oqlbphlu5baeh9b.apps.googleusercontent.com",
+    "client_id": "621133214709-7t5ghofgq50nbiuqrqlqs8nmli8ucs98.apps.googleusercontent.com",
     "scopes": [
       "https://www.googleapis.com/auth/userinfo.email",
       "https://www.googleapis.com/auth/userinfo.profile",
