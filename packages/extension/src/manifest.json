@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "reCap",
+  "name": "Recap",
   "version": "0.0.1",
   "description": "Meeting notes, on autopilot.",
   "background": {

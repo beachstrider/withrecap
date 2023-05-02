@@ -24,7 +24,7 @@ jobs:
         run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_RECAP_381618 }}' > service-account.json
       - name: Deploy Firebase functions, Firestore rules, and indexes
         run: |
-          firebase functions:config:set --non-interactive config.chatgptapikey="$CHATGPT_API_KEY" config.mailgunapikey="$MAILGUN_API_KEY" config.domain="$DOMAIN" private.key="$FIREBASE_PRIVATE_KEY" project.id="$FIREBASE_PROJECT_ID" client.email="$FIREBASE_EMAIL" --project $FIREBASE_PROJECT_ID
+          firebase functions:config:set --non-interactive config.chatgptapikey="$CHATGPT_API_KEY" config.mailgunapikey="$MAILGUN_API_KEY" config.sentrydsn="$SENTRY_DSN" config.domain="$DOMAIN" private.key="$FIREBASE_PRIVATE_KEY" project.id="$FIREBASE_PROJECT_ID" client.email="$FIREBASE_EMAIL" --project $FIREBASE_PROJECT_ID
           yarn deploy:all --non-interactive
         working-directory: packages/engine
         env:
@@ -34,4 +34,5 @@ jobs:
           FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_FIRESTORE_ACCOUNT_PRIVATE_KEY }}
           FIREBASE_EMAIL: ${{ secrets.FIREBASE_FIRESTORE_ACCOUNT_EMAIL }}
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           GOOGLE_APPLICATION_CREDENTIALS: '${{ github.workspace }}/service-account.json'

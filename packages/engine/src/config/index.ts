@@ -1,10 +1,11 @@
 import * as admin from 'firebase-admin'
-import { config } from 'firebase-functions'
+import { config, logger } from 'firebase-functions'
 
 import formData from 'form-data'
 import { google } from 'googleapis'
 import Mailgun from 'mailgun.js'
 import { Configuration, OpenAIApi } from 'openai'
+import * as Sentry from '@sentry/node'
 
 const settings = {
   projectId: config().project.id,
@@ -35,4 +36,20 @@ const openai = new OpenAIApi(configuration)
 const mailgun = new Mailgun(formData)
 const mail = mailgun.client({ username: 'api', key: config().config.mailgunapikey })
 
-export { auth, firestore, db, openai, mail, settings }
+const initSentry = () => {
+  try {
+    Sentry.init({
+      dsn: config().config.sentrydsn,
+      release: process.env.npm_package_version,
+      tracesSampleRate: 1.0
+    })
+
+    Sentry.configureScope((scope) => {
+      scope.setTag('app', 'engine')
+    })
+  } catch (err) {
+    logger.error('An error occurred while configuring Sentry', err)
+  }
+}
+
+export { auth, firestore, db, openai, mail, settings, initSentry }
