@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { Meeting, toast, useMeeting } from '@recap/shared'
+import { toast, useMeeting } from '@recap/shared'
 
 import Info from '../../components/dashboard/Meeting/Info'
-import Processing from '../../components/dashboard/Meeting/Processing'
-import Summary from '../../components/dashboard/Meeting/Summary'
-import Transcript from '../../components/dashboard/Meeting/Transcript'
+import MeetingContent from '../../components/dashboard/Meeting/MeetingContent'
 import Layout from '../../components/layouts'
 
 export default function MeetingDetail() {
@@ -36,32 +34,4 @@ export default function MeetingDetail() {
       )}
     </Layout>
   )
-}
-
-export const MeetingContent = ({ meeting }: { meeting: Meeting }) => {
-  if (meeting.ended) {
-    if (meeting.transcript?.length) {
-        // If meeting has conversations
-        return (
-          <div className="grow">
-            <Summary meetingDetails={meeting} />
-            <Transcript meetingDetails={meeting} />
-          </div>
-        )
-      }
-    }
-
-    if (!meeting.transcript?.length) {
-      if (meeting.conversation.length > 0) {
-        // If meeting is being processed
-        return <Processing meeting={meeting} />
-      } else {
-        // If meeting has no conversations
-        return <div className="grow">This meeting has no conversation.</div>
-      }
-    }
-  }
-
-  // If meeting is being recorded
-  return <Processing meeting={meeting} />
 }
