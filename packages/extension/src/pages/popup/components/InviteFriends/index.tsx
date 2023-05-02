@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { sendInviteEmails } from '@recap/shared'
+import { captureException } from '@sentry/browser'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
@@ -38,9 +39,12 @@ export const InviteFriends = () => {
   const onSubmit = async ({ emails }: Form) => {
     try {
       await sendInviteEmails({ emails })
+
       setStatus('done')
     } catch (err) {
+      // TODO: Display error under input box
       console.error(err)
+      captureException(err)
     }
   }
 

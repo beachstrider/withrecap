@@ -3,5 +3,5 @@ export enum ExtensionMessages {
   MeetingStarted = 'MEETING_STARTED',
   MeetingEnded = 'MEETING_ENDED',
   MeetingState = 'MEETING_STATE',
-  AddonSupported = 'ADDON_SUPPORTED'
+  AddonEnabled = 'ADDON_ENABLED'
 }

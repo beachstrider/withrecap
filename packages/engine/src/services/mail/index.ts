@@ -1,4 +1,4 @@
-import { MeetingMetadata } from '@recap/shared'
+import { Meeting, MeetingMetadata } from '@recap/shared'
 import Client from 'mailgun.js/client'
 import { MailgunMessageData, MessagesSendResult } from 'mailgun.js/interfaces/Messages'
 
@@ -13,7 +13,7 @@ interface Options {
   [Templates.Welcome]: { email: string; appUrl: string }
   [Templates.MeetingEnd]: {
     email: string
-    meetingMetadata: Pick<MeetingMetadata, 'end' | 'participants' | 'start' | 'title' | 'url'>
+    meetingMetadata: Pick<MeetingMetadata, 'participants' | 'url'> & Pick<Meeting, 'end' | 'start' | 'title'>
     appUrl: string
   }
   [Templates.GettingStarted]: { email: string; appUrl: string }

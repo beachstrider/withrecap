@@ -1,4 +1,6 @@
-import { Message } from '@recap/shared'
+import * as Sentry from '@sentry/browser'
+import { initSentry, Message } from '@recap/shared'
+
 import { ExtensionMessages } from '../common'
 
 const SELECTOR_CALL_BAR = "div[jscontroller='kAPMuc']"
@@ -9,16 +11,29 @@ const SELECTOR_SPEAKER = "div[class='zs7s8d jxFHg']"
 const SELECTOR_TEXT = "div[jsname='YSxPC']"
 const SELECTOR_END_CALL = "div[jscontroller='m1IMT']"
 
+const wait = async (time: number) => {
+  await new Promise((resolve) => setTimeout(resolve, time))
+}
+
+const MAX_RETRY = 10
 const retry = async (callback: () => Promise<any>, time: number) => {
+  let retryCount = 0
   let retry = true
+
   while (retry) {
     try {
       await callback()
       retry = false
     } catch (err) {
-      console.error('An error occurred, retrying soon...', err)
+      retryCount++
 
-      await new Promise((resolve) => setTimeout(resolve, time))
+      // Aborting
+      if (retryCount > MAX_RETRY) {
+        throw err
+      }
+
+      console.error('An error occurred, retrying soon...', err)
+      await wait(time)
     }
   }
 }
@@ -43,13 +58,13 @@ class GoogleMeetsService {
         ccButton.disabled = true
         console.debug('caption toggling disabled')
       } else {
-        console.error("didn't find button trying to enable caption")
+        throw new Error("Couldn't find button while trying to enable caption")
       }
     }
   }
 
   private listenOnNewMessage(ccDiv: HTMLDivElement): MutationObserver {
-    const ccDivObserver = new MutationObserver(() => {
+    const ccDivObserver = new MutationObserver(async () => {
       const language = ccDiv.querySelector<HTMLSpanElement>(SELECTOR_LANGUAGE)?.textContent
       const speaker = ccDiv.querySelector<HTMLDivElement>(SELECTOR_SPEAKER)?.textContent
       const text = ccDiv.querySelector<HTMLDivElement>(SELECTOR_TEXT)?.textContent
@@ -71,14 +86,15 @@ class GoogleMeetsService {
         timestamp: new Date().getTime()
       }
 
-      chrome.runtime.sendMessage(
-        {
-          meetingId: this.getMeetingId(),
-          message: meetingMessage,
-          type: ExtensionMessages.MeetingMessage
-        },
-        () => {}
-      )
+      const { error } = await chrome.runtime.sendMessage({
+        meetingId: this.getMeetingId(),
+        message: meetingMessage,
+        type: ExtensionMessages.MeetingMessage
+      })
+
+      if (error) {
+        // TODO: Display a toast to the user? Retry?
+      }
     })
 
     ccDivObserver.observe(ccDiv, {
@@ -92,7 +108,7 @@ class GoogleMeetsService {
   public async prepareListener(): Promise<void> {
     const { isEnabled, error } = await chrome.runtime.sendMessage<any, any>({
       addonId: 'meet',
-      type: ExtensionMessages.AddonSupported
+      type: ExtensionMessages.AddonEnabled
     })
 
     if (error) {
@@ -103,7 +119,7 @@ class GoogleMeetsService {
       return console.debug('not recording, addon is disabled')
     }
 
-    const docObserver = new MutationObserver((_mutations: MutationRecord[], observer: MutationObserver) => {
+    const docObserver = new MutationObserver(async (_mutations: MutationRecord[], observer: MutationObserver) => {
       this.callBar = document.body.querySelector(SELECTOR_CALL_BAR)
 
       if (this.callBar) {
@@ -111,21 +127,21 @@ class GoogleMeetsService {
 
         console.debug('call started')
 
-        // Note: this is a semi hack to make sure all element are displayed properly so we can interact with the UI
-        setTimeout(() => {
-          // this will also be useful even if you rejoin a meeting
-          // for example the meeting was ended through tab close, but then you joined again - this will nullify the metadata's endTimestamp
-          chrome.runtime.sendMessage(
-            {
-              meetingId: this.getMeetingId(),
-              type: ExtensionMessages.MeetingStarted
-            },
-            () => {}
-          )
+        // this will also be useful even if you rejoin a meeting
+        // for example the meeting was ended through tab close, but then you joined again - this will nullify the metadata's endTimestamp
+        const { error } = await chrome.runtime.sendMessage({
+          meetingId: this.getMeetingId(),
+          type: ExtensionMessages.MeetingStarted
+        })
 
-          // click on the cc button and start transcribing
-          retry(this.startTranscribing.bind(this), 2000)
-        }, 800)
+        if (error) {
+          // TODO: Display a toast and stop there?
+          // This is a critical error and we cannot continue
+          return
+        }
+
+        // click on the cc button and start transcribing
+        await retry(this.startTranscribing.bind(this), 2000)
       }
     })
 
@@ -141,12 +157,15 @@ class GoogleMeetsService {
     const callDiv = this.callBar
 
     if (!ccDiv || !endCallDiv || !callDiv) {
-      const error = 'some required visual components are missing'
-      console.error(error, {
-        ccDiv: !!ccDiv,
-        endCallDiv: !!endCallDiv,
-        callDiv: !!callDiv
-      })
+      const error = `some required visual components are missing: ${JSON.stringify(
+        {
+          ccDiv: !!ccDiv,
+          endCallDiv: !!endCallDiv,
+          callDiv: !!callDiv
+        },
+        undefined,
+        4
+      )}`
 
       throw new Error(error)
     }
@@ -155,29 +174,35 @@ class GoogleMeetsService {
 
     const ccDivObserver = this.listenOnNewMessage(ccDiv)
 
-    endCallDiv.onclick = () => {
+    endCallDiv.onclick = async () => {
       // Remove observers are they are not needed anymore
       ccDivObserver.disconnect()
       endCallDiv.onclick = null
 
       console.debug('ending call')
 
-      chrome.runtime.sendMessage(
-        {
-          meetingId: this.getMeetingId(),
-          type: ExtensionMessages.MeetingEnded
-        },
-        () => {}
-      )
+      const { error } = await chrome.runtime.sendMessage({
+        meetingId: this.getMeetingId(),
+        type: ExtensionMessages.MeetingEnded
+      })
+
+      if (error) {
+        // TODO: Display a toast to the user? Retry?
+      }
     }
   }
 }
 
 const main = async () => {
-  //TODO: Once we support more addons, find out which service we're on and initialize the right service
-  const meetingService = new GoogleMeetsService()
+  initSentry('extension:content')
 
-  await retry(meetingService.prepareListener.bind(meetingService), 1000)
+  try {
+    const meetingService = new GoogleMeetsService()
+
+    await retry(meetingService.prepareListener.bind(meetingService), 1000)
+  } catch (err) {
+    Sentry.captureException(err)
+  }
 }
 
 main()

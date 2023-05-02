@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { Outlet } from 'react-router-dom'
+import * as Sentry from '@sentry/browser'
 
 import { BaseAuthProvider } from '.'
 import { useErrors } from '../hooks/error'
@@ -35,6 +36,8 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, provider }: 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((u, t) => {
       if (u === null) {
+        Sentry.setUser(null)
+
         setUser(null)
         setToken(null)
         setError(null)
@@ -56,6 +59,11 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, provider }: 
 
             user = await userStore.get(u.uid)
           }
+
+          Sentry.setUser({
+            id: user.uid,
+            email: user.email
+          })
 
           setUser(user)
           setToken(t)
