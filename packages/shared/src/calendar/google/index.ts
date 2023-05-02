@@ -71,8 +71,8 @@ export class GoogleCalendar {
       start: event.start!.dateTime!,
       end: event.end!.dateTime!,
       link: event.hangoutLink!,
-      title: event.summary!,
-      description: event.description || '',
+      title: event.summary || 'Untitled',
+      description: event.description || 'This meeting has no description',
       conversation: [],
       ended: false
     }
