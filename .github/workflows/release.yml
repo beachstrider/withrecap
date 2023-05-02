@@ -29,6 +29,7 @@ jobs:
           echo "FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}" >> .env.production
           echo "FIREBASE_MEASUREMENT_ID=${{ secrets.FIREBASE_MEASUREMENT_ID }}" >> .env.production
           echo "RECAP_APP_BASE_URL=${{ secrets.RECAP_APP_BASE_URL }}" >> .env.production
+          echo "SENTRY_DSN=${{ secret.SENTRY_DSN }}" >> .env.production
       - name: Build
         working-directory: ./packages/extension
         run: |

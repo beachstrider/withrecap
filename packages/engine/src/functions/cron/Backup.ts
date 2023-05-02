@@ -1,9 +1,10 @@
 import * as functions from 'firebase-functions'
 
 import { auth, firestore, settings } from '../../config'
+import { SentryWrapper } from '../../utils/sentry'
 
-export const BackupFirestore = functions.pubsub.schedule('every day 00:00').onRun(async (_context) => {
-  try {
+export const BackupFirestore = functions.pubsub.schedule('every day 00:00').onRun(
+  SentryWrapper<[functions.EventContext]>('BackupFirestore', 'functions.pubsub.schedule.onRun', async (_context) => {
     const timestamp = new Date().toISOString()
 
     console.debug(`start firestore backup for project ${settings.projectId}`)
@@ -16,7 +17,5 @@ export const BackupFirestore = functions.pubsub.schedule('every day 00:00').onRu
         outputUriPrefix: `gs://${settings.projectId}-firestore-backups/backups/${timestamp}`
       }
     })
-  } catch (err) {
-    functions.logger.error('An error occurred while running firestore backup', err)
-  }
-})
+  })
+)
