@@ -213,7 +213,7 @@ export const HomeBlock1 = () => (
           </div>
         </div>
         <div className="sm:text-[18px] text-[13px]">
-          That’s really it!
+          That's really it!
           <div className="leading-[26px] sm:text-[18px] text-[13px] opacity-[0.7] mt-[6px]">
             Next time you take your call using your browser, Recap
             <br />
@@ -336,13 +336,16 @@ export const ExtensionInstallationAlert = () => (
       </div>
     </div>
     <div className="grow px-[22] sm:py-[22px] py-[66px] flex flex-col sm:items-start items-center text-center sm:gap-0 gap-[10]">
-      <h5 className="font-semibold sm:mb-[12] mb-[8]">Don’t forget the Recap Chrome extension</h5>
+      <h5 className="font-semibold sm:mb-[12] mb-[8]">Don't forget the Recap Chrome extension</h5>
       <div className="text-gray-500 sm:mb-[12] mb-[8]">Recap only take notes in Chrome with our extension added.</div>
       <div className="flex justify-start">
-        <Link to="#" className="px-[10] py-[6] text-[15] font-semibold flex items-center gap-[4] rounded-[12] bg-white">
+        <a
+          href={process.env.CHROME_WEBSTORE_LINK}
+          className="px-[10] py-[6] text-[15] font-semibold flex items-center gap-[4] rounded-[12] bg-white"
+        >
           <img src={google} alt="" />
           <span className="leading-[20px]">Add to Chrome</span>
-        </Link>
+        </a>
       </div>
     </div>
   </div>
@@ -358,10 +361,15 @@ export const Welcome = () => (
       <h2 className="font-semibold">Recap will automatically take notes in your next Google Meeting</h2>
       <div className="text-gray-500">Take your next meeting like usual, Recap does the rest.</div>
       <div className="flex justify-start">
-        <Link to="#" className="px-[10] py-[6] text-[15] font-semibold flex items-center gap-[4] rounded-[12] bg-white">
+        <a
+          href={process.env.CHROME_WEBSTORE_LINK}
+          target="_blank"
+          className="px-[10] py-[6] text-[15] font-semibold flex items-center gap-[4] rounded-[12] bg-white"
+          rel="noreferrer"
+        >
           <img src={google} alt="" />
           <span className="leading-[20px]">Add to Chrome</span>
-        </Link>
+        </a>
       </div>
     </div>
   </div>
