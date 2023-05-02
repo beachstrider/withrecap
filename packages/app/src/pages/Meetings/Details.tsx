@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { toast, useMeeting } from '@recap/shared'
+import { Meeting, toast, useMeeting } from '@recap/shared'
 
 import Info from '../../components/dashboard/Meeting/Info'
 import Processing from '../../components/dashboard/Meeting/Processing'
@@ -27,22 +27,7 @@ export default function MeetingDetail() {
             <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">
               <div className="flex sm:flex-row flex-col items-start sm:gap-[80px] gap-[63px]">
                 <Info meetingDetails={meeting} />
-
-                {/* Meeting is being recorded or processed */}
-                {(!meeting.ended || !meeting.transcript) && <Processing meeting={meeting} />}
-
-                {/* Meeting has conversations */}
-                {meeting.ended && meeting.transcript?.length > 0 && (
-                  <div className="grow">
-                    <Summary meetingDetails={meeting} />
-                    <Transcript meetingDetails={meeting} />
-                  </div>
-                )}
-
-                {/* Meeting has no conversations */}
-                {meeting.ended && !meeting.transcript?.length && (
-                  <div className="grow">This meeting has no conversation.</div>
-                )}
+                <MeetingContent meeting={meeting} />
               </div>
             </div>
           )}
@@ -51,4 +36,33 @@ export default function MeetingDetail() {
       )}
     </Layout>
   )
+}
+
+export const MeetingContent = ({ meeting }: { meeting: Meeting }) => {
+  if (meeting.ended) {
+    if (meeting.transcript) {
+      if (meeting?.transcript.length) {
+        // If meeting has conversations
+        return (
+          <div className="grow">
+            <Summary meetingDetails={meeting} />
+            <Transcript meetingDetails={meeting} />
+          </div>
+        )
+      }
+    }
+
+    if (!meeting.transcript?.length) {
+      if (meeting.conversation.length > 0) {
+        // If meeting is being processed
+        return <Processing meeting={meeting} />
+      } else {
+        // If meeting has no conversations
+        return <div className="grow">This meeting has no conversation.</div>
+      }
+    }
+  }
+
+  // If meeting is being recorded
+  return <Processing meeting={meeting} />
 }
