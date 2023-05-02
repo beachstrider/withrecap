@@ -135,7 +135,7 @@ const PublicSection = () => {
 
   const login = async () => {
     try {
-      await loginWithPopup()
+      await loginWithPopup?.()
     } catch (error) {
       toast.error('An error occurred during login', error)
     }
@@ -163,12 +163,12 @@ const PublicSection = () => {
       <button onClick={login} className="text-[15px] font-semibold text-gray-500">
         Sign in
       </button>
-      <Link to="#">
+      <a href={process.env.CHROME_WEBSTORE_LINK} target="_blank" rel="noreferrer">
         <Button>
           <img src={google} alt="" />
           Add to Chrome
         </Button>
-      </Link>
+      </a>
     </div>
   )
 }

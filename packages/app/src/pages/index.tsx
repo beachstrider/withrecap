@@ -132,12 +132,12 @@ export default function Index() {
                 on getting things done.
               </div>
               <div className="flex sm:flex-row flex-col items-center gap-[20px]">
-                <Link to="#">
+                <a href={process.env.CHROME_WEBSTORE_LINK} target="_blank" rel="noreferrer">
                   <Button className="!px-[16px] !py-[14px] !rounded-[14px]">
                     <img src={google} alt="" />
                     Add to Chrome
                   </Button>
-                </Link>
+                </a>
                 <div className="text-gray-500">Unlimited meetings notes, for free!</div>
               </div>
             </div>
@@ -155,12 +155,12 @@ export default function Index() {
               (at least that's how we feel when we use Recap)
             </div>
 
-            <Link to="#">
+            <a href={process.env.CHROME_WEBSTORE_LINK} target="_blank" rel="noreferrer">
               <Button className="!px-[16px] !py-[14px] !rounded-[14px]">
                 <img src={google} alt="" />
                 Add to Chrome
               </Button>
-            </Link>
+            </a>
           </div>
         </div>
         <div className="sm:px-[60px] px-[20px] sm:grid grid-cols-3 gap-[40px] sm:mb-[16px] mb-[12px]">

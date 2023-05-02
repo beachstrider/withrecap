@@ -13,7 +13,7 @@ export default function Index({ className = '' }) {
 
   const login = async () => {
     try {
-      await loginWithPopup()
+      await loginWithPopup?.()
     } catch (error) {
       toast.error('An error occurred during login', error)
     }
@@ -50,12 +50,12 @@ export default function Index({ className = '' }) {
               Sign in
             </button>
           </div>
-          <Link to="#" className="sm:ml-[20px]">
+          <a href={process.env.CHROME_WEBSTORE_LINK} target="_blank" className="sm:ml-[20px]" rel="noreferrer">
             <Button>
               <img src={google} alt="" />
               Add to Chrome
             </Button>
-          </Link>
+          </a>
         </div>
       </div>
     </footer>
