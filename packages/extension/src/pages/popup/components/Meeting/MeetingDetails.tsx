@@ -1,5 +1,5 @@
-import { Meeting, getTime } from '@recap/shared'
-import { formatDistance } from 'date-fns'
+import { getTime, Meeting } from '@recap/shared'
+import { formatDistance, isFuture } from 'date-fns'
 import React from 'react'
 
 interface MeetingDetailsProps {
@@ -7,22 +7,26 @@ interface MeetingDetailsProps {
   ended: boolean
 }
 
+const getTimeLeft = (t: string) => {
+  const now = new Date()
+  const time = new Date(t)
+
+  if (isFuture(time)) {
+    return formatDistance(time, now)
+  }
+
+  return '0 minute'
+}
+
 /**
  * Smart component that displays meeting information of the most recent meeting or the one that is being recorded
  */
 export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
   const Header = () => {
-    const meetingEndDate = new Date(meeting.end)
-    const now = new Date()
-
     if (ended) {
       return <p className="font-semibold text-gray-500 mb-[10px]">Last meeting</p>
     } else {
-      return (
-        <p className="font-semibold text-gray-500 mb-[10px]">
-          Taking notes • {formatDistance(meetingEndDate, now)} left...
-        </p>
-      )
+      return <p className="font-semibold text-gray-500 mb-[10px]">Taking notes • {getTimeLeft(meeting.end)} left...</p>
     }
   }
 
