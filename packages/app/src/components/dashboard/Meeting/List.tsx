@@ -15,7 +15,7 @@ interface Props {
 
 export default function Index({ meetingsByDate }: Props) {
   const displayNames = (selectedAttendees: MeetingAttendee[], otherAttendeesCount: number) => {
-    const names = selectedAttendees.map((attendee) => attendee.name).join(', ')
+    const names = selectedAttendees.map((attendee) => attendee.name || attendee.email).join(', ')
 
     if (otherAttendeesCount > 0) {
       const others = otherAttendeesCount > 1 ? 'others' : 'other'
@@ -82,6 +82,7 @@ export default function Index({ meetingsByDate }: Props) {
                             className="border-solid border-[4px] border-white first:ml-0 ml-[-8px]"
                             key={key}
                             name={attendee.name}
+                            email={attendee.email}
                             avatar={attendee.avatar}
                           />
                         ))}
