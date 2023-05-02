@@ -82,6 +82,7 @@ export default function Index({ meetingsByDate }: Props) {
                             className="border-solid border-[4px] border-white first:ml-0 ml-[-8px]"
                             key={key}
                             name={attendee.name}
+                            email={attendee.email}
                             avatar={attendee.avatar}
                           />
                         ))}
