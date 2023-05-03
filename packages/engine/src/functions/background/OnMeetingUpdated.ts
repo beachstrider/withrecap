@@ -73,12 +73,11 @@ export const OnMeetingUpdated = functions.firestore.document('meetings/{docId}')
               let user: User | undefined
               document.forEach((doc) => (user = doc.data() as User))
 
-              // Only if attendee is already recap member, attach account name, send meeting end email
-              if (user?.displayName) {
-                newValue.attendees[user.email].name = user.displayName
-              } else {
-                continue
-              }
+              // We currently only send email to users with an account
+              if (!user) continue
+
+              // Update the attendee's display name if the matching account has one
+              if (user.displayName) newValue.attendees[user.email].name = user.displayName
 
               functions.logger.debug(`sending email to ${email}...`)
 
