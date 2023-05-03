@@ -1,7 +1,7 @@
-import * as functions from 'firebase-functions'
 import { Meeting, MeetingMetadata, User } from '@recap/shared'
 import * as Sentry from '@sentry/node'
 import { formatInTimeZone } from 'date-fns-tz'
+import * as functions from 'firebase-functions'
 
 import { db, mail as mailgun, openai, settings } from '../../config'
 import { MailService, Templates } from '../../services/mail'
@@ -71,12 +71,12 @@ export const OnMeetingUpdated = functions.firestore.document('meetings/{docId}')
               const document = await db.collection('users').where('email', '==', email).limit(1).get()
 
               let user: User | undefined
-              document.forEach((doc) => {
-                user = doc.data() as User
-              })
+              document.forEach((doc) => (user = doc.data() as User))
 
-              // We currently only send email to users with an account
-              if (!user) {
+              // Only if attendee is already recap member, attach account name, send meeting end email
+              if (user?.displayName) {
+                newValue.attendees[user.email].name = user.displayName
+              } else {
                 continue
               }
 
@@ -104,6 +104,13 @@ export const OnMeetingUpdated = functions.firestore.document('meetings/{docId}')
               Sentry.captureException(new Error(`An error occurred while sending an email to ${email}`, { cause: err }))
             }
           }
+
+          functions.logger.debug('updating meeting with corresponding user names')
+
+          // Update values on the database
+          await change.after.ref.set({ attendees: newValue.attendees }, { merge: true })
+
+          functions.logger.debug('meeting updated successfully')
         }
       }
     }
