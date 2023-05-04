@@ -11,7 +11,7 @@ const settings = {
   projectId: config().project.id,
   domain: config().config.domain,
   baseURL: `https://${config().config.domain}`,
-  storeURL: '' // TODO: Remplace with Google Chrome Store URL
+  storeURL: config().config.chromewebstorelink
 }
 
 const db = admin.initializeApp().firestore()
