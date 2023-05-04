@@ -2,9 +2,10 @@ import React from 'react'
 
 import { Meeting } from '@recap/shared'
 
-import Processing from '../../../components/dashboard/Meeting/Processing'
-import Summary from '../../../components/dashboard/Meeting/Summary'
-import Transcript from '../../../components/dashboard/Meeting/Transcript'
+import Processing from './Processing'
+import Summary from './Summary'
+import Todos from './Todos'
+import Transcript from './Transcript'
 
 export default function MeetingContent({ meeting }: { meeting: Meeting }) {
   if (meeting.ended) {
@@ -12,8 +13,9 @@ export default function MeetingContent({ meeting }: { meeting: Meeting }) {
       // Meeting was processed and has a conversation
       return (
         <div className="grow">
-          <Summary meetingDetails={meeting} />
-          <Transcript meetingDetails={meeting} />
+          <Summary meeting={meeting} />
+          <Todos meeting={meeting} />
+          <Transcript meeting={meeting} />
         </div>
       )
     } else {

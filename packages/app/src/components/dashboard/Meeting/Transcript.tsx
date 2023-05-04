@@ -8,10 +8,10 @@ import listInCircle from '../../../assets/img/listInCircle.svg'
 import UserAvatar from '../../display/UserAvatar'
 
 interface Props {
-  meetingDetails: Meeting
+  meeting: Meeting
 }
 
-export default function Transcript({ meetingDetails: { start, end, transcript, attendees } }: Props) {
+export default function Transcript({ meeting: { start, end, transcript, attendees } }: Props) {
   const [like, setLike] = useState(0)
 
   function onSetLike(v: 1 | -1 | 0) {

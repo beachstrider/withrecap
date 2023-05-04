@@ -3,7 +3,7 @@ import React from 'react'
 interface Props {
   className?: string
   name?: string
-  email: string
+  email?: string
   avatar?: string
 }
 
@@ -15,7 +15,7 @@ export default function UserAvatar({ className, name, email, avatar }: Props) {
       {avatar && <img src={avatar} alt="" className="flex-1" />}
       {!avatar && (
         <div className="flex items-center justify-center flex-1 font-semibold capitalize bg-gray-200">
-          {name?.substring(0, 1) || email.substring(0, 1)}
+          {name?.substring(0, 1) || email?.substring(0, 1)}
         </div>
       )}
     </div>
