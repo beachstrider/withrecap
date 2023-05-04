@@ -80,9 +80,9 @@ export function useMeeting(mid: string) {
       setError(null)
     } catch (err) {
       setError({ message: 'An error occurred while fetching meeting information', err: err as Error })
+    } finally {
+      setLoading(false)
     }
-
-    setLoading(false)
   }
 
   const addTodo = async (todo: any) => {
