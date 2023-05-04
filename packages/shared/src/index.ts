@@ -22,7 +22,7 @@ export type { Addon, Addons } from './storage/addons'
 export * from './storage/firestore'
 
 export { MeetingStore } from './storage/meetings'
-export type { Meeting, MeetingAttendee, MeetingMetadata } from './storage/meetings'
+export type { Meeting, MeetingAttendee, MeetingMetadata, MeetingTodo } from './storage/meetings'
 
 export { ConversationStore } from './storage/meetings/conversation'
 export type { Conversation, Message } from './storage/meetings/conversation'

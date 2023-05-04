@@ -7,7 +7,18 @@ module.exports = {
     },
     fontFamily: {
       inter: ['"Inter"']
+    },
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: '#40a3ff',
+          light: '#70BAFF',
+          dark: '#0A89FF',
+        },
+      },
     }
   },
-  plugins: []
+  plugins: [
+    require('@headlessui/tailwindcss')
+  ]
 }
