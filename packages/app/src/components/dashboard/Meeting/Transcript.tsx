@@ -51,6 +51,7 @@ const TranscriptItem = ({ msg, attendees }: { msg: Message; attendees: MeetingAt
     <div className="flex sm:gap-[16px] gap-[12px]">
       <UserAvatar
         name={msg.speaker}
+        email=""
         avatar={getAvatar(msg.speaker)}
         className="sm:w-[24px] sm:h-[24px] w-[18px] h-[18px] sm:text-[10px] text-[7px]"
       />

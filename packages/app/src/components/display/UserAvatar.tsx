@@ -3,7 +3,7 @@ import React from 'react'
 interface Props {
   className?: string
   name?: string
-  email?: string
+  email: string
   avatar?: string
 }
 

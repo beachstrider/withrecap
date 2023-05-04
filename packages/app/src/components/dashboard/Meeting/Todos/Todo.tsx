@@ -1,8 +1,10 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
 
 import { Menu } from '@headlessui/react'
-import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid'
+import { TrashIcon } from '@heroicons/react/20/solid'
 import { MeetingTodo } from '@recap/shared'
 
 import { useTodo } from '../../../../pages/Meetings/Details'
@@ -14,6 +16,14 @@ interface TodoProps {
   todo?: MeetingTodo
 }
 
+const schema = yup.object().shape({
+  // Check if value has spaces on start, end and also has multiple spaces
+  text: yup
+    .string()
+    .required('This field is required')
+    .test('isValidEmails', 'Multiple spaces are invalid', (value) => value === value.replace(/\s+/g, ' ').trim())
+})
+
 export default function Todo({ todo }: TodoProps) {
   const { addTodo, updateTodo, deleteTodo } = useTodo()
 
@@ -24,12 +34,9 @@ export default function Todo({ todo }: TodoProps) {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting }
-  } = useForm<MeetingTodo>({ defaultValues: todo || { completed: false } })
+  } = useForm<MeetingTodo>({ defaultValues: todo || { completed: false }, resolver: yupResolver(schema) })
 
   const onSubmit = async (data: MeetingTodo) => {
-    // Remove unnecessary spaces
-    data.text = data.text.replace(/\s+/g, ' ').trim()
-
     if (todo) {
       await updateTodo(data)
     } else {
@@ -53,7 +60,7 @@ export default function Todo({ todo }: TodoProps) {
         <input disabled {...register('completed')} type="checkbox" className="mr-[20px]" />
         <input
           autoFocus
-          {...register('text', { required: true })}
+          {...register('text')}
           placeholder="Enter a text of new to-do"
           className={`grow bg-white border-[2px] border-solid shadow-sm block w-full sm:text-sm border-gray-300 rounded-md px-[12px] py-[8px] text-[15px] mr-[10px] ${
             errors.text ? 'border-red-500' : 'border-gray-200 focus:ring-primary focus:border-primary'
@@ -92,11 +99,12 @@ export default function Todo({ todo }: TodoProps) {
               <img src={dots} alt="" />
             </Menu.Button>
             <Menu.Items className="z-[1000] absolute p-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-              <Menu.Item>
+              {/* FIXME: we will display this when update todo feature is needed */}
+              {/* <Menu.Item>
                 {({ active }) => (
                   <button
                     onClick={() => setEditing(true)}
-                    className={`${
+                    className={`invisible ${
                       active ? 'bg-primary text-white' : 'text-gray-900'
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                   >
@@ -104,7 +112,7 @@ export default function Todo({ todo }: TodoProps) {
                     Change
                   </button>
                 )}
-              </Menu.Item>
+              </Menu.Item> */}
               <Menu.Item>
                 {({ active }) => (
                   <button

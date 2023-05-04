@@ -1,5 +1,5 @@
 import { differenceInSeconds, isThisWeek, secondsToHours } from 'date-fns'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useAuthGuard } from '../auth/AuthGuard'
 import { Meeting, MeetingStore } from '../storage/meetings'
@@ -73,7 +73,7 @@ export function useMeeting(mid: string) {
 
   const { error, setError } = useErrors(null)
 
-  const fetchMeeting = async () => {
+  const fetchMeeting = useCallback(async () => {
     try {
       const meeting = await meetingStore.get(mid)
       setData(meeting)
@@ -83,7 +83,7 @@ export function useMeeting(mid: string) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [meetingStore, mid, setError])
 
   const addTodo = async (todo: any) => {
     try {
@@ -120,7 +120,7 @@ export function useMeeting(mid: string) {
 
   useEffect(() => {
     fetchMeeting()
-  }, [])
+  }, [fetchMeeting])
 
   return { meeting: data, addTodo, updateTodo, deleteTodo, loading, error }
 }
