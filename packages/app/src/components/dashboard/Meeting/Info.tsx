@@ -10,10 +10,10 @@ import arrowLeft from '../../../assets/img/arrowLeft.svg'
 import purpleMessage from '../../../assets/img/purpleMessage.svg'
 
 interface Props {
-  meetingDetails: Meeting
+  meeting: Meeting
 }
 
-export default function Info({ meetingDetails }: Props) {
+export default function Info({ meeting }: Props) {
   const formatDescription = (description: string) => {
     const maxChars = 75
 
@@ -36,19 +36,17 @@ export default function Info({ meetingDetails }: Props) {
       </div>
       <div className="flex gap-[12px] mb-[26px]">
         <img src={purpleMessage} alt="" />
-        <div className="font-semibold text-purple-700">{meetingDetails.emails.length > 2 ? 'Conference' : '1:1'}</div>
+        <div className="font-semibold text-purple-700">{meeting.emails.length > 2 ? 'Conference' : '1:1'}</div>
       </div>
-      <h5 className="font-semibold mb-[12px]">{meetingDetails.title}</h5>
-      <p className="font-semibold text-gray-500 mb-[24px]">{getTimeRange(meetingDetails.start, meetingDetails.end)}</p>
+      <h5 className="font-semibold mb-[12px]">{meeting.title}</h5>
+      <p className="font-semibold text-gray-500 mb-[24px]">{getTimeRange(meeting.start, meeting.end)}</p>
 
-      <p>{formatDescription(meetingDetails.description || '')}</p>
+      <p>{formatDescription(meeting.description || '')}</p>
       <div className="my-[28px] h-[2px] bg-[#F1F3F5]"></div>
       <div className="font-semibold mb-[6px]">
-        Participants&nbsp;&nbsp;<span className="text-gray-500">{meetingDetails.emails.length}</span>
+        Participants&nbsp;&nbsp;<span className="text-gray-500">{meeting.emails.length}</span>
       </div>
-      {meetingDetails.metadata && (
-        <Metadata metadata={meetingDetails.metadata} attendees={Object.values(meetingDetails.attendees)} />
-      )}
+      {meeting.metadata && <Metadata metadata={meeting.metadata} attendees={Object.values(meeting.attendees)} />}
     </div>
   )
 }

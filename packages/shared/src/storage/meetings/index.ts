@@ -23,6 +23,11 @@ export type MeetingMetadata = {
   participants: number
   url: string
 }
+export type MeetingTodo = {
+  id: string
+  text: string
+  completed: boolean
+}
 export type Meeting = {
   id: string
   mid: string

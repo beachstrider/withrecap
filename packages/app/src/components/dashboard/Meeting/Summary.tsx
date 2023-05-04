@@ -1,5 +1,5 @@
-import ReactMarkdown from 'react-markdown'
 import React, { useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 
 import { Meeting } from '@recap/shared'
 
@@ -8,10 +8,10 @@ import { ThumbsDown, ThumbsUp } from '../../../components/buttons'
 import listInCircle from '../../../assets/img/listInCircle.svg'
 
 interface Props {
-  meetingDetails: Meeting
+  meeting: Meeting
 }
 
-export default function Summary({ meetingDetails: { summary } }: Props) {
+export default function Summary({ meeting: { summary } }: Props) {
   const [like, setLike] = useState(0)
 
   function onSetLike(v: 1 | -1 | 0) {

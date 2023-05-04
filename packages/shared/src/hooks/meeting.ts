@@ -1,5 +1,5 @@
 import { differenceInSeconds, isThisWeek, secondsToHours } from 'date-fns'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useAuthGuard } from '../auth/AuthGuard'
 import { Meeting, MeetingStore } from '../storage/meetings'
@@ -67,23 +67,62 @@ export function useMeetings() {
 
 export function useMeeting(mid: string) {
   const meetingStore = useMemo(() => new MeetingStore(), [])
-  const { error, setError } = useErrors(null)
 
   const [data, setData] = useState<Meeting>()
   const [loading, setLoading] = useState<boolean>(true)
 
-  useEffect(() => {
-    meetingStore
-      .get(mid)
-      .then((meeting) => {
-        setData(meeting)
-        setError(null)
-      })
-      .catch((err: Error) => setError({ message: 'An error occurred while fetching meeting information', err }))
-      .finally(() => setLoading(false))
+  const { error, setError } = useErrors(null)
+
+  const fetchMeeting = useCallback(async () => {
+    try {
+      const meeting = await meetingStore.get(mid)
+      setData(meeting)
+      setError(null)
+    } catch (err) {
+      setError({ message: 'An error occurred while fetching meeting information', err: err as Error })
+    } finally {
+      setLoading(false)
+    }
   }, [meetingStore, mid, setError])
 
-  return { meeting: data, loading, error }
+  const addTodo = async (todo: any) => {
+    try {
+      // TODO: add logic here
+      console.debug('---  adding todo:', todo)
+      await fetchMeeting()
+      setError(null)
+    } catch (err) {
+      setError({ message: 'An error occurred while adding todo', err: err as Error })
+    }
+  }
+
+  const updateTodo = async (todo: any) => {
+    try {
+      // TODO: update logic here
+      console.debug('---  updating todo:', todo)
+      await fetchMeeting()
+      setError(null)
+    } catch (err) {
+      setError({ message: 'An error occurred while updating todo', err: err as Error })
+    }
+  }
+
+  const deleteTodo = async (todo: any) => {
+    try {
+      // TODO: delete logic here
+      console.debug('---  deleting todo:', todo)
+      await fetchMeeting()
+      setError(null)
+    } catch (err) {
+      setError({ message: 'An error occurred while updating todo', err: err as Error })
+    }
+  }
+
+  useEffect(() => {
+    fetchMeeting()
+  }, [fetchMeeting])
+
+  return { meeting: data, addTodo, updateTodo, deleteTodo, loading, error }
 }
 
 export function useRecentMeeting() {
