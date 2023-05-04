@@ -38,7 +38,7 @@ export default function MeetingDetails() {
             {meeting && (
               <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">
                 <div className="flex sm:flex-row flex-col items-start sm:gap-[80px] gap-[63px]">
-                  <Info MeetingDetail={meeting} />
+                  <Info meeting={meeting} />
                   <MeetingContent meeting={meeting} />
                 </div>
               </div>
