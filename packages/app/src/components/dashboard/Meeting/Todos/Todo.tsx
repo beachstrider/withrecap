@@ -20,8 +20,11 @@ const schema = yup.object().shape({
   // Check if value has spaces on start, end and also has multiple spaces
   text: yup
     .string()
+    .strict(true)
+    .min(1, 'TODO needs to be at least 1 char')
+    .max(512, 'TODO cannot exceed 512 char')
     .required('This field is required')
-    .test('isValidEmails', 'Multiple spaces are invalid', (value) => value === value.replace(/\s+/g, ' ').trim())
+    .test('isValidTodo', 'Multiple spaces are invalid', (value) => value === value.replace(/\s+/g, ' ').trim())
 })
 
 export default function Todo({ todo }: TodoProps) {
@@ -37,6 +40,8 @@ export default function Todo({ todo }: TodoProps) {
   } = useForm<MeetingTodo>({ defaultValues: todo || { completed: false }, resolver: yupResolver(schema) })
 
   const onSubmit = async (data: MeetingTodo) => {
+    data.text = data.text.trim()
+
     if (todo) {
       await updateTodo(data)
     } else {
