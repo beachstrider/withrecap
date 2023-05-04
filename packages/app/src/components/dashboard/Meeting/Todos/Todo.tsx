@@ -20,11 +20,11 @@ const schema = yup.object().shape({
   // Check if value has spaces on start, end and also has multiple spaces
   text: yup
     .string()
+    .trim()
     .strict(true)
     .min(1, 'TODO needs to be at least 1 char')
     .max(512, 'TODO cannot exceed 512 char')
     .required('This field is required')
-    .test('isValidTodo', 'Multiple spaces are invalid', (value) => value === value.replace(/\s+/g, ' ').trim())
 })
 
 export default function Todo({ todo }: TodoProps) {
@@ -104,7 +104,7 @@ export default function Todo({ todo }: TodoProps) {
               <img src={dots} alt="" />
             </Menu.Button>
             <Menu.Items className="z-[1000] absolute p-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-              {/* FIXME: we will display this when update todo feature is needed */}
+              {/* NOTE: we will display this when update todo feature is needed */}
               {/* <Menu.Item>
                 {({ active }) => (
                   <button
