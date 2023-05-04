@@ -3,6 +3,11 @@ import { init, BrowserTracing, configureScope } from '@sentry/browser'
 type Namespaces = 'extension:onboarding' | 'extension:popup' | 'extension:content' | 'extension:background' | 'web'
 
 export const initSentry = (name: Namespaces) => {
+  // Disable sentry outside of production
+  if (process.env.NODE_ENV !== 'production') {
+    return
+  }
+
   try {
     init({
       dsn: process.env.SENTRY_DSN,

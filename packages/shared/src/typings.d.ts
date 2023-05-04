@@ -7,5 +7,7 @@ declare namespace NodeJS {
     FIREBASE_MESSAGING_SENDER_ID?: string
     FIREBASE_APP_ID?: string
     FIREBASE_MEASUREMENT_ID?: string
+
+    NODE_ENV?: 'development' | 'production' | 'test'
   }
 }
