@@ -6,8 +6,8 @@ import { MeetingTodo, toast, useMeeting } from '@recap/shared'
 import Info from '../../components/dashboard/Meeting/Info'
 import MeetingContent from '../../components/dashboard/Meeting/MeetingContent'
 import Layout from '../../components/layouts'
+import NotFound from '../NotFound'
 
-// TODO: replace types any with proper types
 interface MeetingContextType {
   addTodo: (todo: { text: string; completed: boolean }) => Promise<void>
   updateTodo: (todo: MeetingTodo) => Promise<void>
@@ -30,21 +30,21 @@ export default function MeetingDetails() {
     }
   }, [error])
 
+  // If a meeting link doesn't exist, show 404
+  if (!meeting && !loading) {
+    return <NotFound />
+  }
+
   return (
     <MeetingContext.Provider value={{ addTodo, updateTodo, deleteTodo }}>
       <Layout isLoading={loading}>
-        {!loading && (
-          <>
-            {meeting && (
-              <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">
-                <div className="flex sm:flex-row flex-col items-start sm:gap-[80px] gap-[63px]">
-                  <Info meeting={meeting} />
-                  <MeetingContent meeting={meeting} />
-                </div>
-              </div>
-            )}
-            {error && <div className="flex justify-center py-[80px]">Sorry, there is no such meeting.</div>}
-          </>
+        {meeting && !loading && (
+          <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">
+            <div className="flex sm:flex-row flex-col items-start sm:gap-[80px] gap-[63px]">
+              <Info meeting={meeting} />
+              <MeetingContent meeting={meeting} />
+            </div>
+          </div>
         )}
       </Layout>
     </MeetingContext.Provider>
