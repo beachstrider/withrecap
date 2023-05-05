@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { Meeting, MeetingHighlight } from '@recap/shared'
 import { Highlight } from './Highlight'
@@ -10,7 +10,7 @@ interface HighlightsProps {
 }
 
 export default function Highlights({ meeting }: HighlightsProps) {
-  const [like, setLike] = useState(0)
+  // const [like, setLike] = useState(0)
 
   const highlights: MeetingHighlight[] = [
     {
@@ -45,9 +45,9 @@ export default function Highlights({ meeting }: HighlightsProps) {
     }
   ]
 
-  function onSetLike(v: 1 | -1 | 0) {
-    setLike(v)
-  }
+  // function onSetLike(v: 1 | -1 | 0) {
+  //   setLike(v)
+  // }
 
   return (
     <div className="sm:mb-[82px] mb-[60px]">
@@ -55,7 +55,7 @@ export default function Highlights({ meeting }: HighlightsProps) {
         <div className="flex gap-[12px]">
           <img src={tetragram} alt="" />
           <div className="font-semibold">Highlights</div>
-          <div className="font-semibold text-gray-500">6</div>
+          <div className="font-semibold text-gray-500">{highlights.length}</div>
         </div>
         <div className="flex gap-[12px]">
           {/* NOTE: like & unlike, currently not scoped */}
