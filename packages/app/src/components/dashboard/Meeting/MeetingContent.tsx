@@ -2,6 +2,7 @@ import React from 'react'
 
 import { Meeting } from '@recap/shared'
 
+import Highlights from './Highlights'
 import Processing from './Processing'
 import Summary from './Summary'
 import Todos from './Todos'
@@ -15,6 +16,7 @@ export default function MeetingContent({ meeting }: { meeting: Meeting }) {
         <div className="grow">
           <Summary meeting={meeting} />
           <Todos meeting={meeting} />
+          <Highlights meeting={meeting} />
           <Transcript meeting={meeting} />
         </div>
       )

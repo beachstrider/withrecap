@@ -137,3 +137,18 @@ input[type='checkbox']:checked {
 .vertical-line {
   @apply h-full w-[4px] min-w-[4px] rounded-[20px] bg-gray-100 grow-0;
 }
+
+@screen sm {
+  .masonry-3 {
+    column-count: 3;
+    column-gap: 20px;
+  }
+}
+
+.masonry-3 > * {
+  @apply break-inside-avoid;
+  margin: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  break-inside: avoid;
+}

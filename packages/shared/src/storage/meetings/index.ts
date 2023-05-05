@@ -28,6 +28,11 @@ export type MeetingTodo = {
   text: string
   completed: boolean
 }
+export type MeetingHighlight = {
+  id: string
+  speaker: string
+  text: string
+}
 export type Meeting = {
   id: string
   mid: string
