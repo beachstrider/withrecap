@@ -3,7 +3,19 @@
     {
       "source": "./",
       "codebase": "default",
-      "ignore": ["node_modules", "config", "tests", "*-debug.log", "*-debug.*.log"],
+      "ignore": [
+        "node_modules",
+        "config",
+        "tests",
+        "*-debug.log",
+        "*-debug.*.log",
+        ".runtimeconfig.json",
+        "src",
+        "tsconfig.json",
+        "firebase.json",
+        ".firebaserc",
+        ".gitignore"
+      ],
       "predeploy": ["yarn build"]
     }
   ],
