@@ -16,7 +16,7 @@ export default function MeetingContent({ meeting }: { meeting: Meeting }) {
         <div className="grow">
           <Summary meeting={meeting} />
           <Todos mid={meeting.mid} />
-          <Highlights meeting={meeting} />
+          <Highlights mid={meeting.mid} />
           <Transcript meeting={meeting} />
         </div>
       )

@@ -13,6 +13,7 @@ import {
 import { Timestamps, firestore } from '../firestore'
 import { type Conversation } from './conversation'
 import { type Todos } from './todos'
+import { Highlights } from './highlights'
 
 export type MeetingAttendee = {
   email: string
@@ -23,11 +24,6 @@ export type MeetingMetadata = {
   percentage: { [speaker: string]: number }
   participants: number
   url: string
-}
-export type MeetingHighlight = {
-  id: string
-  speaker: string
-  text: string
 }
 export type Meeting = {
   id: string
@@ -49,6 +45,7 @@ export type Meeting = {
   transcript?: Conversation
   metadata?: MeetingMetadata
   todos?: Todos
+  highlights?: Highlights
 } & Timestamps
 
 export class MeetingStore {

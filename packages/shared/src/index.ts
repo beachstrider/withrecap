@@ -22,13 +22,16 @@ export type { Addon, Addons } from './storage/addons'
 export * from './storage/firestore'
 
 export { MeetingStore } from './storage/meetings'
-export type { Meeting, MeetingAttendee, MeetingMetadata, MeetingHighlight } from './storage/meetings'
+export type { Meeting, MeetingAttendee, MeetingMetadata } from './storage/meetings'
 
 export { ConversationStore } from './storage/meetings/conversation'
 export type { Conversation, Message } from './storage/meetings/conversation'
 
 export { TodosStore } from './storage/meetings/todos'
 export type { Todo, Todos, StoredTodos } from './storage/meetings/todos'
+
+export { HighlightsStore } from './storage/meetings/highlights'
+export type { Highlight, Highlights } from './storage/meetings/highlights'
 
 export { UserStore } from './storage/users'
 export type { User } from './storage/users'
@@ -80,6 +83,7 @@ export * from './utils/browser'
 export * from './hooks/integration'
 export * from './hooks/meeting'
 export * from './hooks/todos'
+export * from './hooks/highlights'
 
 //===========================================================
 // ERRORS
