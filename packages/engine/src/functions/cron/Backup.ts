@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions'
 
-import { auth, firestore, settings } from '../../config'
+import { firestore, googleAuth, settings } from '../../config'
 import { SentryWrapper } from '../../utils/sentry'
 
 export const BackupFirestore = functions.pubsub.schedule('every day 00:00').onRun(
@@ -9,7 +9,7 @@ export const BackupFirestore = functions.pubsub.schedule('every day 00:00').onRu
 
     console.debug(`start firestore backup for project ${settings.projectId}`)
 
-    await auth.authorize()
+    await googleAuth.authorize()
 
     return firestore.projects.databases.exportDocuments({
       name: `projects/${settings.projectId}/databases/(default)`,

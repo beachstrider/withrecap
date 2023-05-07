@@ -1,4 +1,5 @@
 export { OnMeetingUpdated } from './functions/background/OnMeetingUpdated'
 export { OnUserCreated } from './functions/background/OnUserCreated'
 export { BackupFirestore } from './functions/cron/Backup'
+export { CreateAuthToken } from './functions/https/CreateAuthToken'
 export { SendInviteEmails } from './functions/https/SendInviteEmails'

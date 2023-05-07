@@ -1,5 +1,5 @@
-import * as functions from 'firebase-functions'
 import { User } from '@recap/shared'
+import * as functions from 'firebase-functions'
 
 import { db, mail as mailgun, settings } from '../../config'
 import { MailService, Templates } from '../../services/mail'
@@ -37,7 +37,7 @@ export const SendInviteEmails = functions.https.onCall(
         storeUrl: settings.storeURL
       })
 
-      return { msg: 'ok' }
+      return { msg: 'ok', settings }
     }
   )
 )

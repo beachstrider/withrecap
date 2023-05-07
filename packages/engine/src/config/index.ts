@@ -1,11 +1,11 @@
 import * as admin from 'firebase-admin'
 import { config, logger } from 'firebase-functions'
 
+import * as Sentry from '@sentry/node'
 import formData from 'form-data'
 import { google } from 'googleapis'
 import Mailgun from 'mailgun.js'
 import { Configuration, OpenAIApi } from 'openai'
-import * as Sentry from '@sentry/node'
 
 const settings = {
   projectId: config().project.id,
@@ -14,9 +14,13 @@ const settings = {
   storeURL: config().config.chromewebstorelink
 }
 
-const db = admin.initializeApp().firestore()
+const app = admin.initializeApp()
 
-const auth = new google.auth.JWT({
+const db = app.firestore()
+
+const auth = app.auth()
+
+const googleAuth = new google.auth.JWT({
   email: config().client.email,
   key: config().private.key.replace(/\\n/gm, '\n'),
   scopes: ['https://www.googleapis.com/auth/datastore', 'https://www.googleapis.com/auth/cloud-platform']
@@ -24,7 +28,7 @@ const auth = new google.auth.JWT({
 
 const firestore = google.firestore({
   version: 'v1beta2',
-  auth: auth
+  auth: googleAuth
 })
 
 const configuration = new Configuration({
@@ -52,4 +56,4 @@ const initSentry = () => {
   }
 }
 
-export { auth, firestore, db, openai, mail, settings, initSentry }
+export { auth, googleAuth, firestore, db, openai, mail, settings, initSentry }

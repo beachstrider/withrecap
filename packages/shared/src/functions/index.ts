@@ -4,3 +4,5 @@ import { firebase } from '../auth/firebase'
 const functions = getFunctions(firebase)
 
 export const sendInviteEmails = httpsCallable(functions, 'SendInviteEmails')
+
+export const createAuthToken = httpsCallable(functions, 'CreateAuthToken')
