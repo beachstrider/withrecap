@@ -1,30 +1,13 @@
-import { toast, useAuth } from '@recap/shared'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
 import google from '../../assets/img/google.svg'
 import logo from '../../assets/img/logo.svg'
 import { SUPPORT_REQUEST } from '../../constants/links'
-import { PRIVACY_POLICY, TERMS_CONDITIONS } from '../../constants/routes'
+import { PRIVACY_POLICY, SIGNIN, TERMS_CONDITIONS } from '../../constants/routes'
 import { Button } from '../buttons'
 
 export default function Index({ className = '' }) {
-  const { loginWithPopup, error } = useAuth()
-
-  const login = async () => {
-    try {
-      await loginWithPopup?.()
-    } catch (error) {
-      toast.error('An error occurred during login', error)
-    }
-  }
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error.message, error.err)
-    }
-  }, [error])
-
   return (
     <footer className={`container sm:py-[100px] py-[75px] ${className}`}>
       <div className="flex sm:flex-row flex-col gap-[40px] sm:justify-between">
@@ -46,9 +29,9 @@ export default function Index({ className = '' }) {
             <Link target="_blank" to={SUPPORT_REQUEST} className="block text-[15px] font-semibold text-gray-500">
               Support
             </Link>
-            <button onClick={login} className="block text-[15px] font-semibold text-gray-500 text-start">
+            <Link to={SIGNIN} className="block text-[15px] font-semibold text-gray-500 text-start">
               Sign in
-            </button>
+            </Link>
           </div>
           <a href={process.env.CHROME_WEBSTORE_LINK} target="_blank" className="sm:ml-[20px]" rel="noreferrer">
             <Button>
