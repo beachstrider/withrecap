@@ -12,6 +12,7 @@ import {
 
 import { Timestamps, firestore } from '../firestore'
 import { type Conversation } from './conversation'
+import { type Todos } from './todos'
 
 export type MeetingAttendee = {
   email: string
@@ -22,11 +23,6 @@ export type MeetingMetadata = {
   percentage: { [speaker: string]: number }
   participants: number
   url: string
-}
-export type MeetingTodo = {
-  id: string
-  text: string
-  completed: boolean
 }
 export type MeetingHighlight = {
   id: string
@@ -46,12 +42,13 @@ export type Meeting = {
   link: string
   title: string
   summary?: string
-  ended?: boolean
+  ended: boolean
   conversation: Conversation
   description?: string
   // A transcript is a conversation sanitized (duplicated and irrelevant messages are removed). See engine for more details
   transcript?: Conversation
   metadata?: MeetingMetadata
+  todos?: Todos
 } & Timestamps
 
 export class MeetingStore {

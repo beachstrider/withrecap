@@ -1,33 +1,23 @@
-import { Meeting } from '@recap/shared'
-import React from 'react'
+import { Meeting, toast, useTodos } from '@recap/shared'
+import React, { useEffect } from 'react'
 
 import Todo from './Todo'
 
 import greenCheck from '../../../../assets/img/greenCheck.png'
 
 interface TodosProps {
-  meeting: Meeting
+  mid: Meeting['mid']
 }
 
-export default function Todos({ meeting }: TodosProps) {
-  // TODO: todos will be from meeting.todos
-  const todos = [
-    {
-      id: '1',
-      text: 'Maxwell and Jessica to brainstorm marketing strategy',
-      completed: true
-    },
-    {
-      id: '2',
-      text: 'Justin to present latest product updates to engineering team',
-      completed: false
-    },
-    {
-      id: '3',
-      text: 'Jessica to walk through storyboard with design team',
-      completed: false
+export default function Todos({ mid }: TodosProps) {
+  // TODO: Handle loading?
+  const { todos, refresh, error } = useTodos(mid)
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message, error.err)
     }
-  ]
+  }, [error])
 
   // const [like, setLike] = useState<1 | -1 | 0>(0)
 
@@ -47,10 +37,9 @@ export default function Todos({ meeting }: TodosProps) {
       </div>
       <div className="flex flex-col gap-[20px]">
         {todos.map((todo, key) => (
-          <Todo key={key} todo={todo} />
+          <Todo key={key} mid={mid} todo={todo} onChange={refresh} />
         ))}
-        {/* If prop todo is not given, Todo becomes a new Todo */}
-        <Todo />
+        <Todo create mid={mid} onChange={refresh} />
       </div>
     </div>
   )
