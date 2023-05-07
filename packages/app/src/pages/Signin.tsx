@@ -2,6 +2,7 @@ import { toast, useAuth } from '@recap/shared'
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { createAuthToken } from '@recap/shared/src/functions'
 import { MEETINGS } from '../constants/routes'
 
 export default function Signin() {
@@ -24,8 +25,15 @@ export default function Signin() {
 
   useEffect(() => {
     // If user already logged in we redirect to meetings page
-    const unsubscribe = onAuthStateChanged((u: any) => {
+    const unsubscribe = onAuthStateChanged(async (u: any) => {
       if (u !== null) {
+        // Sync auth
+        const {
+          data: { token }
+        } = (await createAuthToken()) as { data: { token: string } }
+
+        // TODO: extensionId needs to be dynamically allocated to each user when they are done installing extension
+        await chrome.runtime.sendMessage('hnendcllllmefheblfoibkijaimbppmd', { token })
         navigate(MEETINGS)
       }
     })

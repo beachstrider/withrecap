@@ -64,6 +64,14 @@ class ChromeBackgroundService {
       }
     })
 
+    chrome.runtime.onMessageExternal.addListener(({ token }, sender, sendResponse) => {
+      console.debug('---  received token:', token)
+      const auth = new GoogleIdentityAuthProvider()
+      auth.loginWithCustomToken(token).then(console.debug)
+
+      return true
+    })
+
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       return Sentry.wrap(() => {
         console.debug(

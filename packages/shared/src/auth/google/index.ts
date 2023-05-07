@@ -2,10 +2,11 @@ import { FirebaseApp } from 'firebase/app'
 import {
   Auth,
   AuthError,
-  getAuth,
   GoogleAuthProvider as AuthProvider,
+  getAuth,
   onAuthStateChanged,
   signInWithCredential,
+  signInWithCustomToken,
   signInWithPopup,
   signInWithRedirect,
   Unsubscribe
@@ -79,6 +80,14 @@ export class GoogleIdentityAuthProvider implements BaseAuthProvider {
       const error = err as AuthError
 
       throw new Error(`SSO ended with an error: ${error}`)
+    }
+  }
+
+  public loginWithCustomToken = async (token: string) => {
+    try {
+      signInWithCustomToken(this.auth, token)
+    } catch (error) {
+      console.error(error)
     }
   }
 
