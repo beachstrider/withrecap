@@ -23,7 +23,8 @@ const meeting = async () => {
     end: '2023-04-16T14:00:00-04:00',
     link: 'https://meet.google.com/jva-fbxb-jca',
     conversation: conversation,
-    description: "Let's discuss the onboarding process and all."
+    description: "Let's discuss the onboarding process and all.",
+    ended: false
   }
 
   return store.create(newMeeting.mid, newMeeting)

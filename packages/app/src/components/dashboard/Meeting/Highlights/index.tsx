@@ -1,49 +1,25 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-import { Meeting, MeetingHighlight } from '@recap/shared'
+import { Meeting, toast, useHighlights } from '@recap/shared'
 import { Highlight } from './Highlight'
 
 import tetragram from '../../../../assets/img/tetragram.svg'
 
 interface HighlightsProps {
-  meeting: Meeting
+  mid: Meeting['mid']
 }
 
-export default function Highlights({ meeting }: HighlightsProps) {
-  // const [like, setLike] = useState(0)
+export default function Highlights({ mid }: HighlightsProps) {
+  // TODO: Handle loading?
+  const { highlights, error } = useHighlights(mid)
 
-  const highlights: MeetingHighlight[] = [
-    {
-      id: '1',
-      speaker: 'Maxwell',
-      text: 'We should have fun with the design and make it pop!'
-    },
-    {
-      id: '2',
-      speaker: 'Lindsey',
-      text: 'What if we removed the header? How would that look? Just something to consider!'
-    },
-    {
-      id: '3',
-      speaker: 'Maxwell',
-      text: 'this is a really long highlight that just to show that it could indeed go onto two lines!'
-    },
-    {
-      id: '4',
-      speaker: 'Lindsey',
-      text: 'We shouldn’t forget to explore a more serious direction!'
-    },
-    {
-      id: '5',
-      speaker: 'Maxwell',
-      text: 'We should have fun with the design and make it pop!'
-    },
-    {
-      id: '6',
-      speaker: 'Jessica',
-      text: 'this is a really long highlight that just to show that it could indeed go onto two lines!'
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message, error.err)
     }
-  ]
+  }, [error])
+
+  // const [like, setLike] = useState(0)
 
   // function onSetLike(v: 1 | -1 | 0) {
   //   setLike(v)

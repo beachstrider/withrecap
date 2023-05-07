@@ -12,6 +12,9 @@
     "perbuild": "yarn clean",
     "build": "yarn run -T tsc --build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@types/uuid": "^9.0.1",
+    "uuid": "^9.0.0"
+  },
   "devDependencies": {}
 }

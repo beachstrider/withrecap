@@ -25,9 +25,11 @@
     "form-data": "^4.0.0",
     "googleapis": "^118.0.0",
     "mailgun.js": "^8.2.1",
-    "openai": "^3.2.1"
+    "openai": "^3.2.1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/uuid": "^9.0.1",
     "firebase-functions-test": "^3.1.0"
   },
   "private": true

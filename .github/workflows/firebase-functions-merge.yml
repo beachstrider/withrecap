@@ -24,7 +24,7 @@ jobs:
       - name: Deploy Firebase functions, Firestore rules, and indexes
         run: |
           firebase functions:config:set --non-interactive config.chromewebstorelink="$CHROME_WEBSTORE_LINK" config.chatgptapikey="$CHATGPT_API_KEY" config.mailgunapikey="$MAILGUN_API_KEY" config.sentrydsn="$SENTRY_DSN" config.domain="$DOMAIN" private.key="$FIREBASE_PRIVATE_KEY" project.id="$FIREBASE_PROJECT_ID" client.email="$FIREBASE_EMAIL" --project $FIREBASE_PROJECT_ID
-          yarn deploy:all --non-interactive
+          yarn deploy:all --non-interactive --force
         working-directory: packages/engine
         env:
           CHATGPT_API_KEY: ${{ secrets.CHATGPT_API_KEY }}
