@@ -8,7 +8,7 @@ import { ONBOARDING_ADDON, PRIVACY_POLICY, TERMS_CONDITIONS } from '../../consta
 import google from '../../assets/img/google.svg'
 
 export const OnboardingRegister = () => {
-  const { user, loginWithPopup, error } = useAuth()
+  const { user, login, error } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export const OnboardingRegister = () => {
 
   const signIn = async () => {
     try {
-      await loginWithPopup?.()
+      await login()
     } catch (err) {
       toast.error('An error occurred while signing in', err)
     }
