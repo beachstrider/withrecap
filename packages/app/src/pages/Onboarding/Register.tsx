@@ -1,4 +1,4 @@
-import { shareLogin, toast, useAuth } from '@recap/shared'
+import { toast, useAuth } from '@recap/shared'
 import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -13,8 +13,6 @@ export const OnboardingRegister = () => {
 
   useEffect(() => {
     if (user) {
-      shareLogin().then(console.debug)
-
       navigate(ONBOARDING_ADDON)
     }
   }, [user, navigate])

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { isInstalled } from '@recap/shared'
 import arrowLeft from '../../assets/img/arrowLeft.svg'
 import back from '../../assets/img/back.svg'
 import close from '../../assets/img/close.svg'
@@ -304,7 +305,7 @@ export const HomeBlock2 = () => (
   </div>
 )
 
-export const ExtensionInstallationAlert = () => (
+export const UseChromeAlert = () => (
   <div className="sm:mb-[102] mb-[75] pt-[42] rounded-[16] bg-[#F1F3F5] sm:h-[237] h-[474] relative overflow-hidden sm:grid sm:grid-cols-2 flex flex-col">
     <div className="w-full">
       <div className="relative sm:max-w-[450] max-w-[340] w-full">
@@ -359,15 +360,17 @@ export const Welcome = () => (
       <h2 className="font-semibold">Recap will automatically take notes in your next Google Meeting</h2>
       <div className="text-gray-500">Take your next meeting like usual, Recap does the rest.</div>
       <div className="flex justify-start">
-        <a
-          href={process.env.CHROME_WEBSTORE_LINK}
-          target="_blank"
-          className="px-[10] py-[6] text-[15] font-semibold flex items-center gap-[4] rounded-[12] bg-white"
-          rel="noreferrer"
-        >
-          <img src={google} alt="" />
-          <span className="leading-[20px]">Add to Chrome</span>
-        </a>
+        {!isInstalled() && (
+          <a
+            href={process.env.CHROME_WEBSTORE_LINK}
+            target="_blank"
+            className="px-[10] py-[6] text-[15] font-semibold flex items-center gap-[4] rounded-[12] bg-white"
+            rel="noreferrer"
+          >
+            <img src={google} alt="" />
+            <span className="leading-[20px]">Add to Chrome</span>
+          </a>
+        )}
       </div>
     </div>
   </div>

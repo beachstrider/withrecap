@@ -23,9 +23,10 @@ interface AuthGuardProps {
   children?: React.ReactNode
   loadingComponent?: React.ReactNode
   onNeedAuth?: () => void
+  onAfterAuth?: () => void
 }
 
-export const AuthGuard = ({ children, loadingComponent, onNeedAuth, provider }: AuthGuardProps) => {
+export const AuthGuard = ({ children, loadingComponent, onNeedAuth, onAfterAuth, provider }: AuthGuardProps) => {
   const auth = useMemo(() => new provider(), [provider])
   const userStore = useMemo(() => new UserStore(), [])
 
@@ -68,6 +69,8 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, provider }: 
           setUser(user)
           setToken(t)
           setError(null)
+
+          onAfterAuth?.()
         })
         .catch(async (err) => {
           const message = 'An error occurred while authenticating'

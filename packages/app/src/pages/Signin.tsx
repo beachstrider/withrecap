@@ -1,4 +1,4 @@
-import { shareLogin, toast, useAuth } from '@recap/shared'
+import { toast, useAuth } from '@recap/shared'
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -24,9 +24,6 @@ export default function Signin() {
 
   useEffect(() => {
     if (user) {
-      // TODO: if res is true, set isInstalled true globally
-      shareLogin().then(console.debug)
-
       navigate(MEETINGS)
     }
   }, [user, navigate])

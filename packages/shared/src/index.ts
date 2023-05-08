@@ -95,4 +95,4 @@ export * from './errors/sentry'
 // CONSTANTS
 //===========================================================
 
-export * from './constants/requestTypes'
+export * from './constants'

@@ -23,10 +23,11 @@ export const useAuth = () => {
 
 interface AuthProviderProps {
   provider: new () => BaseAuthProvider
+  onAfterAuth?: () => void
   children?: React.ReactNode
 }
 
-export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
+export const AuthProvider = ({ children, provider, onAfterAuth }: AuthProviderProps) => {
   const auth = useMemo(() => new provider(), [provider])
   const userStore = useMemo(() => new UserStore(), [])
 
@@ -66,6 +67,8 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
           setUser(user)
           setToken(t)
           setError(null)
+
+          onAfterAuth?.()
         })
         .catch(async (err) => {
           const message = 'An error occurred while authenticating'
@@ -79,7 +82,7 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
     })
 
     return unsubscribe
-  }, [auth, userStore, setError])
+  }, [auth, userStore, setError, onAfterAuth])
 
   return (
     <AuthProviderContext.Provider

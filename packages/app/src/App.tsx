@@ -1,4 +1,4 @@
-import { AuthGuard, AuthProvider, GoogleAuthProvider, LoadingScreen } from '@recap/shared'
+import { AuthGuard, AuthProvider, GoogleAuthProvider, LoadingScreen, shareAuth } from '@recap/shared'
 import React from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 
@@ -26,19 +26,24 @@ export default function App() {
   const loadingComponent = <LoadingScreen />
 
   const signin = (
-    <AuthProvider provider={GoogleAuthProvider}>
+    <AuthProvider provider={GoogleAuthProvider} onAfterAuth={shareAuth}>
       <Signin />
     </AuthProvider>
   )
 
   const register = (
-    <AuthProvider provider={GoogleAuthProvider}>
+    <AuthProvider provider={GoogleAuthProvider} onAfterAuth={shareAuth}>
       <OnboardingRegister />
     </AuthProvider>
   )
 
   const authGuard = (
-    <AuthGuard onNeedAuth={onNeedAuth} provider={GoogleAuthProvider} loadingComponent={loadingComponent} />
+    <AuthGuard
+      onNeedAuth={onNeedAuth}
+      onAfterAuth={shareAuth}
+      provider={GoogleAuthProvider}
+      loadingComponent={loadingComponent}
+    />
   )
 
   return (
