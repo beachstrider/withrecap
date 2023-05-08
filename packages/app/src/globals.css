@@ -152,3 +152,28 @@ input[type='checkbox']:checked {
   grid-template-rows: 1fr auto;
   break-inside: avoid;
 }
+
+.google-login-button {
+  border: none;
+  background-image: url('assets/img/googleButtons/btn_google_signin_light_normal_web@2x.png');
+  background-size: contain;
+  width: 200px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.google-login-button:focus {
+  outline: none;
+  background-image: url('assets/img/googleButtons/btn_google_signin_light_focus_web@2x.png');
+}
+
+.google-login-button:hover,
+.google-login-button:active {
+  background-image: url('assets/img/googleButtons/btn_google_signin_light_pressed_web@2x.png');
+}
+
+.google-login-button:disabled {
+  background-image: url('assets/img/googleButtons/btn_google_signin_light_disabled_web@2x.png');
+  opacity: 0.5;
+  cursor: not-allowed;
+}

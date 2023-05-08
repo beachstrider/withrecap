@@ -1,8 +1,10 @@
 import { Menu } from '@headlessui/react'
-import { getUserFirstName, toast, useAuth, useAuthGuard } from '@recap/shared'
+import { getUserFirstName, toast, useAuthGuard } from '@recap/shared'
 import React, { useEffect } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
+import { DELETE_ACCOUNT_REQUEST, SUPPORT_REQUEST } from '../../constants/links'
+import { INTEGRATIONS, MEETINGS, SIGNIN } from '../../constants/routes'
 import { Button } from '../buttons'
 
 import arrowRight from '../../assets/img/arrowRight.svg'
@@ -11,8 +13,6 @@ import google from '../../assets/img/google.svg'
 import logo from '../../assets/img/logo.svg'
 import outbound from '../../assets/img/outbound.svg'
 import question from '../../assets/img/question.svg'
-import { DELETE_ACCOUNT_REQUEST, SUPPORT_REQUEST } from '../../constants/links'
-import { INTEGRATIONS, MEETINGS } from '../../constants/routes'
 
 export default function Index({ isPublic = false }) {
   return (
@@ -130,39 +130,11 @@ const PrivateSection = () => {
 }
 
 const PublicSection = () => {
-  const { onAuthStateChanged, loginWithPopup, error } = useAuth()
-  const navigate = useNavigate()
-
-  const login = async () => {
-    try {
-      await loginWithPopup?.()
-    } catch (error) {
-      toast.error('An error occurred during login', error)
-    }
-  }
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error.message, error.err)
-    }
-  }, [error])
-
-  useEffect(() => {
-    // If user already logged in we redirect to meetings page
-    const unsubscribe = onAuthStateChanged((u: any) => {
-      if (u !== null) {
-        navigate(MEETINGS)
-      }
-    })
-
-    return unsubscribe
-  }, [navigate, onAuthStateChanged])
-
   return (
     <div className="flex items-center sm:gap-[20px] gap-[15px]">
-      <button onClick={login} className="text-[15px] font-semibold text-gray-500">
+      <Link to={SIGNIN} className="text-[15px] font-semibold text-gray-500">
         Sign in
-      </button>
+      </Link>
       <a href={process.env.CHROME_WEBSTORE_LINK} target="_blank" rel="noreferrer">
         <Button>
           <img src={google} alt="" />
