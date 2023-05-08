@@ -1,5 +1,5 @@
 import { Menu } from '@headlessui/react'
-import { getUserFirstName, toast, useAuthGuard } from '@recap/shared'
+import { RequestTypes, getUserFirstName, toast, useAuthGuard } from '@recap/shared'
 import React, { useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
@@ -32,9 +32,7 @@ const PrivateSection = () => {
   const { user, logout, error } = useAuthGuard()
 
   const handleLogout = async () => {
-    if (user.extensionId) {
-      chrome.runtime.sendMessage(user.extensionId, { type: 'LOGOUT' })
-    }
+    chrome.runtime.sendMessage(process.env.EXTENSION_ID, { type: RequestTypes.LOGOUT })
     await logout()
   }
 

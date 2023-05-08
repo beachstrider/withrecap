@@ -55,7 +55,7 @@ export default function App() {
         <Route path="/signin" element={signin} />
 
         {/* Onboarding */}
-        <Route path="/onboarding/:extensionId" element={register} />
+        <Route path="/onboarding/register" element={register} />
         <Route path="/onboarding/" element={authGuard}>
           <Route path="addon" element={<OnboardingAddon />} />
           <Route path="done" element={<OnboardingDone />} />

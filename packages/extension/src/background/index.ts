@@ -6,6 +6,7 @@ import {
   Meeting,
   MeetingStore,
   Message,
+  RequestTypes,
   UserAddonStore
 } from '@recap/shared'
 import * as Sentry from '@sentry/browser'
@@ -112,11 +113,12 @@ class ChromeBackgroundService {
           console.debug(`messaged received from an app: ${sender.tab.url}`, request)
 
           switch (request.type) {
-            case 'LOGIN':
+            case RequestTypes.LOGIN:
               this.login(request.token)
               break
-            case 'LOGOUT':
+            case RequestTypes.LOGOUT:
               this.logout()
+              break
           }
         }
 
@@ -259,8 +261,11 @@ backgroundService.startListener()
 // Navigate to app onboarding the first time the extension gets installed
 chrome.runtime.onInstalled.addListener((object) => {
   if (object.reason === chrome.runtime.OnInstalledReason.INSTALL) {
-    chrome.tabs.create({ url: process.env.RECAP_APP_BASE_URL + '/onboarding/' + chrome.runtime.id })
+    chrome.tabs.create({ url: process.env.RECAP_APP_BASE_URL + '/onboarding/register' })
   }
 })
+
+// Navigate to follow-up page when user uninstalled an extension
+// chrome.runtime.setUninstallURL(process.env.RECAP_APP_BASE_URL)
 
 console.debug('Background service started')

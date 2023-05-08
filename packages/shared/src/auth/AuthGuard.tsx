@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/browser'
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { Outlet, useParams } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 
 import { BaseAuthProvider } from '.'
 import { useErrors } from '../hooks/error'
@@ -31,7 +31,6 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, provider }: 
 
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(null)
-  const { extensionId } = useParams()
   const { error, setError } = useErrors(null)
 
   useEffect(() => {
@@ -53,10 +52,8 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, provider }: 
         .then(async (exists) => {
           let user: User
 
-          // TODO: we have to consider when user login without extension installation
-          if (!exists && extensionId) {
-            // Onboarding user creation
-            user = await userStore.create(u, extensionId)
+          if (!exists) {
+            user = await userStore.create(u)
           } else {
             await userStore.update(u.uid, { displayName: u.displayName || '', photoURL: u.photoURL || '' })
 

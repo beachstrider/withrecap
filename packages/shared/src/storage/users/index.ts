@@ -16,7 +16,6 @@ type CustomUserConfigs = {
   // Add custom configurations here
   autoSharing: boolean
   timezone: string
-  extensionId: string
 }
 type BaseUserConfigs = {
   uid: string
@@ -46,14 +45,13 @@ export class UserStore {
     return document.data() as User
   }
 
-  public async create(user: FirebaseUser, extensionId: string): Promise<User> {
+  public async create(user: FirebaseUser): Promise<User> {
     const createdUser: User = {
       uid: user.uid,
       email: user.email!,
       displayName: user.displayName || '',
       photoURL: user.photoURL || '',
       autoSharing: false,
-      extensionId,
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       created: Timestamp.fromDate(new Date()),
       updated: Timestamp.fromDate(new Date())

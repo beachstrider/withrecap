@@ -1,16 +1,22 @@
 import { detect } from 'detect-browser'
+import { RequestTypes } from '../constants/requestTypes'
 import { createAuthToken } from '../functions'
-import { User } from '../storage/users'
 
 export const browser = detect()
 
 // Transfer custom token to extension
-export const shareLogin = async (user: User) => {
-  const {
-    data: { token }
-  } = (await createAuthToken()) as { data: { token: string } }
+export const shareLogin = async () => {
+  try {
+    const {
+      data: { token }
+    } = (await createAuthToken()) as { data: { token: string } }
 
-  if (user.extensionId) {
-    await chrome.runtime.sendMessage(user.extensionId, { type: 'LOGIN', token })
+    await chrome.runtime.sendMessage(process.env.EXTENSION_ID!, { type: RequestTypes.LOGIN, token })
+
+    return true
+  } catch (err) {
+    console.error('Auth sharing failed,', err)
+
+    return false
   }
 }

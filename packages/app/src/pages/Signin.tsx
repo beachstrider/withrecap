@@ -24,7 +24,9 @@ export default function Signin() {
 
   useEffect(() => {
     if (user) {
-      shareLogin(user)
+      // TODO: if res is true, set isInstalled true globally
+      shareLogin().then(console.debug)
+
       return navigate(MEETINGS)
     }
   }, [user, navigate])
