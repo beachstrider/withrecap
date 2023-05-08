@@ -1,7 +1,18 @@
+import { LoadingScreen } from '@recap/shared'
 import React from 'react'
 import logo from '../../assets/img/logo.svg'
 
-const OnboardingLayout = ({ children, step }: { children: React.ReactNode; step: number }) => {
+interface OnboardingLayoutProps {
+  children: React.ReactNode
+  step: number
+  loading?: boolean
+}
+
+const OnboardingLayout = ({ children, step, loading = false }: OnboardingLayoutProps) => {
+  if (loading) {
+    return <LoadingScreen />
+  }
+
   return (
     <div className="flex items-center justify-center h-[100vh]">
       <div className="md:max-w-[576px] w-full mx-auto sm:px-0 px-[20px]">

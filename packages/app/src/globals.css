@@ -177,3 +177,7 @@ input[type='checkbox']:checked {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.markdown-highlights * {
+  @apply sm:text-[17px] text-[12px] text-gray-500;
+}
