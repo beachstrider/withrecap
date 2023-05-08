@@ -13,7 +13,7 @@ export const OnboardingRegister = () => {
 
   useEffect(() => {
     if (user) {
-      shareLogin(user)
+      shareLogin().then(console.debug)
       return navigate(ONBOARDING_ADDON)
     }
   }, [user, navigate])
