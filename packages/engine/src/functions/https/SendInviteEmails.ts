@@ -37,7 +37,7 @@ export const SendInviteEmails = functions.https.onCall(
         storeUrl: settings.storeURL
       })
 
-      return { msg: 'ok', settings }
+      return { msg: 'ok' }
     }
   )
 )
