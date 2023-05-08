@@ -12,6 +12,9 @@ import Meetings from './pages/Meetings'
 import MeetingDetails from './pages/Meetings/Details'
 
 import NotFound from './pages/NotFound'
+import { OnboardingAddon } from './pages/Onboarding/Addon'
+import { OnboardingDone } from './pages/Onboarding/Done'
+import { OnboardingRegister } from './pages/Onboarding/Register'
 
 export default function App() {
   const navigate = useNavigate()
@@ -25,6 +28,12 @@ export default function App() {
   const signin = (
     <AuthProvider provider={GoogleAuthProvider}>
       <Signin />
+    </AuthProvider>
+  )
+
+  const register = (
+    <AuthProvider provider={GoogleAuthProvider}>
+      <OnboardingRegister />
     </AuthProvider>
   )
 
@@ -44,6 +53,13 @@ export default function App() {
 
         {/* Auth routes */}
         <Route path="/signin" element={signin} />
+
+        {/* Onboarding */}
+        <Route path="/onboarding/:extensionId" element={register} />
+        <Route path="/onboarding/" element={authGuard}>
+          <Route path="addon" element={<OnboardingAddon />} />
+          <Route path="done" element={<OnboardingDone />} />
+        </Route>
 
         {/* App routes */}
         <Route path="/app/" element={authGuard}>

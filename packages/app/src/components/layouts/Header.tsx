@@ -135,7 +135,7 @@ const PublicSection = () => {
       <Link to={SIGNIN} className="text-[15px] font-semibold text-gray-500">
         Sign in
       </Link>
-      <a href={process.env.CHROME_WEBSTORE_LINK} target="_blank" rel="noreferrer">
+      <a href={process.env.CHROME_WEBSTORE_LINK} rel="noreferrer">
         <Button>
           <img src={google} alt="" />
           Add to Chrome

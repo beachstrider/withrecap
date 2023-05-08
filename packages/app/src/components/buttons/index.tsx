@@ -7,6 +7,16 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
 }
 
+interface ButtonThumbsProps {
+  checked?: boolean // fill blue if checked
+  to?: string // supposed to work as Link if this is set
+  onClick?: () => void
+}
+
+interface SkipButtonProps {
+  onClick: React.DOMAttributes<HTMLSpanElement>['onClick']
+}
+
 export function Button({ children, className = '', ...rest }: ButtonProps) {
   return (
     <button
@@ -16,12 +26,6 @@ export function Button({ children, className = '', ...rest }: ButtonProps) {
       {children}
     </button>
   )
-}
-
-interface ButtonThumbsProps {
-  checked?: boolean // fill blue if checked
-  to?: string // supposed to work as Link if this is set
-  onClick?: () => void
 }
 
 export function ThumbsUp({ checked = false, to = '#', ...props }: ButtonThumbsProps) {
@@ -59,5 +63,21 @@ export function ThumbsDown({ checked = false, to = '#', ...props }: ButtonThumbs
         />
       </svg>
     </Link>
+  )
+}
+
+export function SkipButton(props: SkipButtonProps) {
+  return (
+    <button
+      id="skip-button"
+      className="text-gray-500"
+      onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
+        e.preventDefault()
+
+        props.onClick?.(e)
+      }}
+    >
+      Skip
+    </button>
   )
 }

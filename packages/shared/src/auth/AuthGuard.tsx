@@ -1,6 +1,6 @@
+import * as Sentry from '@sentry/browser'
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { Outlet } from 'react-router-dom'
-import * as Sentry from '@sentry/browser'
 
 import { BaseAuthProvider } from '.'
 import { useErrors } from '../hooks/error'

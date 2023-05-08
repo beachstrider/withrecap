@@ -1,6 +1,6 @@
+import * as Sentry from '@sentry/browser'
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { Outlet } from 'react-router-dom'
-import * as Sentry from '@sentry/browser'
 
 import { BaseAuthProvider } from '.'
 import { useErrors } from '../hooks/error'
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((u, t) => {
-      if (u === null || t === null) {
+      if (u === null) {
         Sentry.setUser(null)
 
         setUser(null)
