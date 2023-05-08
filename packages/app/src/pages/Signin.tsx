@@ -27,7 +27,7 @@ export default function Signin() {
       // TODO: if res is true, set isInstalled true globally
       shareLogin().then(console.debug)
 
-      return navigate(MEETINGS)
+      navigate(MEETINGS)
     }
   }, [user, navigate])
 

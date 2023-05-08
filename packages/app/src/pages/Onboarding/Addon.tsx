@@ -1,14 +1,5 @@
-import {
-  Addon,
-  AddonStore,
-  Addons,
-  UserAddonConfig,
-  UserAddonStore,
-  UserAddons,
-  toast,
-  useAuthGuard
-} from '@recap/shared'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useAddons } from '@recap/shared'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { SkipButton } from '../../components/buttons'
@@ -16,57 +7,18 @@ import OnboardingLayout from '../../components/layouts/Onboarding'
 import { ONBOARDING_DONE } from '../../constants/routes'
 
 export const OnboardingAddon = () => {
-  const { user } = useAuthGuard()
+  const { addons, userAddons, enableAddon } = useAddons()
   const navigate = useNavigate()
-
-  const userAddonStore = useMemo(() => new UserAddonStore(user.uid), [user.uid])
-  const addonStore = useMemo(() => new AddonStore(), [])
-
-  const [addons, setAddons] = useState<Addons>({})
-  const [userAddons, setUserAddons] = useState<UserAddons>({})
-
-  useEffect(() => {
-    addonStore
-      .list()
-      .then((a) => {
-        userAddonStore
-          .list()
-          .then((ua) => {
-            setUserAddons(ua)
-            setAddons(a)
-          })
-          .catch((err) => {
-            toast.error('An error occurred while fetching your integrations', err)
-          })
-      })
-      .catch((err) => {
-        toast.error('An error occurred while fetching the list of integrations', err)
-      })
-  }, [addonStore, userAddonStore])
-
-  const enableAddon = async (id: string, addon: Addon) => {
-    try {
-      const config: UserAddonConfig = { url: addon.url, regex: addon.regex, enabled: true }
-      await userAddonStore.insert(id, config)
-
-      userAddons[id] = config
-      setUserAddons({ ...userAddons })
-
-      // Note: For now, since we only have Google Meet working, we redirect
-      // the user automatically to the next step once he enables it
-
-      // Just to make navigation user friendly
-      return setTimeout(() => {
-        navigate(ONBOARDING_DONE)
-      }, 1000)
-    } catch (err) {
-      toast.error("Settings couldn't be saved", err)
-    }
-  }
 
   const isEnabled = (id: string): boolean => {
     return userAddons[id]?.enabled
   }
+
+  useEffect(() => {
+    if (addons) {
+      navigate(ONBOARDING_DONE)
+    }
+  }, [addons, navigate])
 
   const renderAddonList = () => {
     return Object.entries(addons).map(([id, addon]) => (

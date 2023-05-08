@@ -5,7 +5,7 @@ export const SIGNIN = '/signin'
 
 export const MEETINGS = '/app/meetings'
 export const MEETING_DETAILS = '/app/meetings/:mid'
-export const INTEGRATIONS = '/app/integrations'
+export const ADDONS = '/app/addons'
 
 export const ONBOARDING_RESISTER = '/onboarding/register'
 export const ONBOARDING_ADDON = '/onboarding/addon'

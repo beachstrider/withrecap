@@ -7,7 +7,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy'
 import Signin from './pages/Signin'
 import TermsConditions from './pages/TermsConditions'
 
-import Integrations from './pages/Integrations'
+import Addons from './pages/Addons'
 import Meetings from './pages/Meetings'
 import MeetingDetails from './pages/Meetings/Details'
 
@@ -65,7 +65,7 @@ export default function App() {
         <Route path="/app/" element={authGuard}>
           <Route path="meetings" element={<Meetings />} />
           <Route path="meetings/:mid" element={<MeetingDetails />} />
-          <Route path="integrations" element={<Integrations />} />
+          <Route path="addons" element={<Addons />} />
         </Route>
 
         {/* 404 page */}

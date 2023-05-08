@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
 import { DELETE_ACCOUNT_REQUEST, SUPPORT_REQUEST } from '../../constants/links'
-import { INTEGRATIONS, MEETINGS, SIGNIN } from '../../constants/routes'
+import { ADDONS, MEETINGS, SIGNIN } from '../../constants/routes'
 import { Button } from '../buttons'
 
 import arrowRight from '../../assets/img/arrowRight.svg'
@@ -66,7 +66,7 @@ const PrivateSection = () => {
             <Button className={isActive ? '' : 'bg-white font-semibold text-gray-500'}>Past Meetings</Button>
           )}
         </NavLink>
-        <NavLink to={INTEGRATIONS}>
+        <NavLink to={ADDONS}>
           {({ isActive }) => (
             <Button className={isActive ? '' : 'bg-white font-semibold text-gray-500'}>Integrations</Button>
           )}
