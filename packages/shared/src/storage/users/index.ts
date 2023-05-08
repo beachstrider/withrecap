@@ -1,13 +1,13 @@
 import { User as FirebaseUser } from 'firebase/auth'
 import {
-  collection,
-  doc,
-  setDoc,
-  getDoc,
   CollectionReference,
   DocumentData,
-  updateDoc,
-  Timestamp
+  Timestamp,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc
 } from 'firebase/firestore/lite'
 
 import { Timestamps, firestore } from '../firestore'
@@ -16,6 +16,7 @@ type CustomUserConfigs = {
   // Add custom configurations here
   autoSharing: boolean
   timezone: string
+  extensionId?: string
 }
 type BaseUserConfigs = {
   uid: string

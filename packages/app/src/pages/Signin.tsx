@@ -1,4 +1,4 @@
-import { toast, useAuth } from '@recap/shared'
+import { User, toast, useAuth } from '@recap/shared'
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -17,6 +17,18 @@ export default function Signin() {
     }
   }
 
+  // TODO: change type
+  const shareLogin = async (user: User) => {
+    // Transfer auth to extension
+    const {
+      data: { token }
+    } = (await createAuthToken()) as { data: { token: string } }
+
+    if (user.extensionId) {
+      await chrome.runtime.sendMessage(user.extensionId, { type: 'LOGIN', token })
+    }
+  }
+
   useEffect(() => {
     if (error) {
       toast.error(error.message, error.err)
@@ -27,13 +39,7 @@ export default function Signin() {
     // If user already logged in we redirect to meetings page
     const unsubscribe = onAuthStateChanged(async (u: any) => {
       if (u !== null) {
-        // Sync auth
-        const {
-          data: { token }
-        } = (await createAuthToken()) as { data: { token: string } }
-
-        // TODO: extensionId needs to be dynamically allocated to each user when they are done installing extension
-        await chrome.runtime.sendMessage('hnendcllllmefheblfoibkijaimbppmd', { type: 'LOGIN', token })
+        shareLogin(u)
         navigate(MEETINGS)
       }
     })

@@ -31,6 +31,13 @@ export default function Index({ isPublic = false }) {
 const PrivateSection = () => {
   const { user, logout, error } = useAuthGuard()
 
+  const handleLogout = async () => {
+    if (user.extensionId) {
+      chrome.runtime.sendMessage(user.extensionId, { type: 'LOGOUT' })
+    }
+    await logout()
+  }
+
   useEffect(() => {
     if (error) {
       toast.error(error.message, error.err)
@@ -98,13 +105,7 @@ const PrivateSection = () => {
               </Link>
             </div>
             <div className="mb-[20px]">
-              <div
-                onClick={async () => {
-                  await logout()
-                  await chrome.runtime.sendMessage('hnendcllllmefheblfoibkijaimbppmd', { type: 'LOGOUT' })
-                }}
-                className="flex items-center justify-between cursor-pointer"
-              >
+              <div onClick={handleLogout} className="flex items-center justify-between cursor-pointer">
                 <div className="flex gap-[10px] grow">
                   <img src={arrowRight} alt="" className="w-[20px] h-[20px]" />
                   <div className="font-semibold text-[15px]">Sign Out</div>
