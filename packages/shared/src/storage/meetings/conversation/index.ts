@@ -1,12 +1,4 @@
-import {
-  collection,
-  doc,
-  updateDoc,
-  getDoc,
-  CollectionReference,
-  DocumentData,
-  arrayUnion
-} from 'firebase/firestore/lite'
+import { collection, doc, updateDoc, CollectionReference, DocumentData, arrayUnion } from 'firebase/firestore/lite'
 
 import { firestore } from '../../firestore'
 
@@ -24,12 +16,6 @@ export class ConversationStore {
 
   constructor() {
     this._db = collection(firestore, 'meetings')
-  }
-
-  public async get(mid: string): Promise<Conversation> {
-    const document = await getDoc(doc(this._db, mid, 'conversation'))
-
-    return document.data() as Conversation
   }
 
   public async add(mid: string, message: Message) {

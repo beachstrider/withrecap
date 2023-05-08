@@ -9,21 +9,35 @@ import { MeetingService } from '../../services/meeting'
 import { MeetingSummary } from '../../services/summary'
 import { TranscriptService } from '../../services/transcript'
 import { SentryWrapper } from '../../utils/sentry'
+import { MeetingTodos } from '../../services/todos'
+import { MeetingHighlights } from '../../services/highlights'
 
 export const DEFAULT_TIMEZONE = 'America/Montreal'
 
-export const OnMeetingUpdated = functions.firestore.document('meetings/{docId}').onUpdate(
-  SentryWrapper<[functions.Change<functions.firestore.QueryDocumentSnapshot>, functions.EventContext]>(
-    'OnMeetingUpdated',
-    'functions.firestore.document.onUpdate',
-    async (change, _context) => {
-      functions.logger.debug('engine called')
+const options: functions.RuntimeOptions = {
+  memory: '512MB',
+  timeoutSeconds: 120
+}
+
+export const OnMeetingUpdated = functions
+  .runWith(options)
+  .firestore.document('meetings/{docId}')
+  .onUpdate(
+    SentryWrapper<
+      [
+        functions.Change<functions.firestore.QueryDocumentSnapshot>,
+        functions.EventContext<{
+          docId: string
+        }>
+      ]
+    >('OnMeetingUpdated', 'functions.firestore.document.onUpdate', async (change, context) => {
+      functions.logger.debug('engine called for meeting id:', context.params.docId)
 
       const oldValue = change.before.data() as Meeting
       const newValue = change.after.data() as Meeting
 
       if (oldValue.ended === false && newValue.ended === true) {
-        functions.logger.debug('meeting ended, generating summary...')
+        functions.logger.debug('meeting ended, generating summary, todos, and highlights...')
 
         if (newValue.conversation.length === 0) {
           return functions.logger.warn('meeting conversation is empty, skipping processing...')
@@ -31,16 +45,19 @@ export const OnMeetingUpdated = functions.firestore.document('meetings/{docId}')
 
         const transcript = new TranscriptService(newValue.conversation)
         const meetingSummary = new MeetingSummary(openai, transcript)
+        const meetingTodos = new MeetingTodos(openai, transcript)
+        const meetingHighlights = new MeetingHighlights(openai, transcript)
 
         const meetingService = new MeetingService(newValue)
 
-        const response = await meetingSummary.build()
+        const summary = await meetingSummary.build()
+        const todos = await meetingTodos.build()
+        const highlights = await meetingHighlights.build()
 
-        if (response.choices.length) {
+        if (summary) {
           const percentage = transcript.metadata()
-          const summary = response.choices[0].text
 
-          functions.logger.debug('summary generated')
+          functions.logger.debug('summary and todos generated')
 
           const metadata: MeetingMetadata = {
             ...meetingService.metadata(),
@@ -56,6 +73,8 @@ export const OnMeetingUpdated = functions.firestore.document('meetings/{docId}')
             {
               summary: summary || '',
               transcript: transcript.toTranscript(),
+              todos: todos,
+              highlights: highlights,
               metadata: metadata
             },
             { merge: true }
@@ -112,6 +131,5 @@ export const OnMeetingUpdated = functions.firestore.document('meetings/{docId}')
           functions.logger.debug('meeting updated successfully')
         }
       }
-    }
+    })
   )
-)
