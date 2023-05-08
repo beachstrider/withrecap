@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/browser'
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useParams } from 'react-router-dom'
 
 import { BaseAuthProvider } from '.'
 import { useErrors } from '../hooks/error'
@@ -33,6 +33,7 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(null)
   const { error, setError } = useErrors(null)
+  const { extensionId } = useParams()
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((u, t) => {
@@ -50,8 +51,10 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
         .then(async (exists) => {
           let user: User
 
-          if (!exists) {
-            user = await userStore.create(u)
+          // TODO: we have to consider when user login without extension installation
+          if (!exists && extensionId) {
+            // Onboarding user creation
+            user = await userStore.create(u, extensionId)
           } else {
             await userStore.update(u.uid, { displayName: u.displayName || '', photoURL: u.photoURL || '' })
 
@@ -79,7 +82,7 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
     })
 
     return unsubscribe
-  }, [auth, userStore, setError])
+  }, [auth, userStore, setError, extensionId])
 
   return (
     <AuthProviderContext.Provider
