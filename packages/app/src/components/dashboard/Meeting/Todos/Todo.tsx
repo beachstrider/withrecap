@@ -5,30 +5,37 @@ import * as yup from 'yup'
 
 import { Menu } from '@headlessui/react'
 import { TrashIcon } from '@heroicons/react/20/solid'
-import { MeetingTodo } from '@recap/shared'
-
-import { useTodo } from '../../../../pages/Meetings/Details'
+import { type Todo as MeetingTodo, useTodo, toast } from '@recap/shared'
 
 import dots from '../../../../assets/img/dots.svg'
 import add from '../../../../assets/img/plus.svg'
 
-interface TodoProps {
+interface BaseTodoProps {
+  mid: string
+  onChange: () => Promise<void>
+}
+
+interface TodoProps extends BaseTodoProps {
   todo?: MeetingTodo
+  create?: undefined
+}
+
+interface TodoCreateProps extends BaseTodoProps {
+  todo?: undefined
+  create: true
 }
 
 const schema = yup.object().shape({
-  // Check if value has spaces on start, end and also has multiple spaces
   text: yup
     .string()
     .trim()
-    .strict(true)
-    .min(1, 'TODO needs to be at least 1 char')
-    .max(512, 'TODO cannot exceed 512 char')
+    .min(1, 'TODO needs to be at least 1 characters')
+    .max(512, 'TODO cannot exceed 512 characters')
     .required('This field is required')
 })
 
-export default function Todo({ todo }: TodoProps) {
-  const { addTodo, updateTodo, deleteTodo } = useTodo()
+export default function Todo({ todo, onChange, mid, create }: TodoProps | TodoCreateProps) {
+  const { addTodo, deleteTodo, updateTodo, error } = useTodo(mid)
 
   const [editing, setEditing] = useState(false)
 
@@ -39,19 +46,32 @@ export default function Todo({ todo }: TodoProps) {
     formState: { errors, isSubmitting }
   } = useForm<MeetingTodo>({ defaultValues: todo || { completed: false }, resolver: yupResolver(schema) })
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message, error.err)
+    }
+  }, [error])
+
   const onSubmit = async (data: MeetingTodo) => {
     data.text = data.text.trim()
 
-    if (todo) {
-      await updateTodo(data)
-    } else {
-      await addTodo(data)
-    }
+    await addTodo(data)
+
+    onChange()
     setEditing(false)
   }
 
-  const onDelete = async (todo: MeetingTodo) => {
-    await deleteTodo(todo)
+  const onDelete = async (tid: MeetingTodo['id']) => {
+    await deleteTodo(tid)
+
+    onChange()
+    setEditing(false)
+  }
+
+  const onUpdate = async (todo: MeetingTodo) => {
+    await updateTodo(todo.id, todo)
+
+    onChange()
     setEditing(false)
   }
 
@@ -95,7 +115,7 @@ export default function Todo({ todo }: TodoProps) {
         <input
           type="checkbox"
           checked={todo.completed}
-          onChange={(e) => updateTodo({ ...todo, completed: e.target.checked })}
+          onChange={(e) => onUpdate({ ...todo, completed: e.target.checked })}
         />
         <div className="grow">{todo.text}</div>
         <div>
@@ -121,7 +141,7 @@ export default function Todo({ todo }: TodoProps) {
               <Menu.Item>
                 {({ active }) => (
                   <button
-                    onClick={() => onDelete(todo)}
+                    onClick={() => onDelete(todo.id)}
                     className={`${
                       active ? 'bg-red-400 text-white' : 'text-gray-900'
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
@@ -138,10 +158,14 @@ export default function Todo({ todo }: TodoProps) {
     )
   }
 
-  return (
-    <button onClick={() => setEditing(true)} className="flex items-center gap-[20px] text-gray-500 font-semibold">
-      <img src={add} alt="" className="ml-[4px] w-[16px] h-[16px]" />
-      <div>Add</div>
-    </button>
-  )
+  if (create) {
+    return (
+      <button onClick={() => setEditing(true)} className="flex items-center gap-[20px] text-gray-500 font-semibold">
+        <img src={add} alt="" className="ml-[4px] w-[16px] h-[16px]" />
+        <div>Add</div>
+      </button>
+    )
+  }
+
+  return null
 }

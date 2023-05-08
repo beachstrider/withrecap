@@ -6,20 +6,23 @@ import { MailService, Templates } from '../../services/mail'
 import { SentryWrapper } from '../../utils/sentry'
 
 export const OnUserCreated = functions.firestore.document('users/{userId}').onCreate(
-  SentryWrapper<[functions.firestore.QueryDocumentSnapshot, functions.EventContext]>(
-    'OnUserCreated',
-    'functions.firestore.document.onCreate',
-    async (snapshot, _context) => {
-      functions.logger.debug('new user signed up')
+  SentryWrapper<
+    [
+      functions.firestore.QueryDocumentSnapshot,
+      functions.EventContext<{
+        userId: string
+      }>
+    ]
+  >('OnUserCreated', 'functions.firestore.document.onCreate', async (snapshot, context) => {
+    functions.logger.debug('new user signed up:', context.params.userId)
 
-      const mail = new MailService(mailgun, settings.domain)
-      const user = snapshot.data() as User
+    const mail = new MailService(mailgun, settings.domain)
+    const user = snapshot.data() as User
 
-      functions.logger.debug('sending welcome email...')
+    functions.logger.debug('sending welcome email...')
 
-      await mail.send(Templates.Welcome, { email: user.email, appUrl: settings.baseURL })
+    await mail.send(Templates.Welcome, { email: user.email, appUrl: settings.baseURL })
 
-      functions.logger.debug('welcome email sent with success')
-    }
-  )
+    functions.logger.debug('welcome email sent with success')
+  })
 )
