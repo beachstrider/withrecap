@@ -14,7 +14,9 @@ const loadingComponent = (
 
 export const App = () => {
   const onNeedAuth = () => {
-    return chrome.runtime.openOptionsPage()
+    const url = process.env.RECAP_APP_BASE_URL + '/onboarding/register'
+
+    return chrome.tabs.create({ url })
   }
 
   return (
