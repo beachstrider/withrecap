@@ -1,7 +1,8 @@
 import * as Sentry from '@sentry/browser'
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 
+import { User as AuthUser } from 'firebase/auth'
 import { BaseAuthProvider } from '.'
 import { useErrors } from '../hooks/error'
 import { User, UserStore } from '../storage/users'
@@ -34,8 +35,16 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, onAfterAuth,
   const [token, setToken] = useState<string | null>(null)
   const { error, setError } = useErrors(null)
 
+  const _u = useRef<AuthUser | null | undefined>()
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((u, t) => {
+      // To prevent onAuthStateChanged triggered twice for some reason
+      if (u === null && _u.current === null) return
+      if (u !== null && u?.uid === _u.current?.uid) return
+
+      _u.current = u
+
       if (u === null) {
         Sentry.setUser(null)
 
@@ -84,7 +93,7 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, onAfterAuth,
     })
 
     return unsubscribe
-  }, [auth, userStore, onNeedAuth, setError])
+  }, [auth, userStore, onNeedAuth, onAfterAuth, setError])
 
   if (!user) {
     if (loadingComponent) return <>{loadingComponent}</>
