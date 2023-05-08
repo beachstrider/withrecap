@@ -32,8 +32,12 @@ const PrivateSection = () => {
   const { user, logout, error } = useAuthGuard()
 
   const handleLogout = async () => {
-    chrome.runtime.sendMessage(process.env.EXTENSION_ID, { type: RequestTypes.LOGOUT })
-    await logout()
+    try {
+      await logout()
+      chrome.runtime.sendMessage(process.env.EXTENSION_ID, { type: RequestTypes.LOGOUT })
+    } catch (err) {
+      toast.error('An error occured while logout', err)
+    }
   }
 
   useEffect(() => {
