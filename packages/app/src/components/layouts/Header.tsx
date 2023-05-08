@@ -101,8 +101,7 @@ const PrivateSection = () => {
               <div
                 onClick={async () => {
                   await logout()
-
-                  window.location.href = '/'
+                  await chrome.runtime.sendMessage('hnendcllllmefheblfoibkijaimbppmd', { type: 'LOGOUT' })
                 }}
                 className="flex items-center justify-between cursor-pointer"
               >

@@ -64,12 +64,22 @@ class ChromeBackgroundService {
       }
     })
 
-    chrome.runtime.onMessageExternal.addListener(({ token }, sender, sendResponse) => {
-      console.debug('---  received token:', token)
-      const auth = new GoogleIdentityAuthProvider()
-      auth.loginWithCustomToken(token).then(console.debug)
+    chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
+      return Sentry.wrap(() => {
+        if (sender.tab) {
+          console.debug(`messaged received from an app: ${sender.tab.url}`, request)
 
-      return true
+          switch (request.type) {
+            case 'LOGIN':
+              this.login(request.token)
+              break
+            case 'LOGOUT':
+              this.logout()
+          }
+        }
+
+        return true
+      })
     })
 
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -128,6 +138,22 @@ class ChromeBackgroundService {
         return true
       })
     })
+  }
+
+  async login(token: string): Promise<void> {
+    try {
+      await this.google.loginWithCustomToken(token).then(console.debug)
+    } catch (err) {
+      throw new Error('An error occurred while extension login', { cause: err })
+    }
+  }
+
+  async logout(): Promise<void> {
+    try {
+      await this.google.logout()
+    } catch (err) {
+      throw new Error('An error occurred while extension logout', { cause: err })
+    }
   }
 
   async processAddonEnabled(addonId: string): Promise<{ isEnabled: boolean }> {

@@ -33,7 +33,7 @@ export default function Signin() {
         } = (await createAuthToken()) as { data: { token: string } }
 
         // TODO: extensionId needs to be dynamically allocated to each user when they are done installing extension
-        await chrome.runtime.sendMessage('hnendcllllmefheblfoibkijaimbppmd', { token })
+        await chrome.runtime.sendMessage('hnendcllllmefheblfoibkijaimbppmd', { type: 'LOGIN', token })
         navigate(MEETINGS)
       }
     })
