@@ -32,8 +32,8 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
 
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(null)
-  const { error, setError } = useErrors(null)
   const { extensionId } = useParams()
+  const { error, setError } = useErrors(null)
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((u, t) => {
