@@ -144,7 +144,7 @@ class ChromeBackgroundService {
 
   async login(token: string): Promise<void> {
     try {
-      await this.google.loginWithCustomToken(token).then(console.debug)
+      await this.google.loginWithCustomToken(token)
     } catch (err) {
       this.handleError(err)
     }

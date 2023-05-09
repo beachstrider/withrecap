@@ -84,15 +84,11 @@ export class GoogleIdentityAuthProvider implements BaseAuthProvider {
   }
 
   public loginWithCustomToken = async (token: string) => {
-    try {
-      signInWithCustomToken(this.auth, token)
-    } catch (error) {
-      console.error(error)
-    }
+    await signInWithCustomToken(this.auth, token)
   }
 
   public logout = async () => {
-    return this.auth.signOut()
+    await this.auth.signOut()
   }
 }
 
