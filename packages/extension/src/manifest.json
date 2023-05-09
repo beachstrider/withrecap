@@ -7,10 +7,6 @@
     "service_worker": "background/index.ts",
     "type": "module"
   },
-  "options_ui": {
-    "page": "pages/onboarding/index.html",
-    "open_in_tab": true
-  },
   "permissions": [
     "identity",
     "tabs",
