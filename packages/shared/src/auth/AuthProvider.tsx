@@ -5,6 +5,7 @@ import { Outlet } from 'react-router-dom'
 import { BaseAuthProvider } from '.'
 import { useErrors } from '../hooks/error'
 import { User, UserStore } from '../storage/users'
+import { transferLogin } from '../utils/browser'
 
 type AuthProviderContextType = {
   token: string | null
@@ -23,17 +24,45 @@ export const useAuth = () => {
 
 interface AuthProviderProps {
   provider: new () => BaseAuthProvider
-  onAfterAuth?: () => void
   children?: React.ReactNode
 }
 
-export const AuthProvider = ({ children, provider, onAfterAuth }: AuthProviderProps) => {
+export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
   const auth = useMemo(() => new provider(), [provider])
   const userStore = useMemo(() => new UserStore(), [])
 
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(null)
   const { error, setError } = useErrors(null)
+
+  const message1 = 'An error occurred while login'
+  const message2 = 'An error occurred while login transfer'
+
+  const login = async () => {
+    try {
+      await auth.login()
+    } catch (err) {
+      setError({ message: message1, err: err as Error })
+    }
+    try {
+      await transferLogin()
+    } catch (err) {
+      setError({ message: message2, err: err as Error })
+    }
+  }
+
+  const loginWithPopup = async () => {
+    try {
+      await auth.loginWithPopup?.()
+    } catch (err) {
+      setError({ message: message1, err: err as Error })
+    }
+    try {
+      await transferLogin()
+    } catch (err) {
+      setError({ message: message2, err: err as Error })
+    }
+  }
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((u, t) => {
@@ -67,8 +96,6 @@ export const AuthProvider = ({ children, provider, onAfterAuth }: AuthProviderPr
           setUser(user)
           setToken(t)
           setError(null)
-
-          onAfterAuth?.()
         })
         .catch(async (err) => {
           const message = 'An error occurred while authenticating'
@@ -82,7 +109,7 @@ export const AuthProvider = ({ children, provider, onAfterAuth }: AuthProviderPr
     })
 
     return unsubscribe
-  }, [auth, userStore, setError, onAfterAuth])
+  }, [auth, userStore, setError])
 
   return (
     <AuthProviderContext.Provider
@@ -90,8 +117,8 @@ export const AuthProvider = ({ children, provider, onAfterAuth }: AuthProviderPr
         token,
         user,
         error,
-        login: auth.login,
-        loginWithPopup: auth.loginWithPopup,
+        login,
+        loginWithPopup,
         logout: auth.logout,
         onAuthStateChanged: auth.onAuthStateChanged
       }}

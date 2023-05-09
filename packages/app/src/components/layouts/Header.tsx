@@ -1,5 +1,5 @@
 import { Menu } from '@headlessui/react'
-import { RequestTypes, getUserFirstName, toast, useAuthGuard } from '@recap/shared'
+import { getUserFirstName, toast, useAuthGuard } from '@recap/shared'
 import React, { useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
@@ -30,15 +30,6 @@ export default function Index({ isPublic = false }) {
 
 const PrivateSection = () => {
   const { user, logout, error } = useAuthGuard()
-
-  const handleLogout = async () => {
-    try {
-      await logout()
-      chrome.runtime.sendMessage(process.env.EXTENSION_ID, { type: RequestTypes.LOGOUT })
-    } catch (err) {
-      toast.error('An error occured while logout', err)
-    }
-  }
 
   useEffect(() => {
     if (error) {
@@ -107,7 +98,7 @@ const PrivateSection = () => {
               </Link>
             </div>
             <div className="mb-[20px]">
-              <div onClick={handleLogout} className="flex items-center justify-between cursor-pointer">
+              <div onClick={logout} className="flex items-center justify-between cursor-pointer">
                 <div className="flex gap-[10px] grow">
                   <img src={arrowRight} alt="" className="w-[20px] h-[20px]" />
                   <div className="font-semibold text-[15px]">Sign Out</div>

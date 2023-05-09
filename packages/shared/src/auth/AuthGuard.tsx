@@ -5,6 +5,7 @@ import { Outlet } from 'react-router-dom'
 import { BaseAuthProvider } from '.'
 import { useErrors } from '../hooks/error'
 import { User, UserStore } from '../storage/users'
+import { transferLogout } from '../utils/browser'
 
 type AuthGuardContextType = {
   token: string | null
@@ -23,16 +24,31 @@ interface AuthGuardProps {
   children?: React.ReactNode
   loadingComponent?: React.ReactNode
   onNeedAuth?: () => void
-  onAfterAuth?: () => void
 }
 
-export const AuthGuard = ({ children, loadingComponent, onNeedAuth, onAfterAuth, provider }: AuthGuardProps) => {
+export const AuthGuard = ({ children, loadingComponent, onNeedAuth, provider }: AuthGuardProps) => {
   const auth = useMemo(() => new provider(), [provider])
   const userStore = useMemo(() => new UserStore(), [])
 
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(null)
   const { error, setError } = useErrors(null)
+
+  const logout = async () => {
+    try {
+      await auth.logout()
+    } catch (err) {
+      const message = 'An error occurred while logout'
+      setError({ message, err: err as Error })
+    }
+
+    try {
+      await transferLogout()
+    } catch (err: any) {
+      const message = 'An error occurred while logout transfer'
+      setError({ message, err: err as Error })
+    }
+  }
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((u, t) => {
@@ -69,8 +85,6 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, onAfterAuth,
           setUser(user)
           setToken(t)
           setError(null)
-
-          onAfterAuth?.()
         })
         .catch(async (err) => {
           const message = 'An error occurred while authenticating'
@@ -84,7 +98,7 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, onAfterAuth,
     })
 
     return unsubscribe
-  }, [auth, userStore, onNeedAuth, onAfterAuth, setError])
+  }, [auth, userStore, onNeedAuth, setError])
 
   if (!user) {
     if (loadingComponent) return <>{loadingComponent}</>
@@ -98,7 +112,7 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, onAfterAuth,
         token,
         user,
         error,
-        logout: auth.logout
+        logout
       }}
     >
       {/* If it is used as a parent component */}
