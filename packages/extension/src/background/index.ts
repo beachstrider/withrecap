@@ -115,9 +115,19 @@ class ChromeBackgroundService {
           switch (request.type) {
             case RequestTypes.LOGIN:
               this.login(request.token)
+                .then(() => sendResponse({ err: null }))
+                .catch((err) => {
+                  this.handleError(err)
+                  sendResponse({ err })
+                })
               break
             case RequestTypes.LOGOUT:
               this.logout()
+                .then(() => sendResponse({ err: null }))
+                .catch((err) => {
+                  this.handleError(err)
+                  sendResponse({ err })
+                })
               break
           }
         }

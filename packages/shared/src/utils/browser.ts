@@ -20,7 +20,11 @@ export const transferLogin = async () => {
   }
 
   try {
-    await chrome.runtime.sendMessage(process.env.EXTENSION_ID!, { type: RequestTypes.LOGIN, token })
+    chrome.runtime.sendMessage(process.env.EXTENSION_ID!, { type: RequestTypes.LOGIN, token }, ({ err }) => {
+      if (err) {
+        console.error('Extension login failed,', err)
+      }
+    })
 
     localStorage.setItem(IS_EXTENSION_INSTALLED, 'TRUE')
   } catch (err) {
@@ -33,9 +37,17 @@ export const transferLogin = async () => {
 // Send notification to extension to logout
 export const transferLogout = async () => {
   try {
-    await chrome.runtime.sendMessage(process.env.EXTENSION_ID!, { type: RequestTypes.LOGOUT })
+    chrome.runtime.sendMessage(process.env.EXTENSION_ID!, { type: RequestTypes.LOGOUT }, ({ err }) => {
+      if (err) {
+        console.error('Extension login failed,', err)
+      }
+    })
+
+    localStorage.setItem(IS_EXTENSION_INSTALLED, 'TRUE')
   } catch (err) {
     console.error('Transfer logout failed,', err)
+
+    localStorage.removeItem(IS_EXTENSION_INSTALLED)
   }
 }
 
