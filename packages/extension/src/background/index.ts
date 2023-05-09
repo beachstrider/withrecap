@@ -146,7 +146,7 @@ class ChromeBackgroundService {
     try {
       await this.google.loginWithCustomToken(token).then(console.debug)
     } catch (err) {
-      throw new Error('An error occurred while extension login', { cause: err })
+      this.handleError(err)
     }
   }
 
@@ -261,11 +261,8 @@ backgroundService.startListener()
 // Navigate to app onboarding the first time the extension gets installed
 chrome.runtime.onInstalled.addListener((object) => {
   if (object.reason === chrome.runtime.OnInstalledReason.INSTALL) {
-    chrome.tabs.create({ url: process.env.RECAP_APP_BASE_URL + '/onboarding/register' })
+    chrome.tabs.create({ url: `${process.env.RECAP_APP_BASE_URL}/onboarding/register` })
   }
 })
-
-// Navigate to follow-up page when user uninstalled an extension
-// chrome.runtime.setUninstallURL(process.env.RECAP_APP_BASE_URL)
 
 console.debug('Background service started')
