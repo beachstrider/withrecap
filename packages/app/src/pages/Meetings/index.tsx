@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react'
-
 import { browser, getUserFirstName, toast, useAuthGuard, useMeetings } from '@recap/shared'
+import React, { useEffect } from 'react'
 
 import { UseChromeAlert, Welcome } from '../../components/blocks'
 import InviteFriends from '../../components/dashboard/Meeting/InviteFriends'
