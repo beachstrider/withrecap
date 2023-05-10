@@ -1,4 +1,4 @@
-import { useAddons } from '@recap/shared'
+import { UserAddons, useAddons } from '@recap/shared'
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -7,18 +7,26 @@ import OnboardingLayout from '../../components/layouts/Onboarding'
 import { ONBOARDING_DONE } from '../../constants/routes'
 
 export const OnboardingAddon = () => {
-  const { addons, userAddons, enableAddon } = useAddons()
+  const { addons, userAddons, enableAddon, loading } = useAddons()
   const navigate = useNavigate()
 
   const isEnabled = (id: string): boolean => {
     return userAddons[id]?.enabled
   }
 
+  const hasEnabled = (userAddons: UserAddons) => {
+    for (const name of Object.keys(userAddons)) {
+      if (userAddons[name].enabled) return true
+    }
+
+    return false
+  }
+
   useEffect(() => {
-    if (addons) {
+    if (hasEnabled(userAddons)) {
       navigate(ONBOARDING_DONE)
     }
-  }, [addons, navigate])
+  }, [userAddons, navigate])
 
   const renderAddonList = () => {
     return Object.entries(addons).map(([id, addon]) => (
@@ -53,7 +61,7 @@ export const OnboardingAddon = () => {
   }
 
   return (
-    <OnboardingLayout step={2}>
+    <OnboardingLayout step={2} loading={loading}>
       <h2 className="font-semibold sm:mb-[64px] mb-[48px]">Add Recap to your video call apps</h2>
       <div className="flex flex-col gap-[16px] sm:mb-[64px] mb-[48px]">{renderAddonList()}</div>
       <div className="flex justify-center">
