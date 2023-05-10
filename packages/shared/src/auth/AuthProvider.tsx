@@ -12,7 +12,6 @@ type AuthProviderContextType = {
   user: User | null
   error: ReturnType<typeof useErrors>['error']
   login: BaseAuthProvider['login']
-  loginWithPopup: BaseAuthProvider['loginWithPopup']
   logout: BaseAuthProvider['logout']
   onAuthStateChanged: BaseAuthProvider['onAuthStateChanged']
 }
@@ -41,19 +40,6 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
   const login = async () => {
     try {
       await auth.login()
-    } catch (err) {
-      setError({ message: message1, err: err as Error })
-    }
-    try {
-      await transferLogin()
-    } catch (err) {
-      setError({ message: message2, err: err as Error })
-    }
-  }
-
-  const loginWithPopup = async () => {
-    try {
-      await auth.loginWithPopup?.()
     } catch (err) {
       setError({ message: message1, err: err as Error })
     }
@@ -118,7 +104,6 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
         user,
         error,
         login,
-        loginWithPopup,
         logout: auth.logout,
         onAuthStateChanged: auth.onAuthStateChanged
       }}

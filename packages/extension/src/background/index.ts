@@ -25,8 +25,6 @@ class ChromeBackgroundService {
   }
 
   private async getMeetingDetails(meetingId: string): Promise<Meeting | undefined> {
-    await this.google.login({ silent: true })
-
     if (!this.google.accessToken) {
       throw Error('an error must have occurred while authenticating, no access token could be fetched')
     }
@@ -154,7 +152,7 @@ class ChromeBackgroundService {
 
   async login(token: string): Promise<void> {
     try {
-      await this.google.loginWithCustomToken(token)
+      await this.google.login(token)
     } catch (err) {
       this.handleError(err)
     }

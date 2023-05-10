@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { MEETINGS } from '../constants/routes'
 
 export default function Signin() {
-  const { user, loginWithPopup, error } = useAuth()
+  const { user, login, error } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function Signin() {
 
   return (
     <div className="flex items-center justify-center w-screen h-screen">
-      <button onClick={loginWithPopup} className="google-login-button"></button>
+      <button onClick={login} className="google-login-button"></button>
     </div>
   )
 }
