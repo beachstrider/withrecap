@@ -34,20 +34,17 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
   const [token, setToken] = useState<string | null>(null)
   const { error, setError } = useErrors(null)
 
-  const message1 = 'An error occurred while login'
-  const message2 = 'An error occurred while login transfer'
+  const message = 'An error occurred while login'
 
   const login = async () => {
     try {
       await auth.login()
     } catch (err) {
-      setError({ message: message1, err: err as Error })
+      setError({ message, err: err as Error })
     }
-    try {
-      await transferLogin()
-    } catch (err) {
-      setError({ message: message2, err: err as Error })
-    }
+
+    // NOTE: if transfer failed due to disabled / uninstalled extension, it is not meant to occure an exception, just console error would be enough
+    await transferLogin()
   }
 
   useEffect(() => {

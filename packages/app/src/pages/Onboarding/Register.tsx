@@ -1,4 +1,4 @@
-import { toast, useAuth } from '@recap/shared'
+import { toast, transferLogin, useAuth } from '@recap/shared'
 import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -13,6 +13,7 @@ export const OnboardingRegister = () => {
 
   useEffect(() => {
     if (user) {
+      transferLogin()
       navigate(ONBOARDING_ADDON)
     }
   }, [user, navigate])
@@ -23,14 +24,6 @@ export const OnboardingRegister = () => {
     }
   }, [error])
 
-  const signIn = async () => {
-    try {
-      await login()
-    } catch (err) {
-      toast.error('An error occurred while signing in', err)
-    }
-  }
-
   return (
     <OnboardingLayout step={1}>
       <h2 className="font-semibold sm:mb-[16px] mb-[12px]">Create your account</h2>
@@ -39,7 +32,7 @@ export const OnboardingRegister = () => {
       </p>
       <button
         className="w-full rounded-[14px] bg-gray-100 flex justify-center items-center gap-[10px] sm:text-[15px] text-[12px] py-[14px] font-semibold sm:mb-[20px] mb-[15px]"
-        onClick={signIn}
+        onClick={login}
       >
         <img src={google} alt="" />
         Sign In with Google
