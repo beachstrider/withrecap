@@ -39,12 +39,10 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
   const login = async () => {
     try {
       await auth.login()
+      await transferLogin()
     } catch (err) {
       setError({ message, err: err as Error })
     }
-
-    // NOTE: if transfer failed due to disabled / uninstalled extension, it is not meant to occure an exception, just console error would be enough
-    await transferLogin()
   }
 
   useEffect(() => {

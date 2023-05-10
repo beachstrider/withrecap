@@ -25,6 +25,8 @@ class ChromeBackgroundService {
   }
 
   private async getMeetingDetails(meetingId: string): Promise<Meeting | undefined> {
+    await this.google.login()
+
     if (!this.google.accessToken) {
       throw Error('an error must have occurred while authenticating, no access token could be fetched')
     }
@@ -56,6 +58,7 @@ class ChromeBackgroundService {
             : 'messaged received from the extension',
           request
         )
+        console.debug('---', request.type)
 
         switch (request.type) {
           case ExtensionMessages.MeetingMessage:
@@ -67,6 +70,7 @@ class ChromeBackgroundService {
               })
             break
           case ExtensionMessages.MeetingStarted:
+            console.debug('here 2')
             this.processMeetingStart(request.meetingId, sender.tab!.id!)
               .then(() => sendResponse({ error: null }))
               .catch((error) => {

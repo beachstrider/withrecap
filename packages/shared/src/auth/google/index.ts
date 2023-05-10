@@ -110,7 +110,7 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
 
   private _login = async () => {
     return new Promise<string>(async (resolve, reject) => {
-      chrome.identity.getAuthToken({ interactive: false }, (token) => {
+      chrome.identity.getAuthToken({ interactive: true }, (token) => {
         if (chrome.runtime.lastError || !token) {
           return reject(`SSO ended with an error: ${JSON.stringify(chrome.runtime.lastError)}`)
         }
@@ -139,10 +139,13 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
     })
   }
 
-  public login = async (token: string) => {
+  public login = async (token?: string) => {
     try {
       this._accessToken = await this._login()
-      await signInWithCustomToken(this.auth, token!)
+
+      if (token) {
+        await signInWithCustomToken(this.auth, token)
+      }
     } catch (err) {
       const error = err as AuthError
 
