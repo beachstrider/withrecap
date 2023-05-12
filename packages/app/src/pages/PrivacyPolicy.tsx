@@ -101,14 +101,14 @@ export default function PrivacyPolicy() {
           essential cookies, our Service would not be able to operate. They are necessary to enable users to navigate
           through the Service and use its main features; e.g., essential cookies identify registered users so that they
           can access member-only areas of the site. Essential cookies keep users logged in. If a subscriber disables
-          essential cookies, that subscriber won’t be able to get to all of the content that a subscription entitles
+          essential cookies, that subscriber won't be able to get to all of the content that a subscription entitles
           them to. These cookies don't collect information that could be utilized for the purposes of marketing or
           figuring out what places on the internet you have visited.
         </div>
         <div>
-          • To improve your browsing experience. This type of cookie enables the site to remember users’ preferences and
+          • To improve your browsing experience. This type of cookie enables the site to remember users' preferences and
           settings, such as geographic region or language. They can also be used to restrict the number of times an ad
-          is shown, and to remember which forms you have already filled in, so that you don’t have to do it again.
+          is shown, and to remember which forms you have already filled in, so that you don't have to do it again.
         </div>
         <div>
           • To implement tracking technology on our Service. This tracking does not use your personal information; it
@@ -116,13 +116,13 @@ export default function PrivacyPolicy() {
           with your other personal information without your prior express permission.
         </div>
         <div>
-          There is a way to turn off cookies by going to your browser’s Help or Settings menu. However, keep in mind
+          There is a way to turn off cookies by going to your browser's Help or Settings menu. However, keep in mind
           that disabling cookies may limit your use of the Service and/or delay or affect the way in which it operates.
         </div>
         <br />
         <h5 className="font-semibold sm:mb-[8px] mb-[6px]">Data Security</h5>
         <div>
-          Only our administrators are allowed to access our Service’s password-protected server where your personal
+          Only our administrators are allowed to access our Service's password-protected server where your personal
           information is stored. We utilize SSL. However, any transmission of information over the Internet has its
           inherent risks, so we cannot guarantee the absolute security of your personal information. Transmit personal
           information over the Internet at your own risk. We shall not be liable for circumvention of security measures
@@ -130,7 +130,7 @@ export default function PrivacyPolicy() {
           confidential.
         </div>
         <br />
-        <h5 className="font-semibold sm:mb-[8px] mb-[6px]">Children’s Privacy</h5>
+        <h5 className="font-semibold sm:mb-[8px] mb-[6px]">Children's Privacy</h5>
         <div>
           We do not knowingly collect any personal information about children under the age of 13. Our Service is not
           directed to children under the age of 13. If we become aware that a child under 13 has provided any personal
@@ -140,31 +140,37 @@ export default function PrivacyPolicy() {
           a child has sent us personal information, they should send us an e-mail right away.
         </div>
         <br />
-        <h5 className="font-semibold sm:mb-[8px] mb-[6px]">Users’ Rights as Google API Services Users</h5>
+        <h5 className="font-semibold sm:mb-[8px] mb-[6px]">Users' Rights as Google API Services Users</h5>
         <div>
-          Because our Service integrates with / uses Google APIs to access Google users’ data from time to time, we are
-          bound by Google’s Limited Use Requirements, which are summarized here.
+          Because our Service integrates with / uses Google APIs to access Google users' data from time to time, we are
+          bound by Google's Limited Use Requirements, which are summarized here.
         </div>
         <div>
           • The Service will only use access to read, write, modify, or control Gmail message bodies (including
           attachments), metadata, headers, and settings to provide a web email client that allows users to compose,
           send, read, and process emails and will not transfer this Gmail data to others unless doing so is necessary to
           provide and improve these features, comply with applicable law, or as part of a merger, acquisition, or sale
-          of assets.’
+          of assets'.
         </div>
         <div>• The Service will not use Gmail data for serving advertisements.</div>
         <div>
           • The Service will not allow humans to read data unless we have your affirmative agreement for specific
           messages, doing so is necessary for security purposes such as investigating abuse, to comply with applicable
-          law, or for the Service’s internal operations and even then only when the data have been aggregated and
+          law, or for the Service's internal operations and even then only when the data have been aggregated and
           anonymized.
         </div>
         <div>
-          • The Service’s use of information received from Google APIs will adhere to Google API Services User Data
+          • The Service's use of information received from Google APIs will adhere to Google API Services User Data
           Policy, including the Limited Use requirements.
         </div>
         <br />
-        <h5 className="font-semibold sm:mb-[8px] mb-[6px]">Users’ Rights, CCPA</h5>
+        <h5 className="font-semibold sm:mb-[8px] mb-[6px]">Compliance with Google API Services User Data Policy</h5>
+        <div>
+          System D Labs' use and transfer of information received from Google APIs to any other app will adhere to
+          Google API Services User Data Policy, including Limited Use requirements. The policy is linked here.
+        </div>
+        <br />
+        <h5 className="font-semibold sm:mb-[8px] mb-[6px]">Users' Rights, CCPA</h5>
         <div>
           We will not share your personal information with third parties for their direct marketing purposes to the
           extent that doing so is forbidden by law. If our practices change, we will only change in accordance with
@@ -196,7 +202,7 @@ export default function PrivacyPolicy() {
           processing in the United States.
         </div>
         <br />
-        <h5 className="font-semibold sm:mb-[8px] mb-[6px]">EU Users’ Rights</h5>
+        <h5 className="font-semibold sm:mb-[8px] mb-[6px]">EU Users' Rights</h5>
         <div>
           This section of our Privacy Policy applies to the users of our Service who are located within the territorial
           borders of the European Union. We would like to inform you about your GDPR rights and how we safeguard them.
