@@ -8,13 +8,16 @@
     "clean": "rimraf dist",
     "prebuild": "yarn clean && yarn workspace @recap/shared build",
     "build": "NODE_ENV=production parcel build src/manifest.json --no-content-hash --no-cache --no-source-maps --detailed-report 0",
+    "prepackage": "ts-node -T --cwd misc package",
     "package": "zip -r dist.zip dist"
   },
   "dependencies": {
     "@recap/shared": "0.0.1"
   },
   "devDependencies": {
-    "@parcel/config-webextension": "^2.8.3"
+    "@parcel/config-webextension": "^2.8.3",
+    "@types/fs-extra": "^11.0.1",
+    "fs-extra": "^11.1.1"
   },
   "browserslist": "> 0.5%, last 2 versions, not dead"
 }
