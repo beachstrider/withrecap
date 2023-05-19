@@ -161,7 +161,7 @@ export default function PrivacyPolicy() {
         </div>
         <div>
           • The Service's use of information received from Google APIs will adhere to the
-          <a href="https://developers.google.com/terms/api-services-user-data-policy">
+          &nbsp; <a href="https://developers.google.com/terms/api-services-user-data-policy">
             Google API Services User Data Policy
           </a>
           , including the Limited Use requirements.

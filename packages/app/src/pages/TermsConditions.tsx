@@ -56,7 +56,7 @@ export default function TermsConditions() {
         <h5 className="font-semibold sm:mb-[8px] mb-[6px]">COMPLIANCE WITH GOOGLE API SERVICES USER DATA POLICY</h5>
         <div>
           System D Labs' use and transfer of information received from Google APIs to any other app will adhere to
-          <a href="https://developers.google.com/terms/api-services-user-data-policy">
+          &nbsp; <a href="https://developers.google.com/terms/api-services-user-data-policy">
             Google API Services User Data Policy
           </a>
           , including Limited Use requirements.
