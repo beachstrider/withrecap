@@ -161,15 +161,19 @@ export default function PrivacyPolicy() {
         </div>
         <div>
           • The Service's use of information received from Google APIs will adhere to the
-          <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data
-          Policy</a>, including the Limited Use requirements.
+          <a href="https://developers.google.com/terms/api-services-user-data-policy">
+            Google API Services User Data Policy
+          </a>
+          , including the Limited Use requirements.
         </div>
         <br />
         <h5 className="font-semibold sm:mb-[8px] mb-[6px]">Compliance with Google API Services User Data Policy</h5>
         <div>
           System D Labs' use and transfer of information received from Google APIs to any other app will adhere to the
-          <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data
-          Policy</a>, including Limited Use requirements.
+          <a href="https://developers.google.com/terms/api-services-user-data-policy">
+            Google API Services User Data Policy
+          </a>
+          , including Limited Use requirements.
         </div>
         <br />
         <h5 className="font-semibold sm:mb-[8px] mb-[6px]">Users' Rights, CCPA</h5>
