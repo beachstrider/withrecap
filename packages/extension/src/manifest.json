@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Recap",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "description": "Meeting notes, on autopilot.",
   "background": {
     "service_worker": "background/index.ts",
@@ -43,5 +43,5 @@
       "https://www.googleapis.com/auth/calendar.events.readonly"
     ]
   },
-  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhsKO0mRds3OQ2IvPNzQ/C3gPcX+soXRFRahMwMI/7MvFY1+lOka2vgM9bO5ZiGJsFRwquyRcHaQG3QpLSB10490LmUZryRDU+xKDbVPiaz4HVQCXtv0BGV0U9bWFZPx/7G9vCh9Xzweo8eX/J59j0SHNUGPPhrvUzsQ3u8MWqcT+zXzYSpiVkquaCqROLOyB/V0pbmYJEvBMsBW8+J2q5kn6HeAFJMwtMq0KmN2NQe/qgWpr8ySj0QRejBWGtIwxyc78jplrrQUC8nCXG3xvaSOEPT0kOBUxVOf5qUBTUHSA1YuDyeoG6uPHnmF5xFlkvn1CrHu68GrUsRgx8S/LswIDAQAB"
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlOjU5Ag/pJY6f3iyvxkyNgKq3+rQhcX38VGD+1YBr3qSXEGZGpwlBlFXtEPWpNb/N6n84Aw8iS4K6TnhJW0y4rF3cPRNpAoXusC4BQtwXYEy+iIHR0pVCCmG6Mn+oR/0537RLeqlSeetARtfNcgO0oUHCIAWupsZm05i16AVfUkC6YrxQR0gtO5PrBPh5kptpE0QhDM5SRuSiqMrnzln2PnBfu6p/8s5mkQvoFu9wwiJbrY3mBhVi39u2Ymsw4ZzW1wARj+byQq+e2RU6M92qodVZ8P8EjGSqCYyEdxVvP5mbatPuFwyV8Ai86LqTTjUHOxm1fwSgIhb0dgpGIHLSwIDAQAB"
 }
