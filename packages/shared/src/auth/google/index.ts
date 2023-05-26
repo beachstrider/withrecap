@@ -83,8 +83,6 @@ export class GoogleAuthProvider implements BaseAuthProvider {
 }
 
 export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
-  private _accessToken: string | null = null
-
   private firebase: FirebaseApp
   public auth: Auth
 
@@ -93,18 +91,38 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
     this.auth = getAuth(this.firebase)
   }
 
-  public get accessToken() {
-    return this._accessToken
+  public getIdentityToken = async () => {
+    const { identityToken } = await chrome.storage.sync.get()
+
+    return identityToken
   }
 
-  private _getCustomToken = async () => {
-    const { customToken } = await chrome.storage.sync.get()
+  private setIdentityToken = async (identityToken: string | null) => {
+    await chrome.storage.sync.set({ identityToken })
+
+    return identityToken
+  }
+
+  private fetchIdentityToken = async () => {
+    return new Promise<string>(async (resolve, reject) => {
+      chrome.identity.getAuthToken({ interactive: false }, async (token) => {
+        console.debug('---  new silent login:', token)
+
+        await this.setIdentityToken(token)
+
+        if (chrome.runtime.lastError || !token) {
+          return reject(`SSO ended with an error: ${JSON.stringify(chrome.runtime.lastError)}`)
+        }
+
+        resolve(token)
+      })
+    })
+  }
+
+  private setCustomToken = async (customToken: string | null) => {
+    await chrome.storage.sync.set({ customToken })
 
     return customToken
-  }
-
-  private _updateCustomToken = async (token: string | null) => {
-    return await chrome.storage.sync.set({ customToken: token })
   }
 
   private _addMissingData(user: FirebaseUser): FirebaseUser {
@@ -118,55 +136,31 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
     return userData
   }
 
-  private _login = async () => {
-    return new Promise<string>(async (resolve, reject) => {
-      chrome.identity.getAuthToken({ interactive: false }, (token) => {
-        if (chrome.runtime.lastError || !token) {
-          return reject(`SSO ended with an error: ${JSON.stringify(chrome.runtime.lastError)}`)
-        }
-
-        resolve(token)
-      })
-    })
-  }
-
   public onAuthStateChanged = (callback: (user: FirebaseUser | null, token: string | null) => void): Unsubscribe => {
-    return onAuthStateChanged(this.auth, (user) => {
+    return onAuthStateChanged(this.auth, async (user) => {
+      console.debug('---  user:', user)
       if (user) {
         user = this._addMissingData(user)
 
-        if (this._accessToken === null) {
-          this._login().then((token) => {
-            this._accessToken = token
-            callback(user, token)
-          })
-        } else {
-          callback(user, this._accessToken || null)
+        let idendityToken = await this.getIdentityToken()
+
+        if (idendityToken === null) {
+          idendityToken = await this.fetchIdentityToken()
         }
+
+        callback(user, idendityToken)
       } else {
         callback(user, null)
       }
     })
   }
 
-  public login = async (token?: string) => {
+  public login = async (customToken: string) => {
     try {
-      this._accessToken = await this._login()
-      console.debug('---  this._accessToken:', this._accessToken)
-
-      // Update _customToken if new token is coming
-      if (token) {
-        await this._updateCustomToken(token)
-      }
-
-      const customToken = await this._getCustomToken()
-      console.debug('---  customToken:', customToken)
-
-      if (customToken) {
-        await signInWithCustomToken(this.auth, customToken)
-      } else {
-        throw new Error(`silent login failed because customToken is null.`)
-      }
+      await this.logout()
+      await this.fetchIdentityToken()
+      await this.setCustomToken(customToken)
+      await signInWithCustomToken(this.auth, customToken)
     } catch (err) {
       const error = err as AuthError
 
@@ -176,6 +170,7 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
 
   public logout = async () => {
     await this.auth.signOut()
-    await this._updateCustomToken(null)
+    await this.setCustomToken(null)
+    await this.setIdentityToken(null)
   }
 }

@@ -1,4 +1,4 @@
-import { toast, useAuth } from '@recap/shared'
+import { toast, transferLogin, useAuth } from '@recap/shared'
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -16,6 +16,7 @@ export default function Signin() {
 
   useEffect(() => {
     if (user) {
+      transferLogin()
       navigate(MEETINGS)
     }
   }, [user, navigate])

@@ -9,7 +9,7 @@ type ResponseData = {
 }
 
 export class GoogleCalendar {
-  constructor(private accessToken: string) {}
+  constructor(private identityToken: string) {}
 
   public async getMeetingDetails(mid: string): Promise<Meeting | undefined> {
     // First we fetch the events of the day
@@ -18,12 +18,12 @@ export class GoogleCalendar {
     const endOfDay = new Date()
     endOfDay.setHours(23, 59, 59, 999)
 
-    console.debug('---  getting calendar data using accessToken:', this.accessToken)
+    console.debug('---  getting calendar data using identityToken:', this.identityToken)
     const response = await fetch(
       `${GOOGLE_CALENDAR_BASE_URL}/calendars/primary/events?timeMin=${beginningOfDay.toISOString()}&timeMax=${endOfDay.toISOString()}&singleEvents=true`,
       {
         headers: {
-          Authorization: `Bearer ${this.accessToken}`
+          Authorization: `Bearer ${this.identityToken}`
         }
       }
     )

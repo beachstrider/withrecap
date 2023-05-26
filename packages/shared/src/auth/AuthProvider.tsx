@@ -5,7 +5,6 @@ import { Outlet } from 'react-router-dom'
 import { BaseAuthProvider } from '.'
 import { useErrors } from '../hooks/error'
 import { User, UserStore } from '../storage/users'
-import { transferLogin } from '../utils/browser'
 
 type AuthProviderContextType = {
   token: string | null
@@ -39,7 +38,6 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
   const login = async () => {
     try {
       await auth.login()
-      await transferLogin()
     } catch (err) {
       setError({ message, err: err as Error })
     }

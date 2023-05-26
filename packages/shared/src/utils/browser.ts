@@ -7,6 +7,7 @@ export const browser = detect()
 
 // Transfer custom token to extension
 export const transferLogin = async () => {
+  console.debug('in transfer login===')
   let token: string
 
   try {
