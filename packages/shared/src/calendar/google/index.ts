@@ -21,8 +21,7 @@ export class GoogleCalendar {
       `${GOOGLE_CALENDAR_BASE_URL}/calendars/primary/events?timeMin=${beginningOfDay.toISOString()}&timeMax=${endOfDay.toISOString()}&singleEvents=true`,
       {
         headers: {
-          Authorization: `Bearer ${this.identityToken}`,
-          'Content-Type': 'application/json'
+          Authorization: `Bearer ${this.identityToken}`
         }
       }
     )
