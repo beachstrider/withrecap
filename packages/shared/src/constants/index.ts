@@ -3,4 +3,6 @@ export enum RequestTypes {
   LOGOUT = 'LOGOUT'
 }
 
-export const IS_EXTENSION_INSTALLED = 'IS_EXTENSION_INSTALLED'
+export enum ChromeStorage {
+  FIREBASE_AUTH_CUSTOM_TOKEN = 'FIREBASE_AUTH_CUSTOM_TOKEN'
+}

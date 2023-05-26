@@ -34,7 +34,7 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, provider }: 
   const [token, setToken] = useState<string | null>(null)
   const { error, setError } = useErrors(null)
 
-  const message = 'An error occurred while logout'
+  const message = 'An error occurred while logging out'
 
   const logout = async () => {
     try {

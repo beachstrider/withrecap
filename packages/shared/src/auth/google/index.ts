@@ -97,6 +97,16 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
     return this._accessToken
   }
 
+  private _getCustomToken = async () => {
+    const { customToken } = await chrome.storage.sync.get()
+
+    return customToken
+  }
+
+  private _updateCustomToken = async (token: string | null) => {
+    return await chrome.storage.sync.set({ customToken: token })
+  }
+
   private _addMissingData(user: FirebaseUser): FirebaseUser {
     const userData = { ...user }
 
@@ -110,7 +120,7 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
 
   private _login = async () => {
     return new Promise<string>(async (resolve, reject) => {
-      chrome.identity.getAuthToken({ interactive: true }, (token) => {
+      chrome.identity.getAuthToken({ interactive: false }, (token) => {
         if (chrome.runtime.lastError || !token) {
           return reject(`SSO ended with an error: ${JSON.stringify(chrome.runtime.lastError)}`)
         }
@@ -142,9 +152,20 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
   public login = async (token?: string) => {
     try {
       this._accessToken = await this._login()
+      console.debug('---  this._accessToken:', this._accessToken)
 
+      // Update _customToken if new token is coming
       if (token) {
-        await signInWithCustomToken(this.auth, token)
+        await this._updateCustomToken(token)
+      }
+
+      const customToken = await this._getCustomToken()
+      console.debug('---  customToken:', customToken)
+
+      if (customToken) {
+        await signInWithCustomToken(this.auth, customToken)
+      } else {
+        throw new Error(`silent login failed because customToken is null.`)
       }
     } catch (err) {
       const error = err as AuthError
@@ -155,5 +176,6 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
 
   public logout = async () => {
     await this.auth.signOut()
+    await this._updateCustomToken(null)
   }
 }

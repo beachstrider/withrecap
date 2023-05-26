@@ -18,6 +18,7 @@ export class GoogleCalendar {
     const endOfDay = new Date()
     endOfDay.setHours(23, 59, 59, 999)
 
+    console.debug('---  getting calendar data using accessToken:', this.accessToken)
     const response = await fetch(
       `${GOOGLE_CALENDAR_BASE_URL}/calendars/primary/events?timeMin=${beginningOfDay.toISOString()}&timeMax=${endOfDay.toISOString()}&singleEvents=true`,
       {
@@ -27,6 +28,7 @@ export class GoogleCalendar {
       }
     )
     const data: ResponseData = await response.json()
+    console.debug('calendar response - data', data)
 
     const event = data.items.find((calendar) => calendar.hangoutLink?.includes(mid))
 

@@ -58,7 +58,6 @@ class ChromeBackgroundService {
             : 'messaged received from the extension',
           request
         )
-        console.debug('---', request.type)
 
         switch (request.type) {
           case ExtensionMessages.MeetingMessage:
@@ -70,7 +69,6 @@ class ChromeBackgroundService {
               })
             break
           case ExtensionMessages.MeetingStarted:
-            console.debug('here 2')
             this.processMeetingStart(request.meetingId, sender.tab!.id!)
               .then(() => sendResponse({ error: null }))
               .catch((error) => {
