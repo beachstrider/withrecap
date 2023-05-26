@@ -17,13 +17,12 @@ export class GoogleCalendar {
     beginningOfDay.setHours(0, 0, 0, 0)
     const endOfDay = new Date()
     endOfDay.setHours(23, 59, 59, 999)
-
-    console.debug('---  getting calendar data using identityToken:', this.identityToken)
     const response = await fetch(
       `${GOOGLE_CALENDAR_BASE_URL}/calendars/primary/events?timeMin=${beginningOfDay.toISOString()}&timeMax=${endOfDay.toISOString()}&singleEvents=true`,
       {
         headers: {
-          Authorization: `Bearer ${this.identityToken}`
+          Authorization: `Bearer ${this.identityToken}`,
+          'Content-Type': 'application/json'
         }
       }
     )
