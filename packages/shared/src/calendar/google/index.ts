@@ -26,7 +26,6 @@ export class GoogleCalendar {
       }
     )
     const data: ResponseData = await response.json()
-    console.debug('calendar response - data', data)
 
     const event = data.items.find((calendar) => calendar.hangoutLink?.includes(mid))
 

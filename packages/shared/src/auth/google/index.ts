@@ -106,8 +106,6 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
   private fetchIdentityToken = async () => {
     return new Promise<string>(async (resolve, reject) => {
       chrome.identity.getAuthToken({ interactive: false }, async (token) => {
-        console.debug('---  new silent login:', token)
-
         await this.setIdentityToken(token)
 
         if (chrome.runtime.lastError || !token) {
@@ -117,12 +115,6 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
         resolve(token)
       })
     })
-  }
-
-  private setCustomToken = async (customToken: string | null) => {
-    await chrome.storage.sync.set({ customToken })
-
-    return customToken
   }
 
   private _addMissingData(user: FirebaseUser): FirebaseUser {
@@ -138,7 +130,6 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
 
   public onAuthStateChanged = (callback: (user: FirebaseUser | null, token: string | null) => void): Unsubscribe => {
     return onAuthStateChanged(this.auth, async (user) => {
-      console.debug('---  user:', user)
       if (user) {
         user = this._addMissingData(user)
 
@@ -159,7 +150,6 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
     try {
       await this.logout()
       await this.fetchIdentityToken()
-      await this.setCustomToken(customToken)
       await signInWithCustomToken(this.auth, customToken)
     } catch (err) {
       const error = err as AuthError
@@ -170,7 +160,6 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
 
   public logout = async () => {
     await this.auth.signOut()
-    await this.setCustomToken(null)
     await this.setIdentityToken(null)
   }
 }
