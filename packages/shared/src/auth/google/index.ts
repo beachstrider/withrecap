@@ -135,7 +135,7 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
 
         let idendityToken = await this.getIdentityToken()
 
-        if (idendityToken === null) {
+        if (!idendityToken) {
           idendityToken = await this.fetchIdentityToken()
         }
 
