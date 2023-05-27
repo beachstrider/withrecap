@@ -1,5 +1,5 @@
-import * as functions from 'firebase-functions'
 import { User } from '@recap/shared'
+import * as functions from 'firebase-functions'
 
 import { db, mail as mailgun, settings } from '../../config'
 import { MailService, Templates } from '../../services/mail'

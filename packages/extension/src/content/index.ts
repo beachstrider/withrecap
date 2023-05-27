@@ -1,5 +1,5 @@
-import * as Sentry from '@sentry/browser'
 import { initSentry, Message } from '@recap/shared'
+import * as Sentry from '@sentry/browser'
 
 import { ExtensionMessages } from '../common'
 
@@ -16,6 +16,7 @@ const wait = async (time: number) => {
 }
 
 const MAX_RETRY = 10
+
 const retry = async (callback: () => Promise<any>, time: number) => {
   let retryCount = 0
   let retry = true
@@ -23,6 +24,7 @@ const retry = async (callback: () => Promise<any>, time: number) => {
   while (retry) {
     try {
       await callback()
+
       retry = false
     } catch (err) {
       retryCount++
@@ -106,35 +108,34 @@ class GoogleMeetsService {
   }
 
   public async prepareListener(): Promise<void> {
-    const { isEnabled, error } = await chrome.runtime.sendMessage<any, any>({
-      addonId: 'meet',
-      type: ExtensionMessages.AddonEnabled
-    })
-
-    if (error) {
-      throw new Error(error)
-    }
-
-    if (!isEnabled) {
-      return console.debug('not recording, addon is disabled')
-    }
-
     const docObserver = new MutationObserver(async (_mutations: MutationRecord[], observer: MutationObserver) => {
       this.callBar = document.body.querySelector(SELECTOR_CALL_BAR)
 
       if (this.callBar) {
+        const { isEnabled, error } = await chrome.runtime.sendMessage<any, any>({
+          addonId: 'meet',
+          type: ExtensionMessages.AddonEnabled
+        })
+
+        if (error) {
+          throw new Error(error)
+        }
+
+        if (!isEnabled) {
+          return console.debug('not recording, addon is disabled')
+        }
         observer.disconnect()
 
         console.debug('call started')
 
         // this will also be useful even if you rejoin a meeting
         // for example the meeting was ended through tab close, but then you joined again - this will nullify the metadata's endTimestamp
-        const { error } = await chrome.runtime.sendMessage({
+        const { error: error1 } = await chrome.runtime.sendMessage({
           meetingId: this.getMeetingId(),
           type: ExtensionMessages.MeetingStarted
         })
 
-        if (error) {
+        if (error1) {
           // TODO: Display a toast and stop there?
           // This is a critical error and we cannot continue
           return

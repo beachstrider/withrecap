@@ -13,8 +13,10 @@ const loadingComponent = (
 )
 
 export const App = () => {
-  const onNeedAuth = () => {
-    return chrome.runtime.openOptionsPage()
+  const onNeedAuth = async () => {
+    const url = `${process.env.RECAP_APP_BASE_URL}/onboarding/register`
+
+    await chrome.tabs.create({ url })
   }
 
   return (

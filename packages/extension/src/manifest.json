@@ -7,11 +7,11 @@
     "service_worker": "background/index.ts",
     "type": "module"
   },
-  "options_ui": {
-    "page": "pages/onboarding/index.html",
-    "open_in_tab": true
-  },
-  "permissions": ["identity", "tabs", "storage"],
+  "permissions": [
+    "identity",
+    "tabs",
+    "storage"
+  ],
   "action": {
     "default_popup": "pages/popup/index.html",
     "default_icon": "assets/img/icon-34.png"
@@ -21,19 +21,32 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["assets/img/icon-128.png", "assets/img/icon-34.png"],
+      "resources": [
+        "assets/img/icon-128.png",
+        "assets/img/icon-34.png"
+      ],
       "matches": []
     }
   ],
   "content_scripts": [
     {
-      "matches": ["https://meet.google.com/*"],
-      "js": ["content/index.ts"]
+      "matches": [
+        "https://meet.google.com/*"
+      ],
+      "js": [
+        "content/index.ts"
+      ]
     }
   ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'",
     "sandbox": "sandbox allow-scripts; script-src 'self' 'https://apis.google.com/' 'https://www.gstatic.com/' 'https://*.firebaseio.com' 'https://www.googleapis.com' 'https://ajax.googleapis.com'; object-src 'self'"
+  },
+  "externally_connectable": {
+    "matches": [
+      "http://localhost:1234/*",
+      "https://withrecap.com/*"
+    ]
   },
   "oauth2": {
     "client_id": "621133214709-7t5ghofgq50nbiuqrqlqs8nmli8ucs98.apps.googleusercontent.com",

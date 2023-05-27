@@ -1,8 +1,7 @@
+import { browser, getUserFirstName, toast, useAuthGuard, useMeetings } from '@recap/shared'
 import React, { useEffect } from 'react'
 
-import { browser, getUserFirstName, toast, useAuthGuard, useMeetings } from '@recap/shared'
-
-import { ExtensionInstallationAlert, Welcome } from '../../components/blocks'
+import { UseChromeAlert, Welcome } from '../../components/blocks'
 import InviteFriends from '../../components/dashboard/Meeting/InviteFriends'
 import Meetings from '../../components/dashboard/Meeting/List'
 import Layout from '../../components/layouts'
@@ -23,7 +22,7 @@ export default function Index() {
         {/* If there is any recorded meeting, list them, otherwise display the welcome block */}
         {Object.keys(meetingsByDate).length ? (
           <>
-            {browser && browser.name !== 'chrome' && <ExtensionInstallationAlert />}
+            {browser && browser.name !== 'chrome' && <UseChromeAlert />}
             <div className="flex gap-[20px] sm:mb-[80px] mb-[60px]">
               <img src={user.photoURL} alt="" className="w-[64px] h-[64px] rounded-full" />
               <div className="">

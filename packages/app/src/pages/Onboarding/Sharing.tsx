@@ -1,16 +1,16 @@
-import { UserStore, toast, useAuthGuard } from '@recap/shared'
+import { Switch, UserStore, toast, useAuthGuard } from '@recap/shared'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { Switch } from '@recap/shared'
-import { ROUTES } from '../../App'
-import { SkipButton } from '../../components/SkipButton'
+import { SkipButton } from '../../components/buttons'
+import OnboardingLayout from '../../components/layouts/Onboarding'
+import { ONBOARDING_DONE } from '../../constants/routes'
 
-import jeff from '../../../../assets/img/jeff.png'
-import max from '../../../../assets/img/max.png'
-import paperPlan from '../../../../assets/img/paperPlan.svg'
+import jeff from '../../assets/img/jeff.png'
+import max from '../../assets/img/max.png'
+import paperPlan from '../../assets/img/paperPlan.svg'
 
-export const AutoSharing = () => {
+export const OnboardingSharing = () => {
   const { user } = useAuthGuard()
   const navigate = useNavigate()
 
@@ -21,7 +21,7 @@ export const AutoSharing = () => {
   const nextStep = useCallback(() => {
     setTimeout(() => {
       // Just to make navigation user friendly
-      navigate(ROUTES.Done)
+      navigate(ONBOARDING_DONE)
     }, 500)
   }, [navigate])
 
@@ -51,8 +51,10 @@ export const AutoSharing = () => {
   }
 
   return (
-    <>
-      <h1 className="sm:mb-[24px] mb-[18px]">Would you like to share your meeting notes automatically?</h1>
+    <OnboardingLayout step={123}>
+      <h1 className="font-semibold sm:mb-[24px] mb-[18px]">
+        Would you like to share your meeting notes automatically?
+      </h1>
       <p className="sm:mb-[84px] mb-[63px] text-gray-500">Most people save time by turning this on.</p>
       <div className="card sm:mb-[64px] mb-[48px]">
         <div className="flex justify-between items-center px-[24px] py-[20px]">
@@ -118,7 +120,7 @@ export const AutoSharing = () => {
           </div>
         </div>
       </div>
-      <SkipButton onClick={() => navigate(ROUTES.Done)} />
-    </>
+      <SkipButton onClick={() => navigate(ONBOARDING_DONE)} />
+    </OnboardingLayout>
   )
 }

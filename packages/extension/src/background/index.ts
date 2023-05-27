@@ -6,6 +6,7 @@ import {
   Meeting,
   MeetingStore,
   Message,
+  RequestTypes,
   UserAddonStore
 } from '@recap/shared'
 import * as Sentry from '@sentry/browser'
@@ -24,13 +25,13 @@ class ChromeBackgroundService {
   }
 
   private async getMeetingDetails(meetingId: string): Promise<Meeting | undefined> {
-    await this.google.login({ silent: true })
+    const identityToken = await this.google.getIdentityToken()
 
-    if (!this.google.accessToken) {
+    if (!identityToken) {
       throw Error('an error must have occurred while authenticating, no access token could be fetched')
     }
 
-    const calendar = new GoogleCalendar(this.google.accessToken)
+    const calendar = new GoogleCalendar(identityToken)
     const meetingDetails = await calendar.getMeetingDetails(meetingId)
 
     if (!meetingDetails) {
@@ -49,21 +50,6 @@ class ChromeBackgroundService {
   }
 
   startListener(): void {
-    chrome.tabs.onRemoved.addListener(async (tid, _removeInfo) => {
-      try {
-        const { tabId, meetingDetails } = await chrome.storage.session.get(['tabId', 'meetingDetails'])
-
-        if (tid === tabId) {
-          console.debug(`meeting ended since tab (${tid}) was closed.`)
-          await this.processMeetingEnd(meetingDetails.mid)
-        }
-      } catch (err) {
-        this.handleError(
-          new Error('An error occurred while processing meeting ended on meeting tab closed', { cause: err })
-        )
-      }
-    })
-
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       return Sentry.wrap(() => {
         console.debug(
@@ -120,6 +106,66 @@ class ChromeBackgroundService {
         return true
       })
     })
+
+    chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
+      return Sentry.wrap(() => {
+        if (sender.tab) {
+          console.debug(`messaged received from an app: ${sender.tab.url}`, request)
+
+          switch (request.type) {
+            case RequestTypes.LOGIN:
+              this.login(request.token)
+                .then(() => sendResponse({ err: null }))
+                .catch((err) => {
+                  this.handleError(err)
+                  sendResponse({ err })
+                })
+              break
+            case RequestTypes.LOGOUT:
+              this.logout()
+                .then(() => sendResponse({ err: null }))
+                .catch((err) => {
+                  this.handleError(err)
+                  sendResponse({ err })
+                })
+              break
+          }
+        }
+
+        return true
+      })
+    })
+
+    chrome.tabs.onRemoved.addListener(async (tid, _removeInfo) => {
+      try {
+        const { tabId, meetingDetails } = await chrome.storage.session.get(['tabId', 'meetingDetails'])
+
+        if (tid === tabId) {
+          console.debug(`meeting ended since tab (${tid}) was closed.`)
+          await this.processMeetingEnd(meetingDetails.mid)
+        }
+      } catch (err) {
+        this.handleError(
+          new Error('An error occurred while processing meeting ended on meeting tab closed', { cause: err })
+        )
+      }
+    })
+  }
+
+  async login(token: string): Promise<void> {
+    try {
+      await this.google.login(token)
+    } catch (err) {
+      this.handleError(err)
+    }
+  }
+
+  async logout(): Promise<void> {
+    try {
+      await this.google.logout()
+    } catch (err) {
+      throw new Error('An error occurred while extension logout', { cause: err })
+    }
   }
 
   async processAddonEnabled(addonId: string): Promise<{ isEnabled: boolean }> {
@@ -222,10 +268,10 @@ initSentry('extension:background')
 const backgroundService = new ChromeBackgroundService()
 backgroundService.startListener()
 
-// Opens option page the first time the extension gets installed
+// Navigate to app onboarding the first time the extension gets installed
 chrome.runtime.onInstalled.addListener((object) => {
   if (object.reason === chrome.runtime.OnInstalledReason.INSTALL) {
-    chrome.runtime.openOptionsPage()
+    chrome.tabs.create({ url: `${process.env.RECAP_APP_BASE_URL}/onboarding/register` })
   }
 })
 

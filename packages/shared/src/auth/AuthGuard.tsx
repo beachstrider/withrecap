@@ -1,10 +1,11 @@
+import * as Sentry from '@sentry/browser'
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { Outlet } from 'react-router-dom'
-import * as Sentry from '@sentry/browser'
 
 import { BaseAuthProvider } from '.'
 import { useErrors } from '../hooks/error'
 import { User, UserStore } from '../storage/users'
+import { transferLogout } from '../utils/browser'
 
 type AuthGuardContextType = {
   token: string | null
@@ -32,6 +33,17 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, provider }: 
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(null)
   const { error, setError } = useErrors(null)
+
+  const message = 'An error occurred while logging out'
+
+  const logout = async () => {
+    try {
+      await auth.logout()
+      await transferLogout()
+    } catch (err) {
+      setError({ message, err: err as Error })
+    }
+  }
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((u, t) => {
@@ -95,7 +107,7 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, provider }: 
         token,
         user,
         error,
-        logout: auth.logout
+        logout
       }}
     >
       {/* If it is used as a parent component */}

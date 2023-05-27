@@ -6,7 +6,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const openRecapApp = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
 
-    return chrome.tabs.create({ url: process.env.RECAP_APP_BASE_URL })
+    return chrome.tabs.create({ url: `${process.env.RECAP_APP_BASE_URL}/app/meetings` })
   }
 
   return (

@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
 import { DELETE_ACCOUNT_REQUEST, SUPPORT_REQUEST } from '../../constants/links'
-import { INTEGRATIONS, MEETINGS, SIGNIN } from '../../constants/routes'
+import { ADDONS, MEETINGS, SIGNIN } from '../../constants/routes'
 import { Button } from '../buttons'
 
 import arrowRight from '../../assets/img/arrowRight.svg'
@@ -61,7 +61,7 @@ const PrivateSection = () => {
             <Button className={isActive ? '' : 'bg-white font-semibold text-gray-500'}>Past Meetings</Button>
           )}
         </NavLink>
-        <NavLink to={INTEGRATIONS}>
+        <NavLink to={ADDONS}>
           {({ isActive }) => (
             <Button className={isActive ? '' : 'bg-white font-semibold text-gray-500'}>Integrations</Button>
           )}
@@ -98,14 +98,7 @@ const PrivateSection = () => {
               </Link>
             </div>
             <div className="mb-[20px]">
-              <div
-                onClick={async () => {
-                  await logout()
-
-                  window.location.href = '/'
-                }}
-                className="flex items-center justify-between cursor-pointer"
-              >
+              <div onClick={logout} className="flex items-center justify-between cursor-pointer">
                 <div className="flex gap-[10px] grow">
                   <img src={arrowRight} alt="" className="w-[20px] h-[20px]" />
                   <div className="font-semibold text-[15px]">Sign Out</div>
@@ -135,7 +128,7 @@ const PublicSection = () => {
       <Link to={SIGNIN} className="text-[15px] font-semibold text-gray-500">
         Sign in
       </Link>
-      <a href={process.env.CHROME_WEBSTORE_LINK} target="_blank" rel="noreferrer">
+      <a href={process.env.CHROME_WEBSTORE_LINK} rel="noreferrer">
         <Button>
           <img src={google} alt="" />
           Add to Chrome

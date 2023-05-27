@@ -80,7 +80,7 @@ export * from './utils/browser'
 // HOOKS
 //===========================================================
 
-export * from './hooks/integration'
+export * from './hooks/addons'
 export * from './hooks/meeting'
 export * from './hooks/todos'
 export * from './hooks/highlights'
@@ -90,3 +90,9 @@ export * from './hooks/highlights'
 //===========================================================
 
 export * from './errors/sentry'
+
+//===========================================================
+// CONSTANTS
+//===========================================================
+
+export * from './constants'

@@ -5,7 +5,7 @@ import { Addon, AddonStore, Addons } from '../storage/addons'
 import { UserAddonConfig, UserAddonStore, UserAddons } from '../storage/users/addons'
 import { useErrors } from './error'
 
-export function useIntegrations() {
+export function useAddons() {
   const { user } = useAuthGuard()
   const { error, setError } = useErrors(null)
 
@@ -27,7 +27,7 @@ export function useIntegrations() {
           setLoading(false)
         })
       })
-      .catch((err: Error) => setError({ message: 'An error occurred while fetching your integrations', err }))
+      .catch((err: Error) => setError({ message: 'An error occurred while fetching your addons', err }))
   }, [addonStore, userAddonStore, setError])
 
   const enableAddon = async (id: string, addon: Addon) => {

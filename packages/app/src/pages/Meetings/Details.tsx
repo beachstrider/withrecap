@@ -40,7 +40,7 @@ export default function MeetingDetails() {
       <Layout isLoading={loading}>
         {meeting && !loading && (
           <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">
-            <div className="flex sm:flex-row flex-col items-start sm:gap-[80px] gap-[63px]">
+            <div className="flex sm:flex-row flex-col items-start sm:gap-[80px] gap-[63px] break-all">
               <Info meeting={meeting} />
               <MeetingContent meeting={meeting} />
             </div>

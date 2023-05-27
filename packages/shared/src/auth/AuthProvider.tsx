@@ -1,6 +1,6 @@
+import * as Sentry from '@sentry/browser'
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { Outlet } from 'react-router-dom'
-import * as Sentry from '@sentry/browser'
 
 import { BaseAuthProvider } from '.'
 import { useErrors } from '../hooks/error'
@@ -11,7 +11,6 @@ type AuthProviderContextType = {
   user: User | null
   error: ReturnType<typeof useErrors>['error']
   login: BaseAuthProvider['login']
-  loginWithPopup: BaseAuthProvider['loginWithPopup']
   logout: BaseAuthProvider['logout']
   onAuthStateChanged: BaseAuthProvider['onAuthStateChanged']
 }
@@ -34,9 +33,19 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
   const [token, setToken] = useState<string | null>(null)
   const { error, setError } = useErrors(null)
 
+  const message = 'An error occurred while login'
+
+  const login = async () => {
+    try {
+      await auth.login()
+    } catch (err) {
+      setError({ message, err: err as Error })
+    }
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((u, t) => {
-      if (u === null || t === null) {
+      if (u === null) {
         Sentry.setUser(null)
 
         setUser(null)
@@ -87,8 +96,7 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
         token,
         user,
         error,
-        login: auth.login,
-        loginWithPopup: auth.loginWithPopup,
+        login,
         logout: auth.logout,
         onAuthStateChanged: auth.onAuthStateChanged
       }}

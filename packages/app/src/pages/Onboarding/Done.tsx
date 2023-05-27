@@ -1,29 +1,24 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
-import back from '../../../../assets/img/back.svg'
-import close from '../../../../assets/img/closeDark.svg'
-import forward from '../../../../assets/img/forward.svg'
-import google from '../../../../assets/img/google.svg'
-import house from '../../../../assets/img/house.svg'
-import lock from '../../../../assets/img/lock.svg'
-import navRightUser3dots from '../../../../assets/img/nav-right-user-3dots.png'
-import plus from '../../../../assets/img/plus.svg'
-import refresh from '../../../../assets/img/refresh.svg'
-import star from '../../../../assets/img/star.svg'
+import OnboardingLayout from '../../components/layouts/Onboarding'
+import { MEETINGS } from '../../constants/routes'
 
-export const Done = () => {
-  const closeTab = async () => {
-    await chrome.tabs.create({ url: `${process.env.RECAP_APP_BASE_URL}/app/meetings` })
+import back from '../../assets/img/back_dark.svg'
+import close from '../../assets/img/closeDark.svg'
+import forward from '../../assets/img/forward_dark.svg'
+import google from '../../assets/img/google.svg'
+import house from '../../assets/img/house.svg'
+import lock from '../../assets/img/lock_dark.svg'
+import navRightUser3dots from '../../assets/img/nav-right-user-3dots.png'
+import plus from '../../assets/img/plus_dark.svg'
+import refresh from '../../assets/img/refresh_dark.svg'
+import star from '../../assets/img/star.svg'
 
-    const tab = await chrome.tabs.getCurrent()
-    if (tab?.id) {
-      await chrome.tabs.remove(tab.id)
-    }
-  }
-
+export const OnboardingDone = () => {
   return (
-    <>
-      <h1 className="sm:mb-[64px] mb-[48px]">Pin Recap to Chrome for the best experience</h1>
+    <OnboardingLayout step={3}>
+      <h2 className="font-semibold sm:mb-[64px] mb-[48px]">Pin Recap to Chrome for the best experience</h2>
       <div className="flex justify-center w-full sm:mb-[64px] mb-[48px]">
         <div
           className="relative max-w-[1288px] w-[125%] sm:scale-100 scale-[0.8]"
@@ -78,13 +73,13 @@ export const Done = () => {
         </div>
       </div>
       <div className="flex justify-center">
-        <button
-          onClick={closeTab}
+        <Link
+          to={MEETINGS}
           className={`px-[14px] py-[10px] rounded-[14px] sm:text-[15px] text-[12px] font-semibold bg-gray-950 text-white`}
         >
           Yes, I pinned it!
-        </button>
+        </Link>
       </div>
-    </>
+    </OnboardingLayout>
   )
 }
