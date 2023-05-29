@@ -5,7 +5,7 @@ import * as yup from 'yup'
 
 import { Menu } from '@headlessui/react'
 import { TrashIcon } from '@heroicons/react/20/solid'
-import { type Todo as MeetingTodo, useTodo, toast } from '@recap/shared'
+import { toast, useTodo, type Todo as MeetingTodo } from '@recap/shared'
 
 import dots from '../../../../assets/img/dots.svg'
 import add from '../../../../assets/img/plus.svg'
@@ -13,6 +13,7 @@ import add from '../../../../assets/img/plus.svg'
 interface BaseTodoProps {
   mid: string
   onChange: () => Promise<void>
+  disabled: boolean
 }
 
 interface TodoProps extends BaseTodoProps {
@@ -34,7 +35,7 @@ const schema = yup.object().shape({
     .required('This field is required')
 })
 
-export default function Todo({ todo, onChange, mid, create }: TodoProps | TodoCreateProps) {
+export default function Todo({ todo, onChange, mid, create, disabled }: TodoProps | TodoCreateProps) {
   const { addTodo, deleteTodo, updateTodo, error } = useTodo(mid)
 
   const [editing, setEditing] = useState(false)
@@ -94,14 +95,14 @@ export default function Todo({ todo, onChange, mid, create }: TodoProps | TodoCr
         <button
           type="submit"
           disabled={isSubmitting}
-          className={`inline-flex items-center px-4 py-2 mr-[10px] border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-950 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary`}
+          className={`inline-flex flex-shrink-0 items-center px-4 py-2 mr-[10px] border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-950 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary`}
         >
           Save
         </button>
         <button
           type="button"
           onClick={() => setEditing(false)}
-          className={`inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary`}
+          className={`inline-flex flex-shrink-0 items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary`}
         >
           Cancel
         </button>
@@ -115,12 +116,13 @@ export default function Todo({ todo, onChange, mid, create }: TodoProps | TodoCr
         <input
           type="checkbox"
           checked={todo.completed}
+          disabled={disabled}
           onChange={(e) => onUpdate({ ...todo, completed: e.target.checked })}
         />
         <div className="grow">{todo.text}</div>
         <div>
           <Menu>
-            <Menu.Button className="invisible group-hover:visible">
+            <Menu.Button className={`invisible ${!disabled ? 'group-hover:visible' : ''} `} disabled={disabled}>
               <img src={dots} alt="" />
             </Menu.Button>
             <Menu.Items className="z-[1000] absolute p-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">

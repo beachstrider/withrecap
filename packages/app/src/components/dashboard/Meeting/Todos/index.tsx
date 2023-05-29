@@ -1,4 +1,4 @@
-import { Meeting, toast, useTodos } from '@recap/shared'
+import { Meeting, toast, useAuthGuard, useTodos } from '@recap/shared'
 import React, { useEffect } from 'react'
 
 import Todo from './Todo'
@@ -6,11 +6,13 @@ import Todo from './Todo'
 import greenCheck from '../../../../assets/img/greenCheck.png'
 
 interface TodosProps {
-  mid: Meeting['mid']
+  meeting: Meeting
 }
 
-export default function Todos({ mid }: TodosProps) {
-  // TODO: Handle loading?
+export default function Todos({ meeting: { mid, emails } }: TodosProps) {
+  const {
+    user: { email }
+  } = useAuthGuard()
   const { todos, refresh, error } = useTodos(mid)
 
   useEffect(() => {
@@ -18,6 +20,8 @@ export default function Todos({ mid }: TodosProps) {
       toast.error(error.message, error.err)
     }
   }, [error])
+
+  const disabled = !emails.includes(email)
 
   // const [like, setLike] = useState<1 | -1 | 0>(0)
 
@@ -37,9 +41,9 @@ export default function Todos({ mid }: TodosProps) {
       </div>
       <div className="flex flex-col gap-[20px]">
         {todos.map((todo, key) => (
-          <Todo key={key} mid={mid} todo={todo} onChange={refresh} />
+          <Todo key={key} mid={mid} todo={todo} disabled={disabled} onChange={refresh} />
         ))}
-        <Todo create mid={mid} onChange={refresh} />
+        {!disabled && <Todo create mid={mid} onChange={refresh} disabled={disabled} />}
       </div>
     </div>
   )
