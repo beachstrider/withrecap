@@ -26,13 +26,13 @@ export default function App() {
   const loadingComponent = <LoadingScreen />
 
   const signin = (
-    <AuthProvider provider={GoogleAuthProvider}>
+    <AuthProvider provider={GoogleAuthProvider} onRejected={onNeedAuth}>
       <Signin />
     </AuthProvider>
   )
 
   const register = (
-    <AuthProvider provider={GoogleAuthProvider}>
+    <AuthProvider provider={GoogleAuthProvider} onRejected={onNeedAuth}>
       <OnboardingRegister />
     </AuthProvider>
   )

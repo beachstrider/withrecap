@@ -9,11 +9,14 @@ import { User, UserStore } from '../storage/users'
 type AuthProviderContextType = {
   token: string | null
   user: User | null
+  loading: boolean
   error: ReturnType<typeof useErrors>['error']
   login: BaseAuthProvider['login']
   logout: BaseAuthProvider['logout']
   onAuthStateChanged: BaseAuthProvider['onAuthStateChanged']
+  onRejected: () => void
 }
+
 export const AuthProviderContext = createContext<AuthProviderContextType>({} as AuthProviderContextType)
 
 export const useAuth = () => {
@@ -23,14 +26,16 @@ export const useAuth = () => {
 interface AuthProviderProps {
   provider: new () => BaseAuthProvider
   children?: React.ReactNode
+  onRejected: () => void
 }
 
-export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
+export const AuthProvider = ({ children, provider, onRejected }: AuthProviderProps) => {
   const auth = useMemo(() => new provider(), [provider])
   const userStore = useMemo(() => new UserStore(), [])
 
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
   const { error, setError } = useErrors(null)
 
   const message = 'An error occurred while login'
@@ -40,6 +45,7 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
       await auth.login()
     } catch (err) {
       setError({ message, err: err as Error })
+      onRejected()
     }
   }
 
@@ -51,6 +57,8 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
         setUser(null)
         setToken(null)
         setError(null)
+        setLoading(false)
+
         return
       }
 
@@ -85,6 +93,9 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
           // If we cannot save the user info in the DB, we have to log the user out
           await auth.logout()
         })
+        .finally(() => {
+          setLoading(false)
+        })
     })
 
     return unsubscribe
@@ -95,9 +106,11 @@ export const AuthProvider = ({ children, provider }: AuthProviderProps) => {
       value={{
         token,
         user,
+        loading,
         error,
         login,
         logout: auth.logout,
+        onRejected,
         onAuthStateChanged: auth.onAuthStateChanged
       }}
     >

@@ -124,9 +124,10 @@ const PrivateSection = () => {
 
 const PublicSection = () => {
   return (
-    <div className="flex items-center sm:gap-[20px] gap-[15px]">
-      <Link to={SIGNIN} className="text-[15px] font-semibold text-gray-500">
-        Sign in
+    <div className="flex items-center sm:gap-[18px] gap-[15px]">
+      <Link to={SIGNIN} className="flex items-center gap-2 h-[38px] text-sm px-[11px] font-semibold">
+        <img src={google} alt="" />
+        Sign in with Google
       </Link>
       <a href={process.env.CHROME_WEBSTORE_LINK} rel="noreferrer">
         <Button>
