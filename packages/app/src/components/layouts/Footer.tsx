@@ -29,8 +29,9 @@ export default function Index({ className = '' }) {
             <Link target="_blank" to={SUPPORT_REQUEST} className="block text-[15px] font-semibold text-gray-500">
               Support
             </Link>
-            <Link to={SIGNIN} className="block text-[15px] font-semibold text-gray-500 text-start">
-              Sign in
+            <Link to={SIGNIN} className="flex items-center gap-2 h-[38px] text-sm px-[11px] font-semibold">
+              <img src={google} alt="" />
+              Sign in with Google
             </Link>
           </div>
           <a href={process.env.CHROME_WEBSTORE_LINK} className="sm:ml-[20px]" rel="noreferrer">
