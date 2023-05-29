@@ -10,6 +10,7 @@ import { transferLogout } from '../utils/browser'
 type AuthGuardContextType = {
   token: string | null
   user: User
+  loading: boolean
   error: ReturnType<typeof useErrors>['error']
   logout: BaseAuthProvider['logout']
 }
@@ -32,6 +33,7 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, provider }: 
 
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
   const { error, setError } = useErrors(null)
 
   const message = 'An error occurred while logging out'
@@ -53,6 +55,7 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, provider }: 
         setUser(null)
         setToken(null)
         setError(null)
+        setLoading(false)
 
         onNeedAuth?.()
 
@@ -90,6 +93,9 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, provider }: 
           // If we cannot save the user info in the DB, we have to log the user out
           await auth.logout()
         })
+        .finally(() => {
+          setLoading(false)
+        })
     })
 
     return unsubscribe
@@ -106,6 +112,7 @@ export const AuthGuard = ({ children, loadingComponent, onNeedAuth, provider }: 
       value={{
         token,
         user,
+        loading,
         error,
         logout
       }}

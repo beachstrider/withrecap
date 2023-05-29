@@ -1,11 +1,11 @@
-import { toast, transferLogin, useAuth } from '@recap/shared'
+import { LoadingScreen, toast, transferLogin, useAuth } from '@recap/shared'
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { MEETINGS } from '../constants/routes'
 
 export default function Signin() {
-  const { user, login, error } = useAuth()
+  const { user, login, loading, error } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -15,15 +15,15 @@ export default function Signin() {
   }, [error])
 
   useEffect(() => {
-    if (user) {
-      transferLogin()
-      navigate(MEETINGS)
+    if (!loading) {
+      if (user) {
+        transferLogin()
+        navigate(MEETINGS)
+      } else {
+        login()
+      }
     }
-  }, [user, navigate])
+  }, [user, loading, login, navigate])
 
-  return (
-    <div className="flex items-center justify-center w-screen h-screen">
-      <button onClick={login} className="google-login-button"></button>
-    </div>
-  )
+  return <LoadingScreen />
 }

@@ -8,7 +8,7 @@ import { ONBOARDING_ADDON, PRIVACY_POLICY, TERMS_CONDITIONS } from '../../consta
 import google from '../../assets/img/google.svg'
 
 export const OnboardingRegister = () => {
-  const { user, login, error } = useAuth()
+  const { user, loading, login, error } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export const OnboardingRegister = () => {
   }, [error])
 
   return (
-    <OnboardingLayout step={1}>
+    <OnboardingLayout step={1} loading={loading}>
       <h2 className="font-semibold sm:mb-[16px] mb-[12px]">Create your account</h2>
       <p className="sm:text-[17px] text-[12px] sm:mb-[72px] mb-[54px] text-gray-500">
         Continue with Google to get started.
