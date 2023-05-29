@@ -6,10 +6,10 @@ import { Highlight } from './Highlight'
 import tetragram from '../../../../assets/img/tetragram.svg'
 
 interface HighlightsProps {
-  mid: Meeting['mid']
+  meeting: Meeting
 }
 
-export default function Highlights({ mid }: HighlightsProps) {
+export default function Highlights({ meeting: { mid } }: HighlightsProps) {
   // TODO: Handle loading?
   const { highlights, error } = useHighlights(mid)
 
