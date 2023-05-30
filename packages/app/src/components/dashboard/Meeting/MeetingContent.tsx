@@ -9,25 +9,25 @@ import Todos from './Todos'
 import Transcript from './Transcript'
 
 export default function MeetingContent({ meeting }: { meeting: Meeting }) {
+  // Meeting is ended
   if (meeting.ended) {
-    if (meeting.transcript?.length) {
-      // Meeting was processed and has a conversation
-      return (
-        <div className="grow">
-          <Summary meeting={meeting} />
-          <Todos meeting={meeting} />
-          <Highlights meeting={meeting} />
-          <Transcript meeting={meeting} />
-        </div>
-      )
-    } else {
+    if (meeting.processed) {
+      // Meeting is processed
       if (meeting.conversation.length > 0) {
-        // Meeting is being processed
-        return <Processing meeting={meeting} />
+        return (
+          <div className="grow">
+            <Summary meeting={meeting} />
+            <Todos meeting={meeting} />
+            <Highlights meeting={meeting} />
+            <Transcript meeting={meeting} />
+          </div>
+        )
       } else {
         // Meeting has no conversation
         return <div className="grow">This meeting has no conversation.</div>
       }
+    } else {
+      return <Processing meeting={meeting} />
     }
   }
 

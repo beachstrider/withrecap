@@ -1,4 +1,4 @@
-import { Conversation, MeetingMetadata } from '@recap/shared'
+import { Conversation, MeetingMetadata, Message } from '@recap/shared'
 
 import { approximateSpeechTime } from '../../utils/speech'
 
@@ -10,7 +10,7 @@ export class TranscriptService {
   }
 
   public toString(): string {
-    return this.transcript.map((m) => `${m.speaker}: ${m.text}`).join('\n')
+    return this.transcript.map((m: Message) => `${m.speaker}: ${m.text}`).join('\n')
   }
 
   public metadata(): MeetingMetadata['percentage'] {

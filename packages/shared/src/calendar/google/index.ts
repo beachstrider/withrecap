@@ -73,7 +73,8 @@ export class GoogleCalendar {
       title: event.summary || 'Untitled',
       description: event.description || 'This meeting has no description',
       conversation: [],
-      ended: false
+      ended: false,
+      processed: false
     }
   }
 }

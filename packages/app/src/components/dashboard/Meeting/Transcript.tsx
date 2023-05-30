@@ -11,7 +11,7 @@ interface Props {
   meeting: Meeting
 }
 
-export default function Transcript({ meeting: { start, end, transcript, attendees } }: Props) {
+export default function Transcript({ meeting: { start, end, conversation, attendees } }: Props) {
   const [like, setLike] = useState(0)
 
   function onSetLike(v: 1 | -1 | 0) {
@@ -34,7 +34,7 @@ export default function Transcript({ meeting: { start, end, transcript, attendee
         </div>
       </div>
       <div className="flex flex-col sm:gap-[40px] gap-[30px]">
-        {(transcript || []).map((msg, key) => (
+        {(conversation || []).map((msg, key) => (
           <TranscriptItem key={key} msg={msg} attendees={Object.values(attendees)} />
         ))}
       </div>

@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "clean": "rimraf dist",
-    "prestart": "yarn clean && yarn workspace @recap/shared build ",
+    "prestart": "yarn clean && yarn workspace @recap/shared build",
     "start": "yarn parcel build src/index.ts",
     "poststart": "node dist/index.js"
   },

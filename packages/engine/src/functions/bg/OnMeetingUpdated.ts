@@ -74,7 +74,8 @@ export const OnMeetingUpdated = functions
               summary: summary || '',
               todos: todos,
               highlights: highlights,
-              metadata: metadata
+              metadata: metadata,
+              processed: true
             },
             { merge: true }
           )
