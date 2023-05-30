@@ -1,21 +1,16 @@
 import { Conversation, MeetingMetadata } from '@recap/shared'
 
-import { sanitize } from '../../utils/sanitize'
 import { approximateSpeechTime } from '../../utils/speech'
 
 export class TranscriptService {
   private transcript: Conversation
 
-  constructor(conversation: Conversation) {
-    this.transcript = sanitize(conversation, 0.8)
+  constructor(_transcript: Conversation) {
+    this.transcript = _transcript
   }
 
   public toString(): string {
     return this.transcript.map((m) => `${m.speaker}: ${m.text}`).join('\n')
-  }
-
-  public toTranscript(): Conversation {
-    return this.transcript
   }
 
   public metadata(): MeetingMetadata['percentage'] {
