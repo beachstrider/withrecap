@@ -84,6 +84,7 @@ export class GoogleAuthProvider implements BaseAuthProvider {
 
 export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
   private firebase: FirebaseApp
+  public identityToken: string | null = null
   public auth: Auth
 
   constructor() {
@@ -91,22 +92,10 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
     this.auth = getAuth(this.firebase)
   }
 
-  public getIdentityToken = async () => {
-    const { identityToken } = await chrome.storage.sync.get()
-
-    return identityToken
-  }
-
-  private setIdentityToken = async (identityToken: string | null) => {
-    await chrome.storage.sync.set({ identityToken })
-
-    return identityToken
-  }
-
-  private fetchIdentityToken = async () => {
+  public createIdentityToken = async () => {
     return new Promise<string>(async (resolve, reject) => {
       chrome.identity.getAuthToken({ interactive: false }, async (token) => {
-        await this.setIdentityToken(token)
+        this.identityToken = token
 
         if (chrome.runtime.lastError || !token) {
           return reject(`SSO ended with an error: ${JSON.stringify(chrome.runtime.lastError)}`)
@@ -133,13 +122,11 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
       if (user) {
         user = this._addMissingData(user)
 
-        let idendityToken = await this.getIdentityToken()
-
-        if (!idendityToken) {
-          idendityToken = await this.fetchIdentityToken()
+        if (!this.identityToken) {
+          await this.createIdentityToken()
         }
 
-        callback(user, idendityToken)
+        callback(user, this.identityToken)
       } else {
         callback(user, null)
       }
@@ -149,7 +136,7 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
   public login = async (customToken: string) => {
     try {
       await this.logout()
-      await this.fetchIdentityToken()
+      await this.createIdentityToken()
       await signInWithCustomToken(this.auth, customToken)
     } catch (err) {
       const error = err as AuthError
@@ -159,7 +146,7 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
   }
 
   public logout = async () => {
+    this.identityToken = null
     await this.auth.signOut()
-    await this.setIdentityToken(null)
   }
 }

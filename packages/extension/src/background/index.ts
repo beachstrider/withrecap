@@ -26,13 +26,11 @@ class ChromeBackgroundService {
   }
 
   private async getMeetingDetails(meetingId: string): Promise<Meeting | undefined> {
-    const identityToken = await this.google.getIdentityToken()
-
-    if (!identityToken) {
+    if (!this.google.identityToken) {
       throw Error('an error must have occurred while authenticating, no access token could be fetched')
     }
 
-    const calendar = new GoogleCalendar(identityToken)
+    const calendar = new GoogleCalendar(this.google.identityToken)
     const meetingDetails = await calendar.getMeetingDetails(meetingId)
 
     if (!meetingDetails) {
