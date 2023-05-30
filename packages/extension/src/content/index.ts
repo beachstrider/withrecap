@@ -11,37 +11,9 @@ const SELECTOR_SPEAKER = "div[class='zs7s8d jxFHg']"
 const SELECTOR_TEXT = "div[jsname='YSxPC']"
 const SELECTOR_END_CALL = "div[jscontroller='m1IMT']"
 
-const wait = async (time: number) => {
-  await new Promise((resolve) => setTimeout(resolve, time))
-}
-
-const MAX_RETRY = 10
-
-const retry = async (callback: () => Promise<any>, time: number) => {
-  let retryCount = 0
-  let retry = true
-
-  while (retry) {
-    try {
-      await callback()
-
-      retry = false
-    } catch (err) {
-      retryCount++
-
-      // Aborting
-      if (retryCount > MAX_RETRY) {
-        throw err
-      }
-
-      console.error('An error occurred, retrying soon...', err)
-      await wait(time)
-    }
-  }
-}
-
 class GoogleMeetsService {
   private callBar: HTMLDivElement | null = null
+  private callStarted = false
 
   private getMeetingId(): string {
     return window.location.pathname.slice(1)
@@ -111,7 +83,9 @@ class GoogleMeetsService {
     const docObserver = new MutationObserver(async (_mutations: MutationRecord[], observer: MutationObserver) => {
       this.callBar = document.body.querySelector(SELECTOR_CALL_BAR)
 
-      if (this.callBar) {
+      if (this.callBar && !this.callStarted) {
+        this.callStarted = true
+
         const { isEnabled, error } = await chrome.runtime.sendMessage<any, any>({
           addonId: 'meet',
           type: ExtensionMessages.AddonEnabled
@@ -142,7 +116,7 @@ class GoogleMeetsService {
         }
 
         // click on the cc button and start transcribing
-        await retry(this.startTranscribing.bind(this), 2000)
+        await this.startTranscribing()
       }
     })
 
@@ -199,8 +173,7 @@ const main = async () => {
 
   try {
     const meetingService = new GoogleMeetsService()
-
-    await retry(meetingService.prepareListener.bind(meetingService), 1000)
+    meetingService.prepareListener()
   } catch (err) {
     Sentry.captureException(err)
   }
