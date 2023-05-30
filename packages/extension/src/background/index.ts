@@ -26,11 +26,8 @@ class ChromeBackgroundService {
   }
 
   private async getMeetingDetails(meetingId: string): Promise<Meeting | undefined> {
-    const identityToken = await this.google.getIdentityToken()
-
-    if (!identityToken) {
-      throw Error('an error must have occurred while authenticating, no access token could be fetched')
-    }
+    // Get a new identity token whenever joining a meeting as the token expires in 1hr.
+    const identityToken = await this.google.refreshIdentityToken()
 
     const calendar = new GoogleCalendar(identityToken)
     const meetingDetails = await calendar.getMeetingDetails(meetingId)
@@ -165,7 +162,9 @@ class ChromeBackgroundService {
     try {
       await this.google.logout()
     } catch (err) {
-      throw new Error('An error occurred while extension logout', { cause: err })
+      throw new Error('An error occurred while extension logout', {
+        cause: err
+      })
     }
   }
 
@@ -188,7 +187,11 @@ class ChromeBackgroundService {
 
             return resolve({ isEnabled: !!addon })
           } catch (err) {
-            reject(new Error('An error occurred while fetching user addons', { cause: err }))
+            reject(
+              new Error('An error occurred while fetching user addons', {
+                cause: err
+              })
+            )
           }
         })
         .catch((err) => {
@@ -197,7 +200,11 @@ class ChromeBackgroundService {
     })
   }
 
-  async processMeetingState(): Promise<{ recording: boolean; meetingDetails: Meeting; error: unknown }> {
+  async processMeetingState(): Promise<{
+    recording: boolean
+    meetingDetails: Meeting
+    error: unknown
+  }> {
     const { recording, meetingDetails, error } = await chrome.storage.session.get([
       'recording',
       'meetingDetails',
@@ -223,7 +230,9 @@ class ChromeBackgroundService {
 
       return
     } catch (err) {
-      throw new Error('An error occurred while processing new message', { cause: err })
+      throw new Error('An error occurred while processing new message', {
+        cause: err
+      })
     }
   }
 
@@ -279,7 +288,9 @@ backgroundService.startListener()
 // Navigate to app onboarding the first time the extension gets installed
 chrome.runtime.onInstalled.addListener((object) => {
   if (object.reason === chrome.runtime.OnInstalledReason.INSTALL) {
-    chrome.tabs.create({ url: `${process.env.RECAP_APP_BASE_URL}/onboarding/register` })
+    chrome.tabs.create({
+      url: `${process.env.RECAP_APP_BASE_URL}/onboarding/register`
+    })
   }
 })
 

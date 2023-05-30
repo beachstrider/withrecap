@@ -46,6 +46,7 @@ export const AuthProvider = ({ children, provider, onRejected }: AuthProviderPro
     } catch (err) {
       setError({ message, err: err as Error })
       onRejected()
+      setLoading(false)
     }
   }
 

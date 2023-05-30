@@ -83,44 +83,38 @@ export class GoogleAuthProvider implements BaseAuthProvider {
 }
 
 export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
-  private firebase: FirebaseApp
   public auth: Auth
+
+  private firebase: FirebaseApp
 
   constructor() {
     this.firebase = firebase
     this.auth = getAuth(this.firebase)
   }
 
-  public getIdentityToken = async () => {
-    const { identityToken } = await chrome.storage.sync.get()
+  public refreshIdentityToken = async () => {
+    return new Promise<string>(async (resolve, reject) => {
+      // NOTE: we have to remove old token when getting a new one
+      await this.clearIdentityToken()
 
-    return identityToken
-  }
+      chrome.identity.getAuthToken({ interactive: false }, async (identityToken) => {
+        if (chrome.runtime.lastError || !identityToken) {
+          return reject(`SSO ended with an error: ${JSON.stringify(chrome.runtime.lastError)}`)
+        }
 
-  private setIdentityToken = async (identityToken: string | null) => {
-    await chrome.storage.sync.set({ identityToken })
+        await chrome.storage.sync.set({ identityToken })
 
-    return identityToken
-  }
-
-  private removeIdentityToken = async (token: string) => {
-    return new Promise(async (resolve) => {
-      chrome.identity.removeCachedAuthToken({ token }, () => {
-        resolve(true)
+        resolve(identityToken)
       })
     })
   }
 
-  private fetchIdentityToken = async () => {
-    return new Promise<string>(async (resolve, reject) => {
-      chrome.identity.getAuthToken({ interactive: false }, async (token) => {
-        await this.setIdentityToken(token)
+  private clearIdentityToken = async () => {
+    return new Promise(async (resolve) => {
+      chrome.identity.clearAllCachedAuthTokens(async () => {
+        await chrome.storage.sync.remove('identityToken')
 
-        if (chrome.runtime.lastError || !token) {
-          return reject(`SSO ended with an error: ${JSON.stringify(chrome.runtime.lastError)}`)
-        }
-
-        resolve(token)
+        resolve(true)
       })
     })
   }
@@ -141,13 +135,9 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
       if (user) {
         user = this._addMissingData(user)
 
-        let idendityToken = await this.getIdentityToken()
+        const identityToken = await this.refreshIdentityToken()
 
-        if (!idendityToken) {
-          idendityToken = await this.fetchIdentityToken()
-        }
-
-        callback(user, idendityToken)
+        callback(user, identityToken)
       } else {
         callback(user, null)
       }
@@ -157,7 +147,7 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
   public login = async (customToken: string) => {
     try {
       await this.logout()
-      await this.fetchIdentityToken()
+
       await signInWithCustomToken(this.auth, customToken)
     } catch (err) {
       const error = err as AuthError
@@ -167,14 +157,7 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
   }
 
   public logout = async () => {
-    const token = await this.getIdentityToken()
-
-    if (token) {
-      await this.removeIdentityToken(token)
-    }
-
-    await this.setIdentityToken(null)
-
+    await this.clearIdentityToken()
     await this.auth.signOut()
   }
 }
