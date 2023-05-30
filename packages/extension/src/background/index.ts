@@ -1,5 +1,4 @@
 import {
-  ConversationStore,
   GoogleCalendar,
   GoogleIdentityAuthProvider,
   initSentry,
@@ -7,6 +6,7 @@ import {
   MeetingStore,
   Message,
   RequestTypes,
+  sanitize,
   UserAddonStore
 } from '@recap/shared'
 import * as Sentry from '@sentry/browser'
@@ -15,15 +15,13 @@ import { ExtensionMessages } from '../common'
 
 class ChromeBackgroundService {
   private meetingStore: MeetingStore
-  private conversationStore: ConversationStore
   private google: GoogleIdentityAuthProvider
-  private messages: Message[]
+  private conversation: Message[]
 
   constructor() {
     this.meetingStore = new MeetingStore()
-    this.conversationStore = new ConversationStore()
     this.google = new GoogleIdentityAuthProvider()
-    this.messages = []
+    this.conversation = []
   }
 
   private async getMeetingDetails(meetingId: string): Promise<Meeting | undefined> {
@@ -220,7 +218,7 @@ class ChromeBackgroundService {
         message.speaker = this.google.auth.currentUser.displayName || this.google.auth.currentUser.email || 'Unknown'
       }
 
-      this.messages.push(message)
+      this.conversation.push(message)
 
       return
     } catch (err) {
@@ -254,12 +252,13 @@ class ChromeBackgroundService {
     await chrome.storage.session.remove(['recording', 'meetingDetails', 'tabId', 'error'])
 
     try {
-      await this.conversationStore.add(meetingId, this.messages)
-      await this.meetingStore.update(meetingId, { ended: true })
+      const transcript = sanitize(this.conversation, 0.8)
+
+      await this.meetingStore.update(meetingId, { transcript, ended: true })
     } catch (err) {
       throw new Error('An error occurred while updating meeting on meeting ended', { cause: err })
     } finally {
-      this.messages = []
+      this.conversation = []
     }
   }
 }
