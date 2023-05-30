@@ -17,11 +17,13 @@ class ChromeBackgroundService {
   private meetingStore: MeetingStore
   private conversationStore: ConversationStore
   private google: GoogleIdentityAuthProvider
+  private messages: Message[]
 
   constructor() {
     this.meetingStore = new MeetingStore()
     this.conversationStore = new ConversationStore()
     this.google = new GoogleIdentityAuthProvider()
+    this.messages = []
   }
 
   private async getMeetingDetails(meetingId: string): Promise<Meeting | undefined> {
@@ -218,7 +220,9 @@ class ChromeBackgroundService {
         message.speaker = this.google.auth.currentUser.displayName || this.google.auth.currentUser.email || 'Unknown'
       }
 
-      return this.conversationStore.add(meetingId, message)
+      this.messages.push(message)
+
+      return
     } catch (err) {
       throw new Error('An error occurred while processing new message', { cause: err })
     }
@@ -250,9 +254,12 @@ class ChromeBackgroundService {
     await chrome.storage.session.remove(['recording', 'meetingDetails', 'tabId', 'error'])
 
     try {
+      await this.conversationStore.add(meetingId, this.messages)
       await this.meetingStore.update(meetingId, { ended: true })
     } catch (err) {
       throw new Error('An error occurred while updating meeting on meeting ended', { cause: err })
+    } finally {
+      this.messages = []
     }
   }
 }
