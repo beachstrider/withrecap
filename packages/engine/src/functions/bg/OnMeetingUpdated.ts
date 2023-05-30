@@ -39,11 +39,11 @@ export const OnMeetingUpdated = functions
       if (oldValue.ended === false && newValue.ended === true) {
         functions.logger.debug('meeting ended, generating summary, todos, and highlights...')
 
-        if (!newValue.transcript) {
+        if (!newValue.conversation) {
           return functions.logger.warn('meeting transcript is empty, skipping processing...')
         }
 
-        const transcript = new TranscriptService(newValue.transcript)
+        const transcript = new TranscriptService(newValue.conversation)
         const meetingSummary = new MeetingSummary(openai, transcript)
         const meetingTodos = new MeetingTodos(openai, transcript)
         const meetingHighlights = new MeetingHighlights(openai, transcript)

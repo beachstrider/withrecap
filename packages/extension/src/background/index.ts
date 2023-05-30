@@ -1,4 +1,5 @@
 import {
+  Conversation,
   GoogleCalendar,
   GoogleIdentityAuthProvider,
   initSentry,
@@ -16,7 +17,7 @@ import { ExtensionMessages } from '../common'
 class ChromeBackgroundService {
   private meetingStore: MeetingStore
   private google: GoogleIdentityAuthProvider
-  private conversation: Message[]
+  private conversation: Conversation
 
   constructor() {
     this.meetingStore = new MeetingStore()
@@ -252,9 +253,9 @@ class ChromeBackgroundService {
     await chrome.storage.session.remove(['recording', 'meetingDetails', 'tabId', 'error'])
 
     try {
-      const transcript = sanitize(this.conversation, 0.8)
+      const conversation = sanitize(this.conversation, 0.8)
 
-      await this.meetingStore.update(meetingId, { transcript, ended: true })
+      await this.meetingStore.update(meetingId, { conversation, ended: true })
     } catch (err) {
       throw new Error('An error occurred while updating meeting on meeting ended', { cause: err })
     } finally {

@@ -5,8 +5,8 @@ import { approximateSpeechTime } from '../../utils/speech'
 export class TranscriptService {
   private transcript: Conversation
 
-  constructor(_transcript: Conversation) {
-    this.transcript = _transcript
+  constructor(conversation: Conversation) {
+    this.transcript = conversation
   }
 
   public toString(): string {
