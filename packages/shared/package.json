@@ -9,7 +9,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "start": "yarn run -T tsc --watch",
-    "perbuild": "yarn clean",
+    "prebuild": "yarn clean",
     "build": "yarn run -T tsc --build"
   },
   "dependencies": {
