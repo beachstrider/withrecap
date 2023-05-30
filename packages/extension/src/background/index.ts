@@ -26,11 +26,13 @@ class ChromeBackgroundService {
   }
 
   private async getMeetingDetails(meetingId: string): Promise<Meeting | undefined> {
-    if (!this.google.identityToken) {
+    const identityToken = await this.google.getIdentityToken()
+
+    if (!identityToken) {
       throw Error('an error must have occurred while authenticating, no access token could be fetched')
     }
 
-    const calendar = new GoogleCalendar(this.google.identityToken)
+    const calendar = new GoogleCalendar(identityToken)
     const meetingDetails = await calendar.getMeetingDetails(meetingId)
 
     if (!meetingDetails) {
@@ -252,6 +254,7 @@ class ChromeBackgroundService {
 
     try {
       const conversation = sanitize(this.conversation, 0.8)
+      console.debug(`transcription is generated and sanitized: ${conversation}`)
 
       await this.meetingStore.update(meetingId, { conversation, ended: true })
     } catch (err) {
