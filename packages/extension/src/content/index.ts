@@ -11,6 +11,10 @@ const SELECTOR_SPEAKER = "div[class='zs7s8d jxFHg']"
 const SELECTOR_TEXT = "div[jsname='YSxPC']"
 const SELECTOR_END_CALL = "div[jscontroller='m1IMT']"
 
+const wait = async (time: number) => {
+  await new Promise((resolve) => setTimeout(resolve, time))
+}
+
 class GoogleMeetsService {
   private callBar: HTMLDivElement | null = null
   private callStarted = false
@@ -85,6 +89,8 @@ class GoogleMeetsService {
 
       if (this.callBar && !this.callStarted) {
         this.callStarted = true
+
+        await wait(2000)
 
         const { isEnabled, error } = await chrome.runtime.sendMessage<any, any>({
           addonId: 'meet',
