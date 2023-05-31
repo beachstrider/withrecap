@@ -76,7 +76,6 @@ export * from './utils/time'
 export * from './utils/string'
 export * from './utils/browser'
 export * from './utils/sanitize'
-export * from './utils/speech'
 
 //===========================================================
 // HOOKS
