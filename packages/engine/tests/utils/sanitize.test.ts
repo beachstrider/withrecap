@@ -1,7 +1,5 @@
+import { Conversation, sanitize } from '@recap/shared'
 import path from 'path'
-import { Conversation } from '@recap/shared'
-
-import { sanitize } from '../../src/utils/sanitize'
 
 import transcript from './testdata/transcript.json'
 
