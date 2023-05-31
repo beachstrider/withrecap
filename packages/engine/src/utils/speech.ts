@@ -1,4 +1,6 @@
-import { normalize } from '.'
+const normalize = (str: string): string => {
+  return str.toLowerCase().replace(/[^\w\s]/g, '')
+}
 
 /**
  * Approximates the time in millisecond it took a speaker to say a sentence

@@ -1,4 +1,4 @@
-import { MeetingStore, Meeting } from '@recap/shared'
+import { Meeting, MeetingStore } from '@recap/shared'
 
 import conversation from './data/meetings/conversation.json'
 
@@ -22,9 +22,10 @@ const meeting = async () => {
     start: '2023-04-16T12:00:00-04:00',
     end: '2023-04-16T14:00:00-04:00',
     link: 'https://meet.google.com/jva-fbxb-jca',
-    conversation: conversation,
-    description: "Let's discuss the onboarding process and all.",
-    ended: false
+    conversation,
+    description: "Let's discuss the marketing and all.",
+    ended: true,
+    processed: false
   }
 
   return store.create(newMeeting.mid, newMeeting)

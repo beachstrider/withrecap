@@ -1,6 +1,6 @@
-import { Conversation } from '@recap/shared'
+import { Conversation } from '../storage/meetings/conversation'
 
-import { includes, normalize, similarity } from '.'
+import { includes, normalize, similarity } from './string'
 
 /**
  * Removes duplicates from a list of messages in order to have a readable and meaningful transcript.

@@ -4,13 +4,13 @@ import { formatInTimeZone } from 'date-fns-tz'
 import * as functions from 'firebase-functions'
 
 import { db, mail as mailgun, openai, settings } from '../../config'
+import { MeetingHighlights } from '../../services/highlights'
 import { MailService, Templates } from '../../services/mail'
 import { MeetingService } from '../../services/meeting'
 import { MeetingSummary } from '../../services/summary'
+import { MeetingTodos } from '../../services/todos'
 import { TranscriptService } from '../../services/transcript'
 import { SentryWrapper } from '../../utils/sentry'
-import { MeetingTodos } from '../../services/todos'
-import { MeetingHighlights } from '../../services/highlights'
 
 export const DEFAULT_TIMEZONE = 'America/Montreal'
 
@@ -39,8 +39,8 @@ export const OnMeetingUpdated = functions
       if (oldValue.ended === false && newValue.ended === true) {
         functions.logger.debug('meeting ended, generating summary, todos, and highlights...')
 
-        if (newValue.conversation.length === 0) {
-          return functions.logger.warn('meeting conversation is empty, skipping processing...')
+        if (!newValue.conversation) {
+          return functions.logger.warn('meeting transcript is empty, skipping processing...')
         }
 
         const transcript = new TranscriptService(newValue.conversation)
@@ -61,7 +61,7 @@ export const OnMeetingUpdated = functions
 
           const metadata: MeetingMetadata = {
             ...meetingService.metadata(),
-            percentage: percentage
+            percentage
           }
 
           functions.logger.debug('metadata generated')
@@ -72,10 +72,10 @@ export const OnMeetingUpdated = functions
           await change.after.ref.set(
             {
               summary: summary || '',
-              transcript: transcript.toTranscript(),
               todos: todos,
               highlights: highlights,
-              metadata: metadata
+              metadata: metadata,
+              processed: true
             },
             { merge: true }
           )

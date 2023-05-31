@@ -1,5 +1,5 @@
-export { OnMeetingUpdated } from './functions/background/OnMeetingUpdated'
-export { OnUserCreated } from './functions/background/OnUserCreated'
+export { OnMeetingUpdated } from './functions/bg/OnMeetingUpdated'
+export { OnUserCreated } from './functions/bg/OnUserCreated'
 export { BackupFirestore } from './functions/cron/Backup'
 export { CreateAuthToken } from './functions/https/CreateAuthToken'
 export { SendInviteEmails } from './functions/https/SendInviteEmails'

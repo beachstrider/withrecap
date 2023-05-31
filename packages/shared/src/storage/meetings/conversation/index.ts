@@ -1,4 +1,4 @@
-import { collection, doc, updateDoc, CollectionReference, DocumentData, arrayUnion } from 'firebase/firestore/lite'
+import { CollectionReference, DocumentData, arrayUnion, collection, doc, updateDoc } from 'firebase/firestore/lite'
 
 import { firestore } from '../../firestore'
 
@@ -18,7 +18,7 @@ export class ConversationStore {
     this._db = collection(firestore, 'meetings')
   }
 
-  public async add(mid: string, message: Message) {
-    return updateDoc(doc(this._db, mid), { conversation: arrayUnion(message) })
+  public async add(mid: string, messages: Message[]) {
+    return updateDoc(doc(this._db, mid), { conversation: arrayUnion(...messages) })
   }
 }
