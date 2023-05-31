@@ -1,6 +1,6 @@
 {
   "name": "recap",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Meeting notes, on autopilot. Recap automatically takes notes in Google Meet, so you can focus on getting things done.",
   "private": true,
   "scripts": {
