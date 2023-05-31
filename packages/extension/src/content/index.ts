@@ -25,7 +25,7 @@ class GoogleMeetsService {
 
   private enableCaption(ccDiv: HTMLDivElement, callDiv: HTMLDivElement): void {
     const isHidden = ccDiv.style.display === 'none'
-    console.debug('found caption div - checking if hidden... ', isHidden)
+    console.debug('found caption div - checking if hidden...', isHidden)
     if (isHidden) {
       const ccButton = callDiv.querySelector<HTMLButtonElement>(SELECTOR_CC_BUTTON)
       if (ccButton) {
