@@ -19,6 +19,8 @@ export const transferLogin = async () => {
     return
   }
 
+  console.debug('send customToken to extension - ', process.env.EXTENSION_ID)
+
   try {
     chrome.runtime.sendMessage(process.env.EXTENSION_ID!, { type: RequestTypes.LOGIN, token }, ({ err }) => {
       if (err) {
