@@ -90,7 +90,7 @@ class GoogleMeetsService {
       if (this.callBar && !this.callStarted) {
         this.callStarted = true
 
-        await wait(2000)
+        await wait(3000)
 
         const { isEnabled, error } = await chrome.runtime.sendMessage<any, any>({
           addonId: 'meet',

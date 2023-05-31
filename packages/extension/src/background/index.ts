@@ -23,6 +23,8 @@ class ChromeBackgroundService {
     this.meetingStore = new MeetingStore()
     this.google = new GoogleIdentityAuthProvider()
     this.conversation = []
+
+    this.google.onAuthStateChanged(() => true)
   }
 
   private async getMeetingDetails(meetingId: string): Promise<Meeting | undefined> {
@@ -262,8 +264,9 @@ class ChromeBackgroundService {
     await chrome.storage.session.remove(['recording', 'meetingDetails', 'tabId', 'error'])
 
     try {
+      console.debug(`transcription is generated`, this.conversation)
       const conversation = sanitize(this.conversation, 0.8)
-      console.debug(`transcription is generated and sanitized`, conversation)
+      console.debug(`transcription is sanitized`, conversation)
 
       await this.meetingStore.update(meetingId, { conversation, ended: true })
     } catch (err) {
