@@ -8,7 +8,7 @@
     "eslint": "eslint ./packages --ext .ts,.tsx",
     "prettier": "prettier --check \"./packages/**/*.{ts,tsx,html,md}\" \"!**/*.d.ts\"",
     "prettier:fix": "prettier --write \"./packages/**/*.{ts,tsx,html,md}\" \"!**/*.d.ts\"",
-    "test": "jest -c tests/jest.config.ts"
+    "test": "jest -c tests/jest.config.ts --passWithNoTests"
   },
   "workspaces": [
     "packages/*"
