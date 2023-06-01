@@ -4,7 +4,7 @@ const config: Config.InitialOptions = {
   preset: 'ts-jest',
   projects: [
     {
-      rootDir: 'packages/*',
+      rootDir: 'packages/engine',
       testMatch: ['<rootDir>/tests/**/*.test.ts'],
       displayName: { name: 'Engine', color: 'green' },
       testEnvironment: 'node',
