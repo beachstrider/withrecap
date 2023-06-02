@@ -1,49 +1,108 @@
-import { Conversation } from '../storage/meetings/conversation'
-
-import { includes, normalize, similarity } from './string'
+import { Conversation, Message } from '../storage/meetings/conversation'
+import { alphabets, normalize } from './string'
 
 /**
  * Removes duplicates from a list of messages in order to have a readable and meaningful transcript.
- * @param transcript The list of messages to sanitize
- * @param similarityFactor At which point should we consider two messages to be different ones. Note a similarity factor of 0 means that two messages in the transcript are entirely different and 1 means they are the same message
- * @returns
  */
-export const sanitize = (transcript: Conversation, similarityFactor: number = 0.8): Conversation => {
-  const result: Conversation = []
 
-  for (let i = 0; i < transcript.length; i++) {
-    const msgA = transcript[i]
-    const msgB = transcript[i + 1]
+export const sanitize = (input: Conversation): Conversation => {
+  const patternLength = 70
+
+  let differentTextAll = ''
+
+  const output: Conversation = []
+
+  // Loop each message of entire conversation
+  for (let i = 0; i < input.length - 1; i++) {
+    const messageA = input[i]
+    const messageB = input[i + 1]
+
+    const normalizedA = normalize(messageA.text)
+
+    const alphabetedA = alphabets(messageA.text)
+    const alphabetedB = alphabets(messageB.text)
+
+    const patternText = messageB.text.substring(0, patternLength)
+    const normalizedPatternText = normalize(patternText)
 
     // If speaker or text is empty, skip
-    if (!msgA.speaker.trim() || !msgA.text.trim()) {
+    if (!messageA.speaker.trim() || !messageA.text.trim()) {
       continue
     }
 
-    // We are at the last message, we can then include it to the transcript
-    if (i + 1 >= transcript.length) {
-      const lastMessage = transcript[i]
-      result.push(lastMessage)
+    // If not the last loop
+    if (i !== input.length - 2) {
+      // If this speaker is same as the next speaker
+      if (messageA.speaker === messageB.speaker) {
+        const splits = normalizedA.split(normalizedPatternText)
+        // Exceptions in difference; ex: 'Hi', 'Hi, I am'
+        // Here 'Hi' is not a real difference
+        if (splits.length !== 1 || !alphabetedB.startsWith(alphabetedA)) {
+          const normalizedDifferentText = splits[0]
+          differentTextAll += messageA.text.substring(0, normalizedDifferentText.length)
+        }
+      }
+      // If the next speaker is different from this speaker
+      else {
+        differentTextAll += messageA.text
 
-      continue
+        const messageOfThisSpeaker = {
+          language: messageA.language,
+          speaker: messageA.speaker,
+          text: differentTextAll,
+          timestamp: messageA.timestamp
+        }
+
+        output.push(messageOfThisSpeaker)
+        differentTextAll = ''
+      }
     }
+    // If the last loop
+    else {
+      // If this speaker is same as the next speaker
+      if (messageA.speaker === messageB.speaker) {
+        const splits = normalizedA.split(normalizedPatternText)
+        const normalizedDifferentText = splits[0]
+        differentTextAll += messageA.text.substring(0, normalizedDifferentText.length) + messageB.text
 
-    // If the next message is from someone else, we can
-    // include the current message to the transcript
-    if (msgA.speaker !== msgB.speaker) {
-      result.push(msgA)
+        const messageOfThisSpeaker: Message = {
+          language: messageA.language,
+          speaker: messageA.speaker,
+          text: differentTextAll,
+          timestamp: messageA.timestamp
+        }
 
-      continue
-    }
+        output.push(messageOfThisSpeaker)
+        differentTextAll = ''
+      }
+      // If the next speaker is different from this speaker
+      else {
+        differentTextAll += messageA.text
 
-    const normalizedA = normalize(msgA.text)
-    const normalizedB = normalize(msgB.text)
-    // Now, only include messages that **are not** a subset of the next message or are really similar
-    // Handles cases where strings are the same or empty
-    if (!includes(normalizedB, normalizedA) && similarity(normalizedA, normalizedB) < similarityFactor) {
-      result.push(msgA)
+        const messageOfSpeakerA: Message = {
+          language: messageA.language,
+          speaker: messageA.speaker,
+          text: differentTextAll,
+          timestamp: messageA.timestamp
+        }
+
+        output.push(messageOfSpeakerA)
+        differentTextAll = ''
+
+        differentTextAll += messageB.text
+
+        const messageOfSpeakerB: Message = {
+          language: messageB.language,
+          speaker: messageB.speaker,
+          text: differentTextAll,
+          timestamp: messageB.timestamp
+        }
+
+        output.push(messageOfSpeakerB)
+        differentTextAll = ''
+      }
     }
   }
 
-  return result
+  return output
 }

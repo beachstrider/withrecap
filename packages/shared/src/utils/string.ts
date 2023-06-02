@@ -28,8 +28,12 @@ export const includes = (s1: string, s2: string): boolean => {
 }
 
 /**
- * Converts to lower case and removes all non words from the string
+ * Converts to lower case and removes(replace with space) all non words from the string
  */
-export const normalize = (str: string): string => {
+export const alphabets = (str: string): string => {
   return str.toLowerCase().replace(/[^\w\s]/g, '')
+}
+
+export const normalize = (str: string): string => {
+  return str.toLowerCase().replace(/[^\w\s]/g, ' ')
 }
