@@ -5,6 +5,10 @@ import { createAuthToken } from '../functions'
 
 export const browser = detect()
 
+export const extensionId = process.env.CHROME_WEBSTORE_LINK?.split(
+  'https://chrome.google.com/webstore/detail/recap/'
+)[1]
+
 // Transfer custom token to extension
 export const transferLogin = async () => {
   let token: string
@@ -19,10 +23,10 @@ export const transferLogin = async () => {
     return
   }
 
-  console.debug('send customToken to extension - ', process.env.EXTENSION_ID)
+  console.debug('send customToken to extension - ', extensionId)
 
   try {
-    chrome.runtime.sendMessage(process.env.EXTENSION_ID!, { type: RequestTypes.LOGIN, token }, ({ err }) => {
+    chrome.runtime.sendMessage(extensionId!, { type: RequestTypes.LOGIN, token }, ({ err }) => {
       if (err) {
         console.error('Extension login failed,', err)
       }
@@ -39,7 +43,7 @@ export const transferLogin = async () => {
 // Send notification to extension to logout
 export const transferLogout = async () => {
   try {
-    chrome.runtime.sendMessage(process.env.EXTENSION_ID!, { type: RequestTypes.LOGOUT }, ({ err }) => {
+    chrome.runtime.sendMessage(extensionId!, { type: RequestTypes.LOGOUT }, ({ err }) => {
       if (err) {
         console.error('Extension login failed,', err)
       }

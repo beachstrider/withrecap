@@ -28,7 +28,6 @@ jobs:
           echo "FIREBASE_MEASUREMENT_ID=${{ secrets.FIREBASE_MEASUREMENT_ID }}" >> .env.production
           echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env.production
           echo "CHROME_WEBSTORE_LINK=${{ secrets.CHROME_WEBSTORE_LINK }}" >> .env.production
-          echo "EXTENSION_ID=${{ secrets.EXTENSION_ID }}" >> .env.production
       - name: Build
         run: yarn workspace @recap/app build
       - uses: FirebaseExtended/action-hosting-deploy@v0
