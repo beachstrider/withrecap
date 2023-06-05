@@ -9,7 +9,7 @@ export class MeetingSummary {
     const transcript = this.transcript.toString()
 
     const response = await this.api.createChatCompletion({
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-4',
       messages: [
         {
           role: 'user',
