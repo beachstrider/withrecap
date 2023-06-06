@@ -265,7 +265,7 @@ class ChromeBackgroundService {
 
     try {
       console.debug(`transcription is generated`, this.conversation)
-      const conversation = sanitize(this.conversation, 0.8)
+      const conversation = sanitize(this.conversation)
       console.debug(`transcription is sanitized`, conversation)
 
       await this.meetingStore.update(meetingId, { conversation, ended: true })
