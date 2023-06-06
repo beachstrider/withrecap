@@ -90,32 +90,36 @@ class GoogleMeetsService {
       if (this.callBar && !this.callStarted) {
         this.callStarted = true
 
-        await wait(3000)
+        while (true) {
+          const { isEnabled, error } = await chrome.runtime.sendMessage<any, any>({
+            addonId: 'meet',
+            type: ExtensionMessages.AddonEnabled
+          })
 
-        const { isEnabled, error } = await chrome.runtime.sendMessage<any, any>({
-          addonId: 'meet',
-          type: ExtensionMessages.AddonEnabled
-        })
+          if (error) {
+            console.debug(`${error}. retrying..`)
+            await wait(2000)
+            continue
+          }
 
-        if (error) {
-          throw new Error(error)
+          if (!isEnabled) {
+            return console.debug('not recording, addon is disabled')
+          }
+          observer.disconnect()
+
+          console.debug('call started')
+
+          break
         }
-
-        if (!isEnabled) {
-          return console.debug('not recording, addon is disabled')
-        }
-        observer.disconnect()
-
-        console.debug('call started')
 
         // this will also be useful even if you rejoin a meeting
         // for example the meeting was ended through tab close, but then you joined again - this will nullify the metadata's endTimestamp
-        const { error: error1 } = await chrome.runtime.sendMessage({
+        const { error } = await chrome.runtime.sendMessage({
           meetingId: this.getMeetingId(),
           type: ExtensionMessages.MeetingStarted
         })
 
-        if (error1) {
+        if (error) {
           // TODO: Display a toast and stop there?
           // This is a critical error and we cannot continue
           return
