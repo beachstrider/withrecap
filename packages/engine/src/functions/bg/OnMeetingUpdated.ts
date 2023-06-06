@@ -10,6 +10,7 @@ import { MeetingService } from '../../services/meeting'
 import { MeetingSummary } from '../../services/summary'
 import { MeetingTodos } from '../../services/todos'
 import { TranscriptService } from '../../services/transcript'
+import { isCohere } from '../../utils/misc'
 import { SentryWrapper } from '../../utils/sentry'
 
 export const DEFAULT_TIMEZONE = 'America/Montreal'
@@ -36,6 +37,9 @@ export const OnMeetingUpdated = functions
       const oldValue = change.before.data() as Meeting
       const newValue = change.after.data() as Meeting
 
+      const emails = newValue.emails
+      const cohere = isCohere(emails)
+
       if (oldValue.ended === false && newValue.ended === true) {
         functions.logger.debug('meeting ended, generating summary, todos, and highlights...')
 
@@ -44,7 +48,7 @@ export const OnMeetingUpdated = functions
         }
 
         const transcript = new TranscriptService(newValue.conversation)
-        const meetingSummary = new MeetingSummary(openai, transcript)
+        const meetingSummary = new MeetingSummary(openai, transcript, cohere)
         const meetingTodos = new MeetingTodos(openai, transcript)
         const meetingHighlights = new MeetingHighlights(openai, transcript)
 
@@ -85,7 +89,7 @@ export const OnMeetingUpdated = functions
           functions.logger.debug('sending emails to attendees')
           const mail = new MailService(mailgun, settings.domain)
 
-          for (const email of newValue.emails) {
+          for (const email of emails) {
             try {
               const document = await db.collection('users').where('email', '==', email).limit(1).get()
 
