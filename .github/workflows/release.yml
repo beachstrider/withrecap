@@ -32,8 +32,11 @@ jobs:
           echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env.production
       - name: Build
         working-directory: ./packages/extension
+        env:
+          NODE_ENV: production
         run: |
           yarn build
+          yarn prepackage
           yarn package
       - name: Get version from package.json
         id: get_version
