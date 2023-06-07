@@ -8,7 +8,7 @@
     "clean": "rimraf dist",
     "prebuild": "yarn clean && yarn workspace @recap/shared build",
     "build": "NODE_ENV=production parcel build src/manifest.json --no-content-hash --no-cache --no-source-maps --detailed-report 0",
-    "prepackage": "ts-node -T --cwd misc package",
+    "prepackage": "NODE_ENV=production ts-node -T --cwd misc package",
     "package": "zip -r dist.zip dist"
   },
   "dependencies": {
