@@ -10,5 +10,6 @@ declare namespace NodeJS {
   export interface ProcessEnv {
     RECAP_APP_BASE_URL?: string
     SENTRY_DSN?: string
+    OAUTH2_CLIENT_ID?: string
   }
 }
