@@ -1,16 +1,7 @@
-import {
-  collection,
-  doc,
-  updateDoc,
-  CollectionReference,
-  DocumentData,
-  getDoc,
-  Timestamp
-} from 'firebase/firestore/lite'
+import { CollectionReference, DocumentData, Timestamp, collection, doc, getDoc, updateDoc } from 'firebase/firestore'
 
-import { firestore } from '../../firestore'
-import { Timestamps } from '../../firestore'
 import { Meeting } from '..'
+import { Timestamps, firestore } from '../../firestore'
 
 export type Todo = {
   id: string

@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, CollectionReference, DocumentData } from 'firebase/firestore/lite'
+import { CollectionReference, DocumentData, collection, doc, getDoc, getDocs } from 'firebase/firestore'
 
 import { firestore } from '../firestore'
 

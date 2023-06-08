@@ -1,4 +1,4 @@
-import { Settings, Timestamp, initializeFirestore } from 'firebase/firestore/lite'
+import { Timestamp, getFirestore } from 'firebase/firestore'
 
 import { firebase } from '../../auth/firebase'
 
@@ -7,6 +7,4 @@ export interface Timestamps {
   updated?: Timestamp
 }
 
-const firestoreSettings: Settings = {}
-
-export const firestore = initializeFirestore(firebase, firestoreSettings)
+export const firestore = getFirestore(firebase)

@@ -6,9 +6,10 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  onSnapshot,
   setDoc,
   updateDoc
-} from 'firebase/firestore/lite'
+} from 'firebase/firestore'
 
 import { Timestamps, firestore } from '../firestore'
 import { type Conversation } from './conversation'
@@ -79,5 +80,18 @@ export class MeetingStore {
 
   public async delete(mid: string): Promise<void> {
     return deleteDoc(doc(this._db, mid))
+  }
+
+  public subscribe(mid: string, callback: (meeting: Meeting | undefined) => void) {
+    const docRef = doc(this._db, mid)
+
+    return onSnapshot(docRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const meeting = snapshot.data() as Meeting
+        callback(meeting)
+      } else {
+        callback(undefined)
+      }
+    })
   }
 }
