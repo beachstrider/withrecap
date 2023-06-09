@@ -99,7 +99,7 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
 
       chrome.identity.getAuthToken({ interactive: false }, async (identityToken) => {
         if (chrome.runtime.lastError || !identityToken) {
-          return reject(`SSO ended with an error: ${JSON.stringify(chrome.runtime.lastError)}`)
+          return reject(`refreshing identity token ended with an error: ${JSON.stringify(chrome.runtime.lastError)}`)
         }
 
         await chrome.storage.sync.set({ identityToken })
@@ -154,7 +154,7 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
     } catch (err) {
       const error = err as AuthError
 
-      throw new Error(`SSO ended with an error: ${error}`)
+      throw new Error(`logout ended with an error: ${error}`)
     }
   }
 

@@ -88,6 +88,16 @@ class GoogleMeetsService {
       this.callBar = document.body.querySelector(SELECTOR_CALL_BAR)
 
       if (this.callBar && !this.callStarted) {
+        // HACK: sometimes chrome.runtime is undefined, this is known as a heisenbug
+        while (true) {
+          if (typeof chrome.runtime !== 'undefined') {
+            break
+          }
+
+          await wait(2000)
+          continue
+        }
+
         this.callStarted = true
 
         while (true) {
@@ -107,11 +117,10 @@ class GoogleMeetsService {
           }
           observer.disconnect()
 
-          console.debug('call started')
-
           break
         }
 
+        console.debug('call starting')
         // this will also be useful even if you rejoin a meeting
         // for example the meeting was ended through tab close, but then you joined again - this will nullify the metadata's endTimestamp
         const { error } = await chrome.runtime.sendMessage({
@@ -125,6 +134,7 @@ class GoogleMeetsService {
           return
         }
 
+        console.debug('call started')
         // click on the cc button and start transcribing
         await this.startTranscribing()
       }
