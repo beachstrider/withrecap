@@ -18,6 +18,7 @@ const wait = async (time: number) => {
 class GoogleMeetsService {
   private callBar: HTMLDivElement | null = null
   private callStarted = false
+  private ccDivObserver: MutationObserver | null = null
 
   private getMeetingId(): string {
     return window.location.pathname.slice(1)
@@ -85,9 +86,11 @@ class GoogleMeetsService {
 
   public async prepareListener(): Promise<void> {
     const docObserver = new MutationObserver(async (_mutations: MutationRecord[], observer: MutationObserver) => {
+      const endCallDiv = document.body.querySelector(SELECTOR_END_CALL)
+
       this.callBar = document.body.querySelector(SELECTOR_CALL_BAR)
 
-      if (this.callBar && !this.callStarted) {
+      if (this.callBar && endCallDiv && !this.callStarted) {
         // HACK: sometimes chrome.runtime is undefined, this is known as a heisenbug
         while (true) {
           if (typeof chrome.runtime !== 'undefined') {
@@ -100,6 +103,7 @@ class GoogleMeetsService {
 
         this.callStarted = true
 
+        // HACK: in case background script is still logging in
         while (true) {
           const { isEnabled, error } = await chrome.runtime.sendMessage<any, any>({
             addonId: 'meet',
@@ -120,7 +124,8 @@ class GoogleMeetsService {
           break
         }
 
-        console.debug('call starting')
+        await this.addEndCallClick()
+
         // this will also be useful even if you rejoin a meeting
         // for example the meeting was ended through tab close, but then you joined again - this will nullify the metadata's endTimestamp
         const { error } = await chrome.runtime.sendMessage({
@@ -135,6 +140,7 @@ class GoogleMeetsService {
         }
 
         console.debug('call started')
+
         // click on the cc button and start transcribing
         await this.startTranscribing()
       }
@@ -146,17 +152,13 @@ class GoogleMeetsService {
     })
   }
 
-  public async startTranscribing(): Promise<void> {
-    const ccDiv = document.querySelector<HTMLDivElement>(SELECTOR_CC_DIV)
+  private addEndCallClick() {
     const endCallDiv = document.querySelector<HTMLDivElement>(SELECTOR_END_CALL)
-    const callDiv = this.callBar
 
-    if (!ccDiv || !endCallDiv || !callDiv) {
+    if (!endCallDiv) {
       const error = `some required visual components are missing: ${JSON.stringify(
         {
-          ccDiv: !!ccDiv,
-          endCallDiv: !!endCallDiv,
-          callDiv: !!callDiv
+          endCallDiv: !!endCallDiv
         },
         undefined,
         4
@@ -165,13 +167,9 @@ class GoogleMeetsService {
       throw new Error(error)
     }
 
-    this.enableCaption(ccDiv, callDiv)
-
-    const ccDivObserver = this.listenOnNewMessage(ccDiv)
-
     endCallDiv.onclick = async () => {
       // Remove observers are they are not needed anymore
-      ccDivObserver.disconnect()
+      this.ccDivObserver?.disconnect()
       endCallDiv.onclick = null
 
       console.debug('ending call')
@@ -185,6 +183,28 @@ class GoogleMeetsService {
         // TODO: Display a toast to the user? Retry?
       }
     }
+  }
+
+  public async startTranscribing(): Promise<void> {
+    const ccDiv = document.querySelector<HTMLDivElement>(SELECTOR_CC_DIV)
+    const callDiv = this.callBar
+
+    if (!ccDiv || !callDiv) {
+      const error = `some required visual components are missing: ${JSON.stringify(
+        {
+          ccDiv: !!ccDiv,
+          callDiv: !!callDiv
+        },
+        undefined,
+        4
+      )}`
+
+      throw new Error(error)
+    }
+
+    this.enableCaption(ccDiv, callDiv)
+
+    this.ccDivObserver = this.listenOnNewMessage(ccDiv)
   }
 }
 
