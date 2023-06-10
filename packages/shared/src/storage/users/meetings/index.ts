@@ -1,13 +1,13 @@
 import {
-  collection,
   CollectionReference,
   DocumentData,
+  collection,
   getDocs,
-  query,
-  orderBy,
   limit,
+  orderBy,
+  query,
   where
-} from 'firebase/firestore/lite'
+} from 'firebase/firestore'
 
 import { firestore } from '../../firestore'
 import { Meeting } from '../../meetings'

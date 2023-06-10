@@ -24,7 +24,6 @@ const meeting = async () => {
     link: 'https://meet.google.com/jva-fbxb-jca',
     conversation,
     description: "Let's discuss the marketing and all.",
-    ended: true,
     processed: false
   }
 

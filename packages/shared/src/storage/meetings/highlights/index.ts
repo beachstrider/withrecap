@@ -1,7 +1,7 @@
-import { collection, doc, CollectionReference, DocumentData, getDoc } from 'firebase/firestore/lite'
+import { CollectionReference, DocumentData, collection, doc, getDoc } from 'firebase/firestore'
 
-import { firestore } from '../../firestore'
 import { Meeting } from '..'
+import { firestore } from '../../firestore'
 
 export type Highlight = {
   speaker: string

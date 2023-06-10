@@ -8,7 +8,7 @@ import {
   getDoc,
   setDoc,
   updateDoc
-} from 'firebase/firestore/lite'
+} from 'firebase/firestore'
 
 import { Timestamps, firestore } from '../firestore'
 

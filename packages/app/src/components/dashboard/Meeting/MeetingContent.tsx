@@ -10,7 +10,7 @@ import Transcript from './Transcript'
 
 export default function MeetingContent({ meeting }: { meeting: Meeting }) {
   // Meeting is ended
-  if (meeting.ended) {
+  if (typeof meeting.recorders === 'undefined') {
     if (meeting.processed) {
       // Meeting is processed
       if (meeting.conversation.length > 0) {
