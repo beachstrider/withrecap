@@ -42,7 +42,6 @@ export type Meeting = {
   link: string
   title: string
   summary?: string
-  ended: boolean
   processed: boolean
   conversation: Conversation
   description?: string

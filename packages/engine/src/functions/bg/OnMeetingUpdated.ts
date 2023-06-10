@@ -40,7 +40,7 @@ export const OnMeetingUpdated = functions
       const emails = newValue.emails
       const cohere = isCohere(emails)
 
-      if (oldValue.ended === false && newValue.ended === true) {
+      if (Array.isArray(oldValue.recorders) && oldValue.recorders && typeof newValue.recorders === 'undefined') {
         functions.logger.debug('meeting ended, generating summary, todos, and highlights...')
 
         if (!newValue.conversation) {

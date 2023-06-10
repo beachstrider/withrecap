@@ -246,13 +246,13 @@ class ChromeBackgroundService {
     await chrome.storage.session.set({ tabId })
 
     if (!this.google.auth.currentUser) {
-      return
+      return console.debug('auth is null, processMeetingStart terminated')
     }
 
     const googleMeeting = await this.getMeetingDetails(meetingId)
 
     if (!googleMeeting) {
-      return this.meetingStore.delete(meetingId)
+      return console.debug('googleMeeting is null, processMeetingStart terminated')
     }
 
     const email = this.google.auth.currentUser.email as string
@@ -276,7 +276,7 @@ class ChromeBackgroundService {
           // Set this user as a recorder if no one is recording
           const recorder = !meeting.recorder ? email : meeting.recorder
 
-          await this.meetingStore.update(meetingId, { ended: false, recorders, recorder })
+          await this.meetingStore.update(meetingId, { recorders, recorder })
         }
         // In case the user joins the first
         else {
@@ -288,6 +288,7 @@ class ChromeBackgroundService {
         this.unsubscribe = this.meetingStore.subscribe(meetingId, async (meeting) => {
           if (meeting) {
             meeting.recorders = Array.isArray(meeting.recorders) ? meeting.recorders : []
+
             if (!meeting.recorder) {
               if (meeting.recorders[0] === email) {
                 // Set this user as a recorder if no one is recording and this user is index 1 in recorders
@@ -314,7 +315,6 @@ class ChromeBackgroundService {
 
     try {
       const meeting = await this.meetingStore.get(meetingId)
-      console.debug('---  meeting:', meeting)
 
       if (!meeting) {
         return
@@ -324,14 +324,14 @@ class ChromeBackgroundService {
 
       // Exclude this user in recorders array
       const filteredRecorders = Array.isArray(meeting.recorders)
-        ? meeting.recorders.filter((recorder) => recorder !== email)
-        : []
+        ? meeting.recorders.length > 1
+          ? meeting.recorders.filter((recorder) => recorder !== email)
+          : []
+        : // NOTE: length === 1 means the remaining recorder is this user
+          //       if the remaining recorder is not this user, this is an exception like while recorders is not yet updated
+          []
       // Delete a field 'recorders' itself if it is empty
       const recorders = filteredRecorders.length > 0 ? filteredRecorders : deleteField()
-
-      // If there are no other joiners that can record after this user is out,
-      // This meeting is considered as ended
-      const ended = filteredRecorders.length === 0
 
       // Store a conversation if this user has been a recorder
       if (meeting.recorder === email) {
@@ -343,14 +343,12 @@ class ChromeBackgroundService {
         // Set a conversation if no old recorded conversation, otherwise attach it to the existing one
         const conversation = meeting.conversation ? [...meeting.conversation, ...sanitized] : sanitized
 
-        await this.meetingStore.update(meetingId, { conversation, ended, recorders, recorder })
+        await this.meetingStore.update(meetingId, { conversation, recorders, recorder })
       }
       // Otherwise, just exclude itself in recorders
       else {
-        await this.meetingStore.update(meetingId, { recorders, ended })
+        await this.meetingStore.update(meetingId, { recorders })
       }
-
-      console.debug('--- recorders, ended', recorders, ended)
     } catch (err) {
       throw new Error('An error occurred while updating meeting on meeting ended', { cause: err })
     } finally {
