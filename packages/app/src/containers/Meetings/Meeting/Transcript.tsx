@@ -41,6 +41,7 @@ export default function Transcript({ meeting: { start, end, conversation, attend
             selectionClassName="selection"
             multipleSelection={false}
             offsetToTop={5}
+            metaAttrName="data-meta"
             onSelect={console.debug}
           >
             <div className="px-[8px] py-[6px] bg-black text-white text-[15px] rounded-[30px] flex items-center gap-[10px]">
@@ -78,28 +79,70 @@ const TranscriptItem = ({ msg, attendees }: { msg: Message; attendees: MeetingAt
       />
       <div className="flex flex-col sm:gap-[10px] gap-[6px]">
         <div className="font-semibold select-none">{msg.speaker}</div>
-        <div className="text-gray-500 selection">{msg.text}</div>
+        <div className="text-gray-500 selection" data-meta={JSON.stringify(msg)}>
+          {msg.text}
+        </div>
       </div>
     </div>
   )
 }
 
 interface SelectionPopupProps {
-  onSelect?: (text: string) => void
+  /**
+   * This function is called when a user selects texts in html.
+   * @param text - The text of the selection
+   * @param meta - Additional metadata associated with the selected text (optional)
+   */
+  onSelect?: (text: string, meta?: string | number | boolean | object) => void
+  /**
+   * The child elements to be displayed within the popup component.
+   */
   children: React.ReactNode
+  /**
+   * The className to be used to identify selectable element(s).
+   */
   selectionClassName: string
+  /**
+   * Whether multiple elements can be selected at once (default is false).
+   */
   multipleSelection?: boolean
+  /**
+   * The name of the metadata attribute associated with the selected text (optional).
+   * The metadata value should be JSON stringfied.
+   * @example <div ... className="selection" metaAttrName="data-meta">...</div>
+   * ...
+   * <SelectionPopup ... data-meta={JSON.stringfy(data)}>...</SelectionPopup>
+   */
+  metaAttrName?: string
+  /**
+   * The offset (in pixels) to the left direction of the screen to reposition the popup. The default pivot x is right of the pop.
+   */
   offsetToLeft?: number
+  /**
+   * The offset (in pixels) to the top direction of the screen to reposition the popup. The default pivot y is bottom of the pop.
+   */
   offsetToTop?: number
 }
 
 type Size = {
+  /**
+   * The width of the element in pixels.
+   */
   width: number
+  /**
+   * The height of the element in pixels.
+   */
   height: number
 }
 
 type Position = {
+  /**
+   * The x-coordinate of the upper-left corner of the element.
+   */
   x: number
+  /**
+   * The y-coordinate of the upper-left corner of the element.
+   */
   y: number
 }
 
@@ -108,6 +151,7 @@ const SelectionPopup = ({
   children,
   selectionClassName,
   multipleSelection = true,
+  metaAttrName,
   offsetToLeft = 0,
   offsetToTop = 0
 }: SelectionPopupProps) => {
@@ -117,7 +161,7 @@ const SelectionPopup = ({
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    window.addEventListener('mouseup', () => {
+    window.addEventListener('mouseup', (e: any) => {
       const selection = window.getSelection()
       if (selection !== null) {
         const { anchorNode, focusNode } = selection
@@ -125,6 +169,8 @@ const SelectionPopup = ({
         if (anchorNode !== null && focusNode !== null) {
           if (anchorNode.parentElement !== null && anchorNode.parentElement.classList.contains(selectionClassName)) {
             const text = selection.toString()
+            const meta = e.target.getAttribute(metaAttrName)
+
             if (text) {
               if (selection.rangeCount !== 0) {
                 if (anchorNode.isEqualNode(focusNode) || multipleSelection) {
@@ -135,7 +181,7 @@ const SelectionPopup = ({
                   // TODO: position {x, y} should come from the first line of selection
 
                   setPosition({ x, y })
-                  onSelect?.(text)
+                  onSelect?.(text, meta)
 
                   return
                 } else {
@@ -174,7 +220,7 @@ const SelectionPopup = ({
     window.addEventListener('scroll', () => {
       setPosition(null)
     })
-  }, [multipleSelection, onSelect, selectionClassName])
+  }, [onSelect, multipleSelection, selectionClassName, metaAttrName])
 
   useEffect(() => {
     if (ref.current) {
