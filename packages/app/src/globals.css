@@ -138,6 +138,11 @@ input[type='checkbox']:checked {
   @apply h-full w-[4px] min-w-[4px] rounded-[20px] bg-gray-100 grow-0;
 }
 
+.selection::selection {
+  color: #0d99ff;
+  background-color: #ecf6ff;
+}
+
 @screen sm {
   .masonry-3 {
     column-count: 3;
