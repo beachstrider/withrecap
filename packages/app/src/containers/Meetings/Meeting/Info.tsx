@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 
 import { getTimeRange, Meeting, MeetingAttendee, MeetingMetadata } from '@recap/shared'
 
+import UserAvatar from '../../../components/display/UserAvatar'
 import { MEETINGS } from '../../../constants/routes'
-import UserAvatar from '../../display/UserAvatar'
 
 import arrowLeft from '../../../assets/img/arrowLeft.svg'
 import purpleMessage from '../../../assets/img/purpleMessage.svg'

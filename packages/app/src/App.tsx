@@ -2,19 +2,20 @@ import { AuthGuard, AuthProvider, GoogleAuthProvider, LoadingScreen } from '@rec
 import React from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 
-import Website from './pages'
-import PrivacyPolicy from './pages/PrivacyPolicy'
-import Signin from './pages/Signin'
-import TermsConditions from './pages/TermsConditions'
+import Website from './containers'
+import PrivacyPolicy from './containers/PrivacyPolicy'
+import Signin from './containers/Signin'
+import TermsConditions from './containers/TermsConditions'
 
-import Addons from './pages/Addons'
-import Meetings from './pages/Meetings'
-import MeetingDetails from './pages/Meetings/Details'
+import Addons from './containers/Addons'
+import Meetings from './containers/Meetings'
+import MeetingDetails from './containers/Meetings/Meeting'
 
-import NotFound from './pages/NotFound'
-import { OnboardingAddon } from './pages/Onboarding/Addon'
-import { OnboardingDone } from './pages/Onboarding/Done'
-import { OnboardingRegister } from './pages/Onboarding/Register'
+import NotFound from './containers/NotFound'
+
+import { OnboardingAddon } from './containers/Onboarding/Addon'
+import { OnboardingDone } from './containers/Onboarding/Done'
+import { OnboardingRegister } from './containers/Onboarding/Register'
 
 export default function App() {
   const navigate = useNavigate()

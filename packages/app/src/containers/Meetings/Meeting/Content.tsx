@@ -8,7 +8,7 @@ import Summary from './Summary'
 import Todos from './Todos'
 import Transcript from './Transcript'
 
-export default function MeetingContent({ meeting }: { meeting: Meeting }) {
+export default function Content({ meeting }: { meeting: Meeting }) {
   // Meeting is ended
   if (typeof meeting.recorders === 'undefined') {
     if (meeting.processed) {

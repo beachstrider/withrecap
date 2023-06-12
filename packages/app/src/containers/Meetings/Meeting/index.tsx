@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom'
 
 import { Todo, toast, useMeeting, useTodo } from '@recap/shared'
 
-import Info from '../../components/dashboard/Meeting/Info'
-import MeetingContent from '../../components/dashboard/Meeting/MeetingContent'
-import Layout from '../../components/layouts'
-import NotFound from '../NotFound'
+import Layout from '../../../components/layouts'
+import NotFound from '../../NotFound'
+import Content from './Content'
+import Info from './Info'
 
 interface MeetingContextType {
   addTodo: (todo: Omit<Todo, 'id'>) => Promise<void>
@@ -42,7 +42,7 @@ export default function MeetingDetails() {
           <div className="container-sm sm:mb-[160px] mb-[120px] sm:py-[82px] py-[60px]">
             <div className="flex sm:flex-row flex-col items-start sm:gap-[80px] gap-[63px] break-all">
               <Info meeting={meeting} />
-              <MeetingContent meeting={meeting} />
+              <Content meeting={meeting} />
             </div>
           </div>
         )}

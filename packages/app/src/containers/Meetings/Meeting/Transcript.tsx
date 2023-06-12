@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import { Meeting, MeetingAttendee, Message, getTimeDiff } from '@recap/shared'
 
-import { ThumbsDown, ThumbsUp } from '../../buttons'
-import UserAvatar from '../../display/UserAvatar'
+import { ThumbsDown, ThumbsUp } from '../../../components/buttons'
+import UserAvatar from '../../../components/display/UserAvatar'
 
 import check from '../../../assets/img/check.svg'
 import listInCircle from '../../../assets/img/listInCircle.svg'
@@ -39,9 +39,9 @@ export default function Transcript({ meeting: { start, end, conversation, attend
         {
           <SelectionPopup
             selectionClassName="selection"
-            // multipleSelection={false}
+            multipleSelection={false}
             offsetToTop={5}
-            // onSelect={console.debug}
+            onSelect={console.debug}
           >
             <div className="px-[8px] py-[6px] bg-black text-white text-[15px] rounded-[30px] flex items-center gap-[10px]">
               <button className="flex items-center gap-[6px]">
@@ -192,9 +192,7 @@ const SelectionPopup = ({
 
   return (
     <div style={{ position: 'fixed', left, top }}>
-      <div className="" ref={ref}>
-        {children}
-      </div>
+      <div ref={ref}>{children}</div>
     </div>
   )
 }

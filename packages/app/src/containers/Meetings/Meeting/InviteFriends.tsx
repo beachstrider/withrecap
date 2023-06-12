@@ -5,8 +5,8 @@ import { sendInviteEmails, toast } from '@recap/shared'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
-import { Button } from '../../buttons'
-import { Modal } from '../../display/Modal'
+import { Button } from '../../../components/buttons'
+import { Modal } from '../../../components/display/Modal'
 
 import gift from '../../../assets/img/Gift.svg'
 

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { HomeBlock1, HomeBlock2 } from '../components/blocks'
 import { Button } from '../components/buttons'
 import Layout from '../components/layouts'
 
@@ -14,7 +15,6 @@ import max from '../assets/img/max.png'
 import add from '../assets/img/plus.svg'
 import summaryList from '../assets/img/summaryList.png'
 import unchecked from '../assets/img/unchecked.png'
-import { HomeBlock1, HomeBlock2 } from '../components/blocks'
 
 export default function Index() {
   return (
