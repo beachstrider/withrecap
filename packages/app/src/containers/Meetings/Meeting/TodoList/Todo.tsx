@@ -132,7 +132,7 @@ export default function Todo({ todo, onChange, mid, create, disabled }: TodoProp
                   <button
                     onClick={() => setEditing(true)}
                     className={`invisible ${
-                      active ? 'bg-primary text-white' : 'text-gray-900'
+                      active ? 'bg-primary text-white' : 'text-gray-900 '
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                   >
                     <PencilIcon className="w-5 h-5 mr-2" aria-hidden="true" />
