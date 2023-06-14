@@ -10,7 +10,7 @@ interface Props {
 export default function UserAvatar({ className, name, email, avatar }: Props) {
   return (
     <div
-      className={`flex w-[28px] h-[28px] shrink-0 rounded-full overflow-hidden sm:text-[12px] text-[9px] ${className}`}
+      className={`flex w-[28px] h-[28px] shrink-0 rounded-full overflow-hidden sm:text-[12px] text-[9px] select-none ${className}`}
     >
       {avatar && <img src={avatar} alt="" className="flex-1" />}
       {!avatar && (

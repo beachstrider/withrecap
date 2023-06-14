@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import { useErrors } from './error'
 import { Todo, Todos, TodosStore } from '../storage/meetings/todos'
+import { useErrors } from './error'
 
 export function useTodos(mid: string) {
   const todosStore = useMemo(() => new TodosStore(mid), [mid])

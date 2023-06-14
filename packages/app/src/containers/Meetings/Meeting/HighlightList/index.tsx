@@ -1,24 +1,18 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
-import { Meeting, toast, useHighlights } from '@recap/shared'
+import { Highlights } from '@recap/shared'
 import { Highlight } from './Highlight'
 
 import tetragram from '../../../../assets/img/tetragram.svg'
 
 interface HighlightsProps {
-  meeting: Meeting
+  mid: string
+  highlights: Highlights
+  refresh: () => Promise<void>
+  disabled?: boolean
 }
 
-export default function Highlights({ meeting: { mid } }: HighlightsProps) {
-  // TODO: Handle loading?
-  const { highlights, error } = useHighlights(mid)
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error.message, error.err)
-    }
-  }, [error])
-
+export default function HighlightList({ mid, highlights, refresh, disabled = false }: HighlightsProps) {
   // const [like, setLike] = useState(0)
 
   // function onSetLike(v: 1 | -1 | 0) {

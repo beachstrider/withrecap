@@ -1,28 +1,18 @@
-import { Meeting, toast, useAuthGuard, useTodos } from '@recap/shared'
-import React, { useEffect } from 'react'
+import { Todos } from '@recap/shared'
+import React from 'react'
 
 import Todo from './Todo'
 
 import greenCheck from '../../../../assets/img/greenCheck.png'
 
 interface TodosProps {
-  meeting: Meeting
+  mid: string
+  todos: Todos
+  refresh: () => Promise<void>
+  disabled?: boolean
 }
 
-export default function Todos({ meeting: { mid, emails } }: TodosProps) {
-  const {
-    user: { email }
-  } = useAuthGuard()
-  const { todos, refresh, error } = useTodos(mid)
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error.message, error.err)
-    }
-  }, [error])
-
-  const disabled = !emails.includes(email)
-
+export default function TodoList({ mid, todos, refresh, disabled = false }: TodosProps) {
   // const [like, setLike] = useState<1 | -1 | 0>(0)
 
   return (

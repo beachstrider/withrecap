@@ -2,9 +2,9 @@ import { browser, getUserFirstName, toast, useAuthGuard, useMeetings } from '@re
 import React, { useEffect } from 'react'
 
 import { UseChromeAlert, Welcome } from '../../components/blocks'
-import InviteFriends from '../../components/dashboard/Meeting/InviteFriends'
-import Meetings from '../../components/dashboard/Meeting/List'
 import Layout from '../../components/layouts'
+import List from './List'
+import InviteFriends from './Meeting/InviteFriends'
 
 export default function Index() {
   const { user } = useAuthGuard()
@@ -36,7 +36,7 @@ export default function Index() {
               </div>
             </div>
             <div className="flex flex-col sm:gap-[52px] gap-[40px]">
-              <Meetings meetingsByDate={meetingsByDate} />
+              <List meetingsByDate={meetingsByDate} />
             </div>
           </>
         ) : (

@@ -1,14 +1,17 @@
-import * as functions from 'firebase-functions'
-import * as Sentry from '@sentry/node'
-import { OpenAIApi } from 'openai'
 import { Highlights } from '@recap/shared'
+import * as Sentry from '@sentry/node'
+import * as functions from 'firebase-functions'
+import { OpenAIApi } from 'openai'
+import { v4 as uuid } from 'uuid'
 
+import { StoredHighlights } from '@recap/shared/src/storage/meetings/highlights'
+import { Timestamp } from 'firebase-admin/firestore'
 import { TranscriptService } from '../transcript'
 
 export class MeetingHighlights {
   constructor(private api: OpenAIApi, private transcript: TranscriptService) {}
 
-  public async build(): Promise<Highlights> {
+  public async build(): Promise<StoredHighlights> {
     const transcript = this.transcript.toString()
 
     const response = await this.api.createChatCompletion({
@@ -35,7 +38,7 @@ export class MeetingHighlights {
         }
       ],
       temperature: 0,
-      max_tokens: 500, // Limits the todos to 500 words
+      max_tokens: 500, // Limits the highlights to 500 words
       top_p: 1.0,
       frequency_penalty: 0.0,
       presence_penalty: 0.0
@@ -45,17 +48,28 @@ export class MeetingHighlights {
       const content = response.data.choices?.[0].message?.content
 
       if (!content) {
-        return []
+        return {}
       }
 
       const { highlights } = JSON.parse(content) as { highlights: Highlights }
 
-      return highlights
+      const formatted: StoredHighlights = {}
+      for (const highlight of highlights) {
+        const id = uuid()
+        formatted[id] = {
+          speaker: highlight.speaker,
+          text: highlight.text,
+          created: Timestamp.fromDate(new Date()) as any,
+          updated: Timestamp.fromDate(new Date()) as any
+        }
+      }
+
+      return formatted
     } catch (err) {
       functions.logger.error('An error occurred while formatting highlights')
       Sentry.captureException(new Error('An error occurred while formatting highlights', { cause: err }))
     }
 
-    return []
+    return {}
   }
 }

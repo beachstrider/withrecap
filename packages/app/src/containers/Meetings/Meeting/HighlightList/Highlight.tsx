@@ -2,7 +2,7 @@ import { Highlight as MeetingHighlight } from '@recap/shared'
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 
-import UserAvatar from '../../../display/UserAvatar'
+import UserAvatar from '../../../../components/display/UserAvatar'
 
 interface HighlightProps {
   highlight: MeetingHighlight

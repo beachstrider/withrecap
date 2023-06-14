@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom'
 
 import { getFormattedDate, getTime, Meeting, MeetingAttendee } from '@recap/shared'
 
-import exitArrow from '../../../assets/img/exit-arrow-right.svg'
-import purpleMessage from '../../../assets/img/purpleMessage.svg'
+import UserAvatar from '../../components/display/UserAvatar'
+import { MEETINGS } from '../../constants/routes'
 
-import { MEETINGS } from '../../../constants/routes'
-import UserAvatar from '../../display/UserAvatar'
+import exitArrow from '../../assets/img/exit-arrow-right.svg'
+import purpleMessage from '../../assets/img/purpleMessage.svg'
 
 interface Props {
   meetingsByDate: { [date: string]: Meeting[] }

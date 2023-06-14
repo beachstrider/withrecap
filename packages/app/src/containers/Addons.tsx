@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 
 import { Addon, toast, useAddons } from '@recap/shared'
+
 import Layout from '../components/layouts'
 
 export default function Index() {
