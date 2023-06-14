@@ -1,14 +1,28 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-import { Meeting } from '@recap/shared'
+import { Meeting, toast, useAuthGuard, useTodos } from '@recap/shared'
 
-import Highlights from './Highlights'
+import HighlightList from './HighlightList'
 import Processing from './Processing'
 import Summary from './Summary'
-import Todos from './Todos'
+import TodoList from './TodoList'
 import Transcript from './Transcript'
 
 export default function Content({ meeting }: { meeting: Meeting }) {
+  const {
+    user: { email }
+  } = useAuthGuard()
+
+  const { todos, refresh: refreshTodos, error } = useTodos(meeting.mid)
+
+  const disabled = !meeting.emails.includes(email)
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message, error.err)
+    }
+  }, [error])
+
   // Meeting is ended
   if (typeof meeting.recorders === 'undefined') {
     if (meeting.processed) {
@@ -17,9 +31,9 @@ export default function Content({ meeting }: { meeting: Meeting }) {
         return (
           <div className="grow">
             <Summary meeting={meeting} />
-            <Todos meeting={meeting} />
-            <Highlights meeting={meeting} />
-            <Transcript meeting={meeting} />
+            <TodoList mid={meeting.mid} todos={todos} disabled={disabled} refresh={refreshTodos} />
+            <HighlightList meeting={meeting} />
+            <Transcript meeting={meeting} refreshTodos={refreshTodos} />
           </div>
         )
       } else {

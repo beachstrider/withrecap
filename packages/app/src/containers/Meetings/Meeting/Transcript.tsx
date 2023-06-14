@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import SelectionPopup from 'react-selection-popup'
+import React, { useEffect, useRef, useState } from 'react'
+import SelectionPopup, { HandleRef } from 'react-selection-popup'
 
-import { Meeting, MeetingAttendee, Message, getTimeDiff } from '@recap/shared'
+import { Meeting, MeetingAttendee, Message, getTimeDiff, toast, useTodo } from '@recap/shared'
 
 import { ThumbsDown, ThumbsUp } from '../../../components/buttons'
 import UserAvatar from '../../../components/display/UserAvatar'
@@ -12,14 +12,47 @@ import star4 from '../../../assets/img/star4.svg'
 
 interface Props {
   meeting: Meeting
+  refreshTodos: () => Promise<void>
 }
 
-export default function Transcript({ meeting: { start, end, conversation, attendees } }: Props) {
-  const [like, setLike] = useState(0)
+type SelectedTranscript = {
+  speaker: string
+  text: string
+}
 
-  function onSetLike(v: 1 | -1 | 0) {
+const Transcript = ({ meeting: { mid, start, end, conversation, attendees }, refreshTodos }: Props) => {
+  const [like, setLike] = useState(0)
+  const [selectedTranscript, setSelectedTranscript] = useState<SelectedTranscript | null>(null)
+
+  const { addTodo, error } = useTodo(mid)
+
+  const popupHandleRef = useRef<HandleRef>(null)
+
+  const onSetLike = (v: 1 | -1 | 0) => {
     setLike(v)
   }
+
+  const onAddHighlight = async () => {}
+
+  const onAddTodo = async () => {
+    if (selectedTranscript) {
+      const todo = {
+        text: selectedTranscript.text,
+        completed: false
+      }
+
+      await addTodo(todo)
+      await refreshTodos()
+    }
+
+    popupHandleRef.current?.close()
+  }
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message, error.err)
+    }
+  }, [error])
 
   return (
     <div className="sm:mb-[82px] mb-[60px]">
@@ -36,28 +69,29 @@ export default function Transcript({ meeting: { start, end, conversation, attend
           <ThumbsUp checked={like === 1} onClick={() => onSetLike(1)} />
         </div>
       </div>
+      {
+        <SelectionPopup
+          ref={popupHandleRef}
+          selectionClassName="selection"
+          multipleSelection={false}
+          offsetToTop={5}
+          metaAttrName="data-meta"
+          onSelect={(text, meta) => setSelectedTranscript({ text, speaker: meta.speaker })}
+          onClose={() => setSelectedTranscript(null)}
+          className="px-[8px] py-[6px] bg-black text-white text-[15px] rounded-[30px] flex items-center gap-[10px]"
+        >
+          <button className="flex items-center gap-[6px]" onClick={onAddHighlight}>
+            <img src={star4} alt="" width={14} />
+            Highlight
+          </button>
+          <div className="w-[2px] bg-[#ffffff26] h-[16px]"></div>
+          <button className="flex items-center gap-[6px]" onClick={onAddTodo}>
+            <img src={check} alt="" width={12} />
+            Add to Todo
+          </button>
+        </SelectionPopup>
+      }
       <div className="flex flex-col sm:gap-[40px] gap-[30px] relative">
-        {
-          <SelectionPopup
-            selectionClassName="selection"
-            multipleSelection={false}
-            offsetToTop={5}
-            metaAttrName="data-meta"
-            onSelect={console.debug}
-          >
-            <div className="px-[8px] py-[6px] bg-black text-white text-[15px] rounded-[30px] flex items-center gap-[10px]">
-              <button className="flex items-center gap-[6px]">
-                <img src={star4} alt="" />
-                Highlight
-              </button>
-              <div className="w-[2px] bg-[#ffffff26] h-[16px]"></div>
-              <button className="flex items-center gap-[6px]">
-                <img src={check} alt="" />
-                Add to Todo
-              </button>
-            </div>
-          </SelectionPopup>
-        }
         {(conversation || []).map((msg, key) => (
           <TranscriptItem key={key} msg={msg} attendees={Object.values(attendees)} />
         ))}
@@ -87,3 +121,5 @@ const TranscriptItem = ({ msg, attendees }: { msg: Message; attendees: MeetingAt
     </div>
   )
 }
+
+export default Transcript
