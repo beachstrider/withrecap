@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import SelectionPopup, { HandleRef } from 'react-selection-popup'
 
-import { Meeting, MeetingAttendee, Message, getTimeDiff, toast, useTodo } from '@recap/shared'
+import { Meeting, MeetingAttendee, Message, getTimeDiff, toast, useHighlight, useTodo } from '@recap/shared'
 
 import { ThumbsDown, ThumbsUp } from '../../../components/buttons'
 import UserAvatar from '../../../components/display/UserAvatar'
@@ -13,6 +13,7 @@ import star4 from '../../../assets/img/star4.svg'
 interface Props {
   meeting: Meeting
   refreshTodos: () => Promise<void>
+  refreshHighlights: () => Promise<void>
 }
 
 type SelectedTranscript = {
@@ -20,11 +21,16 @@ type SelectedTranscript = {
   text: string
 }
 
-const Transcript = ({ meeting: { mid, start, end, conversation, attendees }, refreshTodos }: Props) => {
+const Transcript = ({
+  meeting: { mid, start, end, conversation, attendees },
+  refreshTodos,
+  refreshHighlights
+}: Props) => {
   const [like, setLike] = useState(0)
   const [selectedTranscript, setSelectedTranscript] = useState<SelectedTranscript | null>(null)
 
-  const { addTodo, error } = useTodo(mid)
+  const { addTodo, error: errorTodo } = useTodo(mid)
+  const { addHighlight, error: errorHighlight } = useHighlight(mid)
 
   const popupHandleRef = useRef<HandleRef>(null)
 
@@ -32,7 +38,19 @@ const Transcript = ({ meeting: { mid, start, end, conversation, attendees }, ref
     setLike(v)
   }
 
-  const onAddHighlight = async () => {}
+  const onAddHighlight = async () => {
+    if (selectedTranscript) {
+      const highlight = {
+        text: selectedTranscript.text,
+        speaker: selectedTranscript.speaker
+      }
+
+      await addHighlight(highlight)
+      await refreshHighlights()
+    }
+
+    popupHandleRef.current?.close()
+  }
 
   const onAddTodo = async () => {
     if (selectedTranscript) {
@@ -49,10 +67,14 @@ const Transcript = ({ meeting: { mid, start, end, conversation, attendees }, ref
   }
 
   useEffect(() => {
-    if (error) {
-      toast.error(error.message, error.err)
+    if (errorTodo) {
+      toast.error(errorTodo.message, errorTodo.err)
     }
-  }, [error])
+
+    if (errorHighlight) {
+      toast.error(errorHighlight.message, errorHighlight.err)
+    }
+  }, [errorTodo, errorHighlight])
 
   return (
     <div className="sm:mb-[82px] mb-[60px]">
