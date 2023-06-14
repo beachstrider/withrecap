@@ -43,7 +43,7 @@ export const OnMeetingUpdated = functions
       if (Array.isArray(oldValue.recorders) && oldValue.recorders.length && typeof newValue.recorders === 'undefined') {
         functions.logger.debug('meeting ended, generating summary, todos, and highlights...')
 
-        if (!newValue.conversation) {
+        if (!newValue.conversation.length) {
           return functions.logger.warn('meeting transcript is empty, skipping processing...')
         }
 
