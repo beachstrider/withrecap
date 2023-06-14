@@ -32,7 +32,7 @@ export const OnMeetingUpdated = functions
         }>
       ]
     >('OnMeetingUpdated', 'functions.firestore.document.onUpdate', async (change, context) => {
-      functions.logger.debug('engine called for meeting id:', context.params.docId)
+      functions.logger.debug('OnMeetingUpdated started for meeting id:', context.params.docId)
 
       const oldValue = change.before.data() as Meeting
       const newValue = change.after.data() as Meeting

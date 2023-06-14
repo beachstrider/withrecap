@@ -19,7 +19,7 @@ export const SendInviteEmails = functions.https.onCall(
         throw new functions.https.HttpsError('unauthenticated', 'You must be authenticated to use this function')
       }
 
-      functions.logger.debug('sending invites started')
+      functions.logger.debug('SendinInviteEmails started')
 
       const mail = new MailService(mailgun, settings.domain)
 

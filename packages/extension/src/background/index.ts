@@ -322,6 +322,9 @@ class ChromeBackgroundService {
 
       const email = this.google.auth.currentUser?.email
 
+      console.debug('---  meeting.recorders:', meeting.recorders)
+      console.debug('---  meeting.recorder:', meeting.recorder)
+
       // Exclude this user in recorders array
       const filteredRecorders = Array.isArray(meeting.recorders)
         ? meeting.recorders.length > 1
@@ -343,10 +346,12 @@ class ChromeBackgroundService {
         // Set a conversation if no old recorded conversation, otherwise attach it to the existing one
         const conversation = meeting.conversation ? [...meeting.conversation, ...sanitized] : sanitized
 
+        console.debug('---  updating === conversation, recorders, recorder:', conversation, recorders, recorder)
         await this.meetingStore.update(meetingId, { conversation, recorders, recorder })
       }
       // Otherwise, just exclude itself in recorders
       else {
+        console.debug('---  updating === recorders:', recorders)
         await this.meetingStore.update(meetingId, { recorders })
       }
     } catch (err) {

@@ -14,7 +14,7 @@ export const OnUserCreated = functions.firestore.document('users/{userId}').onCr
       }>
     ]
   >('OnUserCreated', 'functions.firestore.document.onCreate', async (snapshot, context) => {
-    functions.logger.debug('new user signed up:', context.params.userId)
+    functions.logger.debug('OnUserCreated started for userId', context.params.userId)
 
     const mail = new MailService(mailgun, settings.domain)
     const user = snapshot.data() as User
