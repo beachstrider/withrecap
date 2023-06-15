@@ -25,8 +25,7 @@ export const SendInviteEmails = functions.https.onCall(
 
       const doc = await db.collection('users').doc(context.auth.uid).get()
       if (!doc.exists) {
-        functions.logger.error(`Inviter (uid: ${context.auth.uid}) information cannot be found.`)
-        return { error: 'User information cannot be found' }
+        throw new functions.https.HttpsError('not-found', 'User information cannot be found')
       }
       const user = doc.data() as User
 

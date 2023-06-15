@@ -16,9 +16,7 @@ export const CreateAuthToken = functions.https.onCall(
 
       return { token }
     } catch (error) {
-      functions.logger.error(error)
-
-      return { error }
+      throw new functions.https.HttpsError('internal', 'createCustomToken failed')
     }
   })
 )
