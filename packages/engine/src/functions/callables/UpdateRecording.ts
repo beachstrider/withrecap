@@ -26,6 +26,13 @@ export const UpdateRecording = functions.https.onCall(
       const snapshot = await doc.get()
       const meeting = snapshot.data() as Meeting
 
+      // If user is not an attendee of the meeting
+      if (!meeting.emails.includes(email)) {
+        const error = 'The user is not in attendee list.'
+        functions.logger.error(error)
+        return { error }
+      }
+
       let data: Data = {}
 
       switch (action) {
