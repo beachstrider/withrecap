@@ -5,7 +5,7 @@
   "private": true,
   "source": "src/index.html",
   "scripts": {
-    "start": "parcel",
+    "start": "parcel --port 3000",
     "clean": "rimraf dist",
     "prebuild": "yarn clean && yarn workspace @recap/shared build",
     "build": "NODE_ENV=production parcel build --no-content-hash --no-cache --no-source-maps --detailed-report 0"

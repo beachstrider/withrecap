@@ -4,6 +4,8 @@
   "description": "Meeting notes, on autopilot. Recap automatically takes notes in Google Meet, so you can focus on getting things done.",
   "private": true,
   "scripts": {
+    "start": "concurrently \"yarn workspace @recap/app start\" \"yarn workspace @recap/extension start\"",
+    "clean": "yarn workspace @recap/app clean && yarn workspace @recap/extension clean && yarn workspace @recap/engine clean",
     "reset": "yarn workspaces run clean && rimraf .parcel-cache packages/*/node_modules node_modules",
     "eslint": "eslint ./packages --ext .ts,.tsx",
     "prettier": "prettier --check \"./packages/**/*.{ts,tsx,html,md}\" \"!**/*.d.ts\"",
@@ -59,6 +61,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.26",
     "buffer": "^5.5.0",
+    "concurrently": "^8.2.0",
     "eslint": "^8.31.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-flowtype": "^8.0.3",

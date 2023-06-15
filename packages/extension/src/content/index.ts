@@ -9,6 +9,7 @@ const SELECTOR_CC_BUTTON = "button[jscontroller='xzbRj']"
 const SELECTOR_LANGUAGE = "span[jsname='V67aGc']"
 const SELECTOR_SPEAKER = "div[class='zs7s8d jxFHg']"
 const SELECTOR_TEXT = "div[jsname='YSxPC']"
+const SELECTOR_LEFT_DIV = "div[class='kJU3pb r14hdb']"
 const SELECTOR_END_CALL_BUTTON = "div[jscontroller='m1IMT'] button[jscontroller='soHxf']"
 
 const wait = async (time: number) => {
@@ -17,8 +18,11 @@ const wait = async (time: number) => {
 
 class GoogleMeetsService {
   private callBar: HTMLDivElement | null = null
-  private callStarted = false
   private ccDivObserver: MutationObserver | null = null
+
+  // To limit docObserver to run only once
+  private callStarted = false
+  private callEnded = false
 
   private getMeetingId(): string {
     return window.location.pathname.slice(1)
@@ -87,6 +91,7 @@ class GoogleMeetsService {
   public async prepareListener(): Promise<void> {
     const docObserver = new MutationObserver(async (_mutations: MutationRecord[], observer: MutationObserver) => {
       const btnCallEnd = document.body.querySelector<HTMLDivElement>(SELECTOR_END_CALL_BUTTON)
+      const outMeetBar = document.body.querySelector<HTMLDivElement>(SELECTOR_LEFT_DIV)
 
       this.callBar = document.body.querySelector(SELECTOR_CALL_BAR)
 
@@ -120,10 +125,14 @@ class GoogleMeetsService {
           if (!isEnabled) {
             return console.debug('not recording, addon is disabled')
           }
-          observer.disconnect()
 
           break
         }
+
+        btnCallEnd.addEventListener('click', async () => {
+          btnCallEnd.onclick = null
+          await this.endMeeting()
+        })
 
         chrome.runtime
           .sendMessage({
@@ -133,6 +142,7 @@ class GoogleMeetsService {
           .then(async () => {
             console.debug('call started')
 
+            observer.disconnect()
             // click on the cc button and start transcribing
             await this.startTranscribing()
           })
@@ -140,33 +150,17 @@ class GoogleMeetsService {
             // TODO: Display a toast and stop there?
             // This is a critical error and we cannot continue
           })
+      }
 
-        this.addEndCallClick(btnCallEnd)
+      if (outMeetBar) {
+        observer.disconnect()
+        await this.endMeeting()
       }
     })
 
     docObserver.observe(document.body, {
       childList: true,
       subtree: true
-    })
-  }
-
-  private async addEndCallClick(btnCallEnd: HTMLDivElement) {
-    btnCallEnd.addEventListener('click', async () => {
-      console.debug('ending call')
-
-      // Remove observers are they are not needed anymore
-      this.ccDivObserver?.disconnect()
-      btnCallEnd.onclick = null
-
-      const { error } = await chrome.runtime.sendMessage({
-        meetingId: this.getMeetingId(),
-        type: ExtensionMessages.MeetingEnded
-      })
-
-      if (error) {
-        // TODO: Display a toast to the user? Retry?
-      }
     })
   }
 
@@ -190,6 +184,25 @@ class GoogleMeetsService {
     this.enableCaption(ccDiv, callDiv)
 
     this.ccDivObserver = this.listenOnNewMessage(ccDiv)
+  }
+
+  private async endMeeting() {
+    if (!this.callEnded) {
+      console.debug('ending call')
+      // Remove observers are they are not needed anymore
+      this.ccDivObserver?.disconnect()
+
+      const { error } = await chrome.runtime.sendMessage({
+        meetingId: this.getMeetingId(),
+        type: ExtensionMessages.MeetingEnded
+      })
+
+      this.callEnded = true
+
+      if (error) {
+        // TODO: Display a toast to the user? Retry?
+      }
+    }
   }
 }
 

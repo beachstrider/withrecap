@@ -32,7 +32,7 @@ export const OnMeetingUpdated = functions
         }>
       ]
     >('OnMeetingUpdated', 'functions.firestore.document.onUpdate', async (change, context) => {
-      functions.logger.debug('engine called for meeting id:', context.params.docId)
+      functions.logger.debug('OnMeetingUpdated started for meeting id:', context.params.docId)
 
       const oldValue = change.before.data() as Meeting
       const newValue = change.after.data() as Meeting
@@ -40,10 +40,11 @@ export const OnMeetingUpdated = functions
       const emails = newValue.emails
       const cohere = isCohere(emails)
 
-      if (Array.isArray(oldValue.recorders) && oldValue.recorders && typeof newValue.recorders === 'undefined') {
+      // Determine whether the meeting ends according to field `recorders`
+      if (Array.isArray(oldValue.recorders) && oldValue.recorders.length && typeof newValue.recorders === 'undefined') {
         functions.logger.debug('meeting ended, generating summary, todos, and highlights...')
 
-        if (!newValue.conversation) {
+        if (!newValue.conversation.length) {
           return functions.logger.warn('meeting transcript is empty, skipping processing...')
         }
 
