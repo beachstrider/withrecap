@@ -40,6 +40,7 @@ export const OnMeetingUpdated = functions
       const emails = newValue.emails
       const cohere = isCohere(emails)
 
+      // Determine whether the meeting ends according to field `recorders`
       if (Array.isArray(oldValue.recorders) && oldValue.recorders.length && typeof newValue.recorders === 'undefined') {
         functions.logger.debug('meeting ended, generating summary, todos, and highlights...')
 
