@@ -44,7 +44,7 @@
   },
   "externally_connectable": {
     "matches": [
-      "http://localhost:1234/*",
+      "http://localhost:3000/*",
       "https://withrecap.com/*"
     ]
   },
