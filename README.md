@@ -64,7 +64,17 @@ In the root directlry of your local project, copy/paste `.env.example` and renam
 
 3. Set `EXTENSION_LINK` as the chrome webstore link of [Recap extension](https://chrome.google.com/webstore/detail/recap/dhmpndgmdjabkhdhhlkhocompgfkdpah).
 
-4. TODO: Set `EXTENSION_KEY` as the `key`...
+4. Set `EXTENSION_KEY` as the `key` of
+
+   - Go to [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole) and select the package of the chrome extension you published.
+
+   - Move to **Package** page and click **View public key** to see it.
+
+   - Copy the content of the key value between `-----BEGIN PUBLIC KEY-----` and `-----END PUBLIC KEY-----`.
+
+   - Remove all line breaks to use it as an environment variable.
+
+   - Set `EXTENSION_KEY` with the value of key.
 
 ### Configure firebase variables
 
@@ -152,7 +162,7 @@ Expand a dropdown **Secrets and variables** in the left sidebar of **Repository 
 
 1. Click **New repository secret** and give `DOMAIN` to **Name**, give the domain of your firebase hosting server (ex: withrecap.com) to **Secret**.
 
-2. Create a secret `EXTENSION_LINK` and copy/paste the value in `.env` to it.
+2. Create secrets `EXTENSION_LINK`, `EXTENSION_KEY`, and copy/paste the values in `.env` to them.
 
 ### Copy common variables from `.env`
 
@@ -302,7 +312,7 @@ yarn start
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-Also, you can find a chrome extension is being built into `/packages/extension/dist`.
+Also, you will see the chrome extension is being built into `/packages/extension/dist`.
 
 ## License
 
