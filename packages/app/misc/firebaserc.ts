@@ -1,15 +1,8 @@
 import chalk from 'chalk'
-import * as dotenv from 'dotenv'
 import * as fs from 'fs-extra'
 import path from 'path'
 import * as prettier from 'prettier'
 import { exit } from 'process'
-
-if (process.env.NODE_ENV === 'production') {
-  dotenv.config({ path: path.join(__dirname, '../../../.env.production') })
-} else {
-  dotenv.config({ path: path.join(__dirname, '../../../.env') })
-}
 
 async function writeJsonFile<T>(filePath: string, data: T): Promise<void> {
   try {

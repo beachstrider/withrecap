@@ -5,7 +5,7 @@
   "source": "src/index.html",
   "scripts": {
     "start": "yarn firebaserc && parcel --port 3000",
-    "build": "yarn clean && NODE_ENV=production yarn firebaserc && NODE_ENV=production parcel build --no-content-hash --no-cache --no-source-maps --detailed-report 0",
+    "build": "yarn clean && yarn firebaserc && parcel build --no-content-hash --no-cache --no-source-maps --detailed-report 0",
     "firebaserc": "tsc -b misc && node misc/firebaserc.js",
     "clean": "npx rimraf dist misc/firebaserc.d.ts misc/firebaserc.d.ts.map misc/firebaserc.js misc/firebaserc.js.map misc/tsconfig.tsbuildinfo"
   },
