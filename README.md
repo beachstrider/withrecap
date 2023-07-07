@@ -64,7 +64,7 @@ In the root directlry of your local project, copy/paste `.env.example` and renam
 
 3. Set `EXTENSION_LINK` as the chrome webstore link of [Recap extension](https://chrome.google.com/webstore/detail/recap/dhmpndgmdjabkhdhhlkhocompgfkdpah).
 
-4. Set `EXTENSION_KEY` as the `key` of
+4. Set `EXTENSION_KEY` from the chrome webstore developer dashboard.
 
    - Go to [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole) and select the package of the chrome extension you published.
 
