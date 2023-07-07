@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 
 import { Addon, toast, useAddons } from '@recap/shared'
 
-import Layout from '../components/layouts'
+import { Layout } from '../components/layouts'
 
 export default function Index() {
   const { addons, userAddons, enableAddon, loading, error } = useAddons()

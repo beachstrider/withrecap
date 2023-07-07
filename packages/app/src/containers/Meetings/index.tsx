@@ -2,7 +2,7 @@ import { browser, getUserFirstName, toast, useAuthGuard, useMeetings } from '@re
 import React, { useEffect } from 'react'
 
 import { UseChromeAlert, Welcome } from '../../components/blocks'
-import Layout from '../../components/layouts'
+import { Layout } from '../../components/layouts'
 import List from './List'
 import InviteFriends from './Meeting/InviteFriends'
 

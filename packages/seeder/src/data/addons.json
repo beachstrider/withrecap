@@ -1,0 +1,34 @@
+{
+  "meet": {
+    "name": "Google Meet",
+    "url": "https://meet.google.com/",
+    "regex": "^https:\\/\\/meet\\.google\\.com\\/([a-z0-9-]+)(\\?|$)",
+    "logo": "https://firebasestorage.googleapis.com/v0/b/recap-381618.appspot.com/o/images%2FgoogleMeet.png?alt=media&token=a4bef3e8-d4a7-41e9-bfbd-af2a8da1b8cd",
+    "available": true,
+    "popular": true
+  },
+  "zoom": {
+    "name": "Zoom",
+    "url": "",
+    "regex": "",
+    "logo": "https://firebasestorage.googleapis.com/v0/b/recap-381618.appspot.com/o/images%2Fzoom.png?alt=media&token=891a0d4b-bf68-4b3a-97d6-0b72bc41dfbd",
+    "available": false,
+    "popular": true
+  },
+  "teams": {
+    "name": "Microsoft Teams",
+    "url": "",
+    "regex": "",
+    "logo": "https://firebasestorage.googleapis.com/v0/b/recap-381618.appspot.com/o/images%2Fteams.png?alt=media&token=22f0bc05-cc32-4740-97dd-a1766eee7988",
+    "available": false,
+    "popular": false
+  },
+  "webx": {
+    "name": "Webex",
+    "url": "",
+    "regex": "",
+    "logo": "https://firebasestorage.googleapis.com/v0/b/recap-381618.appspot.com/o/images%2Fwebx.png?alt=media&token=0fc79675-c312-4456-b2fe-116e78a1c4c2",
+    "available": false,
+    "popular": false
+  }
+}

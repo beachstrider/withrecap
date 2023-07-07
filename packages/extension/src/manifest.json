@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Recap",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Meeting notes, on autopilot.",
   "background": {
     "service_worker": "background/index.ts",
@@ -44,8 +44,7 @@
   },
   "externally_connectable": {
     "matches": [
-      "http://localhost:3000/*",
-      "https://withrecap.com/*"
+      "http://localhost:3000/*"
     ]
   },
   "oauth2": {

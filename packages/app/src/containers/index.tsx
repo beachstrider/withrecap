@@ -2,7 +2,7 @@ import React from 'react'
 
 import { HomeBlock1, HomeBlock2 } from '../components/blocks'
 import { Button } from '../components/buttons'
-import Layout from '../components/layouts'
+import { Layout } from '../components/layouts'
 
 import cara from '../assets/img/cara.png'
 import google from '../assets/img/google.svg'
@@ -131,7 +131,7 @@ export default function Index() {
                 on getting things done.
               </div>
               <div className="flex sm:flex-row flex-col items-center gap-[20px]">
-                <a href={process.env.CHROME_WEBSTORE_LINK} target="_blank" rel="noreferrer">
+                <a href={process.env.EXTENSION_LINK} target="_blank" rel="noreferrer">
                   <Button className="!px-[16px] !py-[14px] !rounded-[14px]">
                     <img src={google} alt="" />
                     Add to Chrome
@@ -154,7 +154,7 @@ export default function Index() {
               (at least that's how we feel when we use Recap)
             </div>
 
-            <a href={process.env.CHROME_WEBSTORE_LINK} target="_blank" rel="noreferrer">
+            <a href={process.env.EXTENSION_LINK} target="_blank" rel="noreferrer">
               <Button className="!px-[16px] !py-[14px] !rounded-[14px]">
                 <img src={google} alt="" />
                 Add to Chrome

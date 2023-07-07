@@ -1,17 +1,15 @@
 {
-  "extends": "../../tsconfig.shared.json",
+  "references": [],
+  "include": ["src"],
+  "extends": "../../tsconfig.base.json",
+
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
 
     "jsx": "react",
-    "lib": ["dom", "dom.iterable", "esnext"],
-
-    "declaration": true,
-    "isolatedModules": true,
+    "lib": ["dom", "dom.iterable", "ES2017"],
 
     "types": ["chrome", "node"]
-  },
-  "include": ["src"],
-  "exclude": ["node_modules, tsconfig.json"]
+  }
 }

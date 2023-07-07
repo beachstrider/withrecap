@@ -1,7 +1,11 @@
 {
+  "extends": "../../../tsconfig.base.json",
+  "references": [{ "path": "../../shared" }],
+
   "compilerOptions": {
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "strict": true
+    "jsx": "react",
+    "lib": ["dom", "dom.iterable", "ES2017"],
+
+    "types": ["chrome", "node"]
   }
 }

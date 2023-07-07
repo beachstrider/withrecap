@@ -1,16 +1,17 @@
 {
   "name": "@recap/engine",
-  "version": "0.0.1",
+  "private": true,
   "scripts": {
-    "build": "yarn clean && NODE_ENV=production parcel build src/index.ts --dist-dir lib",
-    "build:dev": "parcel build src/index.ts --dist-dir lib",
-    "build:watch": "parcel watch src/index.ts --dist-dir lib",
-    "clean": "rimraf lib",
+    "build": "yarn clean && yarn firebaserc && NODE_ENV=production parcel build src/index.ts --dist-dir lib",
+    "build:dev": "yarn firebaserc && parcel build src/index.ts --dist-dir lib",
+    "build:watch": "yarn firebaserc && parcel watch src/index.ts --dist-dir lib",
+    "clean": "npx rimraf lib misc/firebaserc.d.ts misc/firebaserc.d.ts.map misc/firebaserc.js misc/firebaserc.js.map misc/tsconfig.tsbuildinfo",
     "start": "yarn build:dev && firebase functions:config:get > .runtimeconfig.json && firebase emulators:start --only functions",
-    "deploy:all": "firebase deploy --only functions,firestore:rules,firestore:indexes",
-    "deploy:functions": "firebase deploy --only functions",
-    "deploy:firestore": "firebase deploy --only firestore",
-    "logs": "firebase functions:log"
+    "deploy:all": "yarn firebaserc && firebase deploy --only functions,firestore:rules,firestore:indexes",
+    "deploy:functions": "yarn firebaserc && firebase deploy --only functions",
+    "deploy:firestore": "yarn firebaserc && firebase deploy --only firestore",
+    "firebaserc": "tsc -b misc && node misc/firebaserc.js",
+    "logs": "yarn firebaserc && firebase functions:log"
   },
   "engines": {
     "node": "18"
@@ -31,6 +32,5 @@
   "devDependencies": {
     "@types/uuid": "^9.0.1",
     "firebase-functions-test": "^3.1.0"
-  },
-  "private": true
+  }
 }

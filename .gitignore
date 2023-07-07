@@ -47,6 +47,9 @@ web_modules/
 
 # TypeScript cache
 *.tsbuildinfo
+**/misc/*.d.ts
+**/misc/*.map
+**/misc/*.js
 
 # Optional npm cache directory
 .npm
@@ -129,3 +132,5 @@ build
 
 # Firebase Emulator key.json
 packages/engine/key.json
+
+service-account.json

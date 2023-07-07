@@ -1,20 +1,14 @@
 {
-  "references": [
-    {
-      "path": "../shared"
-    }
-  ],
-  "extends": "../../tsconfig.shared.json",
+  "include": ["src"],
+  "extends": "../../tsconfig.base.json",
+  "references": [{ "path": "../shared" }],
+
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "lib",
 
-    "module": "commonjs",
-    "target": "es2017",
-
     "sourceMap": true
   },
-  "compileOnSave": true,
-  "include": ["src"],
-  "exclude": ["lib", "node_modules"]
+
+  "compileOnSave": true
 }

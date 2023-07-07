@@ -129,7 +129,7 @@ const PublicSection = () => {
         <img src={google} alt="" />
         Sign in with Google
       </Link>
-      <a href={process.env.CHROME_WEBSTORE_LINK} rel="noreferrer">
+      <a href={process.env.EXTENSION_LINK} rel="noreferrer">
         <Button>
           <img src={google} alt="" />
           Add to Chrome

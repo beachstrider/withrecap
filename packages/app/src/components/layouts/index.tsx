@@ -12,7 +12,7 @@ interface Props extends MainProps {
   isLoading?: boolean // True during data gets fetched
 }
 
-export default function Index({ children, isPublic = false, isLoading = false, ...rest }: Props) {
+export const Layout = ({ children, isPublic = false, isLoading = false, ...rest }: Props) => {
   return (
     <>
       <Header isPublic={isPublic} />

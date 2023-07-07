@@ -21,47 +21,47 @@ jobs:
           yarn --immutable
       - name: Create env file
         run: |
-          echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" > .env.production
-          echo "FIREBASE_AUTH_DOMAIN=${{ secrets.FIREBASE_AUTH_DOMAIN }}" >> .env.production
-          echo "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}" >> .env.production
-          echo "FIREBASE_STORAGE_BUCKET=${{ secrets.FIREBASE_STORAGE_BUCKET }}" >> .env.production
-          echo "FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" >> .env.production
-          echo "FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}" >> .env.production
-          echo "FIREBASE_MEASUREMENT_ID=${{ secrets.FIREBASE_MEASUREMENT_ID }}" >> .env.production
-          echo "OAUTH2_CLIENT_ID=${{ secrets.OAUTH2_CLIENT_ID }}" >> .env.production
-          echo "RECAP_APP_BASE_URL=${{ secrets.RECAP_APP_BASE_URL }}" >> .env.production
+          echo "DOMAIN=${{ secrets.DOMAIN }}" > .env.production
           echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env.production
+          echo "EXTENSION_KEY=${{ secrets.EXTENSION_KEY }}" >> .env.production
+          echo "OAUTH2_CLIENT_ID=${{ secrets.OAUTH2_CLIENT_ID }}" >> .env.production
+          echo "FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}" >> .env.production
+          echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> .env.production
+          echo "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}" >> .env.production
+          echo "FIREBASE_AUTH_DOMAIN=${{ secrets.FIREBASE_AUTH_DOMAIN }}" >> .env.production
+          echo "FIREBASE_STORAGE_BUCKET=${{ secrets.FIREBASE_STORAGE_BUCKET }}" >> .env.production
+          echo "FIREBASE_MEASUREMENT_ID=${{ secrets.FIREBASE_MEASUREMENT_ID }}" >> .env.production
+          echo "FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" >> .env.production
       - name: Build
         working-directory: ./packages/extension
         run: |
           yarn build
-          yarn prepackage
           yarn package
       - name: Get version from package.json
         id: get_version
-        run: echo "version=v$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
+        run: echo "version=v$(node -p -e "require('./package.json').version")" >> $GITHUB_ENV
       - name: Check version
         uses: mukunku/tag-exists-action@v1.2.0
         id: check_version
         with:
-          tag: ${{ steps.get_version.outputs.version }}
+          tag: ${{ env.version }}
       - name: Release
         if: steps.check_version.outputs.exists != 'true'
         id: create_release
         uses: softprops/action-gh-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.RECAP_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.get_version.outputs.version }}
+          tag_name: ${{ env.version }}
           draft: false
           prerelease: false
       - name: Upload release asset
         if: steps.check_version.outputs.exists != 'true'
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./packages/extension/dist.zip
-          asset_name: recap-${{ steps.get_version.outputs.version }}.zip
+          asset_name: recap-${{ env.version }}.zip
           asset_content_type: application/zip

@@ -1,20 +1,15 @@
 {
   "name": "@recap/shared",
-  "version": "0.0.1",
   "description": "Shared components",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "source": "src/index.ts",
   "private": true,
-  "scripts": {
-    "clean": "rimraf dist",
-    "start": "yarn run -T tsc --watch",
-    "prebuild": "yarn clean",
-    "build": "yarn run -T tsc --build"
-  },
   "dependencies": {
     "@types/uuid": "^9.0.1",
     "uuid": "^9.0.0"
   },
-  "devDependencies": {}
+  "scripts": {
+    "clean": "npx rimraf dist tsconfig.tsbuildinfo"
+  }
 }

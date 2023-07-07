@@ -10,7 +10,7 @@ declare module '*.svg' {
 
 declare namespace NodeJS {
   export interface ProcessEnv {
-    RECAP_APP_BASE_URL?: string
-    CHROME_WEBSTORE_LINK?: string
+    DOMAIN: string
+    EXTENSION_LINK: string
   }
 }

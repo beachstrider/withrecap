@@ -6,7 +6,7 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithCustomToken,
-  signInWithPopup,
+  signInWithRedirect,
   Unsubscribe
 } from 'firebase/auth'
 
@@ -69,7 +69,7 @@ export class GoogleAuthProvider implements BaseAuthProvider {
         include_granted_scopes: 'true'
       })
 
-      await signInWithPopup(this.auth, provider)
+      await signInWithRedirect(this.auth, provider)
     } catch (err) {
       const error = err as AuthError
 
@@ -146,11 +146,11 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
     })
   }
 
-  public login = async (customToken: string) => {
+  public login = async (customToken?: string) => {
     try {
       await this.logout()
 
-      await signInWithCustomToken(this.auth, customToken)
+      await signInWithCustomToken(this.auth, customToken!)
     } catch (err) {
       const error = err as AuthError
 

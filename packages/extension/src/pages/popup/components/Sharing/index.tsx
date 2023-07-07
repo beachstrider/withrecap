@@ -1,4 +1,4 @@
-import { Meeting } from '@recap/shared'
+import { Meeting, PROTOCAL } from '@recap/shared'
 import copy from 'copy-to-clipboard'
 import React, { useEffect, useState } from 'react'
 
@@ -11,7 +11,7 @@ export const Sharing = ({ meeting }: SharingProps) => {
   const [domain, setDomain] = useState<string>('')
 
   useEffect(() => {
-    const url = process.env.RECAP_APP_BASE_URL || ''
+    const url = process.env.DOMAIN || ''
 
     // Removes http(s):// from URL
     const d = url.replace(/^https?:\/\//, '')
@@ -20,7 +20,7 @@ export const Sharing = ({ meeting }: SharingProps) => {
   }, [])
 
   const onCopy = () => {
-    const copied = copy(`${process.env.RECAP_APP_BASE_URL}/app/meetings/${meeting.mid}`)
+    const copied = copy(`${PROTOCAL}://${process.env.DOMAIN}/app/meetings/${meeting.mid}`)
 
     setCopied(copied)
   }

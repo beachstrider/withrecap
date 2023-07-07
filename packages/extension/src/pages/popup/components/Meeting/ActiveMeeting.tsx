@@ -20,5 +20,3 @@ export const ActiveMeeting = ({ meeting }: Props) => {
     return <p className="py-[24px]">Cannot record this meeting as it's not part of your calendar</p>
   }
 }
-
-export default ActiveMeeting

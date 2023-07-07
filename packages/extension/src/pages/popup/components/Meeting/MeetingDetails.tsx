@@ -1,4 +1,4 @@
-import { getTime, Meeting } from '@recap/shared'
+import { getTime, Meeting, PROTOCAL } from '@recap/shared'
 import { formatDistance, isFuture } from 'date-fns'
 import React from 'react'
 
@@ -58,7 +58,7 @@ export const MeetingDetails = ({ meeting, ended }: MeetingDetailsProps) => {
   const Footer = () => {
     if (ended) {
       const openRecapApp = async () => {
-        return chrome.tabs.create({ url: `${process.env.RECAP_APP_BASE_URL}/app/meetings/${meeting.mid}` })
+        return chrome.tabs.create({ url: `${PROTOCAL}://${process.env.DOMAIN}/app/meetings/${meeting.mid}` })
       }
 
       return (

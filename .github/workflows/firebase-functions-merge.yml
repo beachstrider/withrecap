@@ -18,21 +18,23 @@ jobs:
         run: |
           yarn --immutable
       - name: Install Firebase CLI
-        run: npm install -g firebase-tools
+        run: npm install -g firebase-tools@latest
       - name: Authenticate with Firebase
-        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_RECAP_381618 }}' > service-account.json
+        run: |
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > service-account.json
       - name: Deploy Firebase functions, Firestore rules, and indexes
         run: |
-          firebase functions:config:set --non-interactive config.chromewebstorelink="$CHROME_WEBSTORE_LINK" config.chatgptapikey="$CHATGPT_API_KEY" config.mailgunapikey="$MAILGUN_API_KEY" config.sentrydsn="$SENTRY_DSN" config.domain="$DOMAIN" private.key="$FIREBASE_PRIVATE_KEY" project.id="$FIREBASE_PROJECT_ID" client.email="$FIREBASE_EMAIL" --project $FIREBASE_PROJECT_ID
+          firebase functions:config:set --non-interactive config.chromewebstorelink="$EXTENSION_LINK" config.chatgptapikey="$CHATGPT_API_KEY" config.mailgunapikey="$MAILGUN_API_KEY" config.sentrydsn="$SENTRY_DSN" config.domain="$DOMAIN" project.id="$FIREBASE_PROJECT_ID" --project $FIREBASE_PROJECT_ID
           yarn deploy:all --non-interactive --force
         working-directory: packages/engine
         env:
+          DOMAIN: ${{ secrets.DOMAIN }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          EXTENSION_LINK: ${{ secrets.EXTENSION_LINK }}
           CHATGPT_API_KEY: ${{ secrets.CHATGPT_API_KEY }}
           MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
-          DOMAIN: ${{ secrets.DOMAIN }}
-          FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_FIRESTORE_ACCOUNT_PRIVATE_KEY }}
-          FIREBASE_EMAIL: ${{ secrets.FIREBASE_FIRESTORE_ACCOUNT_EMAIL }}
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-          CHROME_WEBSTORE_LINK: ${{ secrets.CHROME_WEBSTORE_LINK }}
           GOOGLE_APPLICATION_CREDENTIALS: '${{ github.workspace }}/service-account.json'
+      - name: Seed initial data
+        run: |
+          yarn seeder start

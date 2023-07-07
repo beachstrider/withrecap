@@ -1,16 +1,10 @@
 {
   "name": "@recap/seeder",
-  "version": "0.0.1",
-  "description": "Simple data seeder for Firestore",
+  "description": "Initial data seeder",
   "private": true,
   "scripts": {
-    "clean": "rimraf dist",
-    "prestart": "yarn clean && yarn workspace @recap/shared build",
-    "start": "yarn parcel build src/index.ts",
-    "poststart": "node dist/index.js"
-  },
-  "dependencies": {
-    "@recap/shared": "0.0.1"
-  },
-  "devDependencies": {}
+    "clean": "npx rimraf dist tsconfig.tsbuildinfo",
+    "build": "yarn clean && tsc -b",
+    "start": "yarn build && node dist/index.js"
+  }
 }

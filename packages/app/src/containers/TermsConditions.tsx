@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
-import Layout from '../components/layouts'
+import { Layout } from '../components/layouts'
 import { SUPPORT_TERMS_CONDITIONS_REQUEST } from '../constants/links'
 
 export default function TermsConditions() {

@@ -9,7 +9,7 @@ export interface BaseAuthProvider {
 }
 
 export interface BaseIdentityAuthProvider {
-  login: (token: string) => Promise<void>
+  login: (token?: string) => Promise<void>
   logout: () => Promise<void>
   onAuthStateChanged: (callback: (user: FirebaseUser | null, token: string | null) => void) => Unsubscribe
 }

@@ -12,5 +12,8 @@
   },
   "files.eol": "\n",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "turboConsoleLog.logType": "debug"
+  "turboConsoleLog.logType": "debug",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  }
 }

@@ -8,7 +8,7 @@ export const useErrors = (value: ErrorWithMessage | null) => {
 
   useEffect(() => {
     if (error) {
-      captureException(new Error(error.message, { cause: error.err }))
+      captureException(new Error(error.message))
     }
   }, [error])
 

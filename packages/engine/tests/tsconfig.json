@@ -4,7 +4,7 @@
       "path": "../../shared"
     }
   ],
-  "extends": "../../../tsconfig.shared.json",
+  "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "..",
     "paths": {

@@ -34,7 +34,7 @@ export default function Index({ className = '' }) {
               Sign in with Google
             </Link>
           </div>
-          <a href={process.env.CHROME_WEBSTORE_LINK} className="sm:ml-[20px]" rel="noreferrer">
+          <a href={process.env.EXTENSION_LINK} className="sm:ml-[20px]" rel="noreferrer">
             <Button>
               <img src={google} alt="" />
               Add to Chrome

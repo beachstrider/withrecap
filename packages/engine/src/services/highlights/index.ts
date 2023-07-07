@@ -67,7 +67,7 @@ export class MeetingHighlights {
       return formatted
     } catch (err) {
       functions.logger.error('An error occurred while formatting highlights')
-      Sentry.captureException(new Error('An error occurred while formatting highlights', { cause: err }))
+      Sentry.captureException(new Error('An error occurred while formatting highlights'))
     }
 
     return {}

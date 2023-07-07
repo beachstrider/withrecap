@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { isInstalled } from '@recap/shared'
+import { isExtensionInstalled } from '@recap/shared'
 import arrowLeft from '../../assets/img/arrowLeft.svg'
 import back from '../../assets/img/back.svg'
 import close from '../../assets/img/close.svg'
@@ -339,7 +339,7 @@ export const UseChromeAlert = () => (
       <div className="text-gray-500 sm:mb-[12] mb-[8]">Recap only take notes in Chrome with our extension added.</div>
       <div className="flex justify-start">
         <a
-          href={process.env.CHROME_WEBSTORE_LINK}
+          href={process.env.EXTENSION_LINK}
           className="px-[10] py-[6] text-[15] font-semibold flex items-center gap-[4] rounded-[12] bg-white"
         >
           <img src={google} alt="" />
@@ -360,9 +360,9 @@ export const Welcome = () => (
       <h2 className="font-semibold">Recap will automatically take notes in your next Google Meeting</h2>
       <div className="text-gray-500">Take your next meeting like usual, Recap does the rest.</div>
       <div className="flex justify-start">
-        {!isInstalled() && (
+        {!isExtensionInstalled() && (
           <a
-            href={process.env.CHROME_WEBSTORE_LINK}
+            href={process.env.EXTENSION_LINK}
             target="_blank"
             className="px-[10] py-[6] text-[15] font-semibold flex items-center gap-[4] rounded-[12] bg-white"
             rel="noreferrer"

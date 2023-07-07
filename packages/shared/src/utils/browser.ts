@@ -5,9 +5,7 @@ import { createAuthToken } from '../functions'
 
 export const browser = detect()
 
-export const extensionId = process.env.CHROME_WEBSTORE_LINK?.split(
-  'https://chrome.google.com/webstore/detail/recap/'
-)[1]
+export const extensionId = process.env.EXTENSION_LINK?.split('https://chrome.google.com/webstore/detail/recap/')[1]
 
 // Transfer custom token to extension
 export const transferLogin = async () => {
@@ -26,9 +24,12 @@ export const transferLogin = async () => {
   console.debug('send customToken to extension - ', extensionId)
 
   try {
-    chrome.runtime.sendMessage(extensionId!, { type: RequestTypes.LOGIN, token }, ({ err }) => {
-      if (err) {
-        console.error('Extension login failed,', err)
+    chrome.runtime.sendMessage(extensionId!, { type: RequestTypes.LOGIN, token }, (res) => {
+      if (typeof res === 'undefined') {
+        return console.error("Extension login failed, couldn't find the extension:", extensionId)
+      }
+      if (res.error !== null) {
+        return console.error('Extension login failed,', res.error)
       }
     })
 
@@ -43,9 +44,12 @@ export const transferLogin = async () => {
 // Send notification to extension to logout
 export const transferLogout = async () => {
   try {
-    chrome.runtime.sendMessage(extensionId!, { type: RequestTypes.LOGOUT }, ({ err }) => {
-      if (err) {
-        console.error('Extension login failed,', err)
+    chrome.runtime.sendMessage(extensionId!, { type: RequestTypes.LOGOUT }, (res) => {
+      if (typeof res === 'undefined') {
+        return console.error("Extension logout, couldn't find the extension:", extensionId)
+      }
+      if (res.error !== null) {
+        return console.error('Extension logout failed,', res.error)
       }
     })
 
@@ -58,7 +62,7 @@ export const transferLogout = async () => {
 }
 
 // Check if extension is installed
-export const isInstalled = () => {
+export const isExtensionInstalled = () => {
   if (localStorage.getItem(IS_EXTENSION_INSTALLED)) {
     return true
   }

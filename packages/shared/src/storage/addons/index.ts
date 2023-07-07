@@ -1,4 +1,13 @@
-import { CollectionReference, DocumentData, collection, doc, getDoc, getDocs } from 'firebase/firestore'
+import {
+  CollectionReference,
+  DocumentData,
+  Timestamp,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc
+} from 'firebase/firestore'
 
 import { firestore } from '../firestore'
 
@@ -29,6 +38,14 @@ export class AddonStore {
     const document = await getDoc(doc(this._db, id))
 
     return document.data() as Addon
+  }
+
+  public async create(aid: string, addons: Addons): Promise<void> {
+    return setDoc(doc(this._db, aid), {
+      ...addons,
+      created: Timestamp.fromDate(new Date()),
+      updated: Timestamp.fromDate(new Date())
+    })
   }
 
   public async list(): Promise<Addons> {

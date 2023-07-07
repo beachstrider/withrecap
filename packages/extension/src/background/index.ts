@@ -5,6 +5,7 @@ import {
   Meeting,
   MeetingStore,
   Message,
+  PROTOCAL,
   RequestTypes,
   UserAddonStore,
   initSentry,
@@ -120,7 +121,7 @@ class ChromeBackgroundService {
           switch (request.type) {
             case RequestTypes.LOGIN:
               this.login(request.token)
-                .then(() => sendResponse({ err: null }))
+                .then(() => sendResponse({ error: null }))
                 .catch((err) => {
                   this.handleError(err)
                   sendResponse({ err })
@@ -128,7 +129,7 @@ class ChromeBackgroundService {
               break
             case RequestTypes.LOGOUT:
               this.logout()
-                .then(() => sendResponse({ err: null }))
+                .then(() => sendResponse({ error: null }))
                 .catch((err) => {
                   this.handleError(err)
                   sendResponse({ err })
@@ -150,9 +151,7 @@ class ChromeBackgroundService {
           await this.processMeetingEnd(meetingDetails.mid)
         }
       } catch (err) {
-        this.handleError(
-          new Error('An error occurred while processing meeting ended on meeting tab closed', { cause: err })
-        )
+        this.handleError(new Error('An error occurred while processing meeting ended on meeting tab closed'))
       }
     })
   }
@@ -169,9 +168,7 @@ class ChromeBackgroundService {
     try {
       await this.google.logout()
     } catch (err) {
-      throw new Error('An error occurred while extension logout', {
-        cause: err
-      })
+      throw new Error('An error occurred while extension logout')
     }
   }
 
@@ -194,15 +191,11 @@ class ChromeBackgroundService {
 
             return resolve({ isEnabled: !!addon })
           } catch (err) {
-            reject(
-              new Error('An error occurred while fetching user addons', {
-                cause: err
-              })
-            )
+            reject(new Error('An error occurred while fetching user addons'))
           }
         })
         .catch((err) => {
-          reject(new Error("Couldn't query active tab information", { cause: err }))
+          reject(new Error("Couldn't query active tab information"))
         })
     })
   }
@@ -237,9 +230,7 @@ class ChromeBackgroundService {
 
       return
     } catch (err) {
-      throw new Error('An error occurred while processing new message', {
-        cause: err
-      })
+      throw new Error('An error occurred while processing new message')
     }
   }
 
@@ -291,7 +282,7 @@ class ChromeBackgroundService {
       }
     } catch (err) {
       this.isRecording = false
-      throw new Error('An error occurred while trying to store meeting information', { cause: err })
+      throw new Error('An error occurred while trying to store meeting information')
     }
   }
 
@@ -327,7 +318,7 @@ class ChromeBackgroundService {
       await updateRecording({ meetingId, action: 'leave' })
     } catch (err) {
       console.error(err)
-      throw new Error('An error occurred while updating meeting on meeting ended', { cause: err })
+      throw new Error('An error occurred while updating meeting on meeting ended')
     } finally {
       this.conversation = []
       this.unsubscribe?.()
@@ -350,7 +341,7 @@ backgroundService.startListener()
 chrome.runtime.onInstalled.addListener((object) => {
   if (object.reason === chrome.runtime.OnInstalledReason.INSTALL) {
     chrome.tabs.create({
-      url: `${process.env.RECAP_APP_BASE_URL}/onboarding/register`
+      url: `${PROTOCAL}://${process.env.DOMAIN}/onboarding/register`
     })
   }
 })

@@ -21,8 +21,7 @@ const db = app.firestore()
 const auth = app.auth()
 
 const googleAuth = new google.auth.JWT({
-  email: config().client.email,
-  key: config().private.key.replace(/\\n/gm, '\n'),
+  keyFile: '../../service-account.json',
   scopes: ['https://www.googleapis.com/auth/datastore', 'https://www.googleapis.com/auth/cloud-platform']
 })
 
@@ -56,4 +55,4 @@ const initSentry = () => {
   }
 }
 
-export { auth, googleAuth, firestore, db, openai, mail, settings, initSentry }
+export { auth, db, firestore, googleAuth, initSentry, mail, openai, settings }

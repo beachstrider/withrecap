@@ -1,5 +1,6 @@
-import { AuthGuard, AuthProvider, GoogleAuthProvider, LoadingScreen } from '@recap/shared'
 import React from 'react'
+
+import { AuthGuard, AuthProvider, GoogleAuthProvider, LoadingScreen } from '@recap/shared'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 
 import Website from './containers'

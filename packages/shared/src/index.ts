@@ -4,13 +4,13 @@
 
 export type { BaseAuthProvider } from './auth'
 
-export { AuthProvider, useAuth } from './auth/AuthProvider'
 export { AuthGuard, useAuthGuard } from './auth/AuthGuard'
+export { AuthProvider, useAuth } from './auth/AuthProvider'
 
 export { firebase } from './auth/firebase'
 export type { FirebaseUser } from './auth/firebase'
 
-export { GoogleIdentityAuthProvider, GoogleAuthProvider } from './auth/google'
+export { GoogleAuthProvider, GoogleIdentityAuthProvider } from './auth/google'
 
 //===========================================================
 // STORAGE
@@ -28,7 +28,7 @@ export { ConversationStore } from './storage/meetings/conversation'
 export type { Conversation, Message } from './storage/meetings/conversation'
 
 export { TodosStore } from './storage/meetings/todos'
-export type { Todo, Todos, StoredTodos } from './storage/meetings/todos'
+export type { StoredTodos, Todo, Todos } from './storage/meetings/todos'
 
 export { HighlightsStore } from './storage/meetings/highlights'
 export type { Highlight, Highlights } from './storage/meetings/highlights'
@@ -72,19 +72,20 @@ export { ToastContainer, toast } from './components/toast'
 // UTILS
 //===========================================================
 
-export * from './utils/time'
-export * from './utils/string'
 export * from './utils/browser'
+export * from './utils/firestore'
 export * from './utils/sanitize'
+export * from './utils/string'
+export * from './utils/time'
 
 //===========================================================
 // HOOKS
 //===========================================================
 
 export * from './hooks/addons'
+export * from './hooks/highlights'
 export * from './hooks/meeting'
 export * from './hooks/todos'
-export * from './hooks/highlights'
 
 //===========================================================
 // ERRORS

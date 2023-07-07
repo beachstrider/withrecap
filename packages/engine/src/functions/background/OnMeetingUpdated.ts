@@ -45,6 +45,8 @@ export const OnMeetingUpdated = functions
         functions.logger.debug('meeting ended, generating summary, todos, and highlights...')
 
         if (!newValue.conversation.length) {
+          // Update values on the database
+          await change.after.ref.set({ processed: true }, { merge: true })
           return functions.logger.warn('meeting transcript is empty, skipping processing...')
         }
 
@@ -124,7 +126,7 @@ export const OnMeetingUpdated = functions
               functions.logger.debug('email sent')
             } catch (err) {
               functions.logger.error('An error occurred while sending an email to', email)
-              Sentry.captureException(new Error(`An error occurred while sending an email to ${email}`, { cause: err }))
+              Sentry.captureException(new Error(`An error occurred while sending an email to ${email}`))
             }
           }
 
