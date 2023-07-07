@@ -7,6 +7,11 @@
   "workspaces": [
     "packages/*"
   ],
+  "engines": {
+    "node": "18",
+    "npm": "please-use-yarn",
+    "yarn": ">=3.2.0"
+  },
   "scripts": {
     "app": "yarn workspace @recap/app",
     "engine": "yarn workspace @recap/engine",
@@ -16,7 +21,7 @@
     "start": "concurrently \"yarn app start\" \"yarn extension start\"",
     "clean": "yarn app clean && yarn engine clean && yarn extension clean && yarn seeder clean && yarn shared clean",
     "reset": "yarn workspaces run clean && npx rimraf .parcel-cache packages/*/node_modules node_modules",
-    "eslint": "eslint ./packages --ext .ts,.tsx",
+    "eslint": "eslint \"./packages/*/src/**/*.{js,jsx,ts,tsx}\"",
     "prettier": "prettier --check \"./packages/**/*.{ts,tsx,html,md}\" \"!**/*.d.ts\"",
     "prettier:fix": "prettier --write \"./packages/**/*.{ts,tsx,html,md}\" \"!**/*.d.ts\"",
     "test": "jest -c tests/jest.config.ts --passWithNoTests",
@@ -26,41 +31,6 @@
     "bump:major": "yarn bump --mode=major",
     "bump:minor": "yarn bump --mode=minor",
     "bump:patch": "yarn bump --mode=patch"
-  },
-  "engines": {
-    "node": "18",
-    "npm": "please-use-yarn",
-    "yarn": ">=3.2.0"
-  },
-  "dependencies": {
-    "@headlessui/react": "^1.7.13",
-    "@headlessui/tailwindcss": "^0.1.3",
-    "@heroicons/react": "^2.0.17",
-    "@hookform/resolvers": "^3.1.0",
-    "@sentry/browser": "^7.50.0",
-    "@sentry/node": "^7.50.0",
-    "@sentry/react": "^7.50.0",
-    "autoprefixer": "^10.4.14",
-    "chalk": "^4.1.2",
-    "copy-to-clipboard": "^3.3.3",
-    "cross-env": "^7.0.3",
-    "date-fns": "^2.29.3",
-    "detect-browser": "^5.3.0",
-    "firebase": "^9.21.0",
-    "googleapis": "^118.0.0",
-    "postcss": "^8.4.21",
-    "postcss-import": "^15.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-firebaseui": "^6.0.0",
-    "react-hook-form": "^7.43.9",
-    "react-markdown": "^8.0.7",
-    "react-router-dom": "^6.10.0",
-    "react-toastify": "^9.1.2",
-    "rimraf": "^5.0.1",
-    "styled-components": "^5.2.0",
-    "tailwindcss": "^3.3.1",
-    "yup": "^1.1.1"
   },
   "devDependencies": {
     "@parcel/config-default": "^2.8.3",
@@ -108,5 +78,35 @@
     "typescript": "^4.9.4",
     "url": "^0.11.0",
     "util": "^0.12.3"
+  },
+  "dependencies": {
+    "@headlessui/react": "^1.7.13",
+    "@headlessui/tailwindcss": "^0.1.3",
+    "@heroicons/react": "^2.0.17",
+    "@hookform/resolvers": "^3.1.0",
+    "@sentry/browser": "^7.50.0",
+    "@sentry/node": "^7.50.0",
+    "@sentry/react": "^7.50.0",
+    "autoprefixer": "^10.4.14",
+    "chalk": "^4.1.2",
+    "copy-to-clipboard": "^3.3.3",
+    "cross-env": "^7.0.3",
+    "date-fns": "^2.29.3",
+    "detect-browser": "^5.3.0",
+    "firebase": "^9.21.0",
+    "googleapis": "^118.0.0",
+    "postcss": "^8.4.21",
+    "postcss-import": "^15.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-firebaseui": "^6.0.0",
+    "react-hook-form": "^7.43.9",
+    "react-markdown": "^8.0.7",
+    "react-router-dom": "^6.10.0",
+    "react-toastify": "^9.1.2",
+    "rimraf": "^5.0.1",
+    "styled-components": "^5.2.0",
+    "tailwindcss": "^3.3.1",
+    "yup": "^1.1.1"
   }
 }
