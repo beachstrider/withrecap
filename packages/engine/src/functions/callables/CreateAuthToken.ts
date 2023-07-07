@@ -1,6 +1,7 @@
+import * as functions from 'firebase-functions'
+
 import { auth } from '../../config'
 import { SentryWrapper } from '../../utils/sentry'
-import * as functions from 'firebase-functions'
 
 export const CreateAuthToken = functions.https.onCall(
   SentryWrapper('CreateAuthToken', 'functions.https.onCall', async (_, context) => {

@@ -1,5 +1,6 @@
-import { initSentry } from '../config'
 import * as Sentry from '@sentry/node'
+
+import { initSentry } from '../config'
 
 type FunctionType =
   | 'functions.https.onCall'

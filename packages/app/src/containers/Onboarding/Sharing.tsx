@@ -1,12 +1,17 @@
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { useNavigate } from 'react-router-dom'
+
+import { Switch, UserStore, toast, useAuthGuard } from '@recap/shared'
+
+import { SkipButton } from '../../components/buttons'
+import OnboardingLayout from '../../components/layouts/Onboarding'
+
+import { ONBOARDING_DONE } from '../../constants/routes'
+
 import jeff from '../../assets/img/jeff.png'
 import max from '../../assets/img/max.png'
 import paperPlan from '../../assets/img/paperPlan.svg'
-import { SkipButton } from '../../components/buttons'
-import OnboardingLayout from '../../components/layouts/Onboarding'
-import { ONBOARDING_DONE } from '../../constants/routes'
-import { Switch, UserStore, toast, useAuthGuard } from '@recap/shared'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 export const OnboardingSharing = () => {
   const { user } = useAuthGuard()

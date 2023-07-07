@@ -1,5 +1,6 @@
-import { approximateSpeechTime } from '../../utils/speech'
 import { Conversation, MeetingMetadata, Message } from '@recap/shared'
+
+import { approximateSpeechTime } from '../../utils/speech'
 
 export class TranscriptService {
   private transcript: Conversation

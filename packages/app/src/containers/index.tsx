@@ -1,3 +1,9 @@
+import React from 'react'
+
+import { HomeBlock1, HomeBlock2 } from '../components/blocks'
+import { Button } from '../components/buttons'
+import { Layout } from '../components/layouts'
+
 import cara from '../assets/img/cara.png'
 import google from '../assets/img/google.svg'
 import greenCheck from '../assets/img/greenCheck.png'
@@ -9,10 +15,6 @@ import max from '../assets/img/max.png'
 import add from '../assets/img/plus.svg'
 import summaryList from '../assets/img/summaryList.png'
 import unchecked from '../assets/img/unchecked.png'
-import { HomeBlock1, HomeBlock2 } from '../components/blocks'
-import { Button } from '../components/buttons'
-import { Layout } from '../components/layouts'
-import React from 'react'
 
 export default function Index() {
   return (

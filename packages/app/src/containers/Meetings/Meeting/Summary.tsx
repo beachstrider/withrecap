@@ -1,8 +1,12 @@
-import listInCircle from '../../../assets/img/listInCircle.svg'
-import { ThumbsDown, ThumbsUp } from '../../../components/buttons'
-import { Meeting } from '@recap/shared'
 import React, { useState } from 'react'
+
 import ReactMarkdown from 'react-markdown'
+
+import { Meeting } from '@recap/shared'
+
+import { ThumbsDown, ThumbsUp } from '../../../components/buttons'
+
+import listInCircle from '../../../assets/img/listInCircle.svg'
 
 interface Props {
   meeting: Meeting

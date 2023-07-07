@@ -1,8 +1,9 @@
+import { useEffect, useMemo, useState } from 'react'
+
 import { useAuthGuard } from '../auth/AuthGuard'
 import { Addon, AddonStore, Addons } from '../storage/addons'
 import { UserAddonConfig, UserAddonStore, UserAddons } from '../storage/users/addons'
 import { useErrors } from './error'
-import { useEffect, useMemo, useState } from 'react'
 
 export function useAddons() {
   const { user } = useAuthGuard()

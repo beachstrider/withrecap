@@ -1,8 +1,10 @@
-import { db } from '../../config'
-import { SentryWrapper } from '../../utils/sentry'
-import { Meeting, Recording } from '@recap/shared'
 import { FieldValue } from 'firebase-admin/firestore'
 import * as functions from 'firebase-functions'
+
+import { Meeting, Recording } from '@recap/shared'
+
+import { db } from '../../config'
+import { SentryWrapper } from '../../utils/sentry'
 
 type Data = {
   recorder?: string | FieldValue

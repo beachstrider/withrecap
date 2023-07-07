@@ -1,5 +1,6 @@
-import { captureException } from '@sentry/browser'
 import { useEffect, useState } from 'react'
+
+import { captureException } from '@sentry/browser'
 
 type ErrorWithMessage = { message: string; err: Error }
 

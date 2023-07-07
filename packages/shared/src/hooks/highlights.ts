@@ -1,7 +1,9 @@
+import { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { v4 as uuid } from 'uuid'
+
 import { Highlight, Highlights, HighlightsStore } from '../storage/meetings/highlights'
 import { useErrors } from './error'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { v4 as uuid } from 'uuid'
 
 export function useHighlights(mid: string) {
   const highlightsStore = useMemo(() => new HighlightsStore(mid), [mid])

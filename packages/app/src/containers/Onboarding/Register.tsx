@@ -1,9 +1,14 @@
-import google from '../../assets/img/google.svg'
-import OnboardingLayout from '../../components/layouts/Onboarding'
-import { ONBOARDING_ADDON, PRIVACY_POLICY, TERMS_CONDITIONS } from '../../constants/routes'
-import { toast, transferLogin, useAuth } from '@recap/shared'
 import React, { useEffect } from 'react'
+
 import { Link, useNavigate } from 'react-router-dom'
+
+import { toast, transferLogin, useAuth } from '@recap/shared'
+
+import OnboardingLayout from '../../components/layouts/Onboarding'
+
+import { ONBOARDING_ADDON, PRIVACY_POLICY, TERMS_CONDITIONS } from '../../constants/routes'
+
+import google from '../../assets/img/google.svg'
 
 export const OnboardingRegister = () => {
   const { user, loading, login, error } = useAuth()

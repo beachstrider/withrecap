@@ -1,6 +1,8 @@
-import { getTime, Meeting, PROTOCAL } from '@recap/shared'
-import { formatDistance, isFuture } from 'date-fns'
 import React from 'react'
+
+import { formatDistance, isFuture } from 'date-fns'
+
+import { Meeting, PROTOCAL, getTime } from '@recap/shared'
 
 interface MeetingDetailsProps {
   meeting: Meeting

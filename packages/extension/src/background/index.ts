@@ -1,4 +1,6 @@
-import { ExtensionMessages } from '../common'
+import * as Sentry from '@sentry/browser'
+import { Unsubscribe } from 'firebase/firestore'
+
 import {
   Conversation,
   GoogleCalendar,
@@ -13,8 +15,8 @@ import {
   sanitize,
   updateRecording
 } from '@recap/shared'
-import * as Sentry from '@sentry/browser'
-import { Unsubscribe } from 'firebase/firestore'
+
+import { ExtensionMessages } from '../common'
 
 class ChromeBackgroundService {
   private meetingStore: MeetingStore

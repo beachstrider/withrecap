@@ -1,5 +1,6 @@
-import { Switch as UiSwitch } from '@headlessui/react'
 import React from 'react'
+
+import { Switch as UiSwitch } from '@headlessui/react'
 
 interface CheckProps {
   checked?: boolean

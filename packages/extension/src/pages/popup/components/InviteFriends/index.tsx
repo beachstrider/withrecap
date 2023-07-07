@@ -1,10 +1,13 @@
-import gift from '../../../../assets/img/gift.svg'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { sendInviteEmails } from '@recap/shared'
-import { captureException } from '@sentry/browser'
 import React, { useState } from 'react'
+
+import { yupResolver } from '@hookform/resolvers/yup'
+import { captureException } from '@sentry/browser'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
+
+import { sendInviteEmails } from '@recap/shared'
+
+import gift from '../../../../assets/img/gift.svg'
 
 interface Form {
   emails: string

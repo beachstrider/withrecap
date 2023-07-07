@@ -1,10 +1,14 @@
+import React, { createContext, useContext, useEffect } from 'react'
+
+import { useParams } from 'react-router-dom'
+
+import { Todo, toast, useMeeting, useTodo } from '@recap/shared'
+
 import { Layout } from '../../../components/layouts'
+
 import NotFound from '../../NotFound'
 import Content from './Content'
 import Info from './Info'
-import { Todo, toast, useMeeting, useTodo } from '@recap/shared'
-import React, { createContext, useContext, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
 
 interface MeetingContextType {
   addTodo: (todo: Omit<Todo, 'id'>) => Promise<void>

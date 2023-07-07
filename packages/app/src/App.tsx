@@ -1,3 +1,9 @@
+import React from 'react'
+
+import { Route, Routes, useNavigate } from 'react-router-dom'
+
+import { AuthGuard, AuthProvider, GoogleAuthProvider, LoadingScreen } from '@recap/shared'
+
 import Website from './containers'
 import Addons from './containers/Addons'
 import Meetings from './containers/Meetings'
@@ -9,9 +15,6 @@ import { OnboardingRegister } from './containers/Onboarding/Register'
 import PrivacyPolicy from './containers/PrivacyPolicy'
 import Signin from './containers/Signin'
 import TermsConditions from './containers/TermsConditions'
-import { AuthGuard, AuthProvider, GoogleAuthProvider, LoadingScreen } from '@recap/shared'
-import React from 'react'
-import { Route, Routes, useNavigate } from 'react-router-dom'
 
 export default function App() {
   const navigate = useNavigate()

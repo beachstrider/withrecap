@@ -1,6 +1,8 @@
-import NoScroll from '../styles/NoScroll'
-import { Dialog, Transition } from '@headlessui/react'
 import React, { Fragment } from 'react'
+
+import { Dialog, Transition } from '@headlessui/react'
+
+import NoScroll from '../styles/NoScroll'
 
 interface Props {
   children: React.ReactNode

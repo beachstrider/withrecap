@@ -1,10 +1,12 @@
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
+
+import * as Sentry from '@sentry/browser'
+import { Outlet } from 'react-router-dom'
+
 import { BaseAuthProvider } from '.'
 import { useErrors } from '../hooks/error'
 import { User, UserStore } from '../storage/users'
 import { transferLogout } from '../utils/browser'
-import * as Sentry from '@sentry/browser'
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { Outlet } from 'react-router-dom'
 
 type AuthGuardContextType = {
   token: string | null

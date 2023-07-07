@@ -2,5 +2,20 @@
   "printWidth": 120,
   "singleQuote": true,
   "trailingComma": "none",
-  "semi": false
+  "semi": false,
+  "bracketSpacing": true,
+  "requirePragma": false,
+  "importOrder": [
+    "^react$",
+    "^(?!@recap)[a-z-@][^/]",
+    "^@recap*/(.*)$",
+    "^(.*)/containers(.*)$",
+    "^(.*)/components(.*)$",
+    "^(.*)/constants(.*)$",
+    "^(.*)/styles/(.*)$",
+    "^(.*)/assets/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

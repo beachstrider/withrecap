@@ -1,6 +1,8 @@
-import { Meeting, PROTOCAL } from '@recap/shared'
-import copy from 'copy-to-clipboard'
 import React, { useEffect, useState } from 'react'
+
+import copy from 'copy-to-clipboard'
+
+import { Meeting, PROTOCAL } from '@recap/shared'
 
 interface SharingProps {
   meeting: Meeting

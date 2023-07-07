@@ -1,5 +1,6 @@
-import { TranscriptService } from '../transcript'
 import { OpenAIApi } from 'openai'
+
+import { TranscriptService } from '../transcript'
 
 export class MeetingSummary {
   constructor(private api: OpenAIApi, private transcript: TranscriptService, private cohere: boolean) {}

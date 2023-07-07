@@ -1,7 +1,3 @@
-import { Timestamps, firestore } from '../firestore'
-import { type Conversation } from './conversation'
-import { Highlights } from './highlights'
-import { type Todos } from './todos'
 import {
   CollectionReference,
   DocumentData,
@@ -15,6 +11,11 @@ import {
   setDoc,
   updateDoc
 } from 'firebase/firestore'
+
+import { Timestamps, firestore } from '../firestore'
+import { type Conversation } from './conversation'
+import { Highlights } from './highlights'
+import { type Todos } from './todos'
 
 export type MeetingAttendee = {
   email: string

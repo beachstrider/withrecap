@@ -1,7 +1,10 @@
-import greenCheck from '../../../../assets/img/greenCheck.png'
-import Todo from './Todo'
-import { Todos } from '@recap/shared'
 import React from 'react'
+
+import { Todos } from '@recap/shared'
+
+import greenCheck from '../../../../assets/img/greenCheck.png'
+
+import Todo from './Todo'
 
 interface TodosProps {
   mid: string

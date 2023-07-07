@@ -1,10 +1,15 @@
+import React from 'react'
+
+import { Link } from 'react-router-dom'
+
+import { Meeting, MeetingAttendee, getFormattedDate, getTime } from '@recap/shared'
+
+import UserAvatar from '../../components/display/UserAvatar'
+
+import { MEETINGS } from '../../constants/routes'
+
 import exitArrow from '../../assets/img/exit-arrow-right.svg'
 import purpleMessage from '../../assets/img/purpleMessage.svg'
-import UserAvatar from '../../components/display/UserAvatar'
-import { MEETINGS } from '../../constants/routes'
-import { getFormattedDate, getTime, Meeting, MeetingAttendee } from '@recap/shared'
-import React from 'react'
-import { Link } from 'react-router-dom'
 
 interface Props {
   meetingsByDate: { [date: string]: Meeting[] }

@@ -1,6 +1,8 @@
-import paperPlan from '../../../../assets/img/paperPlanPurple.svg'
-import { Switch, UserStore } from '@recap/shared'
 import React, { useEffect, useMemo, useState } from 'react'
+
+import { Switch, UserStore } from '@recap/shared'
+
+import paperPlan from '../../../../assets/img/paperPlanPurple.svg'
 
 interface AutomaticSharingProps {
   uid: string

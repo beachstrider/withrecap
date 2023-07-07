@@ -1,6 +1,8 @@
-import logo from '../../assets/img/logo.svg'
-import { LoadingScreen } from '@recap/shared'
 import React from 'react'
+
+import { LoadingScreen } from '@recap/shared'
+
+import logo from '../../assets/img/logo.svg'
 
 interface OnboardingLayoutProps {
   children: React.ReactNode

@@ -1,4 +1,4 @@
-import { init, BrowserTracing, configureScope } from '@sentry/browser'
+import { BrowserTracing, configureScope, init } from '@sentry/browser'
 
 type Namespaces = 'extension:onboarding' | 'extension:popup' | 'extension:content' | 'extension:background' | 'web'
 

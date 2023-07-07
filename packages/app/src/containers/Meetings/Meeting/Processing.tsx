@@ -1,6 +1,8 @@
-import { Meeting, PROTOCAL } from '@recap/shared'
-import copy from 'copy-to-clipboard'
 import React, { useState } from 'react'
+
+import copy from 'copy-to-clipboard'
+
+import { Meeting, PROTOCAL } from '@recap/shared'
 
 export default function Processing({ meeting }: { meeting: Meeting }) {
   const [copied, setCopied] = useState<boolean>(false)

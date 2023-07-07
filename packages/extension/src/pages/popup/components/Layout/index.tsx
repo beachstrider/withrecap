@@ -1,7 +1,9 @@
+import React from 'react'
+
+import { PROTOCAL } from '@recap/shared'
+
 import logo from '../../../../assets/img/logo_32x24.svg'
 import outboundLink from '../../../../assets/img/outboundLink.svg'
-import { PROTOCAL } from '@recap/shared'
-import React from 'react'
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const openRecapApp = async (e: React.MouseEvent<HTMLDivElement>) => {

@@ -1,5 +1,6 @@
-import { captureException } from '@sentry/browser'
 import React from 'react'
+
+import { captureException } from '@sentry/browser'
 import { ToastContainer as Container, ToastOptions, toast as toastify } from 'react-toastify'
 
 export const toast = {

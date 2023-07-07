@@ -1,10 +1,14 @@
-import google from '../../assets/img/google.svg'
-import logo from '../../assets/img/logo.svg'
+import React from 'react'
+
+import { Link } from 'react-router-dom'
+
 import { SUPPORT_REQUEST } from '../../constants/links'
 import { PRIVACY_POLICY, SIGNIN, TERMS_CONDITIONS } from '../../constants/routes'
+
+import google from '../../assets/img/google.svg'
+import logo from '../../assets/img/logo.svg'
+
 import { Button } from '../buttons'
-import React from 'react'
-import { Link } from 'react-router-dom'
 
 export default function Index({ className = '' }) {
   return (

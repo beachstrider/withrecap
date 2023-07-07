@@ -1,16 +1,21 @@
+import React, { useEffect } from 'react'
+
+import { Menu } from '@headlessui/react'
+import { Link, NavLink } from 'react-router-dom'
+
+import { getUserFirstName, toast, useAuthGuard } from '@recap/shared'
+
+import { DELETE_ACCOUNT_REQUEST, SUPPORT_REQUEST } from '../../constants/links'
+import { ADDONS, MEETINGS, SIGNIN } from '../../constants/routes'
+
 import arrowRight from '../../assets/img/arrowRight.svg'
 import danger from '../../assets/img/danger.svg'
 import google from '../../assets/img/google.svg'
 import logo from '../../assets/img/logo.svg'
 import outbound from '../../assets/img/outbound.svg'
 import question from '../../assets/img/question.svg'
-import { DELETE_ACCOUNT_REQUEST, SUPPORT_REQUEST } from '../../constants/links'
-import { ADDONS, MEETINGS, SIGNIN } from '../../constants/routes'
+
 import { Button } from '../buttons'
-import { Menu } from '@headlessui/react'
-import { getUserFirstName, toast, useAuthGuard } from '@recap/shared'
-import React, { useEffect } from 'react'
-import { Link, NavLink } from 'react-router-dom'
 
 export default function Index({ isPublic = false }) {
   return (

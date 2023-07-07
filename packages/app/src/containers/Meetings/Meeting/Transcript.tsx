@@ -1,11 +1,15 @@
+import React, { useEffect, useRef, useState } from 'react'
+
+import SelectionPopup, { HandleRef } from 'react-selection-popup'
+
+import { Meeting, MeetingAttendee, Message, getTimeDiff, toast, useHighlight, useTodo } from '@recap/shared'
+
+import { ThumbsDown, ThumbsUp } from '../../../components/buttons'
+import UserAvatar from '../../../components/display/UserAvatar'
+
 import check from '../../../assets/img/check.svg'
 import listInCircle from '../../../assets/img/listInCircle.svg'
 import star4 from '../../../assets/img/star4.svg'
-import { ThumbsDown, ThumbsUp } from '../../../components/buttons'
-import UserAvatar from '../../../components/display/UserAvatar'
-import { Meeting, MeetingAttendee, Message, getTimeDiff, toast, useHighlight, useTodo } from '@recap/shared'
-import React, { useEffect, useRef, useState } from 'react'
-import SelectionPopup, { HandleRef } from 'react-selection-popup'
 
 interface Props {
   meeting: Meeting

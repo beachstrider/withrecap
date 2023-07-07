@@ -1,6 +1,7 @@
-import { Meeting, MeetingMetadata } from '@recap/shared'
 import Client from 'mailgun.js/client'
 import { MailgunMessageData, MessagesSendResult } from 'mailgun.js/interfaces/Messages'
+
+import { Meeting, MeetingMetadata } from '@recap/shared'
 
 export enum Templates {
   Welcome = 'welcome',

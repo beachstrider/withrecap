@@ -1,9 +1,13 @@
+import React, { useEffect } from 'react'
+
+import { useNavigate } from 'react-router-dom'
+
+import { UserAddons, useAddons } from '@recap/shared'
+
 import { SkipButton } from '../../components/buttons'
 import OnboardingLayout from '../../components/layouts/Onboarding'
+
 import { ONBOARDING_DONE } from '../../constants/routes'
-import { UserAddons, useAddons } from '@recap/shared'
-import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 export const OnboardingAddon = () => {
   const { addons, userAddons, enableAddon, loading } = useAddons()

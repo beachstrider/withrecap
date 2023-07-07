@@ -1,7 +1,9 @@
+import React from 'react'
+
+import { Meeting } from '@recap/shared'
+
 import { Sharing } from '../Sharing'
 import { MeetingDetails } from './MeetingDetails'
-import { Meeting } from '@recap/shared'
-import React from 'react'
 
 interface Props {
   meeting: Meeting

@@ -1,6 +1,7 @@
+import React from 'react'
+
 import jeff from '../../../../assets/img/jeff.png'
 import max from '../../../../assets/img/max.png'
-import React from 'react'
 
 export const NoMeeting = () => {
   return (
