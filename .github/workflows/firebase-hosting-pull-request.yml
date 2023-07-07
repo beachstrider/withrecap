@@ -20,16 +20,16 @@ jobs:
           yarn --immutable
       - name: Create env file
         run: |
-          echo "EXTENSION_LINK=${{ vars.EXTENSION_LINK }}" >> .env.production
-          echo "FIREBASE_APP_ID=${{ vars.FIREBASE_APP_ID }}" >> .env.production
-          echo "FIREBASE_PROJECT_ID=${{ vars.FIREBASE_PROJECT_ID }}" >> .env.production
-          echo "FIREBASE_AUTH_DOMAIN=${{ vars.FIREBASE_AUTH_DOMAIN }}" >> .env.production
-          echo "FIREBASE_STORAGE_BUCKET=${{ vars.FIREBASE_STORAGE_BUCKET }}" >> .env.production
-          echo "FIREBASE_MEASUREMENT_ID=${{ vars.FIREBASE_MEASUREMENT_ID }}" >> .env.production
-          echo "FIREBASE_MESSAGING_SENDER_ID=${{ vars.FIREBASE_MESSAGING_SENDER_ID }}" >> .env.production
+          echo "EXTENSION_LINK=${{ vars.EXTENSION_LINK }}" > .env
+          echo "FIREBASE_APP_ID=${{ vars.FIREBASE_APP_ID }}" >> .env
+          echo "FIREBASE_PROJECT_ID=${{ vars.FIREBASE_PROJECT_ID }}" >> .env
+          echo "FIREBASE_AUTH_DOMAIN=${{ vars.FIREBASE_AUTH_DOMAIN }}" >> .env
+          echo "FIREBASE_STORAGE_BUCKET=${{ vars.FIREBASE_STORAGE_BUCKET }}" >> .env
+          echo "FIREBASE_MEASUREMENT_ID=${{ vars.FIREBASE_MEASUREMENT_ID }}" >> .env
+          echo "FIREBASE_MESSAGING_SENDER_ID=${{ vars.FIREBASE_MESSAGING_SENDER_ID }}" >> .env
 
-          echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" > .env.production
-          echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> .env.production
+          echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env
+          echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> .env
       - name: Build
         run: yarn app build
       - uses: FirebaseExtended/action-hosting-deploy@v0
