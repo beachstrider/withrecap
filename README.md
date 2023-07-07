@@ -10,7 +10,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-1. Yarn v1 (https://yarnpkg.com)
+1. Yarn v3 (https://yarnpkg.com)
 
    - This Project uses yarn workspaces (https://classic.yarnpkg.com/lang/en/docs/workspaces/)
 
