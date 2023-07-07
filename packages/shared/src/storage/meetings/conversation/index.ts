@@ -1,6 +1,5 @@
-import { CollectionReference, DocumentData, arrayUnion, collection, doc, updateDoc } from 'firebase/firestore'
-
 import { firestore } from '../../firestore'
+import { CollectionReference, DocumentData, arrayUnion, collection, doc, updateDoc } from 'firebase/firestore'
 
 export type Message = {
   speaker: string

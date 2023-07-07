@@ -1,3 +1,5 @@
+import { firestore } from '../../firestore'
+import { Meeting } from '../../meetings'
 import {
   CollectionReference,
   DocumentData,
@@ -8,9 +10,6 @@ import {
   query,
   where
 } from 'firebase/firestore'
-
-import { firestore } from '../../firestore'
-import { Meeting } from '../../meetings'
 
 export type UserMeetingConfig = {
   date: string

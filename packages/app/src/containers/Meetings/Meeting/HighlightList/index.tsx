@@ -1,9 +1,7 @@
-import React from 'react'
-
-import { Highlights } from '@recap/shared'
-import { Highlight } from './Highlight'
-
 import tetragram from '../../../../assets/img/tetragram.svg'
+import { Highlight } from './Highlight'
+import { Highlights } from '@recap/shared'
+import React from 'react'
 
 interface HighlightsProps {
   mid: string

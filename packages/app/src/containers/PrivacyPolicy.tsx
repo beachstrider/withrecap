@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
-
 import { Layout } from '../components/layouts'
 import { SUPPORT_PRIVACY_REQUEST } from '../constants/links'
+import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function PrivacyPolicy() {
   useEffect(() => {

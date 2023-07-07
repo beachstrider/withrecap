@@ -1,3 +1,4 @@
+import { Timestamps, firestore } from '../firestore'
 import { User as FirebaseUser } from 'firebase/auth'
 import {
   CollectionReference,
@@ -9,8 +10,6 @@ import {
   setDoc,
   updateDoc
 } from 'firebase/firestore'
-
-import { Timestamps, firestore } from '../firestore'
 
 type CustomUserConfigs = {
   // Add custom configurations here

@@ -1,9 +1,8 @@
-import { User } from '@recap/shared'
-import * as functions from 'firebase-functions'
-
 import { mail as mailgun, settings } from '../../config'
 import { MailService, Templates } from '../../services/mail'
 import { SentryWrapper } from '../../utils/sentry'
+import { User } from '@recap/shared'
+import * as functions from 'firebase-functions'
 
 export const OnUserCreated = functions.firestore.document('users/{userId}').onCreate(
   SentryWrapper<

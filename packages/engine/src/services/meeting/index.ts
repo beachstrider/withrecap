@@ -1,6 +1,5 @@
-import { Meeting, MeetingMetadata } from '@recap/shared'
-
 import { settings } from '../../config'
+import { Meeting, MeetingMetadata } from '@recap/shared'
 
 export class MeetingService {
   constructor(private meeting: Meeting) {}

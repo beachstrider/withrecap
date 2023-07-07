@@ -1,9 +1,3 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-
-import OnboardingLayout from '../../components/layouts/Onboarding'
-import { MEETINGS } from '../../constants/routes'
-
 import back from '../../assets/img/back_dark.svg'
 import close from '../../assets/img/closeDark.svg'
 import forward from '../../assets/img/forward_dark.svg'
@@ -14,6 +8,10 @@ import navRightUser3dots from '../../assets/img/nav-right-user-3dots.png'
 import plus from '../../assets/img/plus_dark.svg'
 import refresh from '../../assets/img/refresh_dark.svg'
 import star from '../../assets/img/star.svg'
+import OnboardingLayout from '../../components/layouts/Onboarding'
+import { MEETINGS } from '../../constants/routes'
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 export const OnboardingDone = () => {
   return (

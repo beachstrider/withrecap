@@ -1,7 +1,6 @@
+import * as Sentry from '@sentry/node'
 import * as admin from 'firebase-admin'
 import { config, logger } from 'firebase-functions'
-
-import * as Sentry from '@sentry/node'
 import formData from 'form-data'
 import { google } from 'googleapis'
 import Mailgun from 'mailgun.js'

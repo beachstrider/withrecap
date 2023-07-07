@@ -1,12 +1,10 @@
+import { App } from './App'
+import './index.css'
+import { initSentry } from '@recap/shared'
+import { ErrorBoundary } from '@sentry/react'
 import React, { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { ErrorBoundary } from '@sentry/react'
-
-import { App } from './App'
-
-import './index.css'
-import { initSentry } from '@recap/shared'
 
 const FallbackComponent = () => {
   return <div>An unexpected error has occurred</div>

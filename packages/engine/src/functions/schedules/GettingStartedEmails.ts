@@ -1,9 +1,8 @@
-import * as functions from 'firebase-functions'
-import { addDays } from 'date-fns'
-import { User } from '@recap/shared'
-
 import { mail as mailgun, settings, db } from '../../config'
 import { MailService, Templates } from '../../services/mail'
+import { User } from '@recap/shared'
+import { addDays } from 'date-fns'
+import * as functions from 'firebase-functions'
 
 export const GettingStartedEmails = functions.pubsub.schedule('every day 08:00').onRun(async (_context) => {
   try {

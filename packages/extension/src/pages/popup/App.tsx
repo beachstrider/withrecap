@@ -1,10 +1,8 @@
+import { Layout } from './components/Layout'
+import Popup from './pages/popup'
 import { AuthGuard, GoogleIdentityAuthProvider, LoadingIcon, PROTOCAL } from '@recap/shared'
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-
-import { Layout } from './components/Layout'
-
-import Popup from './pages/popup'
 
 const loadingComponent = (
   <div className="flex items-center justify-center flex-1">

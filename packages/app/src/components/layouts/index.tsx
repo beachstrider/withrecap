@@ -1,9 +1,7 @@
-import React from 'react'
-
-import { LoadingIcon } from '@recap/shared'
-
 import Footer from './Footer'
 import Header from './Header'
+import { LoadingIcon } from '@recap/shared'
+import React from 'react'
 
 type MainProps = JSX.IntrinsicElements['main']
 interface Props extends MainProps {

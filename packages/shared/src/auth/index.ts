@@ -1,6 +1,5 @@
-import { Unsubscribe } from 'firebase/auth'
-
 import { FirebaseUser } from './firebase'
+import { Unsubscribe } from 'firebase/auth'
 
 export interface BaseAuthProvider {
   login: () => Promise<void>

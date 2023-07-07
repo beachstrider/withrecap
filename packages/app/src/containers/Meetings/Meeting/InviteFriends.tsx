@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from 'react'
-
-import { yupResolver } from '@hookform/resolvers/yup'
-import { sendInviteEmails, toast } from '@recap/shared'
-import { useForm } from 'react-hook-form'
-import * as yup from 'yup'
-
+import gift from '../../../assets/img/Gift.svg'
 import { Button } from '../../../components/buttons'
 import { Modal } from '../../../components/display/Modal'
-
-import gift from '../../../assets/img/Gift.svg'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { sendInviteEmails, toast } from '@recap/shared'
+import React, { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
 
 interface Form {
   emails: string

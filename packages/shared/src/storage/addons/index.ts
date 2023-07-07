@@ -1,3 +1,4 @@
+import { firestore } from '../firestore'
 import {
   CollectionReference,
   DocumentData,
@@ -8,8 +9,6 @@ import {
   getDocs,
   setDoc
 } from 'firebase/firestore'
-
-import { firestore } from '../firestore'
 
 export type Addon = {
   url: string

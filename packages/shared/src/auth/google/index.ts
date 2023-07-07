@@ -1,3 +1,5 @@
+import { BaseAuthProvider, BaseIdentityAuthProvider } from '..'
+import { firebase, FirebaseUser } from '../firebase'
 import { FirebaseApp } from 'firebase/app'
 import {
   Auth,
@@ -9,9 +11,6 @@ import {
   signInWithRedirect,
   Unsubscribe
 } from 'firebase/auth'
-
-import { BaseAuthProvider, BaseIdentityAuthProvider } from '..'
-import { firebase, FirebaseUser } from '../firebase'
 
 // TODO: Add access token if necessary by following step 5 here:
 // https://firebase.google.com/docs/auth/web/google-signin#handle_the_sign-in_flow_with_the_firebase_sdk

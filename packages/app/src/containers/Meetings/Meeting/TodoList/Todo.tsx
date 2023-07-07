@@ -1,14 +1,12 @@
+import dots from '../../../../assets/img/dots.svg'
+import add from '../../../../assets/img/plus.svg'
+import { Menu } from '@headlessui/react'
+import { TrashIcon } from '@heroicons/react/20/solid'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { toast, useTodo, type Todo as MeetingTodo } from '@recap/shared'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
-
-import { Menu } from '@headlessui/react'
-import { TrashIcon } from '@heroicons/react/20/solid'
-import { toast, useTodo, type Todo as MeetingTodo } from '@recap/shared'
-
-import dots from '../../../../assets/img/dots.svg'
-import add from '../../../../assets/img/plus.svg'
 
 interface BaseTodoProps {
   mid: string

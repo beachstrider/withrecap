@@ -1,13 +1,10 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-
-import { getTimeRange, Meeting, MeetingAttendee, MeetingMetadata } from '@recap/shared'
-
-import UserAvatar from '../../../components/display/UserAvatar'
-import { MEETINGS } from '../../../constants/routes'
-
 import arrowLeft from '../../../assets/img/arrowLeft.svg'
 import purpleMessage from '../../../assets/img/purpleMessage.svg'
+import UserAvatar from '../../../components/display/UserAvatar'
+import { MEETINGS } from '../../../constants/routes'
+import { getTimeRange, Meeting, MeetingAttendee, MeetingMetadata } from '@recap/shared'
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 interface Props {
   meeting: Meeting

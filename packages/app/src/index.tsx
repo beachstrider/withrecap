@@ -1,13 +1,11 @@
+import App from './App'
+import './globals.css'
 import { initSentry, ToastContainer } from '@recap/shared'
 import { ErrorBoundary } from '@sentry/react'
 import React, { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-
-import App from './App'
-
 import 'react-toastify/dist/ReactToastify.css'
-import './globals.css'
 
 initSentry('web')
 

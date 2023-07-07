@@ -1,10 +1,9 @@
-import { LoadingIcon, useRecentMeeting } from '@recap/shared'
-import React from 'react'
-
 import { InviteFriends } from '../InviteFriends'
 import { Sharing } from '../Sharing'
 import { MeetingDetails } from './MeetingDetails'
 import { NoMeeting } from './NoMeeting'
+import { LoadingIcon, useRecentMeeting } from '@recap/shared'
+import React from 'react'
 
 export const RecentMeeting = () => {
   const { recentMeeting, loading } = useRecentMeeting()

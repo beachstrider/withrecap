@@ -1,12 +1,11 @@
+import { TranscriptService } from '../transcript'
 import { Highlights } from '@recap/shared'
+import { StoredHighlights } from '@recap/shared/src/storage/meetings/highlights'
 import * as Sentry from '@sentry/node'
+import { Timestamp } from 'firebase-admin/firestore'
 import * as functions from 'firebase-functions'
 import { OpenAIApi } from 'openai'
 import { v4 as uuid } from 'uuid'
-
-import { StoredHighlights } from '@recap/shared/src/storage/meetings/highlights'
-import { Timestamp } from 'firebase-admin/firestore'
-import { TranscriptService } from '../transcript'
 
 export class MeetingHighlights {
   constructor(private api: OpenAIApi, private transcript: TranscriptService) {}

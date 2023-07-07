@@ -1,6 +1,3 @@
-import React from 'react'
-
-import { isExtensionInstalled } from '@recap/shared'
 import arrowLeft from '../../assets/img/arrowLeft.svg'
 import back from '../../assets/img/back.svg'
 import close from '../../assets/img/close.svg'
@@ -23,6 +20,8 @@ import refresh from '../../assets/img/refresh.svg'
 import rightExtensionUser3Dots from '../../assets/img/rightExtensionUser3Dots.svg'
 import star from '../../assets/img/star.svg'
 import welcomeBlock from '../../assets/img/welcomeBlock.svg'
+import { isExtensionInstalled } from '@recap/shared'
+import React from 'react'
 
 export const HomeBlock1 = () => (
   <div className="sm:px-[60px] px-[20px] sm:mb-[140px] mb-[110px]">

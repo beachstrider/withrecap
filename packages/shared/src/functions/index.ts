@@ -1,7 +1,6 @@
-import { getFunctions, httpsCallable } from 'firebase/functions'
-
 import { firebase } from '../auth/firebase'
 import { Recording } from '../types'
+import { getFunctions, httpsCallable } from 'firebase/functions'
 
 const functions = getFunctions(firebase)
 

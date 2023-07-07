@@ -1,10 +1,9 @@
-import { differenceInSeconds, format, isThisWeek, secondsToHours } from 'date-fns'
-import { useEffect, useMemo, useState } from 'react'
-
 import { useAuthGuard } from '../auth/AuthGuard'
 import { Meeting, MeetingStore } from '../storage/meetings'
 import { UserMeetingStore } from '../storage/users/meetings'
 import { useErrors } from './error'
+import { differenceInSeconds, format, isThisWeek, secondsToHours } from 'date-fns'
+import { useEffect, useMemo, useState } from 'react'
 
 type MeetingByDate = { [date: string]: Meeting[] }
 

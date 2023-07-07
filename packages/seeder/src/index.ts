@@ -1,10 +1,8 @@
-import * as admin from 'firebase-admin'
-
-import { Addons, Meeting, deleteCollection } from '@recap/shared'
-
-import chalk from 'chalk'
 import addonsJSON from './data/addons.json'
 import meetingJSON from './data/meeting.json'
+import { Addons, Meeting, deleteCollection } from '@recap/shared'
+import chalk from 'chalk'
+import * as admin from 'firebase-admin'
 
 const app = admin.initializeApp({
   credential: admin.credential.cert('../../service-account.json')

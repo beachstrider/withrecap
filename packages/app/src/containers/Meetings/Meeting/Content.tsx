@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react'
-
-import { Meeting, toast, useAuthGuard, useHighlights, useTodos } from '@recap/shared'
-
 import HighlightList from './HighlightList'
 import Processing from './Processing'
 import Summary from './Summary'
 import TodoList from './TodoList'
 import Transcript from './Transcript'
+import { Meeting, toast, useAuthGuard, useHighlights, useTodos } from '@recap/shared'
+import React, { useEffect } from 'react'
 
 export default function Content({ meeting }: { meeting: Meeting }) {
   const {

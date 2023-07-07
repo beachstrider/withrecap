@@ -1,8 +1,3 @@
-import { Meeting, MeetingMetadata, User } from '@recap/shared'
-import * as Sentry from '@sentry/node'
-import { formatInTimeZone } from 'date-fns-tz'
-import * as functions from 'firebase-functions'
-
 import { db, mail as mailgun, openai, settings } from '../../config'
 import { MeetingHighlights } from '../../services/highlights'
 import { MailService, Templates } from '../../services/mail'
@@ -12,6 +7,10 @@ import { MeetingTodos } from '../../services/todos'
 import { TranscriptService } from '../../services/transcript'
 import { isCohere } from '../../utils/misc'
 import { SentryWrapper } from '../../utils/sentry'
+import { Meeting, MeetingMetadata, User } from '@recap/shared'
+import * as Sentry from '@sentry/node'
+import { formatInTimeZone } from 'date-fns-tz'
+import * as functions from 'firebase-functions'
 
 export const DEFAULT_TIMEZONE = 'America/Montreal'
 

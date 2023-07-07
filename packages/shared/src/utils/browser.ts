@@ -1,7 +1,7 @@
-import { detect } from 'detect-browser'
 import { toast } from '../components/toast'
 import { IS_EXTENSION_INSTALLED, RequestTypes } from '../constants'
 import { createAuthToken } from '../functions'
+import { detect } from 'detect-browser'
 
 export const browser = detect()
 

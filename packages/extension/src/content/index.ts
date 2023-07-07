@@ -1,7 +1,6 @@
+import { ExtensionMessages } from '../common'
 import { initSentry, Message } from '@recap/shared'
 import * as Sentry from '@sentry/browser'
-
-import { ExtensionMessages } from '../common'
 
 const SELECTOR_CALL_BAR = "div[jscontroller='kAPMuc']"
 const SELECTOR_CC_DIV = '.a4cQT'

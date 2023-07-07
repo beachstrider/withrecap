@@ -1,7 +1,6 @@
-import * as functions from 'firebase-functions'
-
 import { firestore, googleAuth, settings } from '../../config'
 import { SentryWrapper } from '../../utils/sentry'
+import * as functions from 'firebase-functions'
 
 export const BackupFirestore = functions.pubsub.schedule('every day 00:00').onRun(
   SentryWrapper<[functions.EventContext]>('BackupFirestore', 'functions.pubsub.schedule.onRun', async (_context) => {
