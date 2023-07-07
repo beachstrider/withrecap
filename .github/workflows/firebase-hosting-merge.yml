@@ -35,8 +35,8 @@ jobs:
         run: yarn app build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: '${{ secrets.PERSONAL_GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
           channelId: live
-          projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
           entryPoint: packages/app
+          repoToken: '${{ secrets.PERSONAL_GITHUB_TOKEN }}'
+          projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
