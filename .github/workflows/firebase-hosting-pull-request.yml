@@ -2,7 +2,10 @@
 # https://github.com/firebase/firebase-tools
 
 name: Deploy to Firebase Hosting on PR
-on: pull_request
+on:
+  push:
+    branches:
+      - main
 jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
@@ -20,6 +23,7 @@ jobs:
           yarn --immutable
       - name: Create env file
         run: |
+          echo "output: ${{ vars.FIREBASE_PROJECT_ID}}"
           echo "EXTENSION_LINK=${{ vars.EXTENSION_LINK }}" > .env
           echo "FIREBASE_APP_ID=${{ vars.FIREBASE_APP_ID }}" >> .env
           echo "FIREBASE_PROJECT_ID=${{ vars.FIREBASE_PROJECT_ID }}" >> .env
@@ -27,7 +31,6 @@ jobs:
           echo "FIREBASE_STORAGE_BUCKET=${{ vars.FIREBASE_STORAGE_BUCKET }}" >> .env
           echo "FIREBASE_MEASUREMENT_ID=${{ vars.FIREBASE_MEASUREMENT_ID }}" >> .env
           echo "FIREBASE_MESSAGING_SENDER_ID=${{ vars.FIREBASE_MESSAGING_SENDER_ID }}" >> .env
-
           echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env
           echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> .env
       - name: Build
@@ -36,6 +39,6 @@ jobs:
         with:
           channelId: live
           entryPoint: packages/app
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
           projectId: ${{ vars.FIREBASE_PROJECT_ID }}
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
