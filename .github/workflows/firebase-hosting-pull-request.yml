@@ -3,6 +3,8 @@
 
 name: Deploy to Firebase Hosting on PR
 on: pull_request
+env:
+  env_var: ${{ vars.ENV_CONTEXT_VAR }}
 jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
@@ -20,7 +22,6 @@ jobs:
           yarn --immutable
       - name: Create env file
         run: |
-          echo "output ====: ${{ vars.FIREBASE_PROJECT_ID}}"
           echo "EXTENSION_LINK=${{ vars.EXTENSION_LINK }}" > .env
           echo "FIREBASE_APP_ID=${{ vars.FIREBASE_APP_ID }}" >> .env
           echo "FIREBASE_PROJECT_ID=${{ vars.FIREBASE_PROJECT_ID }}" >> .env
