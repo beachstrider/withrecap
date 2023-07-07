@@ -23,7 +23,7 @@ jobs:
           yarn --immutable
       - name: Create env file
         run: |
-          echo "output ===: ${{ vars.FIREBASE_PROJECT_ID}}"
+          echo "output ====: ${{ vars.FIREBASE_PROJECT_ID}}"
           echo "EXTENSION_LINK=${{ vars.EXTENSION_LINK }}" > .env
           echo "FIREBASE_APP_ID=${{ vars.FIREBASE_APP_ID }}" >> .env
           echo "FIREBASE_PROJECT_ID=${{ vars.FIREBASE_PROJECT_ID }}" >> .env
