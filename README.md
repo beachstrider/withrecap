@@ -156,17 +156,21 @@ Finally the `.env` will look similar to below:
 
 Go to the project github repository, then navigate to **Settings** tab.
 
-Expand a dropdown **Secrets and variables** in the left sidebar of **Repository settings** page and click **Actions**.
+Click **Environments** on the left sidebar of **Repository settings** page, then click **New environment**.
 
-### Configure initial secrets
+Give it a name `PRODUCTION` and click **Configure environment** to finish, you will be redirect to the environment edit page.
 
-1. Click **New repository secret** and give `DOMAIN` to **Name**, give the domain of your firebase hosting server (ex: withrecap.com) to **Secret**.
+### Initial configuration
 
-2. Create secrets `EXTENSION_LINK`, `EXTENSION_KEY`, and copy/paste the values in `.env` to them.
+1. Click **Add variable** and give `DOMAIN` to **Name**, give the domain of your firebase hosting server (ex: withrecap.com) to **Value**.
 
-### Copy common variables from `.env`
+2. Click **New repository secret** and give `EXTENSION_KEY` to **Name**, copy/paste the value in `.env` into **Secret**.
 
-1. Create secrets `FIREBASE_API_KEY`, `FIREBASE_AUTH_DOMAIN`, `FIREBASE_PROJECT_ID`, `FIREBASE_STORAGE_BUCKET`, `FIREBASE_MESSAGING_SENDER_ID`, `FIREBASE_APP_ID` , `FIREBASE_MEASUREMENT_ID`, `OAUTH2_CLIENT_ID`, `SENTRY_DSN`, copying/pasting the corresponding values of `.env` which you early configured to each one.
+### Configuration copy from `.env`
+
+1. Create variables `EXTENSION_LINK`, `OAUTH2_CLIENT_ID`, `FIREBASE_AUTH_DOMAIN`, `FIREBASE_PROJECT_ID`, `FIREBASE_APP_ID`, `FIREBASE_STORAGE_BUCKET`, `FIREBASE_MESSAGING_SENDER_ID`, `FIREBASE_MEASUREMENT_ID`, copying/pasting the corresponding values in `.env` to each one.
+
+2. Create secrets `FIREBASE_API_KEY`, `SENTRY_DSN`, copying/pasting the corresponding values of `.env` which you early configured to each one.
 
 ### Configure GCP service account key
 
@@ -206,7 +210,7 @@ Expand a dropdown **Secrets and variables** in the left sidebar of **Repository 
 
 12. Open the downloaded JSON file and copy its text.
 
-13. On github `Repository settings` page, create a new secret `FIREBASE_SERVICE_ACCOUNT` and paste the content of JSON file into the secret value.
+13. On the environment edit page of your github repository, create a new secret `FIREBASE_SERVICE_ACCOUNT` and paste the content of JSON file into the secret value.
 
 ### Enable OAuth consent screen
 
@@ -236,7 +240,7 @@ Expand a dropdown **Secrets and variables** in the left sidebar of **Repository 
 
 8. Copy the api key and paste it
 
-9. On github `Repository settings` page, create a new secret `CHATGPT_API_KEY` and paste the API KEY into the secret value.
+9. On the environment edit page of your github repository, create a new secret `CHATGPT_API_KEY` and paste the API KEY into the secret value.
 
 ### Configure Mailgun API KEY
 
@@ -254,7 +258,7 @@ Expand a dropdown **Secrets and variables** in the left sidebar of **Repository 
 
 7. Click on the `eye` icon to reveal your Mailgun Private API key, then copy it.
 
-8. On github `Repository settings` page, create a new secret `MAILGUN_API_KEY` and paste the API KEY into the secret value.
+8. On the environment edit page of your github repository, create a new secret `MAILGUN_API_KEY` and paste the API KEY into the secret value.
 
 ### Configure Personal Github Token
 
@@ -262,9 +266,9 @@ Expand a dropdown **Secrets and variables** in the left sidebar of **Repository 
 
 2. Click **Generate new token > Generate new token (classic)**.
 
-3. Give it a name (ex: `PERSONAL_TOKEN`), set **Expiration** `No expiration`, give `repo`, `workflow`, `write:packages`, `delete:packages`, `project` to its scopes, then click **Generate token** to create a token and copy the token's value.
+3. Give it a name (ex: `RECAP_PRODUCTION_TOKEN`), set **Expiration** `No expiration`, give `repo`, `workflow`, `write:packages`, `delete:packages`, `project` to its scopes, then click **Generate token** to create a token and copy the token's value.
 
-4. Get back to github `Repository settings` page, create a new secret `PERSONAL_GITHUB_TOKEN` and paste the token into the secret value.
+4. On the environment edit page of your github repository, create a new secret `PERSONAL_GITHUB_TOKEN` and paste the token into the secret value.
 
 <br>
 
@@ -283,7 +287,7 @@ If you are ready, push a new version to main branch for a deployment.
 2. Push to github.
 
    ```bash
-   git commit -m "<commit message>" # EX: git commit -m "chore: release v1.0.0
+   git commit -m "<commit message>" # EX: git commit -m "chore: release v1.1.0
    git push
    ```
 
@@ -298,6 +302,12 @@ If you are ready, push a new version to main branch for a deployment.
    - Enter `allUsers` in the input box named **New principals**, then give a role `Cloud Functions Invoker` in the select box named **Select a role**.
 
    - Click **SAVE** to finish.
+
+<br>
+
+> **NOTE**: You can configure an another firebase project and github environment named `STAGING` if you want to set up a CI/CD for a staging server. In this case, each time you make a PR, deployment is processed for staging.
+
+<br>
 
 🎉 Congratulations! You have successfully setup your project finally.
 
