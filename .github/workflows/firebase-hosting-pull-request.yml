@@ -39,5 +39,5 @@ jobs:
           channelId: live
           entryPoint: packages/app
           projectId: ${{ vars.FIREBASE_PROJECT_ID }}
-          repoToken: '${{ secrets.PERSONAL_GITHUB_TOKEN }}'
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
