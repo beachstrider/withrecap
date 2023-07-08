@@ -1,4 +1,4 @@
-name: Release Production
+name: Production Release
 on:
   push:
     branches:

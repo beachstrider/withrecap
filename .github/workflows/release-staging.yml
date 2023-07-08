@@ -1,4 +1,4 @@
-name: Release Test
+name: Staging Release
 on: pull_request
 
 jobs:
@@ -38,7 +38,31 @@ jobs:
           yarn package
       - name: Get version from package.json
         id: get_version
-        run: echo "version=v$(node -p -e "require('./package.json').version")-test" >> $GITHUB_ENV
+        run: |
+          echo "version=v$(node -p -e "require('./package.json').version")-test" >> $GITHUB_ENV
+
+      - name: Get staging version
+        id: get_staging_version
+        run: |
+          # Get version from package.json
+          VERSION=v$(node -p "require('./package.json').version")
+
+          # Get max test version
+          git fetch --tags
+          TEST_VERSION=$(git tag -l "$VERSION-test.*" | sort -V | tail -n1)
+
+          if [[ ! -z "$TEST_VERSION" ]]
+          then
+            MAX_NUM=$(echo $TEST_VERSION | grep -o '\([0-9]*\)$') 
+            NEW_VERSION="$VERSION-test.$((MAX_NUM + 1))"
+          else
+            NEW_VERSION="$VERSION-test.1" 
+          fi
+
+          echo "============"
+          echo $NEW_VERSION
+          echo "============"
+
       - name: Check version
         uses: mukunku/tag-exists-action@v1.2.0
         id: check_version
@@ -62,5 +86,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./packages/extension/dist.zip
-          asset_name: recap-${{ env.version }}-test.zip
+          asset_name: recap-${{ env.version }}.zip
           asset_content_type: application/zip
