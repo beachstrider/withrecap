@@ -3,13 +3,13 @@
 
 name: Deploy to Firebase Hosting on PR
 on: pull_request
-env:
-  env_var: ${{ vars.ENV_CONTEXT_VAR }}
+
 jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
-    environment: staging
+    environment: STAGING
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -29,6 +29,7 @@ jobs:
           echo "FIREBASE_STORAGE_BUCKET=${{ vars.FIREBASE_STORAGE_BUCKET }}" >> .env
           echo "FIREBASE_MEASUREMENT_ID=${{ vars.FIREBASE_MEASUREMENT_ID }}" >> .env
           echo "FIREBASE_MESSAGING_SENDER_ID=${{ vars.FIREBASE_MESSAGING_SENDER_ID }}" >> .env
+
           echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env
           echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> .env
       - name: Build
@@ -38,5 +39,5 @@ jobs:
           channelId: live
           entryPoint: packages/app
           projectId: ${{ vars.FIREBASE_PROJECT_ID }}
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          repoToken: '${{ secrets.PERSONAL_GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'

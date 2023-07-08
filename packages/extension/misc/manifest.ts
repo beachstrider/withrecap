@@ -7,11 +7,7 @@ import { exit } from 'process'
 
 import { PROTOCAL } from '@recap/shared'
 
-if (process.env.NODE_ENV === 'production') {
-  dotenv.config({ path: path.join(__dirname, '../../../.env.production') })
-} else {
-  dotenv.config({ path: path.join(__dirname, '../../../.env') })
-}
+dotenv.config({ path: path.join(__dirname, '../../../.env') })
 
 interface ExtensionManifestV3 {
   name: string

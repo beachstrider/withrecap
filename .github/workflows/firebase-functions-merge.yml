@@ -3,10 +3,13 @@ on:
   workflow_dispatch:
   release:
     types: [published]
+
 jobs:
   build_and_deploy_functions:
     name: Build and Deploy Cloud Functions
     runs-on: ubuntu-latest
+    environment: PRODUCTION
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -28,13 +31,13 @@ jobs:
           yarn deploy:all --non-interactive --force
         working-directory: packages/engine
         env:
-          DOMAIN: ${{ secrets.DOMAIN }}
+          DOMAIN: ${{ vars.DOMAIN }}
+          EXTENSION_LINK: ${{ vars.EXTENSION_LINK }}
+          FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
+
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-          EXTENSION_LINK: ${{ secrets.EXTENSION_LINK }}
           CHATGPT_API_KEY: ${{ secrets.CHATGPT_API_KEY }}
           MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
-          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-          GOOGLE_APPLICATION_CREDENTIALS: '${{ github.workspace }}/service-account.json'
       - name: Seed initial data
         run: |
           yarn seeder start
