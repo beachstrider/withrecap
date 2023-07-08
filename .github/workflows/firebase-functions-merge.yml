@@ -38,6 +38,7 @@ jobs:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           CHATGPT_API_KEY: ${{ secrets.CHATGPT_API_KEY }}
           MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
+          GOOGLE_APPLICATION_CREDENTIALS: '${{ github.workspace }}/service-account.json'
       - name: Seed initial data
         run: |
           yarn seeder start
