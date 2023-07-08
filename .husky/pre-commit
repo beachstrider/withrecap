@@ -3,4 +3,3 @@
 
 yarn test
 yarn lint-staged
-yarn prettier:fix

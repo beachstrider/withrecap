@@ -2,7 +2,7 @@
   "name": "@recap/engine",
   "private": true,
   "scripts": {
-    "build": "yarn clean && yarn firebaserc && NODE_ENV=production parcel build src/index.ts --dist-dir lib",
+    "build": "yarn clean && yarn firebaserc && parcel build src/index.ts --dist-dir lib",
     "build:dev": "yarn firebaserc && parcel build src/index.ts --dist-dir lib",
     "build:watch": "yarn firebaserc && parcel watch src/index.ts --dist-dir lib",
     "clean": "npx rimraf lib misc/firebaserc.d.ts misc/firebaserc.d.ts.map misc/firebaserc.js misc/firebaserc.js.map misc/tsconfig.tsbuildinfo",

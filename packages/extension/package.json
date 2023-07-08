@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "npx rimraf dist misc/manifest.d.ts misc/manifest.d.ts.map misc/manifest.js misc/manifest.js.map misc/tsconfig.tsbuildinfo",
     "start": "tsc -b misc && node misc/manifest.js && parcel watch src/manifest.json --host localhost --port 3500",
-    "build": "yarn clean && NODE_ENV=production tsc -b misc && NODE_ENV=production node misc/manifest.js && NODE_ENV=production parcel build src/manifest.json --no-content-hash --no-cache --no-source-maps --detailed-report 0",
+    "build": "yarn clean && tsc -b misc && node misc/manifest.js && parcel build src/manifest.json --no-content-hash --no-cache --no-source-maps --detailed-report 0",
     "package": "zip -r dist.zip dist"
   },
   "devDependencies": {
