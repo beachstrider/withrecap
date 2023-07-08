@@ -137,6 +137,7 @@ Finally the `.env` will look similar to below:
   NODE_ENV="xxxxx"
   DOMAIN="xxxxx"
   EXTENSION_LINK="xxxxx"
+  EXTENSION_KEY="xxxxx"
 
   FIREBASE_API_KEY="xxxxx"
   FIREBASE_AUTH_DOMAIN="xxxxx"
