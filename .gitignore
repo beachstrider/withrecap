@@ -133,4 +133,7 @@ build
 # Firebase Emulator key.json
 packages/engine/key.json
 
+# Firebase project json
+packages/**/.firebaserc
+
 service-account.json
