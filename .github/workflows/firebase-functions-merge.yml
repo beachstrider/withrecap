@@ -1,13 +1,12 @@
 name: Deploy to Firebase Cloud Functions on merge
 on:
-  workflow_dispatch:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
 
 jobs:
   build_and_deploy_functions:
     name: Build and Deploy Cloud Functions
-    if: github.event.release.prerelease == false
     runs-on: ubuntu-latest
     environment: PRODUCTION
 

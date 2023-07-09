@@ -1,13 +1,12 @@
 name: Deploy to Firebase Hosting on merge
 on:
-  workflow_dispatch:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
 
 jobs:
   build_and_deploy_app:
     name: Build and Deploy App
-    if: github.event.release.prerelease == false
     runs-on: ubuntu-latest
     environment: PRODUCTION
 
