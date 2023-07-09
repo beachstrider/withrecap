@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Route, Routes } from 'react-router-dom'
 
-import { AuthGuard, GoogleIdentityAuthProvider, LoadingIcon, PROTOCAL } from '@recap/shared'
+import { AuthGuard, GoogleIdentityAuthProvider, LoadingIcon } from '@recap/shared'
 
 import { Layout } from './components/Layout'
 
@@ -16,7 +16,7 @@ const loadingComponent = (
 
 export const App = () => {
   const onNeedAuth = async () => {
-    const url = `${PROTOCAL}://${process.env.DOMAIN}/onboarding/register`
+    const url = `${process.env.DOMAIN}/onboarding/register`
 
     await chrome.tabs.create({ url })
   }

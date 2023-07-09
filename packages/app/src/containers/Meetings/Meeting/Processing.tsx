@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 
 import copy from 'copy-to-clipboard'
 
-import { Meeting, PROTOCAL } from '@recap/shared'
+import { Meeting } from '@recap/shared'
 
 export default function Processing({ meeting }: { meeting: Meeting }) {
   const [copied, setCopied] = useState<boolean>(false)
 
   const onCopy = () => {
-    const copied = copy(`${PROTOCAL}://${process.env.DOMAIN}/app/meetings/${meeting!.mid}`)
+    const copied = copy(`${process.env.DOMAIN}/app/meetings/${meeting!.mid}`)
 
     setCopied(copied)
   }
