@@ -8,7 +8,6 @@ import {
   Meeting,
   MeetingStore,
   Message,
-  PROTOCAL,
   RequestTypes,
   UserAddonStore,
   initSentry,
@@ -342,7 +341,7 @@ backgroundService.startListener()
 chrome.runtime.onInstalled.addListener((object) => {
   if (object.reason === chrome.runtime.OnInstalledReason.INSTALL) {
     chrome.tabs.create({
-      url: `${PROTOCAL}://${process.env.DOMAIN}/onboarding/register`
+      url: `http://${process.env.DOMAIN}/onboarding/register`
     })
   }
 })
