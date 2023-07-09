@@ -1,9 +1,8 @@
-name: Staging Release
+name: Release new test version
 on: pull_request
 
 jobs:
-  release:
-    name: Release
+  test_release:
     runs-on: ubuntu-latest
     environment: STAGING
 

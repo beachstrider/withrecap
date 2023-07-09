@@ -1,12 +1,11 @@
-name: Production Release
+name: Release new production version
 on:
   push:
     branches:
       - main
 
 jobs:
-  release:
-    name: Release
+  production_release:
     runs-on: ubuntu-latest
     environment: PRODUCTION
 

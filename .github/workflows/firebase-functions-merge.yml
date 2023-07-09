@@ -6,7 +6,6 @@ on:
 
 jobs:
   build_and_deploy_functions:
-    name: Build and Deploy Cloud Functions
     runs-on: ubuntu-latest
     environment: PRODUCTION
 
