@@ -5,8 +5,6 @@ import path from 'path'
 import * as prettier from 'prettier'
 import { exit } from 'process'
 
-import { PROTOCAL } from '@recap/shared'
-
 dotenv.config({ path: path.join(__dirname, '../../../.env') })
 
 interface ExtensionManifestV3 {
@@ -55,7 +53,7 @@ const main = async () => {
 
   manifest.key = process.env.EXTENSION_KEY
   manifest.oauth2.client_id = process.env.OAUTH2_CLIENT_ID
-  manifest.externally_connectable.matches = [`${PROTOCAL}://${process.env.DOMAIN}/*`]
+  manifest.externally_connectable.matches = [`http://${process.env.DOMAIN}/*`, `https://${process.env.DOMAIN}/*`]
 
   await writeJsonFile(filePath, manifest)
 }

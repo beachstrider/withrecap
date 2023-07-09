@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import copy from 'copy-to-clipboard'
 
-import { Meeting, PROTOCAL } from '@recap/shared'
+import { Meeting } from '@recap/shared'
 
 interface SharingProps {
   meeting: Meeting
@@ -22,7 +22,7 @@ export const Sharing = ({ meeting }: SharingProps) => {
   }, [])
 
   const onCopy = () => {
-    const copied = copy(`${PROTOCAL}://${process.env.DOMAIN}/app/meetings/${meeting.mid}`)
+    const copied = copy(`${process.env.DOMAIN}/app/meetings/${meeting.mid}`)
 
     setCopied(copied)
   }

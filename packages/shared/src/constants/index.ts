@@ -8,6 +8,3 @@ export enum ChromeStorage {
 }
 
 export const IS_EXTENSION_INSTALLED = 'IS_EXTENSION_INSTALLED'
-
-export const PROTOCAL =
-  typeof process.env.NODE_ENV === 'undefined' || process.env.NODE_ENV === 'development' ? 'http' : 'https'

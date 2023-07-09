@@ -26,6 +26,7 @@ export const transferLogin = async () => {
 
   console.debug('send customToken to extension - ', extensionId)
 
+  console.debug(`---  token:`, token)
   try {
     chrome.runtime.sendMessage(extensionId!, { type: RequestTypes.LOGIN, token }, (res) => {
       if (typeof res === 'undefined') {
