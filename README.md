@@ -275,14 +275,24 @@ Give it a name `PRODUCTION` and click **Configure environment** to finish, you w
 
 ## 5. Deploying The App
 
-Deployment is processed automatically by github actions when a new version of the project is released. You must have already done configuring [Environment Setup for Local development](#environment-setup-for-local-development) and [Environment Setup for CI/CD](#environment-setup-for-cicd) before starting a deployment.
+Deployment is processed automatically by github actions. You must have already done configuring [Environment Setup for Local development](#environment-setup-for-local-development) and [Environment Setup for CI/CD](#environment-setup-for-cicd) before starting a deployment.
 
-If you are ready, push a new version to main branch for a deployment.
+### Deploy only production server
+
+Merge a PR branch or directly push commits into main in order to deploy a production server.
+
+### Deploy production server & Release new version of extension
+
+You must be in main branch.
 
 1. Bump up a new version.
 
    ```bash
-   yarn bump --version=<version> # EX: yarn bump --version=1.1.0
+   yarn bump --version=<version>
+   # EX: yarn bump --version=1.1.0
+   # or  yarn major:patch
+   # or  yarn minor:patch
+   # or  yarn bump:patch
    ```
 
 2. Push to github.
@@ -292,21 +302,21 @@ If you are ready, push a new version to main branch for a deployment.
    git push
    ```
 
-3. Apply firebase function access role.
+### Deploy staging server & Release new test version of extension
 
-   - Go to [Enabling access to functions](https://console.cloud.google.com/functions), you will see all firebase cloud functions used in the project.
+You have to configure an another firebase project and github environment named `STAGING` in order to set up a CI/CD for a staging server. Then make a PR to deploy staging server and use the `prerelease` version of test-tailord extension on **Releases** page, like `v1.1.0-test.1`.
 
-   - Select all functions that have triggers specified as HTTP by clicking checkboxes on the left side of each rows.
+### Apply firebase function access role.
 
-   - Click **PERMISSIONS** and side toggle pane will appear, then click **ADD PRINCIPAL**.
+- Go to [Enabling access to functions](https://console.cloud.google.com/functions), you will see all firebase cloud functions used in the project.
 
-   - Enter `allUsers` in the input box named **New principals**, then give a role `Cloud Functions Invoker` in the select box named **Select a role**.
+- Select all functions that have triggers specified as HTTP by clicking checkboxes on the left side of each rows.
 
-   - Click **SAVE** to finish.
+- Click **PERMISSIONS** and side toggle pane will appear, then click **ADD PRINCIPAL**.
 
-<br>
+- Enter `allUsers` in the input box named **New principals**, then give a role `Cloud Functions Invoker` in the select box named **Select a role**.
 
-> **NOTE**: You can configure an another firebase project and github environment named `STAGING` if you want to set up a CI/CD for a staging server. In this case, each time you make a PR, deployment is processed for staging. On staging, you need to use a `prerelease` version of test-tailord extension on **Releases** page, like `v1.1.0-test.1`.
+- Click **SAVE** to finish.
 
 <br>
 
