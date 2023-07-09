@@ -5,8 +5,7 @@ on:
       - main
 
 jobs:
-  release:
-    name: Production Release
+  production_release:
     runs-on: ubuntu-latest
     environment: PRODUCTION
 

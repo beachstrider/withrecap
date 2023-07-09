@@ -2,8 +2,7 @@ name: Release new test version
 on: pull_request
 
 jobs:
-  release:
-    name: Test release
+  test_release:
     runs-on: ubuntu-latest
     environment: STAGING
 
