@@ -5,13 +5,18 @@ import { Message, initSentry } from '@recap/shared'
 import { ExtensionMessages } from '../common'
 
 const SELECTOR_CALL_BAR = "div[jscontroller='kAPMuc']"
-const SELECTOR_CC_DIV = '.a4cQT'
+const SELECTOR_CC_DIV = 'div.a4cQT'
 const SELECTOR_CC_BUTTON = "button[jscontroller='xzbRj']"
 const SELECTOR_LANGUAGE = "span[jsname='V67aGc']"
 const SELECTOR_SPEAKER = "div[class='zs7s8d jxFHg']"
 const SELECTOR_TEXT = "div[jsname='YSxPC']"
 const SELECTOR_LEFT_DIV = "div[class='kJU3pb r14hdb']"
 const SELECTOR_END_CALL_BUTTON = "div[jscontroller='m1IMT'] button[jscontroller='soHxf']"
+
+const ccButtonClass = {
+  pressed: 'VfPpkd-Bz112c-LgbsSe VfPpkd-Bz112c-LgbsSe-OWXEXe-IT5dJd fzRBVc tmJved xHd4Cb rmHNDe',
+  released: 'VfPpkd-Bz112c-LgbsSe fzRBVc tmJved xHd4Cb rmHNDe'
+}
 
 const wait = async (time: number) => {
   await new Promise((resolve) => setTimeout(resolve, time))
@@ -25,25 +30,72 @@ class GoogleMeetsService {
   private callStarted = false
   private callEnded = false
 
+  private captionEnabled = true
+
+  private style = document.createElement('style')
+
+  private heights: { enabled: number | undefined; disabled: number | undefined } = {
+    enabled: 0,
+    disabled: 0
+  }
+
+  private styles = {
+    enabled: `
+      ${SELECTOR_CC_DIV} {
+        height: 216px !important;
+      }
+      `,
+    disabled: `
+      ${SELECTOR_CC_DIV} {
+        height: 0 !important;
+      }
+    `
+  }
+
   private getMeetingId(): string {
     return window.location.pathname.slice(1)
   }
 
-  private enableCaption(ccDiv: HTMLDivElement, callDiv: HTMLDivElement): void {
+  private async enableCaption(ccDiv: HTMLDivElement, callDiv: HTMLDivElement): Promise<void> {
     const isHidden = ccDiv.style.display === 'none'
+
     console.debug('found caption div - checking if hidden...', isHidden)
     if (isHidden) {
-      const ccButton = callDiv.querySelector<HTMLButtonElement>(SELECTOR_CC_BUTTON)
-      if (ccButton) {
-        ccButton.click()
-        console.debug('caption enabled')
+      const _ccButton = callDiv.querySelector<HTMLButtonElement>(SELECTOR_CC_BUTTON)
 
-        // Disable button so it cannot be toggled manually
-        ccButton.disabled = true
-        console.debug('caption toggling disabled')
+      if (_ccButton) {
+        _ccButton.click()
+
+        document.head.appendChild(this.style)
+
+        await wait(100)
+        _ccButton.className = ccButtonClass.released
+        _ccButton.setAttribute('jscontroller', '')
+        _ccButton.setAttribute('jsaction', '')
+        _ccButton.setAttribute('jsname', '')
+
+        const ccButton = _ccButton.cloneNode(true) as HTMLButtonElement
+        _ccButton.parentElement!.replaceChild(ccButton, _ccButton)
+
+        ccButton.addEventListener('click', () => this.toggleCaption(ccButton))
+        this.toggleCaption(ccButton)
+
+        console.debug('caption enabled')
       } else {
         throw new Error("Couldn't find button while trying to enable caption")
       }
+    }
+  }
+
+  private toggleCaption(ccButton: HTMLButtonElement) {
+    this.captionEnabled = !this.captionEnabled
+
+    if (this.captionEnabled) {
+      ccButton.className = ccButtonClass.pressed
+      this.style.innerHTML = this.styles.enabled
+    } else {
+      ccButton.className = ccButtonClass.released
+      this.style.innerHTML = this.styles.disabled
     }
   }
 
