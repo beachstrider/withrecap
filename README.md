@@ -306,7 +306,7 @@ If you are ready, push a new version to main branch for a deployment.
 
 <br>
 
-> **NOTE**: You can configure an another firebase project and github environment named `STAGING` if you want to set up a CI/CD for a staging server. In this case, each time you make a PR, deployment is processed for staging.
+> **NOTE**: You can configure an another firebase project and github environment named `STAGING` if you want to set up a CI/CD for a staging server. In this case, each time you make a PR, deployment is processed for staging. On staging, you need to use a prereleased version of test-tailord extension on **Releases** page, like `v1.1.0-test.1`.
 
 <br>
 

@@ -2,11 +2,12 @@ name: Deploy to Firebase Cloud Functions on merge
 on:
   workflow_dispatch:
   release:
-    types: [published]
+    types: [released]
 
 jobs:
   build_and_deploy_functions:
     name: Build and Deploy Cloud Functions
+    if: github.event.release.prerelease == false
     runs-on: ubuntu-latest
     environment: PRODUCTION
 
@@ -25,6 +26,7 @@ jobs:
       - name: Authenticate with Firebase
         run: |
           echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > service-account.json
+          echo '=========${{github.event.release.prerelease}}'
       - name: Deploy Firebase functions, Firestore rules, and indexes
         run: |
           firebase functions:config:set --non-interactive config.chromewebstorelink="$EXTENSION_LINK" config.chatgptapikey="$CHATGPT_API_KEY" config.mailgunapikey="$MAILGUN_API_KEY" config.sentrydsn="$SENTRY_DSN" config.domain="$DOMAIN" project.id="$FIREBASE_PROJECT_ID" --project $FIREBASE_PROJECT_ID
