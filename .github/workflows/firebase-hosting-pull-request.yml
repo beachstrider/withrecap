@@ -38,3 +38,17 @@ jobs:
           projectId: ${{ vars.FIREBASE_PROJECT_ID }}
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+      - name: Comment on PR
+        if: success()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const url = `https://${{ vars.DOMAIN }}`
+            const message = `This branch was successfully deployed to [Firebase Hosting](${url}). Your additional message here.`
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message
+            });
