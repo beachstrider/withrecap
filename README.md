@@ -175,7 +175,7 @@ Finally the `.env` will look similar to below:
 
 9. Assign roles to your service account.
 
-   - Add the following roles: `API Keys Viewer`, `Artifact Registry Writer`, `Cloud Datastore Index Admin`, `Cloud Functions Developer`, `Cloud Run Viewer`, `Cloud RuntimeConfig Admin`, `Cloud Scheduler Admin`, `Firebase Admin`, `Firebase Authentication Admin`, `Firebase Extensions API Service Agent`, `Firebase Hosting Admin`, `Firebase Rules Admin`, `Service Account User`.
+   - Add the following roles: `API Keys Viewer`, `Artifact Registry Writer`, `Cloud Datastore Index Admin`, `Cloud Functions Developer`, `Cloud Run Viewer`, `Cloud RuntimeConfig Admin`, `Cloud Scheduler Admin`, `Eventarc Event Receiver`, `Firebase Admin`, `Firebase Authentication Admin`, `Firebase Extensions API Service Agent`, `Firebase Hosting Admin`, `Firebase Rules Admin`, `Service Account User`.
 
    - Click **Continue**.
 
