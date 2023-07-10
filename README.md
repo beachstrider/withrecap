@@ -151,28 +151,6 @@ Finally the `.env` will look similar to below:
   SENTRY_DSN="xxxxx"
 ```
 
-<br>
-
-## 4. Environment Setup for CI/CD
-
-Go to the project github repository, then navigate to **Settings** tab.
-
-Click **Environments** on the left sidebar of **Repository settings** page, then click **New environment**.
-
-Give it a name `PRODUCTION` and click **Configure environment** to finish, you will be redirect to the environment edit page.
-
-### Initial configuration
-
-1. Click **Add variable** and give `DOMAIN` to **Name**, give the domain of your firebase hosting server (ex: withrecap.com) to **Value**.
-
-2. Click **New repository secret** and give `EXTENSION_KEY` to **Name**, copy/paste the value in `.env` into **Secret**.
-
-### Configuration copy from `.env`
-
-1. Create variables `EXTENSION_LINK`, `OAUTH2_CLIENT_ID`, `FIREBASE_AUTH_DOMAIN`, `FIREBASE_PROJECT_ID`, `FIREBASE_APP_ID`, `FIREBASE_STORAGE_BUCKET`, `FIREBASE_MESSAGING_SENDER_ID`, `FIREBASE_MEASUREMENT_ID`, copying/pasting the corresponding values in `.env` to each one.
-
-2. Create secrets `FIREBASE_API_KEY`, `SENTRY_DSN`, copying/pasting the corresponding values of `.env` which you early configured to each one.
-
 ### Configure GCP service account key
 
 1. Visit the [Google Cloud Console](https://console.cloud.google.com/).
@@ -209,9 +187,35 @@ Give it a name `PRODUCTION` and click **Configure environment** to finish, you w
 
     - A JSON key file gets downloaded onto your machine.
 
-12. Open the downloaded JSON file and copy its text.
+12. Move the JSON key file to the root directory of your local repository.
 
-13. On the environment edit page of your github repository, create a new secret `FIREBASE_SERVICE_ACCOUNT` and paste the content of JSON file into the secret value.
+<br>
+
+## 4. Environment Setup for CI/CD
+
+Go to the project github repository, then navigate to **Settings** tab.
+
+Click **Environments** on the left sidebar of **Repository settings** page, then click **New environment**.
+
+Give it a name `PRODUCTION` and click **Configure environment** to finish, you will be redirect to the environment edit page.
+
+### Initial configuration
+
+1. Click **Add variable** and give `DOMAIN` to **Name**, give the domain of your firebase hosting server (ex: withrecap.com) to **Value**.
+
+2. Click **New repository secret** and give `EXTENSION_KEY` to **Name**, copy/paste the value in `.env` into **Secret**.
+
+### Configuration copy from `.env`
+
+1. Create variables `EXTENSION_LINK`, `OAUTH2_CLIENT_ID`, `FIREBASE_AUTH_DOMAIN`, `FIREBASE_PROJECT_ID`, `FIREBASE_APP_ID`, `FIREBASE_STORAGE_BUCKET`, `FIREBASE_MESSAGING_SENDER_ID`, `FIREBASE_MEASUREMENT_ID`, copying/pasting the corresponding values in `.env` to each one.
+
+2. Create secrets `FIREBASE_API_KEY`, `SENTRY_DSN`, copying/pasting the corresponding values of `.env` which you early configured to each one.
+
+### Configure GCP service account key
+
+1. Open `service-account.json` in your local project and copy its content.
+
+2. On the environment edit page of your github repository, create a new secret `FIREBASE_SERVICE_ACCOUNT` and paste the content of JSON file into the secret value.
 
 ### Enable OAuth consent screen
 

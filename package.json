@@ -24,8 +24,6 @@
     "eslint": "eslint \"./packages/*/src/**/*.{js,jsx,ts,tsx}\"",
     "prettier": "prettier --write \"./packages/**/*.{ts,tsx,html,md}\" \"!**/*.d.ts\"",
     "test": "jest -c tests/jest.config.ts --passWithNoTests",
-    "firebase:login": "firebase login",
-    "firebase:logout": "firebase logout",
     "bump": "tsc -b misc && node misc/bump.js",
     "bump:major": "yarn bump --mode=major",
     "bump:minor": "yarn bump --mode=minor",
