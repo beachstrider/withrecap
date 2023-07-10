@@ -9,6 +9,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: ${{ github.event_name == 'push' && 'PRODUCTION' || 'STAGING' }}
 
     steps:
       - name: Checkout code
