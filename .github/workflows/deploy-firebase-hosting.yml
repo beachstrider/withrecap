@@ -25,6 +25,7 @@ jobs:
         run: |
           echo "EXTENSION_LINK=${{ vars.EXTENSION_LINK }}" > .env
           echo "FIREBASE_APP_ID=${{ vars.FIREBASE_APP_ID }}" >> .env
+          echo "FIREBASE_DATABASE_URL=${{ vars.FIREBASE_DATABASE_URL }}" >> .env
           echo "FIREBASE_PROJECT_ID=${{ vars.FIREBASE_PROJECT_ID }}" >> .env
           echo "FIREBASE_AUTH_DOMAIN=${{ vars.FIREBASE_AUTH_DOMAIN }}" >> .env
           echo "FIREBASE_STORAGE_BUCKET=${{ vars.FIREBASE_STORAGE_BUCKET }}" >> .env
