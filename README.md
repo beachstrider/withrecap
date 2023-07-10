@@ -46,7 +46,9 @@ yarn install
 
 3. Go to **Build > Firestore Database** and click on **Create database**, choose **Start in production mode** and click on **Next**, choose an expected cloud firestore location and click on **Enable**.
 
-4. Optional: Go to **Build > Hosting** and finish `Get started`, then click **Add custom domain** to setup your domain.
+4. Go to **Build > Realtime Database** and click on **Create database**, choose **Start in production mode** and click on **Next**, choose an expected cloud realtime database location and click on **Enable**.
+
+5. Optional: Go to **Build > Hosting** and finish `Get started`, then click **Add custom domain** to setup your domain.
 
 <br>
 
@@ -86,6 +88,7 @@ In the root directlry of your local project, copy/paste `.env.example` and renam
    const firebaseConfig = {
      apiKey: 'xxxxx',
      authDomain: 'xxxxx',
+     databaseURL: 'xxxxx',
      projectId: 'xxxxx',
      storageBucket: 'xxxxx',
      messagingSenderId: 'xxxxx',
@@ -94,7 +97,7 @@ In the root directlry of your local project, copy/paste `.env.example` and renam
    }
    ```
 
-3. Replace all corresponding empty variables in `.env` with those values you"ve just taken note.
+3. Replace all corresponding empty variables by upper snake case in `.env` with those values you"ve just taken note.
 
 ### Configure OAUTH2_CLIENT_ID
 
@@ -141,6 +144,7 @@ Finally the `.env` will look similar to below:
 
   FIREBASE_API_KEY="xxxxx"
   FIREBASE_AUTH_DOMAIN="xxxxx"
+  FIREBASE_DATABASE_URL="xxxxx"
   FIREBASE_PROJECT_ID="xxxxx"
   FIREBASE_STORAGE_BUCKET="xxxxx"
   FIREBASE_MESSAGING_SENDER_ID="xxxxx"
@@ -207,7 +211,7 @@ Give it a name `PRODUCTION` and click **Configure environment** to finish, you w
 
 ### Configuration copy from `.env`
 
-1. Create variables `EXTENSION_LINK`, `OAUTH2_CLIENT_ID`, `FIREBASE_AUTH_DOMAIN`, `FIREBASE_PROJECT_ID`, `FIREBASE_APP_ID`, `FIREBASE_STORAGE_BUCKET`, `FIREBASE_MESSAGING_SENDER_ID`, `FIREBASE_MEASUREMENT_ID`, copying/pasting the corresponding values in `.env` to each one.
+1. Create variables `EXTENSION_LINK`, `OAUTH2_CLIENT_ID`, `FIREBASE_AUTH_DOMAIN`, `FIREBASE_DATABASE_URL`, `FIREBASE_PROJECT_ID`, `FIREBASE_APP_ID`, `FIREBASE_STORAGE_BUCKET`, `FIREBASE_MESSAGING_SENDER_ID`, `FIREBASE_MEASUREMENT_ID`, copying/pasting the corresponding values in `.env` to each one.
 
 2. Create secrets `FIREBASE_API_KEY`, `SENTRY_DSN`, copying/pasting the corresponding values of `.env` which you early configured to each one.
 
