@@ -10,7 +10,7 @@ import {
   updateDoc
 } from 'firebase/firestore'
 
-import { Timestamps, firestore } from '../firestore'
+import { Timestamps, firestore } from '..'
 
 type CustomUserConfigs = {
   // Add custom configurations here

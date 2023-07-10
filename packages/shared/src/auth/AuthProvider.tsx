@@ -4,8 +4,8 @@ import * as Sentry from '@sentry/browser'
 import { Outlet } from 'react-router-dom'
 
 import { BaseAuthProvider } from '.'
+import { User, UserStore } from '../firestore/users'
 import { useErrors } from '../hooks/error'
-import { User, UserStore } from '../storage/users'
 
 type AuthProviderContextType = {
   token: string | null

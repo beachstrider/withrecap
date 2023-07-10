@@ -1,7 +1,7 @@
 import { CollectionReference, DocumentData, Timestamp, collection, doc, getDoc, updateDoc } from 'firebase/firestore'
 
 import { Meeting } from '..'
-import { Timestamps, firestore } from '../../firestore'
+import { Timestamps, firestore } from '../..'
 
 export type Highlight = {
   id: string

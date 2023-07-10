@@ -9,7 +9,7 @@ import {
   setDoc
 } from 'firebase/firestore'
 
-import { firestore } from '../firestore'
+import { firestore } from '..'
 
 export type Addon = {
   url: string

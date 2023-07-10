@@ -1,13 +1,15 @@
-name: Deploy to Firebase Cloud Functions on merge
+name: Deploy to Firebase Cloud Functions
+
 on:
   push:
     branches:
       - main
+  pull_request:
 
 jobs:
   build_and_deploy_functions:
     runs-on: ubuntu-latest
-    environment: PRODUCTION
+    environment: ${{ github.event_name == 'push' && 'PRODUCTION' || 'STAGING' }}
 
     steps:
       - name: Checkout code
@@ -37,6 +39,7 @@ jobs:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           CHATGPT_API_KEY: ${{ secrets.CHATGPT_API_KEY }}
           MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
+
           GOOGLE_APPLICATION_CREDENTIALS: '${{ github.workspace }}/service-account.json'
       - name: Seed initial data
         run: |

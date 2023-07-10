@@ -16,31 +16,31 @@ export { GoogleAuthProvider, GoogleIdentityAuthProvider } from './auth/google'
 // STORAGE
 //===========================================================
 
-export { AddonStore } from './storage/addons'
-export type { Addon, Addons } from './storage/addons'
+export { AddonStore } from './firestore/addons'
+export type { Addon, Addons } from './firestore/addons'
 
-export * from './storage/firestore'
+export * from './firestore'
 
-export { MeetingStore } from './storage/meetings'
-export type { Meeting, MeetingAttendee, MeetingMetadata } from './storage/meetings'
+export { MeetingStore } from './firestore/meetings'
+export type { Meeting, MeetingAttendee, MeetingMetadata } from './firestore/meetings'
 
-export { ConversationStore } from './storage/meetings/conversation'
-export type { Conversation, Message } from './storage/meetings/conversation'
+export { ConversationStore } from './firestore/meetings/conversation'
+export type { Conversation, Message } from './firestore/meetings/conversation'
 
-export { TodosStore } from './storage/meetings/todos'
-export type { StoredTodos, Todo, Todos } from './storage/meetings/todos'
+export { TodosStore } from './firestore/meetings/todos'
+export type { StoredTodos, Todo, Todos } from './firestore/meetings/todos'
 
-export { HighlightsStore } from './storage/meetings/highlights'
-export type { Highlight, Highlights } from './storage/meetings/highlights'
+export { HighlightsStore } from './firestore/meetings/highlights'
+export type { Highlight, Highlights } from './firestore/meetings/highlights'
 
-export { UserStore } from './storage/users'
-export type { User } from './storage/users'
+export { UserStore } from './firestore/users'
+export type { User } from './firestore/users'
 
-export { UserAddonStore } from './storage/users/addons'
-export type { UserAddonConfig, UserAddons } from './storage/users/addons'
+export { UserAddonStore } from './firestore/users/addons'
+export type { UserAddonConfig, UserAddons } from './firestore/users/addons'
 
-export { UserMeetingStore } from './storage/users/meetings'
-export type { UserMeetingConfig, UserMeetings } from './storage/users/meetings'
+export { UserMeetingStore } from './firestore/users/meetings'
+export type { UserMeetingConfig, UserMeetings } from './firestore/users/meetings'
 
 //===========================================================
 // HTTPS CALLABLE FUNCTIONS

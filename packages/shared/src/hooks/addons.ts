@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { useAuthGuard } from '../auth/AuthGuard'
-import { Addon, AddonStore, Addons } from '../storage/addons'
-import { UserAddonConfig, UserAddonStore, UserAddons } from '../storage/users/addons'
+import { Addon, AddonStore, Addons } from '../firestore/addons'
+import { UserAddonConfig, UserAddonStore, UserAddons } from '../firestore/users/addons'
 import { useErrors } from './error'
 
 export function useAddons() {

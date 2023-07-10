@@ -1,21 +1,30 @@
-name: Release new test version
-on: pull_request
+name: Release new version
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
-  test_release:
+  release:
     runs-on: ubuntu-latest
-    environment: STAGING
+    environment: ${{ github.event_name == 'push' && 'PRODUCTION' || 'STAGING' }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+
+      - name: Setup Node environment
+        uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
           cache: 'yarn'
+
       - name: Install Dependencies
         run: |
           yarn --immutable
+
       - name: Create env file
         run: |
           echo "DOMAIN=${{ vars.DOMAIN }}" > .env
@@ -30,30 +39,37 @@ jobs:
           echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env
           echo "EXTENSION_KEY=${{ secrets.EXTENSION_KEY }}" >> .env
           echo "FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}" >> .env
+
       - name: Build
         working-directory: ./packages/extension
         run: |
           yarn build
           yarn package
-      - name: Get staging version
-        id: get_staging_version
+
+      - name: Get version from package.json
+        id: get_version
         run: |
           VERSION=v$(node -p "require('./package.json').version")
-          git fetch --tags
-          TEST_VERSION=$(git tag -l "$VERSION-test.*" | sort -V | tail -n1)
-          if [[ ! -z "$TEST_VERSION" ]]
+          if [ "${{ github.event_name }}" = "pull_request" ]
           then
-            MAX_NUM=$(echo $TEST_VERSION | grep -o '\([0-9]*\)$') 
-            NEW_VERSION="$VERSION-test.$((MAX_NUM + 1))"
-          else
-            NEW_VERSION="$VERSION-test.1" 
+            git fetch --tags
+            TEST_VERSION=$(git tag -l "$VERSION-test.*" | sort -V | tail -n1)
+            if [[ ! -z "$TEST_VERSION" ]]
+            then
+              MAX_NUM=$(echo $TEST_VERSION | grep -o '\([0-9]*\)$') 
+              VERSION="$VERSION-test.$((MAX_NUM + 1))"
+            else
+              VERSION="$VERSION-test.1"
+            fi
           fi
-          echo "version=$NEW_VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_ENV
+
       - name: Check version
         uses: mukunku/tag-exists-action@v1.2.0
         id: check_version
         with:
           tag: ${{ env.version }}
+
       - name: Release
         if: steps.check_version.outputs.exists != 'true'
         id: create_release
@@ -63,7 +79,8 @@ jobs:
         with:
           tag_name: ${{ env.version }}
           draft: false
-          prerelease: true
+          prerelease: ${{ github.event_name == 'pull_request' }}
+
       - name: Upload release asset
         if: steps.check_version.outputs.exists != 'true'
         uses: actions/upload-release-asset@v1

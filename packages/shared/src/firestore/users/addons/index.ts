@@ -1,6 +1,6 @@
 import { CollectionReference, DocumentData, collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
 
-import { firestore } from '../../firestore'
+import { firestore } from '../..'
 
 export type UserAddonConfig = {
   enabled: true
