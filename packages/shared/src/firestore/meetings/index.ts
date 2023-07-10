@@ -12,7 +12,7 @@ import {
   updateDoc
 } from 'firebase/firestore'
 
-import { Timestamps, firestore } from '../firestore'
+import { Timestamps, firestore } from '..'
 import { type Conversation } from './conversation'
 import { Highlights } from './highlights'
 import { type Todos } from './todos'

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { v4 as uuid } from 'uuid'
 
-import { Todo, Todos, TodosStore } from '../storage/meetings/todos'
+import { Todo, Todos, TodosStore } from '../firestore/meetings/todos'
 import { useErrors } from './error'
 
 export function useTodos(mid: string) {

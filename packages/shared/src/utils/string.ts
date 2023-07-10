@@ -1,4 +1,4 @@
-import { User } from '../storage/users'
+import { User } from '../firestore/users'
 
 // Input: User, Output: its first name
 export const getUserFirstName = (user: User) => {

@@ -1,4 +1,4 @@
-import { Conversation, Message } from '../storage/meetings/conversation'
+import { Conversation, Message } from '../firestore/meetings/conversation'
 import { alphabets, normalize } from './string'
 
 /**

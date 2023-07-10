@@ -9,7 +9,7 @@ import {
   where
 } from 'firebase/firestore'
 
-import { firestore } from '../../firestore'
+import { firestore } from '../..'
 import { Meeting } from '../../meetings'
 
 export type UserMeetingConfig = {

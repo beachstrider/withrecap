@@ -3,8 +3,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { differenceInSeconds, format, isThisWeek, secondsToHours } from 'date-fns'
 
 import { useAuthGuard } from '../auth/AuthGuard'
-import { Meeting, MeetingStore } from '../storage/meetings'
-import { UserMeetingStore } from '../storage/users/meetings'
+import { Meeting, MeetingStore } from '../firestore/meetings'
+import { UserMeetingStore } from '../firestore/users/meetings'
 import { useErrors } from './error'
 
 type MeetingByDate = { [date: string]: Meeting[] }

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { v4 as uuid } from 'uuid'
 
-import { Highlight, Highlights, HighlightsStore } from '../storage/meetings/highlights'
+import { Highlight, Highlights, HighlightsStore } from '../firestore/meetings/highlights'
 import { useErrors } from './error'
 
 export function useHighlights(mid: string) {

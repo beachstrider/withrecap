@@ -10,8 +10,8 @@
     "deploy:all": "yarn firebaserc && GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase deploy --only functions,firestore:rules,firestore:indexes",
     "deploy:functions": "yarn firebaserc && GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase deploy --only functions",
     "deploy:firestore": "yarn firebaserc && GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase deploy --only firestore",
-    "firebaserc": "tsc -b misc && node misc/firebaserc.js",
-    "logs": "yarn firebaserc && GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase functions:log"
+    "logs": "yarn firebaserc && GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase functions:log",
+    "firebaserc": "tsc -b misc && node misc/firebaserc.js"
   },
   "engines": {
     "node": "18"
