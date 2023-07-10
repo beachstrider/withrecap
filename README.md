@@ -219,13 +219,21 @@ Give it a name `PRODUCTION` and click **Configure environment** to finish, you w
 
 ### Enable OAuth consent screen
 
-1. Go to [Configuring OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent) and click **EDIT APP**, enter required inputs and click **SAVE AND CONTINUE** to move to the step **Scopes**.
+1. Go to [Configuring OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent).
 
-2. Click **ADD OR REMOVE SCOPES** and select scopes whose values are `.../auth/userinfo.email`, `.../auth/userinfo.profile`, `...auth/calendar.readonly`, and click **UPDATE**, then **SAVE AND CONTINUE** to move to the step **Optional info**.
+2. Configure **User type**.
 
-3. Just click **SAVE AND CONTINUE**.
+   - Set `MAKE EXTERNAL` if it is for a production. You will need to submit and take a verification process.
 
-4. Finally click **PREPARE FOR VERIFICATION** to submit your app for verification.
+   - Set `MAKE INTERNAL` if it is for a staging. You will need to manually add testers' emails in **Test users** section.
+
+3. Click **EDIT APP** and enter required inputs and click **SAVE AND CONTINUE** to move to the step **Scopes**.
+
+4. Click **ADD OR REMOVE SCOPES** and select scopes whose values are `.../auth/userinfo.email`, `.../auth/userinfo.profile`, `...auth/calendar.readonly`, and click **UPDATE**, then **SAVE AND CONTINUE** to move to the step **Optional info**.
+
+5. Just click **SAVE AND CONTINUE**.
+
+6. Finally click **PREPARE FOR VERIFICATION** to submit your app for verification.
 
 ### Configure GPT-4 API KEY
 
