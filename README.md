@@ -340,12 +340,28 @@ You have to configure an another firebase project and github environment named `
 
 <br>
 
-## 6. Running The App
+## 6. Running The Project Locally
 
-In the project directory, to run the app locally, you can run:
+Go to the root directory of the project.
+
+### Emulators
 
 ```bash
-yarn start
+yarn engine start
+```
+
+### App
+
+```bash
+yarn app start # with cloud server
+yarn app start:emulate # with emulators
+```
+
+### Extension
+
+```bash
+yarn extension start # with cloud server
+yarn extension start:emulate # with emulators
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
