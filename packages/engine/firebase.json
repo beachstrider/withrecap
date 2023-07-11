@@ -16,18 +16,20 @@
         ".firebaserc",
         ".gitignore"
       ],
-      "predeploy": ["yarn build"]
+      "predeploy": [
+        "yarn build"
+      ]
     }
   ],
   "emulators": {
-    "auth": {
-      "port": 9099
-    },
     "functions": {
       "port": 5001
     },
     "firestore": {
       "port": 8080
+    },
+    "database": {
+      "port": 9000
     },
     "ui": {
       "enabled": true
@@ -40,5 +42,8 @@
   },
   "storage": {
     "rules": "config/storage.rules"
+  },
+  "database": {
+    "rules": "config/database.rules"
   }
 }

@@ -10,8 +10,19 @@ import {
   signInWithRedirect
 } from 'firebase/auth'
 
-import { BaseAuthProvider, BaseIdentityAuthProvider } from '..'
 import { FirebaseUser, firebase } from '../firebase'
+
+export interface BaseAuthProvider {
+  login: () => Promise<void>
+  logout: () => Promise<void>
+  onAuthStateChanged: (callback: (user: FirebaseUser | null, token: string | null) => void) => Unsubscribe
+}
+
+export interface BaseIdentityAuthProvider {
+  login: (token?: string) => Promise<void>
+  logout: () => Promise<void>
+  onAuthStateChanged: (callback: (user: FirebaseUser | null, token: string | null) => void) => Unsubscribe
+}
 
 // TODO: Add access token if necessary by following step 5 here:
 // https://firebase.google.com/docs/auth/web/google-signin#handle_the_sign-in_flow_with_the_firebase_sdk

@@ -28,13 +28,22 @@ jobs:
           echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > service-account.json
       - name: Deploy Firebase functions, Firestore rules, and indexes
         run: |
-          firebase functions:config:set --non-interactive config.chromewebstorelink="$EXTENSION_LINK" config.chatgptapikey="$CHATGPT_API_KEY" config.mailgunapikey="$MAILGUN_API_KEY" config.sentrydsn="$SENTRY_DSN" config.domain="$DOMAIN" project.id="$FIREBASE_PROJECT_ID" --project $FIREBASE_PROJECT_ID
+          firebase functions:config:set --non-interactive \
+            config.chromewebstorelink="$EXTENSION_LINK" \
+            config.chatgptapikey="$CHATGPT_API_KEY" \
+            config.mailgunapikey="$MAILGUN_API_KEY" \
+            config.sentrydsn="$SENTRY_DSN" \
+            config.domain="$DOMAIN" \
+            database.url=$FIREBASE_DATABASE_URL \
+            project.id="$FIREBASE_PROJECT_ID" --project $FIREBASE_PROJECT_ID
+
           yarn deploy:all --non-interactive --force
         working-directory: packages/engine
         env:
           DOMAIN: ${{ vars.DOMAIN }}
           EXTENSION_LINK: ${{ vars.EXTENSION_LINK }}
           FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
+          FIREBASE_DATABASE_URL: ${{ vars.FIREBASE_DATABASE_URL }}
 
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           CHATGPT_API_KEY: ${{ secrets.CHATGPT_API_KEY }}

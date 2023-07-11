@@ -2,24 +2,24 @@
 // AUTHENTICATION
 //===========================================================
 
-export type { BaseAuthProvider } from './auth'
+export type { BaseAuthProvider } from './auth/GoogleAuth'
 
 export { AuthGuard, useAuthGuard } from './auth/AuthGuard'
 export { AuthProvider, useAuth } from './auth/AuthProvider'
 
-export { firebase } from './auth/firebase'
-export type { FirebaseUser } from './auth/firebase'
+export { firebase } from './firebase'
+export type { FirebaseUser } from './firebase'
 
-export { GoogleAuthProvider, GoogleIdentityAuthProvider } from './auth/google'
+export { GoogleAuthProvider, GoogleIdentityAuthProvider } from './auth/GoogleAuth'
 
 //===========================================================
-// STORAGE
+// FIRESTORE
 //===========================================================
+
+export * from './firestore'
 
 export { AddonStore } from './firestore/addons'
 export type { Addon, Addons } from './firestore/addons'
-
-export * from './firestore'
 
 export { MeetingStore } from './firestore/meetings'
 export type { Meeting, MeetingAttendee, MeetingMetadata } from './firestore/meetings'
@@ -41,6 +41,14 @@ export type { UserAddonConfig, UserAddons } from './firestore/users/addons'
 
 export { UserMeetingStore } from './firestore/users/meetings'
 export type { UserMeetingConfig, UserMeetings } from './firestore/users/meetings'
+
+//===========================================================
+// REALTIME DATABASE
+//===========================================================
+
+export * from './realtime'
+
+export { PresenceStore } from './realtime/presences'
 
 //===========================================================
 // HTTPS CALLABLE FUNCTIONS

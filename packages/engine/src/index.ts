@@ -1,4 +1,5 @@
 export { OnMeetingUpdated } from './functions/background/OnMeetingUpdated'
+export { OnPrecenseDeleted } from './functions/background/OnPrecenseDeleted'
 export { OnUserCreated } from './functions/background/OnUserCreated'
 
 export { CreateAuthToken } from './functions/callables/CreateAuthToken'

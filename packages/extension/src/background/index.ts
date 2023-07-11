@@ -8,6 +8,7 @@ import {
   Meeting,
   MeetingStore,
   Message,
+  PresenceStore,
   RequestTypes,
   UserAddonStore,
   initSentry,
@@ -265,6 +266,10 @@ class ChromeBackgroundService {
         console.debug('updateRecording - join')
         await updateRecording({ meetingId, action: 'join' })
 
+        // TODO: ==========
+        const presence = new PresenceStore(meetingId, email)
+        presence.watch()
+
         await chrome.storage.session.set({ recording: true, meetingDetails })
 
         this.unsubscribe = this.meetingStore.subscribe(meetingId, async (meeting) => {
@@ -316,6 +321,8 @@ class ChromeBackgroundService {
       console.debug('updateRecording - leave')
 
       await updateRecording({ meetingId, action: 'leave' })
+
+      // TODO: ==========
     } catch (err) {
       console.error(err)
       throw new Error('An error occurred while updating meeting on meeting ended')
