@@ -14,9 +14,11 @@ export class GoogleCalendar {
   public async getMeetingDetails(mid: string): Promise<Meeting | undefined> {
     // First we fetch the events of the day
     const beginningOfDay = new Date()
-    beginningOfDay.setHours(0, 0, 0, 0)
     const endOfDay = new Date()
+
+    beginningOfDay.setHours(0, 0, 0, 0)
     endOfDay.setHours(23, 59, 59, 999)
+
     const response = await fetch(
       `${GOOGLE_CALENDAR_BASE_URL}/calendars/primary/events?timeMin=${beginningOfDay.toISOString()}&timeMax=${endOfDay.toISOString()}&singleEvents=true`,
       {
@@ -25,6 +27,7 @@ export class GoogleCalendar {
         }
       }
     )
+
     const data: ResponseData = await response.json()
 
     const event = data.items.find((calendar) => calendar.hangoutLink?.includes(mid))
