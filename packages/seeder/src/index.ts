@@ -40,8 +40,6 @@ const clear = (callback: () => void) => {
 
 const seed = async () => {
   const app = admin.initializeApp({
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    databaseURL: process.env.FIREBASE_DATABASE_URL,
     credential: admin.credential.cert('../../service-account.json')
   })
 
