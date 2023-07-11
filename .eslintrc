@@ -5,6 +5,6 @@
     "chrome": "readonly"
   },
   "rules": {
-    "no-empty-function": "warn"
+    "no-empty-function": "off"
   }
 }
