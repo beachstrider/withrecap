@@ -4,8 +4,7 @@ import * as functions from 'firebase-functions'
 import { OpenAIApi } from 'openai'
 import { v4 as uuid } from 'uuid'
 
-import { Highlights } from '@recap/shared'
-import { StoredHighlights } from '@recap/shared/src/storage/meetings/highlights'
+import { Highlights, StoredHighlights } from '@recap/shared'
 
 import { TranscriptService } from '../transcript'
 

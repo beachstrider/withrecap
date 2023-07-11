@@ -31,7 +31,7 @@ export { TodosStore } from './firestore/meetings/todos'
 export type { StoredTodos, Todo, Todos } from './firestore/meetings/todos'
 
 export { HighlightsStore } from './firestore/meetings/highlights'
-export type { Highlight, Highlights } from './firestore/meetings/highlights'
+export type { Highlight, Highlights, StoredHighlights } from './firestore/meetings/highlights'
 
 export { UserStore } from './firestore/users'
 export type { User } from './firestore/users'
