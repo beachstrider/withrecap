@@ -16,7 +16,13 @@ export class PresenceStore {
     const snapshot = await get(this._db)
     const presences = snapshot.val()
 
-    const status = !Object.values(presences).some((status) => status === true)
+    let status
+
+    if (presences === null) {
+      status = true
+    } else {
+      status = !Object.values(presences).some((status) => status === true)
+    }
 
     set(this.db, status)
     onDisconnect(this.db).remove()
