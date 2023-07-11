@@ -1,5 +1,4 @@
 import * as Sentry from '@sentry/browser'
-import { Unsubscribe } from 'firebase/firestore'
 
 import {
   Conversation,
@@ -12,8 +11,7 @@ import {
   RequestTypes,
   UserAddonStore,
   initSentry,
-  sanitize,
-  updateRecording
+  sanitize
 } from '@recap/shared'
 
 import { ExtensionMessages } from '../common'
@@ -24,7 +22,7 @@ class ChromeBackgroundService {
   private conversation: Conversation
   private isStarted = false
   private isRecording = false
-  private unsubscribe: null | Unsubscribe = null
+  private presence: PresenceStore | null = null
 
   constructor() {
     this.meetingStore = new MeetingStore()
@@ -32,28 +30,6 @@ class ChromeBackgroundService {
     this.conversation = []
 
     this.google.onAuthStateChanged(() => true)
-  }
-
-  private async getMeetingDetails(meetingId: string): Promise<Meeting | undefined> {
-    // Get a new identity token whenever joining a meeting as the token expires in 1hr.
-    const identityToken = await this.google.refreshIdentityToken()
-
-    const calendar = new GoogleCalendar(identityToken)
-    const meetingDetails = await calendar.getMeetingDetails(meetingId)
-
-    if (!meetingDetails) {
-      console.warn('no calendar event could be found for the current meeting, skipping...')
-      return
-    }
-
-    return meetingDetails
-  }
-
-  private async handleError(error: unknown): Promise<void> {
-    console.error(error)
-    Sentry.captureException(error)
-
-    return chrome.storage.session.set({ error })
   }
 
   startListener(): void {
@@ -155,6 +131,28 @@ class ChromeBackgroundService {
         this.handleError(new Error('An error occurred while processing meeting ended on meeting tab closed'))
       }
     })
+  }
+
+  private async getMeetingDetails(meetingId: string): Promise<Meeting | undefined> {
+    // Get a new identity token whenever joining a meeting as the token expires in 1hr.
+    const identityToken = await this.google.refreshIdentityToken()
+
+    const calendar = new GoogleCalendar(identityToken)
+    const meetingDetails = await calendar.getMeetingDetails(meetingId)
+
+    if (!meetingDetails) {
+      console.warn('no calendar event could be found for the current meeting, skipping...')
+      return
+    }
+
+    return meetingDetails
+  }
+
+  private async handleError(error: unknown): Promise<void> {
+    console.error(error)
+    Sentry.captureException(error)
+
+    return chrome.storage.session.set({ error })
   }
 
   async login(token: string): Promise<void> {
@@ -263,24 +261,16 @@ class ChromeBackgroundService {
           await this.meetingStore.create(meetingId, meetingDetails)
         }
 
-        console.debug('updateRecording - join')
-        await updateRecording({ meetingId, action: 'join' })
-
-        // TODO: ==========
-        const presence = new PresenceStore(meetingId, email)
-        presence.watch()
-
         await chrome.storage.session.set({ recording: true, meetingDetails })
 
-        this.unsubscribe = this.meetingStore.subscribe(meetingId, async (meeting) => {
-          if (meeting && !meeting.recorder && Array.isArray(meeting.recorders) && meeting.recorders[0] === email) {
-            // Set this user as a recorder if no one is recording and this user is index 1 in recorders
-            // TODO: confirm recorders[0] is always available to record
-            this.conversation = []
+        console.debug('joining a meeting')
 
-            console.debug('recorder switched to me')
-            await updateRecording({ meetingId, action: 'delegated' })
-          }
+        // TODO: ==========
+        this.presence = new PresenceStore(meetingId, email)
+        this.presence.monitor()
+        this.presence.subscribe(async () => {
+          console.debug('delegated as a recorder')
+          this.conversation = []
         })
       } else {
         console.debug('processMeetingStart terminated due to earlier end of meeting')
@@ -301,11 +291,11 @@ class ChromeBackgroundService {
     try {
       const meeting = await this.meetingStore.get(meetingId)
 
-      if (!meeting || !this.isRecording) {
-        return
+      if (!meeting || !this.isRecording || !this.google.auth.currentUser || !this.google.auth.currentUser.email) {
+        return console.debug('something wrong while ending a meeting')
       }
 
-      const email = this.google.auth.currentUser?.email
+      const email = this.google.auth.currentUser.email
 
       // Store a conversation if this user has been a recorder
       if (meeting.recorder === email) {
@@ -318,9 +308,9 @@ class ChromeBackgroundService {
         await this.meetingStore.update(meetingId, { conversation })
       }
 
-      console.debug('updateRecording - leave')
+      console.debug('leaving a meeting')
 
-      await updateRecording({ meetingId, action: 'leave' })
+      this.presence?.disconnect()
 
       // TODO: ==========
     } catch (err) {
@@ -328,7 +318,6 @@ class ChromeBackgroundService {
       throw new Error('An error occurred while updating meeting on meeting ended')
     } finally {
       this.conversation = []
-      this.unsubscribe?.()
     }
   }
 }
