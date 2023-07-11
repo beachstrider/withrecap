@@ -18,8 +18,6 @@
     "extension": "yarn workspace @recap/extension",
     "seeder": "yarn workspace @recap/seeder",
     "shared": "yarn workspace @recap/shared",
-    "start": "USE_FIREBASE_EMULATORS=false concurrently \"yarn app start\" \"yarn extension start\"",
-    "start:emulate": "USE_FIREBASE_EMULATORS=true concurrently \"yarn engine start\" \"yarn app start\" \"yarn extension start\" \"yarn seeder start:emulate\"",
     "clean": "yarn app clean && yarn engine clean && yarn extension clean && yarn seeder clean && yarn shared clean && npx rimraf .parcel-cache",
     "reset": "yarn workspaces run clean && npx rimraf .parcel-cache node_modules packages/*/node_modules",
     "eslint": "eslint \"./packages/*/src/**/*.{js,jsx,ts,tsx}\"",
@@ -106,6 +104,7 @@
     "rimraf": "^5.0.1",
     "styled-components": "^5.2.0",
     "tailwindcss": "^3.3.1",
+    "tsc-watch": "^6.0.4",
     "yup": "^1.1.1"
   }
 }

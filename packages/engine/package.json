@@ -3,10 +3,8 @@
   "private": true,
   "scripts": {
     "build": "yarn clean && yarn firebaserc && parcel build src/index.ts --dist-dir lib",
-    "build:dev": "yarn firebaserc && parcel build src/index.ts --dist-dir lib",
-    "build:watch": "yarn firebaserc && parcel watch src/index.ts --dist-dir lib",
-    "clean": "npx rimraf lib misc/firebaserc.d.ts misc/firebaserc.d.ts.map misc/firebaserc.js misc/firebaserc.js.map misc/tsconfig.tsbuildinfo",
-    "start": "yarn build:dev && GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase functions:config:get > .runtimeconfig.json && GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase emulators:start",
+    "build:dev": "yarn clean && yarn firebaserc && tsc -w",
+    "start": "yarn build:dev & GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase functions:config:get > .runtimeconfig.json && GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase emulators:start & yarn workspace @recap/seeder start:emulate",
     "start:functions": "yarn build:dev && GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase functions:config:get > .runtimeconfig.json && GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase emulators:start --only functions",
     "deploy:all": "yarn firebaserc && GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase deploy --only functions,firestore:rules,firestore:indexes,database:rules",
     "deploy:functions": "yarn firebaserc && GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase deploy --only functions",
@@ -14,7 +12,8 @@
     "deploy:firestore": "yarn firebaserc && GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase deploy --only firestore",
     "logs": "yarn firebaserc && GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase functions:log",
     "log": "yarn firebaserc && GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase functions:log --only \"$0\"",
-    "firebaserc": "tsc -b misc && node misc/firebaserc.js"
+    "firebaserc": "tsc -b misc && node misc/firebaserc.js",
+    "clean": "npx rimraf tsconfig.tsbuildinfo lib misc/firebaserc.d.ts misc/firebaserc.d.ts.map misc/firebaserc.js misc/firebaserc.js.map misc/tsconfig.tsbuildinfo"
   },
   "engines": {
     "node": "18"
