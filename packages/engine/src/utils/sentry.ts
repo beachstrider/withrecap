@@ -9,10 +9,10 @@ type FunctionType =
   | 'functions.firestore.document.onCreate'
   | 'functions.database.ref.onDelete'
 
+initSentry()
+
 export const SentryWrapper = <T extends Array<any>>(name: string, type: FunctionType, handler: (...args: T) => any) => {
   return async (...args: T) => {
-    initSentry()
-
     const transaction = Sentry.startTransaction({
       name,
       op: type
