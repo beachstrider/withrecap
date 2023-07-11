@@ -11,7 +11,6 @@ import { MeetingService } from '../../services/meeting'
 import { MeetingSummary } from '../../services/summary'
 import { MeetingTodos } from '../../services/todos'
 import { TranscriptService } from '../../services/transcript'
-import { isCohere } from '../../utils/misc'
 import { SentryWrapper } from '../../utils/sentry'
 
 export const DEFAULT_TIMEZONE = 'America/Montreal'
@@ -39,7 +38,6 @@ export const OnMeetingUpdated = functions
       const newValue = change.after.data() as Meeting
 
       const emails = newValue.emails
-      const cohere = isCohere(emails)
 
       // Determine whether the meeting ends according to field `recorders`
       if (Array.isArray(oldValue.recorders) && oldValue.recorders.length && typeof newValue.recorders === 'undefined') {
@@ -52,7 +50,7 @@ export const OnMeetingUpdated = functions
         }
 
         const transcript = new TranscriptService(newValue.conversation)
-        const meetingSummary = new MeetingSummary(openai, transcript, cohere)
+        const meetingSummary = new MeetingSummary(openai, transcript)
         const meetingTodos = new MeetingTodos(openai, transcript)
         const meetingHighlights = new MeetingHighlights(openai, transcript)
 

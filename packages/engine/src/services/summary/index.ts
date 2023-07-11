@@ -3,7 +3,7 @@ import { OpenAIApi } from 'openai'
 import { TranscriptService } from '../transcript'
 
 export class MeetingSummary {
-  constructor(private api: OpenAIApi, private transcript: TranscriptService, private cohere: boolean) {}
+  constructor(private api: OpenAIApi, private transcript: TranscriptService) {}
 
   public async build(): Promise<string | undefined> {
     const transcript = this.transcript.toString()
@@ -24,29 +24,12 @@ export class MeetingSummary {
     
     End of transcript`
 
-    const prompt_cohere = `Summarize the following transcript of the meeting organized by "Cohere" in 4 paragraphs, giving each a title, and spanning 7 sentences.
-    The first one should be an introduction and the last one a conclusion.
-    
-    Adhere to the following guidelines:
-    
-      - DO NOT include unnecessary high-level information such as the name of the participants, date of event, or name of event.
-      - Ensure the summary includes mentioning "Cohere" as it's the meeting organizer.
-      - Ensure the summary is coherent: A reader can move easily from one sentence to the next; reading the text as an integrated whole, rather than a series of separate sentences.
-      - Ensure the summary is relevant: The summary should capture the essence of the transcript.
-      - Output the result in markdown following the CommonMark spec with the titles in bold and above each paragraph.
-    
-    Transcript:
-    
-    ${transcript}
-    
-    End of transcript`
-
     const response = await this.api.createChatCompletion({
       model: 'gpt-4',
       messages: [
         {
           role: 'user',
-          content: this.cohere ? prompt_cohere : prompt
+          content: prompt
         }
       ],
       temperature: 0,
