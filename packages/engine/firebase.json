@@ -44,6 +44,6 @@
     "rules": "config/storage.rules"
   },
   "database": {
-    "rules": "config/database.rules"
+    "rules": "config/database.rules.json"
   }
 }
