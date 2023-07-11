@@ -81,6 +81,7 @@ export { ToastContainer, toast } from './components/toast'
 //===========================================================
 
 export * from './utils/browser'
+export * from './utils/email'
 export * from './utils/firestore'
 export * from './utils/sanitize'
 export * from './utils/string'
