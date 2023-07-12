@@ -1,4 +1,3 @@
-export { OnMeetingUpdated } from './functions/background/OnMeetingUpdated'
 export { OnPresenceDeleted } from './functions/background/OnPresenceDeleted'
 export { OnUserCreated } from './functions/background/OnUserCreated'
 
