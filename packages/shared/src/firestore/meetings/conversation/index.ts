@@ -3,6 +3,7 @@ import { CollectionReference, DocumentData, arrayUnion, collection, doc, updateD
 import { firestore } from '../..'
 
 export type Message = {
+  email: string
   speaker: string
   language: string
   text: string
