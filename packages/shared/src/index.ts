@@ -80,6 +80,7 @@ export { ToastContainer, toast } from './components/toast'
 // UTILS
 //===========================================================
 
+export * from './utils/await'
 export * from './utils/browser'
 export * from './utils/email'
 export * from './utils/firestore'
