@@ -344,16 +344,24 @@ You have to configure an another firebase project and github environment named `
 
 Go to the root directory of the project.
 
-### App
+### Start Emulators
 
 ```bash
-yarn app start
+yarn engine start
 ```
 
-### Extension
+### Start App
 
 ```bash
-yarn extension start
+yarn app start # with cloud server
+yarn app start:emulate # with emulators
+```
+
+### Start Extension
+
+```bash
+yarn extension start # with cloud server
+yarn extension start:emulate # with emulators
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
