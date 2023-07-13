@@ -6,6 +6,10 @@ declare module '*.png' {
   export default string
 }
 
+declare module '*.css' {
+  export default string
+}
+
 declare namespace NodeJS {
   export interface ProcessEnv {
     DOMAIN: string
