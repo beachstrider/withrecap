@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "npx rimraf dist tsconfig.tsbuildinfo",
     "build": "yarn clean && tsc -b",
-    "start": "yarn build && USE_FIREBASE_EMULATORS=false node dist/index.js",
-    "start:emulate": "yarn build && USE_FIREBASE_EMULATORS=true node dist/index.js"
+    "start": "yarn build && cross-env USE_FIREBASE_EMULATORS=\"false\" node dist/index.js",
+    "start:emulate": "yarn build && cross-env USE_FIREBASE_EMULATORS=\"true\" node dist/index.js"
   }
 }

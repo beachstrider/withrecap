@@ -32,7 +32,7 @@ export default function Content({ meeting }: { meeting: Meeting }) {
   if (typeof meeting.recorders === 'undefined') {
     if (meeting.processed) {
       // Meeting is processed
-      if (meeting.conversation.length > 0) {
+      if (meeting.conversation.length) {
         return (
           <div className="grow">
             <Summary meeting={meeting} />
