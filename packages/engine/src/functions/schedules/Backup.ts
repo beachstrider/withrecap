@@ -1,13 +1,14 @@
 import * as functions from 'firebase-functions'
 
 import { firestore, googleAuth, settings } from '../../config'
+import { log } from '../../utils/logger'
 import { SentryWrapper } from '../../utils/sentry'
 
 export const BackupFirestore = functions.pubsub.schedule('every day 00:00').onRun(
   SentryWrapper<[functions.EventContext]>('BackupFirestore', 'functions.pubsub.schedule.onRun', async (_context) => {
     const timestamp = new Date().toISOString()
 
-    console.debug(`start firestore backup for project ${settings.projectId}`)
+    log(`start firestore backup for project ${settings.projectId}`)
 
     await googleAuth.authorize()
 

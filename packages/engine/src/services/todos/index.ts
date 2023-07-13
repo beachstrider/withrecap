@@ -27,7 +27,7 @@ export class MeetingTodos {
         
             Transcript:
 
-            ${transcript}
+              ${transcript}
 
             End of transcript`
         }

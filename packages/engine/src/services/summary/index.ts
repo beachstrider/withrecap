@@ -20,7 +20,7 @@ export class MeetingSummary {
     
     Transcript:
     
-    ${transcript}
+      ${transcript}
     
     End of transcript`
 

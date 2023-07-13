@@ -4,6 +4,7 @@ import { User } from '@recap/shared'
 
 import { db, mail as mailgun, settings } from '../../config'
 import { MailService, Templates } from '../../services/mail'
+import { log } from '../../utils/logger'
 import { SentryWrapper } from '../../utils/sentry'
 
 interface Payload {
@@ -20,7 +21,7 @@ export const SendInviteEmails = functions.https.onCall(
         throw new functions.https.HttpsError('unauthenticated', 'You must be authenticated to use this function')
       }
 
-      functions.logger.debug('SendinInviteEmails started')
+      log('SendinInviteEmails started')
 
       const mail = new MailService(mailgun, settings.domain)
 

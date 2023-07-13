@@ -4,6 +4,7 @@ import { User } from '@recap/shared'
 
 import { mail as mailgun, settings } from '../../config'
 import { MailService, Templates } from '../../services/mail'
+import { log } from '../../utils/logger'
 import { SentryWrapper } from '../../utils/sentry'
 
 export const OnUserCreated = functions.firestore.document('users/{userId}').onCreate(
@@ -15,15 +16,15 @@ export const OnUserCreated = functions.firestore.document('users/{userId}').onCr
       }>
     ]
   >('OnUserCreated', 'functions.firestore.document.onCreate', async (snapshot, context) => {
-    functions.logger.debug('OnUserCreated started for userId', context.params.userId)
+    log('OnUserCreated started for userId', context.params.userId)
 
     const mail = new MailService(mailgun, settings.domain)
     const user = snapshot.data() as User
 
-    functions.logger.debug('sending welcome email...')
+    log('sending welcome email...')
 
     await mail.send(Templates.Welcome, { email: user.email, appUrl: settings.baseURL })
 
-    functions.logger.debug('welcome email sent with success')
+    log('welcome email sent with success')
   })
 )

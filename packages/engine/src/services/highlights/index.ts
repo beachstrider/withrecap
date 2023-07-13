@@ -32,7 +32,7 @@ export class MeetingHighlights {
         
             Transcript:
 
-            ${transcript}
+              ${transcript}
 
             End of transcript`
         }

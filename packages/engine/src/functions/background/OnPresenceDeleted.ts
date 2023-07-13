@@ -12,6 +12,7 @@ import { MeetingService } from '../../services/meeting'
 import { MeetingSummary } from '../../services/summary'
 import { MeetingTodos } from '../../services/todos'
 import { TranscriptService } from '../../services/transcript'
+import { log } from '../../utils/logger'
 import { SentryWrapper } from '../../utils/sentry'
 
 const options: functions.RuntimeOptions = {
@@ -37,7 +38,7 @@ export const OnPresenceDeleted = functions
       'OnPresenceDeleted',
       'functions.database.ref.onDelete',
       async (statusSnapshot, { params: { mid, email: _email } }) => {
-        functions.logger.debug('OnPresenceDeleted started')
+        log('OnPresenceDeleted started')
 
         const ref = realtime.ref(`/presences/${mid}`)
         const payload = await ref.once('value')
@@ -52,7 +53,7 @@ export const OnPresenceDeleted = functions
 
         // Determine whether a meeting is ended or an attendee's just leaving
         if (presences === null) {
-          functions.logger.debug('meeting ended, generating summary, todos, and highlights...')
+          log('meeting ended, generating summary, todos, and highlights...')
 
           if (!meeting.conversation.length) {
             // Update values on the database
@@ -74,16 +75,16 @@ export const OnPresenceDeleted = functions
           if (summary) {
             const percentage = transcript.metadata()
 
-            functions.logger.debug('summary and todos generated')
+            log('summary and todos generated')
 
             const metadata: MeetingMetadata = {
               ...meetingService.metadata(),
               percentage
             }
 
-            functions.logger.debug('metadata generated')
+            log('metadata generated')
 
-            functions.logger.debug('updating meeting with relevant information...')
+            log('updating meeting with relevant information...')
 
             // Update values on the database
             await doc.set(
@@ -97,9 +98,9 @@ export const OnPresenceDeleted = functions
               { merge: true }
             )
 
-            functions.logger.debug('meeting updated successfully')
+            log('meeting updated successfully')
 
-            functions.logger.debug('sending emails to attendees')
+            log('sending emails to attendees')
             const mail = new MailService(mailgun, settings.domain)
 
             for (const email of emails) {
@@ -115,7 +116,7 @@ export const OnPresenceDeleted = functions
                 // Update the attendee's display name if the matching account has one
                 if (user.displayName) meeting.attendees[user.email].name = user.displayName
 
-                functions.logger.debug(`sending email to ${email}...`)
+                log(`sending email to ${email}...`)
 
                 const timezone = user.timezone || DEFAULT_TIMEZONE
                 const startTime = formatInTimeZone(meeting.start, timezone, 'h:mm a')
@@ -133,19 +134,19 @@ export const OnPresenceDeleted = functions
                   appUrl: settings.baseURL
                 })
 
-                functions.logger.debug('email sent')
+                log('email sent')
               } catch (err) {
                 functions.logger.error('An error occurred while sending an email to', email)
                 Sentry.captureException(new Error(`An error occurred while sending an email to ${email}`))
               }
             }
 
-            functions.logger.debug('updating meeting with corresponding user names')
+            log('updating meeting with corresponding user names')
 
             // Update values on the database
             await doc.set({ attendees: meeting.attendees, recorder: FieldValue.delete() }, { merge: true })
 
-            functions.logger.debug('meeting updated successfully')
+            log('meeting updated successfully')
           }
         } else {
           // If the user was a recorder, delegate another one as a recorder
