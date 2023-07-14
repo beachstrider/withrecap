@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/browser'
+import { isEmpty } from 'lodash'
 
 import {
   ConversationStore,
@@ -7,7 +8,7 @@ import {
   Meeting,
   MeetingStore,
   Message,
-  PresenceStore,
+  Presence,
   RequestTypes,
   UserAddonStore,
   initSentry
@@ -19,10 +20,11 @@ class ChromeBackgroundService {
   private google: GoogleIdentityAuthProvider
   private meetingStore: MeetingStore
   private conversationStore: ConversationStore
-  private presence: PresenceStore | null = null
+  private presence: Presence | null = null
   private meeting: Meeting | undefined
 
   private isStarted = false
+  private isRecorder = false
 
   constructor() {
     this.google = new GoogleIdentityAuthProvider()
@@ -52,7 +54,15 @@ class ChromeBackgroundService {
               })
             break
           case ExtensionMessages.MeetingMessage:
-            this.processTranscriptionMessage(request.meetingId, request.messages)
+            this.processAddMessage(request.meetingId, request.messages)
+              .then(() => sendResponse({ error: null }))
+              .catch((error) => {
+                this.handleError(error)
+                sendResponse({ error })
+              })
+            break
+          case ExtensionMessages.IamRecording:
+            this.processIamRecording()
               .then(() => sendResponse({ error: null }))
               .catch((error) => {
                 this.handleError(error)
@@ -161,27 +171,23 @@ class ChromeBackgroundService {
   private async processMeetingUserInfo(
     addonId: string
   ): Promise<{ displayName: string; email: string; isEnabled: boolean }> {
-    try {
-      const tabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true })
+    const tabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true })
 
-      if (!tabs || tabs.length === 0) {
-        throw new Error('active tab not found')
-      }
+    if (isEmpty(tabs)) {
+      throw new Error('active tab not found')
+    }
 
-      if (!this.google.auth.currentUser) {
-        throw new Error('unauthenticated user')
-      }
+    if (!this.google.auth.currentUser) {
+      throw new Error('unauthenticated user')
+    }
 
-      const userAddonStore = new UserAddonStore(this.google.auth.currentUser.uid)
-      const addon = await userAddonStore.get(addonId)
+    const userAddonStore = new UserAddonStore(this.google.auth.currentUser.uid)
+    const addon = await userAddonStore.get(addonId)
 
-      return {
-        email: this.google.auth.currentUser.email || '',
-        displayName: this.google.auth.currentUser.displayName || '',
-        isEnabled: !!addon
-      }
-    } catch (err) {
-      throw new Error('An error occurred while fetching user addons')
+    return {
+      email: this.google.auth.currentUser.email || '',
+      displayName: this.google.auth.currentUser.displayName || '',
+      isEnabled: !!addon
     }
   }
 
@@ -240,10 +246,10 @@ class ChromeBackgroundService {
 
         console.debug('joining a meeting')
 
-        this.presence = new PresenceStore(meetingId, email)
-        this.presence.monitor()
-        this.presence.subscribe(async () => {
-          console.debug('delegated as a volunteer recorder')
+        this.presence = new Presence(meetingId, email)
+        this.presence.subscribe(async (isRecorder) => {
+          console.debug(`---  isRecorder:`, isRecorder)
+          this.isRecorder = isRecorder
         })
       } else {
         console.debug('processMeetingStart terminated due to earlier end of meeting')
@@ -253,11 +259,18 @@ class ChromeBackgroundService {
     }
   }
 
-  private async processTranscriptionMessage(meetingId: string, messages: Message[]): Promise<void> {
-    try {
-      await this.conversationStore.add(meetingId, messages)
-    } catch (err) {
-      throw new Error('An error occurred while storing new message')
+  private async processIamRecording() {
+    await this.presence?.connect()
+  }
+
+  private async processAddMessage(meetingId: string, messages: Message[]): Promise<void> {
+    if (this.isRecorder) {
+      try {
+        console.debug(messages.map((message) => `${message.speaker}: ${message.text}`).join('\n'))
+        await this.conversationStore.add(meetingId, messages)
+      } catch (err) {
+        throw new Error('An error occurred while storing new message')
+      }
     }
   }
 
@@ -271,7 +284,7 @@ class ChromeBackgroundService {
     try {
       console.debug('leaving a meeting')
 
-      this.presence?.disconnect()
+      await this.presence?.disconnect()
     } catch (err) {
       console.error(err)
       throw new Error('An error occurred while updating meeting on meeting ended')

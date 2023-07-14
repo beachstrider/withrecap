@@ -3,5 +3,6 @@ export enum ExtensionMessages {
   MeetingMessage = 'MEETING_MESSAGE',
   MeetingStarted = 'MEETING_STARTED',
   MeetingEnded = 'MEETING_ENDED',
-  MeetingState = 'MEETING_STATE'
+  MeetingState = 'MEETING_STATE',
+  IamRecording = 'MEETING_RECORDING'
 }

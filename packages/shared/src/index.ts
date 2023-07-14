@@ -48,7 +48,7 @@ export type { UserMeetingConfig, UserMeetings } from './firestore/users/meetings
 
 export * from './realtime'
 
-export { PresenceStore } from './realtime/presences'
+export { Presence } from './realtime/presences'
 
 //===========================================================
 // HTTPS CALLABLE FUNCTIONS

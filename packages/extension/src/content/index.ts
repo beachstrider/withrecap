@@ -10,7 +10,7 @@ const SELECTOR_CC_DIV = 'div.a4cQT'
 const SELECTOR_CC_BUTTON = "button[jscontroller='xzbRj']"
 const SELECTOR_LANGUAGE = "span[jsname='V67aGc']"
 const SELECTOR_SPEAKER = 'div.zs7s8d.jxFHg'
-const SELECTOR_TEXT = "div[jsname='YSxPC']"
+const SELECTOR_TEXT = "div[jsname='YSxPC']:last-child"
 const SELECTOR_LEFT_DIV = 'div.kJU3pb.r14hdb'
 const SELECTOR_END_CALL_BUTTON = "div[jscontroller='m1IMT'] button[jscontroller='soHxf']"
 
@@ -35,6 +35,7 @@ const ccDivStyles = {
   `
 }
 
+recordingMark.className = 'blinking'
 recordingMark.style.position = 'absolute'
 recordingMark.style.top = '2px'
 recordingMark.style.right = '2px'
@@ -42,13 +43,13 @@ recordingMark.style.width = '8px'
 recordingMark.style.height = '8px'
 recordingMark.style.borderRadius = '50%'
 recordingMark.style.backgroundColor = '#eb5144'
-recordingMark.style.animation = 'blink 4s infinite'
 
 class GoogleMeetsService {
   private meetingId: string | undefined
   private email: string = ''
   private displayName: string = ''
   private messages: Message[] = []
+  private speaker: string = ''
 
   private callBar: HTMLDivElement | null = null
   private ccDivObserver: MutationObserver | null = null
@@ -63,14 +64,74 @@ class GoogleMeetsService {
     this.getMeetingId()
   }
 
-  private loadCss() {
+  private async loadCss() {
     const style = document.createElement('style')
     style.innerHTML = css
+    await wait(500)
     document.head.appendChild(style)
   }
 
   private getMeetingId() {
     this.meetingId = window.location.pathname.slice(1)
+  }
+
+  private toggleCaption(ccButton: HTMLButtonElement) {
+    this.captionEnabled = !this.captionEnabled
+
+    if (this.captionEnabled) {
+      ccButton.className = ccButtonClass.pressed
+      ccDivStyle.innerHTML = ccDivStyles.enabled
+    } else {
+      ccButton.className = ccButtonClass.released
+      ccDivStyle.innerHTML = ccDivStyles.disabled
+    }
+  }
+
+  private listenOnNewMessage(ccDiv: HTMLDivElement): MutationObserver {
+    const ccDivObserver = new MutationObserver(async () => {
+      const language = ccDiv.querySelector<HTMLSpanElement>(SELECTOR_LANGUAGE)?.textContent
+      const speakerName = ccDiv.querySelector<HTMLDivElement>(SELECTOR_SPEAKER)?.textContent
+      const text = ccDiv.querySelector<HTMLDivElement>(SELECTOR_TEXT)?.textContent
+
+      if (!language || !speakerName || !text) {
+        return
+      }
+
+      const me = speakerName.toLowerCase() === 'you' ? true : false
+      const email = me ? this.email : ''
+      const speaker = me ? this.displayName : speakerName
+
+      if (me) {
+        if (this.messages.length === 0) {
+          await this.notifyIamRecording()
+          console.debug(`now I'm recording - my speach and external users'`)
+        }
+      }
+
+      if (!this.speaker || this.speaker === speaker) {
+        this.messages.push({
+          email,
+          speaker,
+          language,
+          text: text.trim(),
+          timestamp: new Date().getTime()
+        })
+      }
+
+      if (this.speaker && this.speaker !== speaker) {
+        this.transferMessages()
+        this.messages = []
+      }
+
+      this.speaker = speaker
+    })
+
+    ccDivObserver.observe(ccDiv, {
+      childList: true,
+      subtree: true
+    })
+
+    return ccDivObserver
   }
 
   private async enableCaption(ccDiv: HTMLDivElement, callDiv: HTMLDivElement): Promise<void> {
@@ -105,57 +166,8 @@ class GoogleMeetsService {
     }
   }
 
-  private toggleCaption(ccButton: HTMLButtonElement) {
-    this.captionEnabled = !this.captionEnabled
-
-    if (this.captionEnabled) {
-      ccButton.className = ccButtonClass.pressed
-      ccDivStyle.innerHTML = ccDivStyles.enabled
-    } else {
-      ccButton.className = ccButtonClass.released
-      ccDivStyle.innerHTML = ccDivStyles.disabled
-    }
-  }
-
-  private listenOnNewMessage(ccDiv: HTMLDivElement): MutationObserver {
-    const ccDivObserver = new MutationObserver(async () => {
-      const language = ccDiv.querySelector<HTMLSpanElement>(SELECTOR_LANGUAGE)?.textContent
-      const speakerName = ccDiv.querySelector<HTMLDivElement>(SELECTOR_SPEAKER)?.textContent
-      const text = ccDiv.querySelector<HTMLDivElement>(SELECTOR_TEXT)?.textContent
-
-      if (!language || !speakerName || !text) {
-        return console.warn('message skipped, some information is missing', {
-          language: !!language,
-          speakerName: !!speakerName,
-          text: !!text
-        })
-      }
-
-      // We use only self messages
-      if (speakerName.toLowerCase() === 'you') {
-        this.messages.push({
-          email: this.email,
-          speaker: this.displayName,
-          language,
-          text: text.trim(),
-          timestamp: new Date().getTime()
-        })
-      } else {
-        // Speaker switching
-        await this.transferMessages()
-      }
-    })
-
-    ccDivObserver.observe(ccDiv, {
-      childList: true,
-      subtree: true
-    })
-
-    return ccDivObserver
-  }
-
   private async transferMessages() {
-    if (this.messages.length > 0) {
+    if (this.messages.length) {
       const messages = sanitize(this.messages)
       console.debug(messages.map((message) => `${message.speaker}: ${message.text}`).join('\n'))
 
@@ -168,8 +180,16 @@ class GoogleMeetsService {
       if (error) {
         return console.error('error occured from transfering messages', { error })
       }
+    }
+  }
 
-      this.messages = []
+  private async notifyIamRecording() {
+    const { error } = await chrome.runtime.sendMessage({
+      type: ExtensionMessages.IamRecording
+    })
+
+    if (error) {
+      return console.error(error)
     }
   }
 
@@ -211,7 +231,7 @@ class GoogleMeetsService {
       this.callEnded = true
 
       if (error) {
-        // TODO: Display a toast to the user? Retry?
+        return console.error(error)
       }
     }
   }
