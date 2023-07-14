@@ -4,7 +4,7 @@
   "scripts": {
     "build": "yarn clean && yarn firebaserc && parcel build src/index.ts --dist-dir lib",
     "build:dev": "yarn clean && yarn firebaserc && tsc -w",
-    "start": "yarn build:dev & cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase functions:config:get > .runtimeconfig.json && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" USE_FIREBASE_EMULATORS=\"true\" firebase emulators:start & yarn workspace @recap/seeder start:emulate",
+    "start": "yarn build:dev & sleep 5 && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase functions:config:get > .runtimeconfig.json && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" USE_FIREBASE_EMULATORS=\"true\" firebase emulators:start & yarn workspace @recap/seeder start:emulate",
     "start:functions": "yarn build:dev & cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase functions:config:get > .runtimeconfig.json && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase emulators:start --only functions",
     "deploy:all": "yarn firebaserc && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase deploy --only functions,firestore:rules,firestore:indexes,database:rules",
     "deploy:functions": "yarn firebaserc && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase deploy --only functions",

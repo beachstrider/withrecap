@@ -1,6 +1,5 @@
 import * as Sentry from '@sentry/node'
 import { formatInTimeZone } from 'date-fns-tz'
-import { FieldValue } from 'firebase-admin/firestore'
 import * as functions from 'firebase-functions'
 
 import { Meeting, MeetingMetadata, User } from '@recap/shared'
@@ -134,7 +133,7 @@ export const OnPresenceDeleted = functions
           debug('updating meeting with corresponding user names')
 
           // Update values on the database
-          await doc.set({ attendees: meeting.attendees, recorder: FieldValue.delete() }, { merge: true })
+          await doc.set({ attendees: meeting.attendees }, { merge: true })
 
           debug('meeting updated successfully')
         }

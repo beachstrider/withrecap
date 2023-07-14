@@ -1,7 +1,6 @@
 import {
   CollectionReference,
   DocumentData,
-  FieldValue,
   Timestamp,
   collection,
   deleteDoc,
@@ -34,8 +33,6 @@ export type Meeting = {
   attendees: { [email: string]: MeetingAttendee }
   // Emails contains a list of attendees emails including the creator of the meeting
   // so it's easier to query and add rules in Firestore
-  recorders?: string[] | FieldValue
-  recorder?: string | FieldValue
   emails: string[]
   start: string
   end: string

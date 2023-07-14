@@ -9,8 +9,12 @@ export class TranscriptService {
     this.transcript = conversation
   }
 
-  public toString(): string {
+  public toText(): string {
     return this.transcript.map((m: Message) => `${m.speaker}: ${m.text}`).join('\n')
+  }
+
+  public toString(): string {
+    return JSON.stringify(this.transcript)
   }
 
   public metadata(): MeetingMetadata['percentage'] {

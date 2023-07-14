@@ -6,7 +6,7 @@ export class MeetingSummary {
   constructor(private api: OpenAIApi, private transcript: TranscriptService) {}
 
   public async build(): Promise<string | undefined> {
-    const transcript = this.transcript.toString()
+    const transcript = this.transcript.toText()
 
     const prompt = `Summarize the following transcript in 4 paragraphs, giving each a title, and spanning 7 sentences.
     The first one should be an introduction and the last one a conclusion.

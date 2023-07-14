@@ -248,7 +248,6 @@ class ChromeBackgroundService {
 
         this.presence = new Presence(meetingId, email)
         this.presence.subscribe(async (isRecorder) => {
-          console.debug(`---  isRecorder:`, isRecorder)
           this.isRecorder = isRecorder
         })
       } else {

@@ -29,7 +29,8 @@ export default function Content({ meeting }: { meeting: Meeting }) {
   }, [errorTodos, errorHighlights])
 
   // Meeting is ended
-  if (typeof meeting.recorders === 'undefined') {
+  // TODO: fix the condition since we no more use recorders field in meeting
+  if (false) {
     if (meeting.processed) {
       // Meeting is processed
       if (meeting.conversation.length) {

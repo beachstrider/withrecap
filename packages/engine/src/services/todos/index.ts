@@ -12,7 +12,7 @@ export class MeetingTodos {
   constructor(private api: OpenAIApi, private transcript: TranscriptService) {}
 
   public async build(): Promise<StoredTodos> {
-    const transcript = this.transcript.toString()
+    const transcript = this.transcript.toText()
 
     const response = await this.api.createChatCompletion({
       model: 'gpt-4',
