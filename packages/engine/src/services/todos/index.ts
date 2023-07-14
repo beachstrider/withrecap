@@ -1,11 +1,11 @@
 import * as Sentry from '@sentry/node'
 import { Timestamp } from 'firebase-admin/firestore'
-import * as functions from 'firebase-functions'
 import { OpenAIApi } from 'openai'
 import { v4 as uuid } from 'uuid'
 
 import { StoredTodos } from '@recap/shared'
 
+import { error } from '../../utils/logger'
 import { TranscriptService } from '../transcript'
 
 export class MeetingTodos {
@@ -61,7 +61,7 @@ export class MeetingTodos {
 
       return formatted
     } catch (err) {
-      functions.logger.error('An error occurred while formatting todos')
+      error('An error occurred while formatting todos')
       Sentry.captureException(new Error('An error occurred while formatting todos'))
     }
 

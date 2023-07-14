@@ -1,11 +1,11 @@
 import * as Sentry from '@sentry/node'
 import { Timestamp } from 'firebase-admin/firestore'
-import * as functions from 'firebase-functions'
 import { OpenAIApi } from 'openai'
 import { v4 as uuid } from 'uuid'
 
 import { Highlights, StoredHighlights } from '@recap/shared'
 
+import { error } from '../../utils/logger'
 import { TranscriptService } from '../transcript'
 
 export class MeetingHighlights {
@@ -66,7 +66,7 @@ export class MeetingHighlights {
 
       return formatted
     } catch (err) {
-      functions.logger.error('An error occurred while formatting highlights')
+      error('An error occurred while formatting highlights')
       Sentry.captureException(new Error('An error occurred while formatting highlights'))
     }
 
