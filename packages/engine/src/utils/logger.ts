@@ -18,7 +18,7 @@ export const warn = (...args: any[]) => {
   if (process.env.USE_FIREBASE_EMULATORS === 'true') {
     console.warn(...args)
   } else {
-    warn(...args)
+    functions.logger.warn(...args)
   }
 }
 
@@ -26,6 +26,6 @@ export const error = (...args: any[]) => {
   if (process.env.USE_FIREBASE_EMULATORS === 'true') {
     console.error(...args)
   } else {
-    error(...args)
+    functions.logger.error(...args)
   }
 }
