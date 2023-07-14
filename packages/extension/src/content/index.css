@@ -1,9 +1,9 @@
 .blinking {
-  -webkit-animation: 1s blink ease infinite;
-  -moz-animation: 1s blink ease infinite;
-  -ms-animation: 1s blink ease infinite;
-  -o-animation: 1s blink ease infinite;
-  animation: 1s blink ease infinite;
+  -webkit-animation: 2s blink ease infinite;
+  -moz-animation: 2s blink ease infinite;
+  -ms-animation: 2s blink ease infinite;
+  -o-animation: 2s blink ease infinite;
+  animation: 2s blink ease infinite;
 }
 
 @keyframes "blink" {
@@ -11,7 +11,7 @@
   to {
     opacity: 0;
   }
-  80% {
+  50% {
     opacity: 1;
   }
 }
@@ -21,7 +21,7 @@
   to {
     opacity: 0;
   }
-  80% {
+  50% {
     opacity: 1;
   }
 }
@@ -31,7 +31,7 @@
   to {
     opacity: 0;
   }
-  80% {
+  50% {
     opacity: 1;
   }
 }
@@ -41,7 +41,7 @@
   to {
     opacity: 0;
   }
-  80% {
+  50% {
     opacity: 1;
   }
 }
@@ -51,7 +51,7 @@
   to {
     opacity: 0;
   }
-  80% {
+  50% {
     opacity: 1;
   }
 }
