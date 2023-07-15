@@ -8,7 +8,7 @@ import { Highlight } from './Highlight'
 
 interface HighlightsProps {
   mid: string
-  highlights: Highlights
+  highlights: Highlights & { avatar?: string }
   refresh: () => Promise<void>
   disabled?: boolean
 }

@@ -23,17 +23,16 @@ export const DEFAULT_TIMEZONE = 'America/Montreal'
 
 export const OnPresenceDeleted = functions
   .runWith(options)
-  .database.ref('/presences/{mid}/{email}')
+  .database.ref('/presences/{mid}')
   .onDelete(
     SentryWrapper<
       [
         functions.database.DataSnapshot,
         functions.EventContext<{
           mid: string
-          email: string
         }>
       ]
-    >('OnPresenceDeleted', 'functions.database.ref.onDelete', async (_, { params: { mid, email: _email } }) => {
+    >('OnPresenceDeleted', 'functions.database.ref.onDelete', async (_, { params: { mid } }) => {
       debug('OnPresenceDeleted started')
 
       const ref = realtime.ref(`/presences/${mid}`)
@@ -44,7 +43,7 @@ export const OnPresenceDeleted = functions
       const snapshot = await doc.get()
       const meeting = (await snapshot.data()) as Meeting
 
-      const emails = meeting.emails
+      const { emails } = meeting
 
       // Determine whether a meeting is ended or an attendee's just leaving
       if (presences === null) {
@@ -104,6 +103,7 @@ export const OnPresenceDeleted = functions
 
               // Update the attendee's display name if the matching account has one
               if (user.displayName) meeting.attendees[user.email].name = user.displayName
+              if (user.photoURL) meeting.attendees[user.email].avatar = user.photoURL
 
               debug(`sending email to ${email}...`)
 

@@ -185,7 +185,9 @@ class GoogleMeetsService {
 
   private async notifyIamRecording() {
     const { error } = await chrome.runtime.sendMessage({
-      type: ExtensionMessages.IamRecording
+      type: ExtensionMessages.IamRecording,
+      email: this.email,
+      meetingId: this.meetingId
     })
 
     if (error) {
@@ -224,6 +226,7 @@ class GoogleMeetsService {
       await this.transferMessages()
 
       const { error } = await chrome.runtime.sendMessage({
+        email: this.email,
         meetingId: this.meetingId,
         type: ExtensionMessages.MeetingEnded
       })

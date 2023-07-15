@@ -8,7 +8,7 @@ import {
   Meeting,
   MeetingStore,
   Message,
-  Presence,
+  PresencesRTDB,
   RequestTypes,
   UserAddonStore,
   initSentry
@@ -20,7 +20,7 @@ class ChromeBackgroundService {
   private google: GoogleIdentityAuthProvider
   private meetingStore: MeetingStore
   private conversationStore: ConversationStore
-  private presence: Presence | null = null
+  private presencesRTDB: PresencesRTDB
   private meeting: Meeting | undefined
 
   private isStarted = false
@@ -30,6 +30,7 @@ class ChromeBackgroundService {
     this.google = new GoogleIdentityAuthProvider()
     this.meetingStore = new MeetingStore()
     this.conversationStore = new ConversationStore()
+    this.presencesRTDB = new PresencesRTDB()
 
     this.google.onAuthStateChanged(() => true)
   }
@@ -62,7 +63,7 @@ class ChromeBackgroundService {
               })
             break
           case ExtensionMessages.IamRecording:
-            this.processIamRecording()
+            this.processIamRecording(request.meetingId, request.email)
               .then(() => sendResponse({ error: null }))
               .catch((error) => {
                 this.handleError(error)
@@ -78,7 +79,7 @@ class ChromeBackgroundService {
               })
             break
           case ExtensionMessages.MeetingEnded:
-            this.processMeetingEnd()
+            this.processMeetingEnd(request.meetingId, request.email)
               .then(() => sendResponse({ error: null }))
               .catch((error) => {
                 this.handleError(error)
@@ -131,11 +132,14 @@ class ChromeBackgroundService {
 
     chrome.tabs.onRemoved.addListener(async (tid, _removeInfo) => {
       try {
-        const { tabId } = await chrome.storage.session.get(['tabId', 'meetingDetails'])
+        const {
+          tabId,
+          meetingDetails: { mid }
+        } = await chrome.storage.session.get(['tabId', 'meetingDetails'])
 
         if (tid === tabId) {
           console.debug(`meeting ended since tab (${tid}) was closed.`)
-          await this.processMeetingEnd()
+          await this.processMeetingEnd(mid, this.google.auth.currentUser?.email!)
         }
       } catch (err) {
         this.handleError(new Error('An error occurred while processing meeting ended on meeting tab closed'))
@@ -246,8 +250,7 @@ class ChromeBackgroundService {
 
         console.debug('joining a meeting')
 
-        this.presence = new Presence(meetingId, email)
-        this.presence.subscribe(async (isRecorder) => {
+        this.presencesRTDB.subscribe(meetingId, email, async (isRecorder) => {
           this.isRecorder = isRecorder
         })
       } else {
@@ -258,8 +261,8 @@ class ChromeBackgroundService {
     }
   }
 
-  private async processIamRecording() {
-    await this.presence?.connect()
+  private async processIamRecording(meetingId: string, email: string) {
+    await this.presencesRTDB?.activate(meetingId, email)
   }
 
   private async processAddMessage(meetingId: string, messages: Message[]): Promise<void> {
@@ -273,7 +276,7 @@ class ChromeBackgroundService {
     }
   }
 
-  private async processMeetingEnd() {
+  private async processMeetingEnd(meetingId: string, email: string) {
     console.debug('process ending')
 
     this.isStarted = false
@@ -283,7 +286,7 @@ class ChromeBackgroundService {
     try {
       console.debug('leaving a meeting')
 
-      await this.presence?.disconnect()
+      await this.presencesRTDB?.delete(meetingId, email)
     } catch (err) {
       console.error(err)
       throw new Error('An error occurred while updating meeting on meeting ended')

@@ -7,7 +7,7 @@ import { Highlight as MeetingHighlight } from '@recap/shared'
 import UserAvatar from '../../../../components/display/UserAvatar'
 
 interface HighlightProps {
-  highlight: MeetingHighlight
+  highlight: MeetingHighlight & { avatar?: string }
 }
 
 export function Highlight({ highlight }: HighlightProps) {
@@ -21,7 +21,11 @@ export function Highlight({ highlight }: HighlightProps) {
           </div>
         </div>
         <div className="flex items-center sm:gap-[16px] gap-[12px]">
-          <UserAvatar name={highlight.speaker} className="sm:w-[24px] sm:h-[24px] w-[18px] h-[18px]" />
+          <UserAvatar
+            avatar={highlight.avatar}
+            name={highlight.speaker}
+            className="sm:w-[24px] sm:h-[24px] w-[18px] h-[18px]"
+          />
           <div className="flex items-center font-semibold">{highlight.speaker}</div>
         </div>
       </div>

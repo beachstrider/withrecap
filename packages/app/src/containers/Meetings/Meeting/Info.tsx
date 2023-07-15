@@ -54,8 +54,8 @@ export default function Info({ meeting }: Props) {
 }
 
 const Metadata: React.FC<{ metadata: MeetingMetadata; attendees: MeetingAttendee[] }> = ({ metadata, attendees }) => {
-  const getAvatar = (speaker: string): string | undefined => {
-    return attendees.find((a) => a.name === speaker)?.avatar
+  const getAvatar = (email: string): string | undefined => {
+    return attendees.find((a) => a.email === email)?.avatar
   }
 
   const formatPercentage = (percentage: number): string => {
@@ -71,7 +71,8 @@ const Metadata: React.FC<{ metadata: MeetingMetadata; attendees: MeetingAttendee
             <div key={key} className="flex items-center justify-between">
               <div className="flex gap-[12px] items-center">
                 <UserAvatar
-                  avatar={getAvatar(speaker)}
+                  // TODO: we need to put an email
+                  avatar={getAvatar('')}
                   name={speaker}
                   className="sm:w-[32px] sm:h-[32px] w-[24px] h-[24px]"
                 />

@@ -46,9 +46,9 @@ export type { UserMeetingConfig, UserMeetings } from './firestore/users/meetings
 // REALTIME DATABASE
 //===========================================================
 
-export * from './realtime'
+export * from './rtdb'
 
-export { Presence } from './realtime/presences'
+export { PresencesRTDB } from './rtdb/presences'
 
 //===========================================================
 // HTTPS CALLABLE FUNCTIONS
