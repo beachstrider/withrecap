@@ -24,7 +24,7 @@ class ChromeBackgroundService {
   private presencesRTDB: PresencesRTDB
   private meeting: Meeting | undefined
   private messages: Message[] = []
-  private speaker = ''
+  private previousSpeaker = ''
 
   private isStarted = false
   private isRecorder = false
@@ -156,6 +156,7 @@ class ChromeBackgroundService {
 
   private async iAmRecording(meetingId: string, email: string) {
     console.debug('-> I am recording')
+    this.isRecorder = true
     await this.presencesRTDB?.activate(meetingId, email)
   }
 
@@ -251,8 +252,10 @@ class ChromeBackgroundService {
         console.debug('-> joining a meeting')
 
         this.presencesRTDB.subscribe(meetingId, email, async (isRecorder) => {
-          if (!isRecorder) console.debug('-> I am NOT recording')
-          this.isRecorder = isRecorder
+          if (!isRecorder) {
+            console.debug('-> I am NOT recording')
+            this.isRecorder = false
+          }
         })
       } else {
         console.debug('-> processMeetingStart terminated due to earlier end of meeting')
@@ -263,16 +266,8 @@ class ChromeBackgroundService {
   }
 
   private async processMessage(meetingId: string, message: Message): Promise<void> {
-    console.debug(
-      `==========${
-        message.email === '' && message.speaker === this.google.auth.currentUser!.displayName ? 'CAUTION!!!' : ''
-      }\nmessage.email: ${message.email}\nthis.email: ${this.google.auth.currentUser!.email}\nmessage.speaker: ${
-        message.speaker
-      }\nthis.speaker: ${this.speaker}\nthis.isRecorder: ${this.isRecorder}\n${message.text}
-    `
-    )
     // If speaker changed
-    if (this.speaker !== message.speaker) {
+    if (this.previousSpeaker !== message.speaker) {
       // If I have just been a recorder
       if (message.email === this.google.auth.currentUser!.email) {
         await this.iAmRecording(meetingId, message.email)
@@ -284,8 +279,8 @@ class ChromeBackgroundService {
 
     if (this.isRecorder) {
       this.messages.push(message)
-      this.speaker = message.speaker
     }
+    this.previousSpeaker = message.speaker
   }
 
   private async processMeetingEnd(meetingId: string, email: string) {
@@ -297,7 +292,7 @@ class ChromeBackgroundService {
 
     this.isStarted = false
     this.messages = []
-    this.speaker = ''
+    this.previousSpeaker = ''
     this.isRecorder = false
 
     try {
