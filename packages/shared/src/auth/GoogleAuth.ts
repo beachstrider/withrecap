@@ -143,7 +143,7 @@ export class GoogleIdentityAuthProvider implements BaseIdentityAuthProvider {
 
   public onAuthStateChanged = (callback: (user: FirebaseUser | null, token: string | null) => void): Unsubscribe => {
     return onAuthStateChanged(this.auth, async (user) => {
-      console.debug(user ? 'authenticated' : 'unauthenticated')
+      console.debug(`-> ${user ? 'authenticated' : 'unauthenticated'}`)
 
       if (user) {
         user = this._addMissingData(user)

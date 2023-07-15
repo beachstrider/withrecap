@@ -6,7 +6,7 @@ import { alphabets, normalize } from './string'
  */
 
 export const sanitize = (input: Conversation): Conversation => {
-  const patternLength = 70
+  const patternLength = 10
 
   let differentTextAll = ''
 

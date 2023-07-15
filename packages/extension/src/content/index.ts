@@ -147,7 +147,7 @@ class GoogleMeetsService {
         ccButton.addEventListener('click', () => this.toggleCaption(ccButton))
         this.toggleCaption(ccButton)
 
-        console.debug('caption enabled')
+        console.debug('-> caption enabled')
 
         ccButton.appendChild(recordingMark)
       } else {
@@ -180,7 +180,7 @@ class GoogleMeetsService {
 
   private async endMeeting() {
     if (!this.callEnded) {
-      console.debug('ending call')
+      console.debug('-> ending call')
       // Remove observers are they are not needed anymore
       this.ccDivObserver?.disconnect()
 
@@ -221,7 +221,7 @@ class GoogleMeetsService {
             })
 
             if (error) {
-              console.warn(`${error}. retrying..`)
+              console.warn(`-> ${error}. retrying..`)
               return false
             }
 
@@ -249,7 +249,7 @@ class GoogleMeetsService {
             type: ExtensionMessages.MeetingStarted
           })
           .then(async () => {
-            console.debug('call started')
+            console.debug('-> call started')
 
             observer.disconnect()
             // click on the cc button and start transcribing

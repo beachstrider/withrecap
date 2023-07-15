@@ -19,7 +19,7 @@ const Popup = () => {
         type: ExtensionMessages.MeetingState
       })
       .then((response) => {
-        console.debug('background script sent response', response)
+        console.debug('-> background script sent response', response)
 
         setMeeting(response.meetingDetails)
       })
