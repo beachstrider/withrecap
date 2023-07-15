@@ -11,7 +11,8 @@ import {
   PresencesRTDB,
   RequestTypes,
   UserAddonStore,
-  initSentry
+  initSentry,
+  sanitize
 } from '@recap/shared'
 
 import { ExtensionMessages } from '../common'
@@ -22,6 +23,8 @@ class ChromeBackgroundService {
   private conversationStore: ConversationStore
   private presencesRTDB: PresencesRTDB
   private meeting: Meeting | undefined
+  private messages: Message[] = []
+  private speaker = ''
 
   private isStarted = false
   private isRecorder = false
@@ -38,13 +41,6 @@ class ChromeBackgroundService {
   public startListener(): void {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       return Sentry.wrap(() => {
-        console.debug(
-          sender.tab
-            ? `messaged received from a content script: ${sender.tab.url}`
-            : 'messaged received from the extension',
-          request
-        )
-
         switch (request.type) {
           case ExtensionMessages.MeetingUserInfo:
             this.processMeetingUserInfo(request.addonId)
@@ -55,15 +51,7 @@ class ChromeBackgroundService {
               })
             break
           case ExtensionMessages.MeetingMessage:
-            this.processAddMessage(request.meetingId, request.messages)
-              .then(() => sendResponse({ error: null }))
-              .catch((error) => {
-                this.handleError(error)
-                sendResponse({ error })
-              })
-            break
-          case ExtensionMessages.IamRecording:
-            this.processIamRecording(request.meetingId, request.email)
+            this.processMessage(request.meetingId, request.message)
               .then(() => sendResponse({ error: null }))
               .catch((error) => {
                 this.handleError(error)
@@ -132,14 +120,11 @@ class ChromeBackgroundService {
 
     chrome.tabs.onRemoved.addListener(async (tid, _removeInfo) => {
       try {
-        const {
-          tabId,
-          meetingDetails: { mid }
-        } = await chrome.storage.session.get(['tabId', 'meetingDetails'])
+        const { tabId, meetingDetails } = await chrome.storage.session.get(['tabId', 'meetingDetails'])
 
-        if (tid === tabId) {
+        if (tabId!! && !isEmpty(meetingDetails) && meetingDetails.mid!! && tid === tabId) {
+          await this.processMeetingEnd(meetingDetails?.mid, this.google.auth.currentUser?.email!)
           console.debug(`meeting ended since tab (${tid}) was closed.`)
-          await this.processMeetingEnd(mid, this.google.auth.currentUser?.email!)
         }
       } catch (err) {
         this.handleError(new Error('An error occurred while processing meeting ended on meeting tab closed'))
@@ -170,6 +155,19 @@ class ChromeBackgroundService {
 
   private async logout(): Promise<void> {
     await this.google.logout()
+  }
+
+  private async saveMessages(meetingId: string): Promise<void> {
+    if (this.messages.length && this.isRecorder) {
+      try {
+        const messages = sanitize(this.messages)
+        console.debug(messages.map((message) => `${message.speaker}: ${message.text}`).join('\n'))
+        await this.conversationStore.add(meetingId, messages)
+      } catch (err) {
+        throw new Error('An error occurred while storing new message')
+      }
+      this.messages = []
+    }
   }
 
   private async processMeetingUserInfo(
@@ -261,18 +259,25 @@ class ChromeBackgroundService {
     }
   }
 
-  private async processIamRecording(meetingId: string, email: string) {
+  private async iAmRecording(meetingId: string, email: string) {
     await this.presencesRTDB?.activate(meetingId, email)
   }
 
-  private async processAddMessage(meetingId: string, messages: Message[]): Promise<void> {
-    if (this.isRecorder) {
-      try {
-        console.debug(messages.map((message) => `${message.speaker}: ${message.text}`).join('\n'))
-        await this.conversationStore.add(meetingId, messages)
-      } catch (err) {
-        throw new Error('An error occurred while storing new message')
+  private async processMessage(meetingId: string, message: Message): Promise<void> {
+    // If speaker changed
+    if (this.speaker !== message.speaker) {
+      // If I have just been a recorder
+      if (message.email === this.google.auth.currentUser!.email) {
+        await this.iAmRecording(meetingId, message.email)
       }
+
+      // If messages are not empty AND I am a recorder
+      await this.saveMessages(meetingId)
+    }
+
+    if (this.isRecorder) {
+      this.messages.push(message)
+      this.speaker = message.speaker
     }
   }
 
@@ -281,6 +286,7 @@ class ChromeBackgroundService {
 
     this.isStarted = false
 
+    await this.saveMessages(meetingId)
     await chrome.storage.session.remove(['recording', 'meetingDetails', 'tabId', 'error'])
 
     try {

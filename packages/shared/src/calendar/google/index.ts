@@ -12,7 +12,7 @@ export class GoogleCalendar {
   constructor(private identityToken: string) {}
 
   public async getMeetingDetails(mid: string): Promise<Meeting | undefined> {
-    // First we fetch the events of the day
+    // TODO: For now we fetch the events of the day
     const beginningOfDay = new Date()
     const endOfDay = new Date()
 

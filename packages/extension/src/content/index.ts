@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/browser'
 
-import { Message, initSentry, sanitize, wait, waitUntil } from '@recap/shared'
+import { initSentry, wait, waitUntil } from '@recap/shared'
 
 import { ExtensionMessages } from '../common'
 import css from './index.css'
@@ -48,8 +48,6 @@ class GoogleMeetsService {
   private meetingId: string | undefined
   private email: string = ''
   private displayName: string = ''
-  private messages: Message[] = []
-  private speaker: string = ''
 
   private callBar: HTMLDivElement | null = null
   private ccDivObserver: MutationObserver | null = null
@@ -101,29 +99,21 @@ class GoogleMeetsService {
       const email = me ? this.email : ''
       const speaker = me ? this.displayName : speakerName
 
-      if (me) {
-        if (this.messages.length === 0) {
-          await this.notifyIamRecording()
-          console.debug(`now I'm recording - my speach and external users'`)
-        }
-      }
-
-      if (!this.speaker || this.speaker === speaker) {
-        this.messages.push({
+      const { error } = await chrome.runtime.sendMessage({
+        meetingId: this.meetingId,
+        message: {
           email,
           speaker,
           language,
           text: text.trim(),
           timestamp: new Date().getTime()
-        })
-      }
+        },
+        type: ExtensionMessages.MeetingMessage
+      })
 
-      if (this.speaker && this.speaker !== speaker) {
-        this.transferMessages()
-        this.messages = []
+      if (error) {
+        return console.error('error occured from transfering messages', { error })
       }
-
-      this.speaker = speaker
     })
 
     ccDivObserver.observe(ccDiv, {
@@ -166,35 +156,6 @@ class GoogleMeetsService {
     }
   }
 
-  private async transferMessages() {
-    if (this.messages.length) {
-      const messages = sanitize(this.messages)
-      console.debug(messages.map((message) => `${message.speaker}: ${message.text}`).join('\n'))
-
-      const { error } = await chrome.runtime.sendMessage({
-        meetingId: this.meetingId,
-        messages,
-        type: ExtensionMessages.MeetingMessage
-      })
-
-      if (error) {
-        return console.error('error occured from transfering messages', { error })
-      }
-    }
-  }
-
-  private async notifyIamRecording() {
-    const { error } = await chrome.runtime.sendMessage({
-      type: ExtensionMessages.IamRecording,
-      email: this.email,
-      meetingId: this.meetingId
-    })
-
-    if (error) {
-      return console.error(error)
-    }
-  }
-
   private async startTranscribing(): Promise<void> {
     const ccDiv = document.querySelector<HTMLDivElement>(SELECTOR_CC_DIV)
     const callDiv = this.callBar
@@ -222,8 +183,6 @@ class GoogleMeetsService {
       console.debug('ending call')
       // Remove observers are they are not needed anymore
       this.ccDivObserver?.disconnect()
-
-      await this.transferMessages()
 
       const { error } = await chrome.runtime.sendMessage({
         email: this.email,
