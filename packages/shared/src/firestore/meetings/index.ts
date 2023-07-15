@@ -22,7 +22,7 @@ export type MeetingAttendee = {
   avatar?: string
 }
 export type MeetingMetadata = {
-  percentage: { [speaker: string]: number }
+  percentage: { email: string; speaker: string; amount: number }[]
   participants: number
   url: string
 }

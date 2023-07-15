@@ -66,20 +66,19 @@ const Metadata: React.FC<{ metadata: MeetingMetadata; attendees: MeetingAttendee
     <>
       <p className="text-gray-500 mb-[24px]">Ranked in order of speaker.</p>
       <div className="flex flex-col gap-[16px]">
-        {Object.entries(metadata.percentage).map(([speaker, percentage], key) => {
+        {metadata.percentage.map(({ speaker, email, amount }, key) => {
           return (
             <div key={key} className="flex items-center justify-between">
               <div className="flex gap-[12px] items-center">
                 <UserAvatar
-                  // TODO: we need to put an email
-                  avatar={getAvatar('')}
+                  avatar={getAvatar(email)}
                   name={speaker}
                   className="sm:w-[32px] sm:h-[32px] w-[24px] h-[24px]"
                 />
                 <div className="font-semibold sm:max-w-[200px] truncate">{speaker}</div>
               </div>
               <div className="px-[6px] py-[4px] rounded-[26px] bg-gray-100 text-[12px] font-semibold text-gray-500">
-                {formatPercentage(percentage)}%
+                {formatPercentage(amount)}%
               </div>
             </div>
           )

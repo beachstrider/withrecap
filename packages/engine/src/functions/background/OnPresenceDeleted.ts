@@ -67,7 +67,7 @@ export const OnPresenceDeleted = functions
         const highlights = await meetingHighlights.build()
 
         if (summary) {
-          const percentage = transcript.metadata()
+          const percentage = transcript.frequencies()
 
           const metadata: MeetingMetadata = {
             ...meetingService.metadata(),
