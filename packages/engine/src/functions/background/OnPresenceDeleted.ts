@@ -101,9 +101,19 @@ export const OnPresenceDeleted = functions
               // We currently only send email to users with an account
               if (!user) continue
 
-              // Update the attendee's display name if the matching account has one
+              // HACK: Update the attendee's display name if the matching account has one
               if (user.displayName) meeting.attendees[user.email].name = user.displayName
               if (user.photoURL) meeting.attendees[user.email].avatar = user.photoURL
+
+              // HACK: Add missing email in conversation
+              if (user.displayName) {
+                meeting.conversation = meeting.conversation.map((message) => {
+                  if (!message.email && user!.displayName === message.speaker) {
+                    return { ...message, email: user!.email }
+                  }
+                  return message
+                })
+              }
 
               debug(`sending email to ${email}...`)
 
@@ -130,10 +140,10 @@ export const OnPresenceDeleted = functions
             }
           }
 
-          debug('updating meeting with corresponding user names')
+          debug('updating missed data in meeting')
 
           // Update values on the database
-          await doc.set({ attendees: meeting.attendees }, { merge: true })
+          await doc.set({ attendees: meeting.attendees, conversation: meeting.conversation }, { merge: true })
 
           debug('meeting updated successfully')
         }
