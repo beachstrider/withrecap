@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { format } from 'date-fns'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 
 import { AuthGuard, AuthProvider, GoogleAuthProvider, LoadingScreen } from '@recap/shared'
@@ -15,6 +16,8 @@ import { OnboardingRegister } from './containers/Onboarding/Register'
 import PrivacyPolicy from './containers/PrivacyPolicy'
 import Signin from './containers/Signin'
 import TermsConditions from './containers/TermsConditions'
+
+console.debug('=========>', format(new Date(), 'yyyy-MM-dd'))
 
 export default function App() {
   const navigate = useNavigate()
