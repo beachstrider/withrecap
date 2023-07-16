@@ -8,8 +8,6 @@
     "outDir": "dist",
 
     "jsx": "react",
-    "lib": ["dom", "dom.iterable", "ESNext"],
-
-    "types": ["chrome", "node", "date-fns"]
+    "lib": ["dom", "dom.iterable", "ESNext"]
   }
 }

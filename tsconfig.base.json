@@ -19,7 +19,6 @@
     "target": "ESNext",
     "module": "CommonJS",
     "moduleResolution": "node",
-    "lib": ["dom", "dom.iterable", "ESNext"],
-    "types": ["chrome", "node", "date-fns"]
+    "lib": ["dom", "dom.iterable", "ESNext"]
   }
 }
