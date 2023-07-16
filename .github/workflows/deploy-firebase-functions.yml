@@ -26,7 +26,7 @@ jobs:
       - name: Authenticate with Firebase
         run: |
           echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > service-account.json
-      - name: Deploy Firebase functions, Firestore rules, and indexes
+      - name: Deploy Firebase functions & Firestore rules & indexes, seed initial data
         run: |
           firebase functions:config:set --non-interactive \
             config.chromewebstorelink="$EXTENSION_LINK" \
@@ -37,7 +37,8 @@ jobs:
             database.url=$FIREBASE_DATABASE_URL \
             project.id="$FIREBASE_PROJECT_ID" --project $FIREBASE_PROJECT_ID
 
-          yarn deploy:all --non-interactive --force
+          yarn deploy:all --non-interactive --force &&
+          yarn seeder start
         working-directory: packages/engine
         env:
           DOMAIN: ${{ vars.DOMAIN }}
@@ -50,6 +51,3 @@ jobs:
           MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
 
           GOOGLE_APPLICATION_CREDENTIALS: '${{ github.workspace }}/service-account.json'
-      - name: Seed initial data
-        run: |
-          yarn seeder start
