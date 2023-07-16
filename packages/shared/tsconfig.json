@@ -10,6 +10,6 @@
     "jsx": "react",
     "lib": ["dom", "dom.iterable", "ESNext"],
 
-    "types": ["chrome", "node"]
+    "types": ["chrome", "node", "date-fns"]
   }
 }
