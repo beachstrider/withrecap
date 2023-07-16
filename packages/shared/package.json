@@ -13,6 +13,6 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
-    "clean": "npx rimraf dist tsconfig.tsbuildinfo"
+    "clean": "rimraf dist tsconfig.tsbuildinfo"
   }
 }

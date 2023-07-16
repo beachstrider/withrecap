@@ -13,7 +13,7 @@
     "logs": "yarn firebaserc && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase functions:log",
     "log": "yarn firebaserc && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase functions:log --only \"$0\"",
     "firebaserc": "tsc -b misc && node misc/firebaserc.js",
-    "clean": "npx rimraf tsconfig.tsbuildinfo lib misc/firebaserc.d.ts misc/firebaserc.d.ts.map misc/firebaserc.js misc/firebaserc.js.map misc/tsconfig.tsbuildinfo"
+    "clean": "rimraf tsconfig.tsbuildinfo lib misc/firebaserc.d.ts misc/firebaserc.d.ts.map misc/firebaserc.js misc/firebaserc.js.map misc/tsconfig.tsbuildinfo"
   },
   "engines": {
     "node": "18"

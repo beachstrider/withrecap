@@ -8,7 +8,7 @@
     "start:emulate": "yarn firebaserc && cross-env USE_FIREBASE_EMULATORS=\"true\" parcel --port 3000",
     "build": "yarn clean && yarn firebaserc && parcel build --no-content-hash --no-cache --no-source-maps --detailed-report 0",
     "firebaserc": "tsc -b misc && node misc/firebaserc.js",
-    "clean": "npx rimraf dist misc/firebaserc.d.ts misc/firebaserc.d.ts.map misc/firebaserc.js misc/firebaserc.js.map misc/tsconfig.tsbuildinfo"
+    "clean": "rimraf dist misc/firebaserc.d.ts misc/firebaserc.d.ts.map misc/firebaserc.js misc/firebaserc.js.map misc/tsconfig.tsbuildinfo"
   },
   "dependencies": {
     "cross-env": "^7.0.3",
