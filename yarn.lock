@@ -4439,15 +4439,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/date-fns@npm:^2.6.0":
-  version: 2.6.0
-  resolution: "@types/date-fns@npm:2.6.0"
-  dependencies:
-    date-fns: "*"
-  checksum: 6839db1d12d6586cd572e8aa77efc2ea88fd6566b7902641cf3efe2e22518aff067df2ba433539a275a3ab1169612b54d007ddcc2800d846be4f7e629cd7bfb3
-  languageName: node
-  linkType: hard
-
 "@types/debug@npm:^4.0.0":
   version: 4.1.8
   resolution: "@types/debug@npm:4.1.8"
@@ -6612,12 +6603,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:*, date-fns@npm:^2.30.0":
+"date-fns@npm:^2.30.0":
   version: 2.30.0
   resolution: "date-fns@npm:2.30.0"
   dependencies:
     "@babel/runtime": ^7.21.0
   checksum: f7be01523282e9bb06c0cd2693d34f245247a29098527d4420628966a2d9aad154bd0e90a6b1cf66d37adcb769cd108cf8a7bd49d76db0fb119af5cdd13644f4
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.11.9":
+  version: 1.11.9
+  resolution: "dayjs@npm:1.11.9"
+  checksum: a4844d83dc87f921348bb9b1b93af851c51e6f71fa259604809cfe1b49d1230e6b0212dab44d1cb01994c096ad3a77ea1cf18fa55154da6efcc9d3610526ac38
   languageName: node
   linkType: hard
 
@@ -10942,6 +10940,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"moment@npm:^2.29.4":
+  version: 2.29.4
+  resolution: "moment@npm:2.29.4"
+  checksum: 0ec3f9c2bcba38dc2451b1daed5daded747f17610b92427bebe1d08d48d8b7bdd8d9197500b072d14e326dd0ccf3e326b9e3d07c5895d3d49e39b6803b76e80e
+  languageName: node
+  linkType: hard
+
 "mri@npm:^1.1.0":
   version: 1.2.0
   resolution: "mri@npm:1.2.0"
@@ -12301,7 +12306,6 @@ __metadata:
     "@sentry/react": ^7.50.0
     "@trivago/prettier-plugin-sort-imports": ^4.1.1
     "@types/chrome": ^0.0.202
-    "@types/date-fns": ^2.6.0
     "@types/jest": ^29.5.1
     "@types/lodash": ^4.14.195
     "@types/node": ^20.3.3
@@ -12319,6 +12323,7 @@ __metadata:
     cross-env: ^7.0.3
     crypto-browserify: ^3.12.0
     date-fns: ^2.30.0
+    dayjs: ^1.11.9
     detect-browser: ^5.3.0
     dotenv: ^16.3.1
     eslint: ^8.31.0
@@ -12336,6 +12341,7 @@ __metadata:
     jest: ^29.5.0
     lint-staged: ^13.2.3
     loadash: ^1.0.0
+    moment: ^2.29.4
     os-browserify: ^0.3.0
     parcel: ^2.8.3
     path-browserify: ^1.0.0
