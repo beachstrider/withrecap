@@ -53,6 +53,8 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: '${{ github.workspace }}/service-account.json'
       - name: Seed initial data
         run: |
-          yarn seeder start
+          yarn start
+        working-directory: packages/seeder
         env:
           FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
+          GOOGLE_APPLICATION_CREDENTIALS: '${{ github.workspace }}/service-account.json'
