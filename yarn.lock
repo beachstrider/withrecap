@@ -4023,7 +4023,6 @@ __metadata:
   resolution: "@recap/seeder@workspace:packages/seeder"
   dependencies:
     cross-env: ^7.0.3
-    parcel: ^2.8.3
     rimraf: ^5.0.1
     typescript: ^5.1.6
   languageName: unknown
@@ -4035,7 +4034,6 @@ __metadata:
   dependencies:
     "@types/uuid": ^9.0.1
     cross-env: ^7.0.3
-    parcel: ^2.8.3
     rimraf: ^5.0.1
     typescript: ^5.1.6
     uuid: ^9.0.0
