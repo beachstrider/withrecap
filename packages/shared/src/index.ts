@@ -82,11 +82,11 @@ export { ToastContainer, toast } from './components/toast'
 
 export * from './utils/await'
 export * from './utils/browser'
+export * from './utils/dayjs'
 export * from './utils/email'
 export * from './utils/firestore'
 export * from './utils/sanitize'
 export * from './utils/string'
-export * from './utils/time'
 
 //===========================================================
 // HOOKS

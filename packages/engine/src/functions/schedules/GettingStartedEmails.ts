@@ -1,7 +1,6 @@
-import { addDays } from 'date-fns'
 import * as functions from 'firebase-functions'
 
-import { User } from '@recap/shared'
+import { User, dayjs } from '@recap/shared'
 
 import { db, mail as mailgun, settings } from '../../config'
 import { MailService, Templates } from '../../services/mail'
@@ -18,7 +17,7 @@ export const GettingStartedEmails = functions.pubsub.schedule('every day 08:00')
     const now = new Date()
     const documents = await db
       .collection('users')
-      .where('created', '>', addDays(now, -1))
+      .where('created', '>', dayjs().subtract(1, 'day'))
       .where('created', '<=', now)
       .get()
 

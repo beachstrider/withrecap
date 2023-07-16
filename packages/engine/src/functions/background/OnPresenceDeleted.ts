@@ -1,8 +1,7 @@
 import * as Sentry from '@sentry/node'
-import { formatInTimeZone } from 'date-fns-tz'
 import * as functions from 'firebase-functions'
 
-import { Meeting, MeetingMetadata, User } from '@recap/shared'
+import { Meeting, MeetingMetadata, User, dayjs } from '@recap/shared'
 
 import { db, mail as mailgun, openai, realtime, settings } from '../../config'
 import { MeetingHighlights } from '../../services/highlights'
@@ -118,8 +117,8 @@ export const OnPresenceDeleted = functions
               debug(`sending email to ${email}...`)
 
               const timezone = user.timezone || DEFAULT_TIMEZONE
-              const startTime = formatInTimeZone(meeting.start, timezone, 'h:mm a')
-              const endTime = formatInTimeZone(meeting.end, timezone, 'h:mm a')
+              const startTime = dayjs(meeting.start).tz(timezone).format('h:mm A')
+              const endTime = dayjs(meeting.end).tz(timezone).format('h:mm A')
 
               await mail.send(Templates.MeetingEnd, {
                 email: email,

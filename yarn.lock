@@ -3986,8 +3986,6 @@ __metadata:
     "@sentry/node": ^7.50.0
     "@types/uuid": ^9.0.1
     cross-env: ^7.0.3
-    date-fns: ^2.30.0
-    date-fns-tz: ^2.0.0
     dotenv: ^16.3.1
     firebase-admin: ^11.7.0
     firebase-functions: ^4.4.0
@@ -6591,15 +6589,6 @@ __metadata:
   version: 1.0.8
   resolution: "damerau-levenshtein@npm:1.0.8"
   checksum: d240b7757544460ae0586a341a53110ab0a61126570ef2d8c731e3eab3f0cb6e488e2609e6a69b46727635de49be20b071688698744417ff1b6c1d7ccd03e0de
-  languageName: node
-  linkType: hard
-
-"date-fns-tz@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "date-fns-tz@npm:2.0.0"
-  peerDependencies:
-    date-fns: ">=2.0.0"
-  checksum: a6553603a9d26dd9669326c99a58a2335ac550bc060c74b86a5ad9e1de73c9d4e3e5236f0f552f990e616e4e8dcc2b6a637913a04d2e04396e6a9f8ae83c73da
   languageName: node
   linkType: hard
 
@@ -12322,7 +12311,6 @@ __metadata:
     copy-to-clipboard: ^3.3.3
     cross-env: ^7.0.3
     crypto-browserify: ^3.12.0
-    date-fns: ^2.30.0
     dayjs: ^1.11.9
     detect-browser: ^5.3.0
     dotenv: ^16.3.1

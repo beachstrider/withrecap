@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { differenceInSeconds, format, isThisWeek, secondsToHours } from 'date-fns'
-
 import { useAuthGuard } from '../auth/AuthGuard'
 import { Meeting, MeetingStore } from '../firestore/meetings'
 import { UserMeetingStore } from '../firestore/users/meetings'
+import { dayjs, isThisWeek } from '../utils/dayjs'
 import { useErrors } from './error'
 
 type MeetingByDate = { [date: string]: Meeting[] }
@@ -39,7 +38,7 @@ export function useMeetings() {
 
       for (const meeting of meetings) {
         const start = new Date(meeting.start)
-        const date = format(start, 'yyyy-MM-dd')
+        const date = dayjs(start).format('yyyy-MM-dd')
         const end = new Date(meeting.end)
 
         if (!byDate[date]) {
@@ -47,14 +46,15 @@ export function useMeetings() {
         }
 
         if (isThisWeek(start)) {
-          saveTime += differenceInSeconds(end, start)
+          saveTime += dayjs(end).diff(start, 'second')
         }
 
         byDate[date].push(meeting)
       }
 
       setMeetingsByDate(byDate)
-      setWeekSaveHours(secondsToHours(saveTime))
+      setWeekSaveHours(dayjs.duration(saveTime).asHours())
+
       setError(null)
     } catch (err) {
       setError({ message: 'An error occurred while processing meeting information', err: err as Error })

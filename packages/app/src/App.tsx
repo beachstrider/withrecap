@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Route, Routes, useNavigate } from 'react-router-dom'
 
-import { AuthGuard, AuthProvider, GoogleAuthProvider, LoadingScreen } from '@recap/shared'
+import { AuthGuard, AuthProvider, GoogleAuthProvider, LoadingScreen, dayjs } from '@recap/shared'
 
 import Website from './containers'
 import Addons from './containers/Addons'
@@ -15,6 +15,8 @@ import { OnboardingRegister } from './containers/Onboarding/Register'
 import PrivacyPolicy from './containers/PrivacyPolicy'
 import Signin from './containers/Signin'
 import TermsConditions from './containers/TermsConditions'
+
+console.debug('=========', dayjs().format('YYYY-MM-DD'))
 
 export default function App() {
   const navigate = useNavigate()
