@@ -16,8 +16,8 @@
     "forceConsistentCasingInFileNames": true,
 
     "jsx": "react",
-    "target": "ES5",
-    "module": "ESNext",
+    "target": "ESNext",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "lib": ["dom", "dom.iterable", "ESNext"],
     "types": ["chrome", "node", "date-fns"]
