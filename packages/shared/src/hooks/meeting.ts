@@ -38,14 +38,19 @@ export function useMeetings() {
       const byDate: { [date: string]: Meeting[] } = {}
 
       for (const meeting of meetings) {
+        console.debug(`---  meeting:`, meeting)
         const start = new Date(meeting.start)
+        console.debug(`---  start:`, start)
         const date = format(start, 'yyyy-MM-dd')
+        console.debug(`---  date:`, date)
         const end = new Date(meeting.end)
+        console.debug(`---  end:`, end)
 
         if (!byDate[date]) {
           byDate[date] = []
         }
 
+        console.debug(`---  isThisWeek(start):`, isThisWeek(start))
         if (isThisWeek(start)) {
           saveTime += differenceInSeconds(end, start)
         }
