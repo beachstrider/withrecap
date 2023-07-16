@@ -175,7 +175,7 @@ Finally the `.env` will look similar to below:
 
 9. Assign roles to your service account.
 
-   - Add the following roles: `API Keys Viewer`, `Artifact Registry Writer`, `Cloud Datastore Index Admin`, `Cloud Functions Developer`, `Cloud Run Viewer`, `Cloud RuntimeConfig Admin`, `Cloud Scheduler Admin`, `Eventarc Event Receiver`, `Firebase Admin`, `Firebase Authentication Admin`, `Firebase Extensions API Service Agent`, `Firebase Hosting Admin`, `Firebase Rules Admin`, `Service Account User`.
+   - Add the following roles: `API Keys Viewer`, `Artifact Registry Writer`, `Cloud Datastore Index Admin`, `Cloud Functions Developer`, `Cloud Run Viewer`, `Cloud RuntimeConfig Admin`, `Cloud Scheduler Admin`, `Firebase Admin`, `Firebase Authentication Admin`, `Firebase Extensions API Service Agent`, `Firebase Hosting Admin`, `Firebase Rules Admin`, `Service Account User`.
 
    - Click **Continue**.
 
@@ -227,17 +227,15 @@ Give it a name `PRODUCTION` and click **Configure environment** to finish, you w
 
 2. Configure **User type**.
 
-   - Set `MAKE EXTERNAL` if it is for a production. You will need to submit and take a verification process.
+   - Set `MAKE EXTERNAL` if it is for a production. You will need to submit and take an extensive verification process, or just set `Test` and add testers' emails in **Test users** section.
 
-   - Set `MAKE INTERNAL` if it is for a staging. You will need to manually add testers' emails in **Test users** section.
+   - Set `MAKE INTERNAL` if it is for a staging.
 
 3. Click **EDIT APP** and enter required inputs and click **SAVE AND CONTINUE** to move to the step **Scopes**.
 
 4. Click **ADD OR REMOVE SCOPES** and select scopes whose values are `.../auth/userinfo.email`, `.../auth/userinfo.profile`, `...auth/calendar.readonly`, and click **UPDATE**, then **SAVE AND CONTINUE** to move to the step **Optional info**.
 
 5. Just click **SAVE AND CONTINUE**.
-
-6. Finally click **PREPARE FOR VERIFICATION** to submit your app for verification.
 
 ### Configure GPT-4 API KEY
 
@@ -306,8 +304,8 @@ You must be in main branch.
    ```bash
    yarn bump --version=<version>
    # EX: yarn bump --version=1.1.0
-   # or  yarn major:patch
-   # or  yarn minor:patch
+   # or  yarn bump:major
+   # or  yarn bump:minor
    # or  yarn bump:patch
    ```
 
