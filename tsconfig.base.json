@@ -20,6 +20,6 @@
     "module": "CommonJS",
     "moduleResolution": "node",
     "lib": ["dom", "dom.iterable", "ESNext"],
-    "types": ["chrome", "node"]
+    "types": ["chrome", "node", "date-fns"]
   }
 }
