@@ -221,12 +221,12 @@ class GoogleMeetsService {
             })
 
             if (error) {
-              console.warn(`-> ${error}. retrying..`)
+              console.debug(`-> ${error}. retrying..`)
               return false
             }
 
             if (!isEnabled) {
-              throw new Error('not recording, addon is disabled')
+              console.debug('-> not recording, addon is disabled')
             }
 
             this.email = email

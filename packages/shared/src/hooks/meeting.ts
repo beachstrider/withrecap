@@ -41,6 +41,7 @@ export function useMeetings() {
         console.debug(`---  meeting:`, meeting)
         const start = new Date(meeting.start)
         console.debug(`---  start:`, start)
+        console.debug('---toDate.format: ', format(meeting.created!.toDate(), 'yyyy-MM-dd'))
         const date = format(start, 'yyyy-MM-dd')
         console.debug(`---  date:`, date)
         const end = new Date(meeting.end)

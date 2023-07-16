@@ -92,8 +92,6 @@ class ChromeBackgroundService {
     chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
       return Sentry.wrap(() => {
         if (sender.tab) {
-          console.debug(`messaged received from an app: ${sender.tab.url}`, request)
-
           switch (request.type) {
             case RequestTypes.LOGIN:
               this.login(request.token)
@@ -124,7 +122,7 @@ class ChromeBackgroundService {
 
       if (tabId!! && !isEmpty(meetingDetails) && meetingDetails.mid!! && tid === tabId) {
         await this.processMeetingEnd(meetingDetails?.mid, this.google.auth.currentUser?.email!)
-        console.debug(`meeting ended since tab (${tid}) was closed.`)
+        console.debug(`-> meeting ended since tab (${tid}) was closed.`)
       }
     })
   }
@@ -226,11 +224,11 @@ class ChromeBackgroundService {
     const meetingDetails = await this.getMeetingDetails(meetingId)
 
     if (!this.google.auth.currentUser) {
-      return console.warn(`-> unauthenticated user, skipping...`)
+      return console.debug(`-> unauthenticated user, skipping...`)
     }
 
     if (!meetingDetails) {
-      return console.warn('-> no calendar event could be found for the current meeting, skipping...')
+      return console.debug('-> no calendar event could be found for the current meeting, skipping...')
     }
 
     const email = this.google.auth.currentUser.email as string
