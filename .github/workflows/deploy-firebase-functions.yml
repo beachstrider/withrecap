@@ -37,8 +37,7 @@ jobs:
             database.url=$FIREBASE_DATABASE_URL \
             project.id="$FIREBASE_PROJECT_ID" --project $FIREBASE_PROJECT_ID
 
-          yarn deploy:all --non-interactive --force &&
-          yarn seeder start
+          yarn deploy:all --non-interactive --force
         working-directory: packages/engine
         env:
           DOMAIN: ${{ vars.DOMAIN }}
