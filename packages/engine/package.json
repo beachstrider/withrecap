@@ -2,7 +2,7 @@
   "name": "@recap/engine",
   "private": true,
   "scripts": {
-    "build": "yarn clean && yarn firebaserc && parcel build src/index.ts --dist-dir lib",
+    "build": "yarn clean && yarn firebaserc && tsc",
     "build:dev": "yarn clean && yarn firebaserc && tsc -w",
     "start": "yarn build:dev & sleep 5 && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase functions:config:get > .runtimeconfig.json && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" USE_FIREBASE_EMULATORS=\"true\" firebase emulators:start & yarn workspace @recap/seeder start:emulate",
     "start:functions": "yarn build:dev & cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase functions:config:get > .runtimeconfig.json && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase emulators:start --only functions",
@@ -21,6 +21,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "@sentry/node": "^7.50.0",
+    "cross-env": "^7.0.3",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
     "firebase-admin": "^11.7.0",
@@ -29,6 +30,8 @@
     "googleapis": "^118.0.0",
     "mailgun.js": "^8.2.1",
     "openai": "^3.2.1",
+    "rimraf": "^5.0.1",
+    "typescript": "^5.1.6",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

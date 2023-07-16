@@ -7,6 +7,9 @@
   "private": true,
   "dependencies": {
     "@types/uuid": "^9.0.1",
+    "cross-env": "^7.0.3",
+    "rimraf": "^5.0.1",
+    "typescript": "^5.1.6",
     "uuid": "^9.0.0"
   },
   "scripts": {

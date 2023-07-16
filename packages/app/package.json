@@ -11,7 +11,10 @@
     "clean": "npx rimraf dist misc/firebaserc.d.ts misc/firebaserc.d.ts.map misc/firebaserc.js misc/firebaserc.js.map misc/tsconfig.tsbuildinfo"
   },
   "dependencies": {
+    "cross-env": "^7.0.3",
     "react": "^18.2.0",
-    "redux": "^4.2.1"
+    "redux": "^4.2.1",
+    "rimraf": "^5.0.1",
+    "typescript": "^5.1.6"
   }
 }
