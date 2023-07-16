@@ -8,7 +8,7 @@
     "outDir": "dist",
 
     "jsx": "react",
-    "lib": ["dom", "dom.iterable", "ES2017"],
+    "lib": ["dom", "dom.iterable", "ESNext"],
 
     "types": ["chrome", "node"]
   }
