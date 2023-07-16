@@ -3971,6 +3971,7 @@ __metadata:
   resolution: "@recap/app@workspace:packages/app"
   dependencies:
     cross-env: ^7.0.3
+    parcel: ^2.8.3
     react: ^18.2.0
     redux: ^4.2.1
     rimraf: ^5.0.1
@@ -3987,6 +3988,7 @@ __metadata:
     cross-env: ^7.0.3
     date-fns: ^2.30.0
     date-fns-tz: ^2.0.0
+    dotenv: ^16.3.1
     firebase-admin: ^11.7.0
     firebase-functions: ^4.4.0
     firebase-functions-test: ^3.1.0
@@ -3994,6 +3996,7 @@ __metadata:
     googleapis: ^118.0.0
     mailgun.js: ^8.2.1
     openai: ^3.2.1
+    parcel: ^2.8.3
     rimraf: ^5.0.1
     typescript: ^5.1.6
     uuid: ^9.0.0
@@ -4009,6 +4012,7 @@ __metadata:
     cross-env: ^7.0.3
     dotenv: ^16.1.4
     fs-extra: ^11.1.1
+    parcel: ^2.8.3
     rimraf: ^5.0.1
     typescript: ^5.1.6
   languageName: unknown
@@ -4019,6 +4023,7 @@ __metadata:
   resolution: "@recap/seeder@workspace:packages/seeder"
   dependencies:
     cross-env: ^7.0.3
+    parcel: ^2.8.3
     rimraf: ^5.0.1
     typescript: ^5.1.6
   languageName: unknown
@@ -4030,6 +4035,7 @@ __metadata:
   dependencies:
     "@types/uuid": ^9.0.1
     cross-env: ^7.0.3
+    parcel: ^2.8.3
     rimraf: ^5.0.1
     typescript: ^5.1.6
     uuid: ^9.0.0
