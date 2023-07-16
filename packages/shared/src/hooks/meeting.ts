@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { differenceInSeconds, isThisWeek, secondsToHours } from 'date-fns'
+import { differenceInSeconds, format, isThisWeek, secondsToHours } from 'date-fns'
 
 import { useAuthGuard } from '../auth/AuthGuard'
 import { Meeting, MeetingStore } from '../firestore/meetings'
@@ -39,8 +39,8 @@ export function useMeetings() {
 
       for (const meeting of meetings) {
         const start = new Date(meeting.start)
+        const date = format(start, 'yyyy-MM-dd')
         const end = new Date(meeting.end)
-        const date = meeting.start.substring(0, 10)
 
         if (!byDate[date]) {
           byDate[date] = []
