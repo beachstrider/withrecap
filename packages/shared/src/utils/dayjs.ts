@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import _dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 import duration from 'dayjs/plugin/duration'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -7,14 +7,14 @@ import utc from 'dayjs/plugin/utc'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 
 // You should extend Day.js with the plugins before using them
-dayjs.extend(relativeTime)
-dayjs.extend(utc)
-dayjs.extend(timezone)
-dayjs.extend(advancedFormat)
-dayjs.extend(duration)
-dayjs.extend(weekOfYear)
+_dayjs.extend(relativeTime)
+_dayjs.extend(utc)
+_dayjs.extend(timezone)
+_dayjs.extend(advancedFormat)
+_dayjs.extend(duration)
+_dayjs.extend(weekOfYear)
 
-export { dayjs }
+export const dayjs = _dayjs
 
 export const getTime = (date: string): string => {
   return dayjs(date).format('h:mm A')
