@@ -8,6 +8,11 @@
     "outDir": "dist",
     "target": "ESNext",
     "lib": ["ESNext"],
-    "module": "CommonJS"
+    "module": "CommonJS",
+
+    "baseUrl": ".",
+    "paths": {
+      "@recap/shared": ["../shared/src"]
+    }
   }
 }

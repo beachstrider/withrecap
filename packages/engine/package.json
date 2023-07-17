@@ -3,6 +3,7 @@
   "description": "reCap engine",
   "private": true,
   "source": "src/index.ts",
+  "main": "dist/index.js",
   "scripts": {
     "build": "yarn clean && yarn firebaserc && tsc -b",
     "build:dev": "yarn clean && yarn firebaserc && tsc -w",
@@ -31,7 +32,6 @@
     "googleapis": "^118.0.0",
     "mailgun.js": "^8.2.1",
     "openai": "^3.2.1",
-    "parcel": "^2.9.3",
     "rimraf": "^5.0.1",
     "typescript": "5.1.6",
     "uuid": "^9.0.0"
