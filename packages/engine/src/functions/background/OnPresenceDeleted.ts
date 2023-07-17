@@ -1,4 +1,6 @@
 import * as Sentry from '@sentry/node'
+// import dayjs from 'dayjs'
+// import timezone from 'dayjs/plugin/timezone'
 import * as functions from 'firebase-functions'
 
 import { Meeting, MeetingMetadata, User, dayjs } from '@recap/shared'
@@ -12,6 +14,8 @@ import { MeetingTodos } from '../../services/todos'
 import { TranscriptService } from '../../services/transcript'
 import { debug, error, warn } from '../../utils/logger'
 import { SentryWrapper } from '../../utils/sentry'
+
+// dayjs.extend(timezone)
 
 const options: functions.RuntimeOptions = {
   memory: '512MB',

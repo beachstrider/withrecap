@@ -5,10 +5,9 @@
 
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "lib",
-
-    "sourceMap": true
-  },
-
-  "compileOnSave": true
+    "outDir": "dist",
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "module": "CommonJS"
+  }
 }

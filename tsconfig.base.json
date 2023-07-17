@@ -4,7 +4,6 @@
     "strict": true,
     "noEmit": false,
     "allowJs": false,
-    "sourceMap": true,
     "composite": true,
     "skipLibCheck": true,
     "declaration": true,
