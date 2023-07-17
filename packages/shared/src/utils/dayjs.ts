@@ -16,6 +16,8 @@ _dayjs.extend(weekOfYear)
 
 export const dayjs = _dayjs
 
+export { advancedFormat, duration, relativeTime, timezone, utc, weekOfYear }
+
 export const getTime = (date: string): string => {
   return dayjs(date).format('h:mm A')
 }
