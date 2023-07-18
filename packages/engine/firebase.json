@@ -15,9 +15,6 @@
         "firebase.json",
         ".firebaserc",
         ".gitignore"
-      ],
-      "predeploy": [
-        "yarn build"
       ]
     }
   ],
