@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 
-import ReactMarkdown from 'react-markdown'
-
 import { Meeting } from '@recap/shared'
 
 import { ThumbsDown, ThumbsUp } from '../../../components/buttons'
+import { Markdown } from '../../../components/markdown'
 
 import listInCircle from '../../../assets/img/listInCircle.svg'
 
@@ -33,8 +32,8 @@ export default function Summary({ meeting: { summary } }: Props) {
           <ThumbsUp checked={like === 1} onClick={() => onSetLike(1)} />
         </div>
       </div>
-      <div className="flex flex-col flex-wrap gap-[34px] sm:mb-[82px] mb-[63px]">
-        <ReactMarkdown children={summary || ''} />
+      <div className="flex flex-col flex-wrap gap-[20px] sm:mb-[82px] mb-[63px]">
+        <Markdown children={summary || ''} />
       </div>
     </>
   )
