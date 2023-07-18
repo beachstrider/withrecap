@@ -7,6 +7,7 @@
     "composite": true,
     "skipLibCheck": true,
     "declaration": true,
+    "importHelpers": true,
     "declarationMap": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
@@ -14,10 +15,10 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
 
-    "jsx": "react",
-    "target": "ES5",
+    "jsx": "react-jsx",
+    "target": "ESNext",
     "module": "CommonJS",
     "moduleResolution": "node",
-    "lib": ["dom", "dom.iterable", "ES5"]
+    "lib": ["dom", "dom.iterable", "ESNext"]
   }
 }
