@@ -1,25 +1,30 @@
+import * as dotenv from 'dotenv'
+import path from 'path'
+
+dotenv.config({ path: path.join(__dirname, '../../../.env') })
+
 //===========================================================
 // AUTHENTICATION
 //===========================================================
 
-export type { BaseAuthProvider } from './auth'
+export type { BaseAuthProvider } from './auth/GoogleAuth'
 
 export { AuthGuard, useAuthGuard } from './auth/AuthGuard'
 export { AuthProvider, useAuth } from './auth/AuthProvider'
 
-export { firebase } from './auth/firebase'
-export type { FirebaseUser } from './auth/firebase'
+export { firebase } from './firebase'
+export type { FirebaseUser } from './firebase'
 
-export { GoogleAuthProvider, GoogleIdentityAuthProvider } from './auth/google'
+export { GoogleAuthProvider, GoogleIdentityAuthProvider } from './auth/GoogleAuth'
 
 //===========================================================
-// STORAGE
+// FIRESTORE
 //===========================================================
+
+export * from './firestore'
 
 export { AddonStore } from './firestore/addons'
 export type { Addon, Addons } from './firestore/addons'
-
-export * from './firestore'
 
 export { MeetingStore } from './firestore/meetings'
 export type { Meeting, MeetingAttendee, MeetingMetadata } from './firestore/meetings'
@@ -31,7 +36,7 @@ export { TodosStore } from './firestore/meetings/todos'
 export type { StoredTodos, Todo, Todos } from './firestore/meetings/todos'
 
 export { HighlightsStore } from './firestore/meetings/highlights'
-export type { Highlight, Highlights } from './firestore/meetings/highlights'
+export type { Highlight, Highlights, StoredHighlights } from './firestore/meetings/highlights'
 
 export { UserStore } from './firestore/users'
 export type { User } from './firestore/users'
@@ -41,6 +46,14 @@ export type { UserAddonConfig, UserAddons } from './firestore/users/addons'
 
 export { UserMeetingStore } from './firestore/users/meetings'
 export type { UserMeetingConfig, UserMeetings } from './firestore/users/meetings'
+
+//===========================================================
+// REALTIME DATABASE
+//===========================================================
+
+export * from './rtdb'
+
+export { PresencesRTDB } from './rtdb/presences'
 
 //===========================================================
 // HTTPS CALLABLE FUNCTIONS
@@ -72,11 +85,13 @@ export { ToastContainer, toast } from './components/toast'
 // UTILS
 //===========================================================
 
+export * from './utils/await'
 export * from './utils/browser'
+export * from './utils/dayjs'
+export * from './utils/email'
 export * from './utils/firestore'
 export * from './utils/sanitize'
 export * from './utils/string'
-export * from './utils/time'
 
 //===========================================================
 // HOOKS

@@ -4,7 +4,6 @@
     "strict": true,
     "noEmit": false,
     "allowJs": false,
-    "sourceMap": true,
     "composite": true,
     "skipLibCheck": true,
     "declaration": true,
@@ -16,10 +15,9 @@
     "forceConsistentCasingInFileNames": true,
 
     "jsx": "react",
-    "target": "ES2017",
+    "target": "ESNext",
     "module": "CommonJS",
     "moduleResolution": "node",
-    "lib": ["dom", "dom.iterable", "ES2017"],
-    "types": ["chrome", "node"]
+    "lib": ["dom", "dom.iterable", "ESNext"]
   }
 }

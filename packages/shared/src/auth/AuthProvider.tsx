@@ -3,9 +3,9 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from '
 import * as Sentry from '@sentry/browser'
 import { Outlet } from 'react-router-dom'
 
-import { BaseAuthProvider } from '.'
 import { User, UserStore } from '../firestore/users'
 import { useErrors } from '../hooks/error'
+import { BaseAuthProvider } from './GoogleAuth'
 
 type AuthProviderContextType = {
   token: string | null

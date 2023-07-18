@@ -18,6 +18,7 @@ interface Props {
 }
 
 type SelectedTranscript = {
+  email: string
   speaker: string
   text: string
 }
@@ -43,6 +44,7 @@ const Transcript = ({
     if (selectedTranscript) {
       const highlight = {
         text: selectedTranscript.text,
+        email: selectedTranscript.email,
         speaker: selectedTranscript.speaker
       }
 
@@ -99,7 +101,7 @@ const Transcript = ({
           multipleSelection={false}
           offsetToTop={5}
           metaAttrName="data-meta"
-          onSelect={(text, meta) => setSelectedTranscript({ text, speaker: meta.speaker })}
+          onSelect={(text, meta) => setSelectedTranscript({ text, speaker: meta.speaker, email: meta.email })}
           onClose={() => setSelectedTranscript(null)}
           className="px-[8px] py-[6px] bg-black text-white text-[15px] rounded-[30px] flex items-center gap-[10px]"
         >
@@ -124,15 +126,15 @@ const Transcript = ({
 }
 
 const TranscriptItem = ({ msg, attendees }: { msg: Message; attendees: MeetingAttendee[] }) => {
-  const getAvatar = (speaker: string): string | undefined => {
-    return attendees.find((a) => a.name === speaker)?.avatar
+  const getAvatar = (email: string): string | undefined => {
+    return attendees.find((a) => a.email === email)?.avatar
   }
 
   return (
     <div className="flex sm:gap-[16px] gap-[12px]">
       <UserAvatar
         name={msg.speaker}
-        avatar={getAvatar(msg.speaker)}
+        avatar={getAvatar(msg.email)}
         className="sm:w-[24px] sm:h-[24px] w-[18px] h-[18px] sm:text-[10px] text-[7px]"
       />
       <div className="flex flex-col sm:gap-[10px] gap-[6px]">

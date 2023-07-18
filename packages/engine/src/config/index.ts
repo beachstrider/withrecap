@@ -17,6 +17,8 @@ const app = admin.initializeApp()
 
 const db = app.firestore()
 
+const realtime = app.database()
+
 const auth = app.auth()
 
 const googleAuth = new google.auth.JWT({
@@ -54,4 +56,4 @@ const initSentry = () => {
   }
 }
 
-export { auth, db, firestore, googleAuth, initSentry, mail, openai, settings }
+export { auth, db, firestore, googleAuth, initSentry, mail, openai, realtime, settings }

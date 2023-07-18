@@ -1,15 +1,26 @@
 {
-  "references": [],
   "include": ["src"],
-  "extends": "../../tsconfig.base.json",
-
   "compilerOptions": {
+    "strict": true,
+    "noEmit": false,
+    "allowJs": false,
+    "composite": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+
     "rootDir": "src",
     "outDir": "dist",
 
     "jsx": "react",
-    "lib": ["dom", "dom.iterable", "ES2017"],
-
-    "types": ["chrome", "node"]
+    "target": "ESNext",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "lib": ["dom", "dom.iterable", "ESNext"]
   }
 }

@@ -8,7 +8,7 @@ import { Highlight } from './Highlight'
 
 interface HighlightsProps {
   mid: string
-  highlights: Highlights
+  highlights: Highlights & { avatar?: string }
   refresh: () => Promise<void>
   disabled?: boolean
 }
@@ -34,7 +34,7 @@ export default function HighlightList({ mid, highlights, refresh, disabled = fal
           <ThumbsUp checked={like === 1} onClick={() => onSetLike(1)} /> */}
         </div>
       </div>
-      <div className="masonry-3 sm:gap-[20px] gap-[15px]">
+      <div className="masonry-3 lg:gap-[20px] gap-[15px]">
         {highlights.map((highlight, key) => (
           <Highlight key={key} highlight={highlight} />
         ))}

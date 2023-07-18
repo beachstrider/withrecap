@@ -143,7 +143,7 @@ input[type='checkbox']:checked {
   background-color: #ecf6ff;
 }
 
-@screen sm {
+@screen lg {
   .masonry-3 {
     column-count: 3;
     column-gap: 20px;

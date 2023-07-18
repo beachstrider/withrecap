@@ -1,8 +1,6 @@
 import React from 'react'
 
-import { formatDistance, isFuture } from 'date-fns'
-
-import { Meeting, getTime } from '@recap/shared'
+import { Meeting, dayjs, getTime } from '@recap/shared'
 
 interface MeetingDetailsProps {
   meeting: Meeting
@@ -10,11 +8,11 @@ interface MeetingDetailsProps {
 }
 
 const getTimeLeft = (t: string) => {
-  const now = new Date()
-  const time = new Date(t)
+  const now = dayjs()
+  const time = dayjs(t)
 
-  if (isFuture(time)) {
-    return formatDistance(time, now)
+  if (time.isAfter(now)) {
+    return time.from(now)
   }
 
   return '0 minute'

@@ -9,29 +9,41 @@ export class TranscriptService {
     this.transcript = conversation
   }
 
-  public toString(): string {
+  public toText(): string {
     return this.transcript.map((m: Message) => `${m.speaker}: ${m.text}`).join('\n')
   }
 
-  public metadata(): MeetingMetadata['percentage'] {
+  public toString(): string {
+    return JSON.stringify(this.transcript)
+  }
+
+  public frequencies(): MeetingMetadata['percentage'] {
     let totalTime = 0
-    let timePerSpeaker: MeetingMetadata['percentage'] = {}
+    let percentage: MeetingMetadata['percentage'] = []
 
     for (const msg of this.transcript) {
       const time = approximateSpeechTime(msg.text, 150)
+      const timePerSpeaker = percentage.find((el) => el.email === msg.email || el.speaker === msg.speaker)
 
-      if (!timePerSpeaker[msg.speaker]) {
-        timePerSpeaker[msg.speaker] = 0
+      if (!timePerSpeaker) {
+        const newTimePerSpeaker = {
+          email: msg.email,
+          speaker: msg.speaker,
+          amount: time
+        }
+
+        percentage.push(newTimePerSpeaker)
+      } else {
+        timePerSpeaker.amount += time
       }
 
-      timePerSpeaker[msg.speaker] += time
       totalTime += time
     }
 
-    for (const speaker in timePerSpeaker) {
-      timePerSpeaker[speaker] = timePerSpeaker[speaker] / totalTime
+    for (const el of percentage) {
+      el.amount = el.amount / totalTime
     }
 
-    return timePerSpeaker
+    return percentage
   }
 }

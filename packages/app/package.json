@@ -4,13 +4,19 @@
   "private": true,
   "source": "src/index.html",
   "scripts": {
-    "start": "yarn firebaserc && parcel --port 3000",
+    "start": "yarn firebaserc && cross-env USE_FIREBASE_EMULATORS=\"false\" parcel --port 3000",
+    "start:emulate": "yarn firebaserc && cross-env USE_FIREBASE_EMULATORS=\"true\" parcel --port 3000",
     "build": "yarn clean && yarn firebaserc && parcel build --no-content-hash --no-cache --no-source-maps --detailed-report 0",
+    "deploy": "yarn build && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase deploy --only hosting",
     "firebaserc": "tsc -b misc && node misc/firebaserc.js",
-    "clean": "npx rimraf dist misc/firebaserc.d.ts misc/firebaserc.d.ts.map misc/firebaserc.js misc/firebaserc.js.map misc/tsconfig.tsbuildinfo"
+    "clean": "rimraf dist misc/firebaserc.d.ts misc/firebaserc.d.ts.map misc/firebaserc.js misc/firebaserc.js.map misc/tsconfig.tsbuildinfo"
   },
   "dependencies": {
+    "cross-env": "^7.0.3",
+    "parcel": "^2.9.3",
     "react": "^18.2.0",
-    "redux": "^4.2.1"
+    "redux": "^4.2.1",
+    "rimraf": "^5.0.1",
+    "typescript": "5.1.6"
   }
 }

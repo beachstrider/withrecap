@@ -6,7 +6,7 @@ import { alphabets, normalize } from './string'
  */
 
 export const sanitize = (input: Conversation): Conversation => {
-  const patternLength = 70
+  const patternLength = 10
 
   let differentTextAll = ''
 
@@ -47,8 +47,9 @@ export const sanitize = (input: Conversation): Conversation => {
         differentTextAll += messageA.text
 
         const messageOfThisSpeaker = {
-          language: messageA.language,
+          email: messageA.email,
           speaker: messageA.speaker,
+          language: messageA.language,
           text: differentTextAll,
           timestamp: messageA.timestamp
         }
@@ -66,8 +67,9 @@ export const sanitize = (input: Conversation): Conversation => {
         differentTextAll += messageA.text.substring(0, normalizedDifferentText.length) + messageB.text
 
         const messageOfThisSpeaker: Message = {
-          language: messageA.language,
+          email: messageA.email,
           speaker: messageA.speaker,
+          language: messageA.language,
           text: differentTextAll,
           timestamp: messageA.timestamp
         }
@@ -80,8 +82,9 @@ export const sanitize = (input: Conversation): Conversation => {
         differentTextAll += messageA.text
 
         const messageOfSpeakerA: Message = {
-          language: messageA.language,
+          email: messageA.email,
           speaker: messageA.speaker,
+          language: messageA.language,
           text: differentTextAll,
           timestamp: messageA.timestamp
         }
@@ -92,8 +95,9 @@ export const sanitize = (input: Conversation): Conversation => {
         differentTextAll += messageB.text
 
         const messageOfSpeakerB: Message = {
-          language: messageB.language,
+          email: messageB.email,
           speaker: messageB.speaker,
+          language: messageB.language,
           text: differentTextAll,
           timestamp: messageB.timestamp
         }

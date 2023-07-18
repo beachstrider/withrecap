@@ -1,73 +1,57 @@
 import * as Sentry from '@sentry/browser'
-import { Unsubscribe } from 'firebase/firestore'
+import { isEmpty } from 'lodash'
 
 import {
-  Conversation,
+  ConversationStore,
   GoogleCalendar,
   GoogleIdentityAuthProvider,
   Meeting,
   MeetingStore,
   Message,
+  PresencesRTDB,
   RequestTypes,
   UserAddonStore,
   initSentry,
-  sanitize,
-  updateRecording
+  sanitize
 } from '@recap/shared'
 
 import { ExtensionMessages } from '../common'
 
 class ChromeBackgroundService {
-  private meetingStore: MeetingStore
   private google: GoogleIdentityAuthProvider
-  private conversation: Conversation
+  private meetingStore: MeetingStore
+  private conversationStore: ConversationStore
+  private presencesRTDB: PresencesRTDB
+  private meeting: Meeting | undefined
+  private messages: Message[] = []
+  private previousSpeaker = ''
+
   private isStarted = false
-  private isRecording = false
-  private unsubscribe: null | Unsubscribe = null
+  private isRecorder = false
 
   constructor() {
-    this.meetingStore = new MeetingStore()
     this.google = new GoogleIdentityAuthProvider()
-    this.conversation = []
+    this.meetingStore = new MeetingStore()
+    this.conversationStore = new ConversationStore()
+    this.presencesRTDB = new PresencesRTDB()
 
     this.google.onAuthStateChanged(() => true)
   }
 
-  private async getMeetingDetails(meetingId: string): Promise<Meeting | undefined> {
-    // Get a new identity token whenever joining a meeting as the token expires in 1hr.
-    const identityToken = await this.google.refreshIdentityToken()
-
-    const calendar = new GoogleCalendar(identityToken)
-    const meetingDetails = await calendar.getMeetingDetails(meetingId)
-
-    if (!meetingDetails) {
-      console.warn('no calendar event could be found for the current meeting, skipping...')
-      return
-    }
-
-    return meetingDetails
-  }
-
-  private async handleError(error: unknown): Promise<void> {
-    console.error(error)
-    Sentry.captureException(error)
-
-    return chrome.storage.session.set({ error })
-  }
-
-  startListener(): void {
+  public startListener(): void {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       return Sentry.wrap(() => {
-        console.debug(
-          sender.tab
-            ? `messaged received from a content script: ${sender.tab.url}`
-            : 'messaged received from the extension',
-          request
-        )
-
         switch (request.type) {
+          case ExtensionMessages.MeetingUserInfo:
+            this.processMeetingUserInfo(request.addonId)
+              .then(sendResponse)
+              .catch((error) => {
+                this.handleError(error)
+                sendResponse({ error })
+              })
+            break
           case ExtensionMessages.MeetingMessage:
-            this.processTranscriptionMessage(request.meetingId, request.message)
+            this.processMessage(request.meetingId, request.message)
               .then(() => sendResponse({ error: null }))
               .catch((error) => {
                 this.handleError(error)
@@ -83,7 +67,7 @@ class ChromeBackgroundService {
               })
             break
           case ExtensionMessages.MeetingEnded:
-            this.processMeetingEnd(request.meetingId)
+            this.processMeetingEnd(request.meetingId, request.email)
               .then(() => sendResponse({ error: null }))
               .catch((error) => {
                 this.handleError(error)
@@ -92,14 +76,6 @@ class ChromeBackgroundService {
             break
           case ExtensionMessages.MeetingState:
             this.processMeetingState()
-              .then(sendResponse)
-              .catch((error) => {
-                this.handleError(error)
-                sendResponse({ error })
-              })
-            break
-          case ExtensionMessages.AddonEnabled:
-            this.processAddonEnabled(request.addonId)
               .then(sendResponse)
               .catch((error) => {
                 this.handleError(error)
@@ -116,23 +92,21 @@ class ChromeBackgroundService {
     chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
       return Sentry.wrap(() => {
         if (sender.tab) {
-          console.debug(`messaged received from an app: ${sender.tab.url}`, request)
-
           switch (request.type) {
             case RequestTypes.LOGIN:
               this.login(request.token)
                 .then(() => sendResponse({ error: null }))
-                .catch((err) => {
-                  this.handleError(err)
-                  sendResponse({ err })
+                .catch((error) => {
+                  this.handleError(error)
+                  sendResponse({ error })
                 })
               break
             case RequestTypes.LOGOUT:
               this.logout()
                 .then(() => sendResponse({ error: null }))
-                .catch((err) => {
-                  this.handleError(err)
-                  sendResponse({ err })
+                .catch((error) => {
+                  this.handleError(error)
+                  sendResponse({ error })
                 })
               break
           }
@@ -142,65 +116,85 @@ class ChromeBackgroundService {
       })
     })
 
+    // TODO: this not work!
     chrome.tabs.onRemoved.addListener(async (tid, _removeInfo) => {
-      try {
-        const { tabId, meetingDetails } = await chrome.storage.session.get(['tabId', 'meetingDetails'])
+      const { tabId, meetingDetails } = await chrome.storage.session.get(['tabId', 'meetingDetails'])
 
-        if (tid === tabId) {
-          console.debug(`meeting ended since tab (${tid}) was closed.`)
-          await this.processMeetingEnd(meetingDetails.mid)
-        }
-      } catch (err) {
-        this.handleError(new Error('An error occurred while processing meeting ended on meeting tab closed'))
+      if (tabId!! && !isEmpty(meetingDetails) && meetingDetails.mid!! && tid === tabId) {
+        await this.processMeetingEnd(meetingDetails?.mid, this.google.auth.currentUser?.email!)
+        console.debug(`-> meeting ended since tab (${tid}) was closed.`)
       }
     })
   }
 
-  async login(token: string): Promise<void> {
-    try {
-      await this.google.login(token)
-    } catch (err) {
-      this.handleError(err)
+  private async getMeetingDetails(meetingId: string): Promise<Meeting | undefined> {
+    // Get a new identity token whenever joining a meeting as the token expires in 1hr.
+    const identityToken = await this.google.refreshIdentityToken()
+
+    const calendar = new GoogleCalendar(identityToken)
+    const meetingDetails = await calendar.getMeetingDetails(meetingId)
+
+    return meetingDetails
+  }
+
+  private async handleError(error: unknown): Promise<void> {
+    console.error(error)
+    Sentry.captureException(error)
+
+    return chrome.storage.session.set({ error })
+  }
+
+  private async login(token: string): Promise<void> {
+    await this.google.login(token)
+  }
+
+  private async logout(): Promise<void> {
+    await this.google.logout()
+  }
+
+  private async iAmRecording(meetingId: string, email: string) {
+    console.debug('-> I am recording')
+    this.isRecorder = true
+    await this.presencesRTDB?.activate(meetingId, email)
+  }
+
+  private async saveMessages(meetingId: string): Promise<void> {
+    if (this.messages.length && this.isRecorder) {
+      try {
+        const messages = sanitize(this.messages)
+        console.debug(messages.map((message) => `${message.speaker}: ${message.text}`).join('\n'))
+        await this.conversationStore.add(meetingId, messages)
+      } catch (err) {
+        throw new Error('An error occurred while storing new message')
+      }
+      this.messages = []
     }
   }
 
-  async logout(): Promise<void> {
-    try {
-      await this.google.logout()
-    } catch (err) {
-      throw new Error('An error occurred while extension logout')
+  private async processMeetingUserInfo(
+    addonId: string
+  ): Promise<{ displayName: string; email: string; isEnabled: boolean } | { error: string }> {
+    const tabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true })
+
+    if (isEmpty(tabs)) {
+      return { error: 'active tab not found' }
+    }
+
+    if (!this.google.auth.currentUser) {
+      return { error: 'unauthenticated user' }
+    }
+
+    const userAddonStore = new UserAddonStore(this.google.auth.currentUser.uid)
+    const addon = await userAddonStore.get(addonId)
+
+    return {
+      email: this.google.auth.currentUser.email || '',
+      displayName: this.google.auth.currentUser.displayName || '',
+      isEnabled: !!addon
     }
   }
 
-  async processAddonEnabled(addonId: string): Promise<{ isEnabled: boolean }> {
-    return new Promise((resolve, reject) => {
-      chrome.tabs
-        .query({ active: true, lastFocusedWindow: true })
-        .then(async (tabs) => {
-          if (!tabs || tabs.length === 0) {
-            return reject(new Error('active tab not found'))
-          }
-
-          if (!this.google.auth.currentUser) {
-            return reject('user is unauthenticated')
-          }
-
-          try {
-            const userAddonStore = new UserAddonStore(this.google.auth.currentUser.uid)
-            const addon = await userAddonStore.get(addonId)
-
-            return resolve({ isEnabled: !!addon })
-          } catch (err) {
-            reject(new Error('An error occurred while fetching user addons'))
-          }
-        })
-        .catch((err) => {
-          reject(new Error("Couldn't query active tab information"))
-        })
-    })
-  }
-
-  async processMeetingState(): Promise<{
+  private async processMeetingState(): Promise<{
     recording: boolean
     meetingDetails: Meeting
     error: unknown
@@ -220,22 +214,8 @@ class ChromeBackgroundService {
     }
   }
 
-  async processTranscriptionMessage(meetingId: string, message: Message): Promise<void> {
-    try {
-      if (message.speaker === 'You' && this.google.auth.currentUser) {
-        message.speaker = this.google.auth.currentUser.displayName || this.google.auth.currentUser.email || 'Unknown'
-      }
-
-      this.conversation.push(message)
-
-      return
-    } catch (err) {
-      throw new Error('An error occurred while processing new message')
-    }
-  }
-
-  async processMeetingStart(meetingId: string, tabId: number): Promise<void> {
-    console.debug('process starting')
+  private async processMeetingStart(meetingId: string, tabId: number): Promise<void> {
+    console.debug('-> process starting')
 
     this.isStarted = true
 
@@ -243,85 +223,84 @@ class ChromeBackgroundService {
 
     const meetingDetails = await this.getMeetingDetails(meetingId)
 
-    if (!this.google.auth.currentUser || !meetingDetails) {
-      this.isRecording = false
-      return console.debug('auth or googleMeet is null, processMeetingStart terminated')
-    } else {
-      this.isRecording = true
+    if (!this.google.auth.currentUser) {
+      return console.debug(`-> unauthenticated user, skipping...`)
+    }
+
+    if (!meetingDetails) {
+      return console.debug('-> no calendar event could be found for the current meeting, skipping...')
     }
 
     const email = this.google.auth.currentUser.email as string
-    const meeting = await this.meetingStore.get(meetingId)
+    this.meeting = await this.meetingStore.get(meetingId)
 
     try {
       // HACK: handle case that processMeetingEnd is triggered before processMeetingStart ends
       // EX; when a user leaves right after its joining
       if (this.isStarted) {
         // In case the user joins the meeting the first
-        if (!meeting) {
+        if (!this.meeting) {
           await this.meetingStore.create(meetingId, meetingDetails)
+        } else {
+          await this.meetingStore.update(meetingId, { processed: false })
         }
-
-        console.debug('updateRecording - join')
-        await updateRecording({ meetingId, action: 'join' })
 
         await chrome.storage.session.set({ recording: true, meetingDetails })
 
-        this.unsubscribe = this.meetingStore.subscribe(meetingId, async (meeting) => {
-          if (meeting && !meeting.recorder && Array.isArray(meeting.recorders) && meeting.recorders[0] === email) {
-            // Set this user as a recorder if no one is recording and this user is index 1 in recorders
-            // TODO: confirm recorders[0] is always available to record
-            this.conversation = []
+        console.debug('-> joining a meeting')
 
-            console.debug('recorder switched to me')
-            await updateRecording({ meetingId, action: 'delegated' })
+        this.presencesRTDB.subscribe(meetingId, email, async (isRecorder) => {
+          if (!isRecorder) {
+            console.debug('-> I am NOT recording')
+            this.isRecorder = false
           }
         })
       } else {
-        console.debug('processMeetingStart terminated due to earlier end of meeting')
+        console.debug('-> processMeetingStart terminated due to earlier end of meeting')
       }
     } catch (err) {
-      this.isRecording = false
       throw new Error('An error occurred while trying to store meeting information')
     }
   }
 
-  async processMeetingEnd(meetingId: string) {
-    console.debug('process ending')
+  private async processMessage(meetingId: string, message: Message): Promise<void> {
+    // If speaker changed
+    if (this.previousSpeaker !== message.speaker) {
+      // If I have just been a recorder
+      if (message.email === this.google.auth.currentUser!.email) {
+        await this.iAmRecording(meetingId, message.email)
+      }
 
-    this.isStarted = false
+      // If messages are not empty AND I am a recorder
+      await this.saveMessages(meetingId)
+    }
+
+    if (this.isRecorder) {
+      this.messages.push(message)
+    }
+    this.previousSpeaker = message.speaker
+  }
+
+  private async processMeetingEnd(meetingId: string, email: string) {
+    console.debug('-> process ending')
+
+    await this.saveMessages(meetingId)
 
     await chrome.storage.session.remove(['recording', 'meetingDetails', 'tabId', 'error'])
 
+    this.isStarted = false
+    this.messages = []
+    this.previousSpeaker = ''
+    this.isRecorder = false
+
     try {
-      const meeting = await this.meetingStore.get(meetingId)
+      console.debug('-> leaving a meeting')
 
-      if (!meeting || !this.isRecording) {
-        return
-      }
-
-      const email = this.google.auth.currentUser?.email
-
-      // Store a conversation if this user has been a recorder
-      if (meeting.recorder === email) {
-        const sanitized = sanitize(this.conversation)
-        console.debug(`sanitized transcription is generated`, sanitized)
-
-        // Set a conversation if no old recorded conversation, otherwise attach it to the existing one
-        const conversation = meeting.conversation ? [...meeting.conversation, ...sanitized] : sanitized
-
-        await this.meetingStore.update(meetingId, { conversation })
-      }
-
-      console.debug('updateRecording - leave')
-
-      await updateRecording({ meetingId, action: 'leave' })
+      await this.presencesRTDB?.delete(meetingId, email)
     } catch (err) {
       console.error(err)
       throw new Error('An error occurred while updating meeting on meeting ended')
     } finally {
-      this.conversation = []
-      this.unsubscribe?.()
     }
   }
 }
@@ -346,4 +325,4 @@ chrome.runtime.onInstalled.addListener((object) => {
   }
 })
 
-console.debug('Background service started')
+console.debug('-> Background service started')

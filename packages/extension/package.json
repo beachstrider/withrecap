@@ -4,15 +4,22 @@
   "private": true,
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
-    "clean": "npx rimraf dist misc/manifest.d.ts misc/manifest.d.ts.map misc/manifest.js misc/manifest.js.map misc/tsconfig.tsbuildinfo",
-    "start": "tsc -b misc && node misc/manifest.js && parcel watch src/manifest.json --host localhost --port 3500",
+    "start": "tsc -b misc && node misc/manifest.js && cross-env USE_FIREBASE_EMULATORS=\"false\" parcel watch src/manifest.json --host localhost --port 3500",
+    "start:emulate": "tsc -b misc && node misc/manifest.js && cross-env USE_FIREBASE_EMULATORS=\"true\" parcel watch src/manifest.json --host localhost --port 3500",
     "build": "yarn clean && tsc -b misc && node misc/manifest.js && parcel build src/manifest.json --no-content-hash --no-cache --no-source-maps --detailed-report 0",
-    "package": "zip -r dist.zip dist"
+    "package": "zip -r dist.zip dist",
+    "clean": "rimraf dist misc/manifest.d.ts misc/manifest.d.ts.map misc/manifest.js misc/manifest.js.map misc/tsconfig.tsbuildinfo"
   },
   "devDependencies": {
     "@parcel/config-webextension": "^2.8.3",
     "@types/fs-extra": "^11.0.1",
     "dotenv": "^16.1.4",
     "fs-extra": "^11.1.1"
+  },
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "parcel": "^2.9.3",
+    "rimraf": "^5.0.1",
+    "typescript": "5.1.6"
   }
 }

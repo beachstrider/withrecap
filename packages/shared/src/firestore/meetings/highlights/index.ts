@@ -5,6 +5,7 @@ import { Timestamps, firestore } from '../..'
 
 export type Highlight = {
   id: string
+  email: string
   speaker: string
   text: string
 } & Timestamps

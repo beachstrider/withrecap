@@ -54,8 +54,8 @@ export default function Info({ meeting }: Props) {
 }
 
 const Metadata: React.FC<{ metadata: MeetingMetadata; attendees: MeetingAttendee[] }> = ({ metadata, attendees }) => {
-  const getAvatar = (speaker: string): string | undefined => {
-    return attendees.find((a) => a.name === speaker)?.avatar
+  const getAvatar = (email: string): string | undefined => {
+    return attendees.find((a) => a.email === email)?.avatar
   }
 
   const formatPercentage = (percentage: number): string => {
@@ -66,19 +66,19 @@ const Metadata: React.FC<{ metadata: MeetingMetadata; attendees: MeetingAttendee
     <>
       <p className="text-gray-500 mb-[24px]">Ranked in order of speaker.</p>
       <div className="flex flex-col gap-[16px]">
-        {Object.entries(metadata.percentage).map(([speaker, percentage], key) => {
+        {metadata.percentage.map(({ speaker, email, amount }, key) => {
           return (
             <div key={key} className="flex items-center justify-between">
               <div className="flex gap-[12px] items-center">
                 <UserAvatar
-                  avatar={getAvatar(speaker)}
+                  avatar={getAvatar(email)}
                   name={speaker}
                   className="sm:w-[32px] sm:h-[32px] w-[24px] h-[24px]"
                 />
                 <div className="font-semibold sm:max-w-[200px] truncate">{speaker}</div>
               </div>
               <div className="px-[6px] py-[4px] rounded-[26px] bg-gray-100 text-[12px] font-semibold text-gray-500">
-                {formatPercentage(percentage)}%
+                {formatPercentage(amount)}%
               </div>
             </div>
           )

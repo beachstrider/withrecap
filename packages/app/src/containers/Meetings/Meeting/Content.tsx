@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { Meeting, toast, useAuthGuard, useHighlights, useTodos } from '@recap/shared'
+import { Highlight, Meeting, toast, useAuthGuard, useHighlights, useTodos } from '@recap/shared'
 
 import HighlightList from './HighlightList'
 import Processing from './Processing'
@@ -13,10 +13,17 @@ export default function Content({ meeting }: { meeting: Meeting }) {
     user: { email }
   } = useAuthGuard()
 
-  const { todos, refresh: refreshTodos, error: errorTodos } = useTodos(meeting.mid)
-  const { highlights, refresh: refreshHighlights, error: errorHighlights } = useHighlights(meeting.mid)
-
   const disabled = !meeting.emails.includes(email)
+
+  const { attendees } = meeting
+  const { todos, refresh: refreshTodos, error: errorTodos } = useTodos(meeting.mid)
+  const { highlights: _highlights, refresh: refreshHighlights, error: errorHighlights } = useHighlights(meeting.mid)
+
+  const getAvatar = (email: string): string | undefined => {
+    return Object.values(attendees).find((a) => a.email === email)?.avatar
+  }
+
+  const highlights = _highlights.map((highlight: Highlight) => ({ ...highlight, avatar: getAvatar(highlight.email) }))
 
   useEffect(() => {
     if (errorTodos) {
@@ -29,27 +36,22 @@ export default function Content({ meeting }: { meeting: Meeting }) {
   }, [errorTodos, errorHighlights])
 
   // Meeting is ended
-  if (typeof meeting.recorders === 'undefined') {
-    if (meeting.processed) {
-      // Meeting is processed
-      if (meeting.conversation.length > 0) {
-        return (
-          <div className="grow">
-            <Summary meeting={meeting} />
-            <TodoList mid={meeting.mid} todos={todos} disabled={disabled} refresh={refreshTodos} />
-            <HighlightList mid={meeting.mid} highlights={highlights} disabled={disabled} refresh={refreshHighlights} />
-            <Transcript meeting={meeting} refreshTodos={refreshTodos} refreshHighlights={refreshHighlights} />
-          </div>
-        )
-      } else {
-        // Meeting has no conversation
-        return <div className="grow">This meeting has no conversation.</div>
-      }
+  if (meeting.processed) {
+    // Meeting is processed
+    if (meeting.conversation.length) {
+      return (
+        <div className="grow">
+          <Summary meeting={meeting} />
+          <TodoList mid={meeting.mid} todos={todos} disabled={disabled} refresh={refreshTodos} />
+          <HighlightList mid={meeting.mid} highlights={highlights} disabled={disabled} refresh={refreshHighlights} />
+          <Transcript meeting={meeting} refreshTodos={refreshTodos} refreshHighlights={refreshHighlights} />
+        </div>
+      )
     } else {
-      return <Processing meeting={meeting} />
+      // Meeting has no conversation
+      return <div className="grow">This meeting has no conversation.</div>
     }
+  } else {
+    return <Processing meeting={meeting} />
   }
-
-  // Meeting is being recorded
-  return <Processing meeting={meeting} />
 }

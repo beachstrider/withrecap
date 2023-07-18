@@ -1,7 +1,5 @@
 import { FirebaseOptions, initializeApp } from 'firebase/app'
 
-export type { User as FirebaseUser } from 'firebase/auth'
-
 const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -9,7 +7,9 @@ const firebaseConfig: FirebaseOptions = {
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.FIREBASE_APP_ID,
-  measurementId: process.env.FIREBASE_MEASUREMENT_ID
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID,
+  databaseURL: process.env.FIREBASE_DATABASE_URL
 }
 
+export type { User as FirebaseUser } from 'firebase/auth'
 export const firebase = initializeApp(firebaseConfig)

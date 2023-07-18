@@ -12,7 +12,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 1. Yarn v3 (https://yarnpkg.com)
 
-   - This Project uses yarn workspaces (https://classic.yarnpkg.com/lang/en/docs/workspaces/)
+   - This Project uses yarn workspaces (https://yarnpkg.com/features/workspaces)
 
 2. NodeJS v18 (https://nodejs.org)
 
@@ -46,7 +46,9 @@ yarn install
 
 3. Go to **Build > Firestore Database** and click on **Create database**, choose **Start in production mode** and click on **Next**, choose an expected cloud firestore location and click on **Enable**.
 
-4. Optional: Go to **Build > Hosting** and finish `Get started`, then click **Add custom domain** to setup your domain.
+4. Go to **Build > Realtime Database** and click on **Create database**, choose **Start in production mode** and click on **Next**, choose an expected cloud realtime database location and click on **Enable**.
+
+5. Optional: Go to **Build > Hosting** and finish `Get started`, then click **Add custom domain** to setup your domain.
 
 <br>
 
@@ -86,6 +88,7 @@ In the root directlry of your local project, copy/paste `.env.example` and renam
    const firebaseConfig = {
      apiKey: 'xxxxx',
      authDomain: 'xxxxx',
+     databaseURL: 'xxxxx',
      projectId: 'xxxxx',
      storageBucket: 'xxxxx',
      messagingSenderId: 'xxxxx',
@@ -94,7 +97,7 @@ In the root directlry of your local project, copy/paste `.env.example` and renam
    }
    ```
 
-3. Replace all corresponding empty variables in `.env` with those values you"ve just taken note.
+3. Replace all corresponding empty variables by upper snake case in `.env` with those values you"ve just taken note.
 
 ### Configure OAUTH2_CLIENT_ID
 
@@ -141,6 +144,7 @@ Finally the `.env` will look similar to below:
 
   FIREBASE_API_KEY="xxxxx"
   FIREBASE_AUTH_DOMAIN="xxxxx"
+  FIREBASE_DATABASE_URL="xxxxx"
   FIREBASE_PROJECT_ID="xxxxx"
   FIREBASE_STORAGE_BUCKET="xxxxx"
   FIREBASE_MESSAGING_SENDER_ID="xxxxx"
@@ -207,7 +211,7 @@ Give it a name `PRODUCTION` and click **Configure environment** to finish, you w
 
 ### Configuration copy from `.env`
 
-1. Create variables `EXTENSION_LINK`, `OAUTH2_CLIENT_ID`, `FIREBASE_AUTH_DOMAIN`, `FIREBASE_PROJECT_ID`, `FIREBASE_APP_ID`, `FIREBASE_STORAGE_BUCKET`, `FIREBASE_MESSAGING_SENDER_ID`, `FIREBASE_MEASUREMENT_ID`, copying/pasting the corresponding values in `.env` to each one.
+1. Create variables `EXTENSION_LINK`, `OAUTH2_CLIENT_ID`, `FIREBASE_AUTH_DOMAIN`, `FIREBASE_DATABASE_URL`, `FIREBASE_PROJECT_ID`, `FIREBASE_APP_ID`, `FIREBASE_STORAGE_BUCKET`, `FIREBASE_MESSAGING_SENDER_ID`, `FIREBASE_MEASUREMENT_ID`, copying/pasting the corresponding values in `.env` to each one.
 
 2. Create secrets `FIREBASE_API_KEY`, `SENTRY_DSN`, copying/pasting the corresponding values of `.env` which you early configured to each one.
 
@@ -223,17 +227,15 @@ Give it a name `PRODUCTION` and click **Configure environment** to finish, you w
 
 2. Configure **User type**.
 
-   - Set `MAKE EXTERNAL` if it is for a production. You will need to submit and take a verification process.
+   - Set `MAKE EXTERNAL` if it is for a production. You will need to submit and take an extensive verification process, or just set `Test` and add testers' emails in **Test users** section.
 
-   - Set `MAKE INTERNAL` if it is for a staging. You will need to manually add testers' emails in **Test users** section.
+   - Set `MAKE INTERNAL` if it is for a staging.
 
 3. Click **EDIT APP** and enter required inputs and click **SAVE AND CONTINUE** to move to the step **Scopes**.
 
 4. Click **ADD OR REMOVE SCOPES** and select scopes whose values are `.../auth/userinfo.email`, `.../auth/userinfo.profile`, `...auth/calendar.readonly`, and click **UPDATE**, then **SAVE AND CONTINUE** to move to the step **Optional info**.
 
 5. Just click **SAVE AND CONTINUE**.
-
-6. Finally click **PREPARE FOR VERIFICATION** to submit your app for verification.
 
 ### Configure GPT-4 API KEY
 
@@ -302,8 +304,8 @@ You must be in main branch.
    ```bash
    yarn bump --version=<version>
    # EX: yarn bump --version=1.1.0
-   # or  yarn major:patch
-   # or  yarn minor:patch
+   # or  yarn bump:major
+   # or  yarn bump:minor
    # or  yarn bump:patch
    ```
 
@@ -336,12 +338,28 @@ You have to configure an another firebase project and github environment named `
 
 <br>
 
-## 6. Running The App
+## 6. Running The Project Locally
 
-In the project directory, to run the app locally, you can run:
+Go to the root directory of the project.
+
+### Start Emulators
 
 ```bash
-yarn start
+yarn engine start
+```
+
+### Start App
+
+```bash
+yarn app start # with cloud server
+yarn app start:emulate # with emulators
+```
+
+### Start Extension
+
+```bash
+yarn extension start # with cloud server
+yarn extension start:emulate # with emulators
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
