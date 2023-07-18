@@ -38,7 +38,7 @@ export function useMeetings() {
 
       for (const meeting of meetings) {
         const start = new Date(meeting.start)
-        const date = dayjs(start).format('yyyy-MM-dd')
+        const date = dayjs(start).format('YYYY-MM-DD')
         const end = new Date(meeting.end)
 
         if (!byDate[date]) {
