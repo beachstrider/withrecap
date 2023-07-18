@@ -67,7 +67,7 @@ export const OnPresenceDeleted = functions
 
         const meetingService = new MeetingService(meeting)
 
-        const summary = await meetingSummary.build()
+        const summary = (await meetingSummary.build()) || ''
         const todos = await meetingTodos.build()
         const highlights = await meetingHighlights.build()
 
@@ -82,10 +82,10 @@ export const OnPresenceDeleted = functions
           // Update values on the database
           await doc.set(
             {
-              summary: summary || '',
-              todos: todos,
-              highlights: highlights,
-              metadata: metadata,
+              summary,
+              todos,
+              highlights,
+              metadata,
               processed: true
             },
             { merge: true }
@@ -111,13 +111,21 @@ export const OnPresenceDeleted = functions
               if (user.displayName) meeting.attendees[user.email].name = user.displayName
               if (user.photoURL) meeting.attendees[user.email].avatar = user.photoURL
 
-              // HACK: Add missing email in conversation
+              // HACK: Add missing email in conversation and highlights
               if (user.displayName) {
                 meeting.conversation = meeting.conversation.map((message) => {
                   if (!message.email && user!.displayName === message.speaker) {
                     return { ...message, email: user!.email }
                   }
                   return message
+                })
+                Object.entries(highlights).forEach(([id, highlight]) => {
+                  if (!highlight.email && user!.displayName === highlight.speaker) {
+                    highlights[id] = { ...highlight, email: user!.email }
+                  } else {
+                    highlights[id] = highlight
+                  }
+                  return true
                 })
               }
 
@@ -156,7 +164,10 @@ export const OnPresenceDeleted = functions
           debug('inserting infered user data in meeting')
 
           // Update values on the database
-          await doc.set({ attendees: meeting.attendees, conversation: meeting.conversation }, { merge: true })
+          await doc.set(
+            { attendees: meeting.attendees, conversation: meeting.conversation, highlights },
+            { merge: true }
+          )
 
           debug('meeting updated successfully')
         }
