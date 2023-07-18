@@ -14,7 +14,13 @@ export class TranscriptService {
   }
 
   public toString(): string {
-    return JSON.stringify(this.transcript)
+    return JSON.stringify(
+      this.transcript.map((message: Message) => ({
+        email: message.email,
+        speaker: message.speaker,
+        text: message.text
+      }))
+    )
   }
 
   public frequencies(): MeetingMetadata['percentage'] {
