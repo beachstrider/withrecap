@@ -214,26 +214,34 @@ class GoogleMeetsService {
         // // HACK: in case background script is still logging in
         // For example the meeting was ended through tab close, but then you joined again - this will nullify the metadata's endTimestamp
         try {
-          await waitUntil(async () => {
-            const { displayName, email, isEnabled, error } = await chrome.runtime.sendMessage<any, any>({
-              addonId: 'meet',
-              type: ExtensionMessages.MeetingUserInfo
-            })
+          await waitUntil(
+            async () => {
+              const { displayName, email, isEnabled, error } = await chrome.runtime.sendMessage<any, any>({
+                addonId: 'meet',
+                type: ExtensionMessages.MeetingUserInfo
+              })
 
-            if (error) {
-              console.debug(`-> ${error}. retrying..`)
-              return false
-            }
+              if (error) {
+                if (error === 'unauthenticated user') {
+                  console.debug(`-> ${error}. retrying..`)
+                  return false
+                }
+                console.debug(`-> ${error}`)
+                return true
+              }
 
-            if (!isEnabled) {
-              console.debug('-> not recording, addon is disabled')
-            }
+              if (!isEnabled) {
+                console.debug('-> not recording, addon is disabled')
+              }
 
-            this.email = email
-            this.displayName = displayName
+              this.email = email
+              this.displayName = displayName
 
-            return true
-          })
+              return true
+            },
+            2000,
+            5
+          )
         } catch (err) {
           return console.error(err)
         }

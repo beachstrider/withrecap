@@ -173,15 +173,15 @@ class ChromeBackgroundService {
 
   private async processMeetingUserInfo(
     addonId: string
-  ): Promise<{ displayName: string; email: string; isEnabled: boolean }> {
+  ): Promise<{ displayName: string; email: string; isEnabled: boolean } | { error: string }> {
     const tabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true })
 
     if (isEmpty(tabs)) {
-      throw new Error('active tab not found')
+      return { error: 'active tab not found' }
     }
 
     if (!this.google.auth.currentUser) {
-      throw new Error('unauthenticated user')
+      return { error: 'unauthenticated user' }
     }
 
     const userAddonStore = new UserAddonStore(this.google.auth.currentUser.uid)
