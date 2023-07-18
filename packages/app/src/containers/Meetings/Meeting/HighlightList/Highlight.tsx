@@ -1,10 +1,9 @@
 import React from 'react'
 
-import ReactMarkdown from 'react-markdown'
-
 import { Highlight as MeetingHighlight } from '@recap/shared'
 
 import UserAvatar from '../../../../components/display/UserAvatar'
+import { Markdown } from '../../../../components/markdown'
 
 interface HighlightProps {
   highlight: MeetingHighlight & { avatar?: string }
@@ -17,7 +16,7 @@ export function Highlight({ highlight }: HighlightProps) {
         <div className="flex sm:gap-[18px]">
           <div className="hidden vertical-line sm:block" />
           <div className="markdown-highlights py-[8px] grow">
-            <ReactMarkdown children={highlight.text || ''} />
+            <Markdown children={highlight.text || ''} />
           </div>
         </div>
         <div className="flex items-center sm:gap-[16px] gap-[12px]">
