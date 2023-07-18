@@ -5,11 +5,11 @@
   "source": "src/index.ts",
   "main": "dist/index.js",
   "scripts": {
-    "build": "yarn clean && yarn firebaserc && tsc -b",
-    "build:dev": "yarn clean && yarn firebaserc && tsc -w",
+    "build": "yarn clean && yarn firebaserc && parcel build --dist-dir dist",
+    "build:dev": "yarn clean && yarn firebaserc && parcel watch --dist-dir dist",
     "start": "yarn build:dev & sleep 15 && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase functions:config:get > .runtimeconfig.json && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" USE_FIREBASE_EMULATORS=\"true\" firebase emulators:start & yarn workspace @recap/seeder start:emulate",
     "start:functions": "yarn build:dev & cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase functions:config:get > .runtimeconfig.json && cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase emulators:start --only functions",
-    "deploy:all": "cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase deploy --only functions,firestore:rules,firestore:indexes,database:rules",
+    "deploy": "cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase deploy --only functions,firestore:rules,firestore:indexes,database:rules",
     "deploy:functions": "cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase deploy --only functions",
     "deploy:function": "cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase deploy --only functions:\"$0\"",
     "deploy:firestore": "cross-env GOOGLE_APPLICATION_CREDENTIALS=\"../../service-account.json\" firebase deploy --only firestore",
@@ -22,7 +22,6 @@
     "node": "18"
   },
   "dependencies": {
-    "@recap/shared": "0.0.0",
     "@sentry/node": "^7.50.0",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.9",
@@ -39,6 +38,7 @@
   },
   "devDependencies": {
     "@types/uuid": "^9.0.1",
-    "firebase-functions-test": "^3.1.0"
+    "firebase-functions-test": "^3.1.0",
+    "parcel": "^2.9.3"
   }
 }

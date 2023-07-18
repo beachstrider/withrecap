@@ -1,7 +1,7 @@
-// import dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import * as functions from 'firebase-functions'
 
-import { User, dayjs } from '@recap/shared'
+import { User } from '@recap/shared'
 
 import { db, mail as mailgun, settings } from '../../config'
 import { MailService, Templates } from '../../services/mail'

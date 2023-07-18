@@ -5,14 +5,6 @@
 
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "dist",
-    "target": "ESNext",
-    "lib": ["ESNext"],
-    "module": "CommonJS",
-
-    "baseUrl": ".",
-    "paths": {
-      "@recap/shared": ["../shared/src"]
-    }
+    "outDir": "dist"
   }
 }

@@ -1,6 +1,5 @@
 {
   "name": "@recap/shared",
-  "version": "0.0.0",
   "description": "Shared components",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,7 +8,6 @@
   "dependencies": {
     "@types/uuid": "^9.0.1",
     "cross-env": "^7.0.3",
-    "react": "^18.2.0",
     "rimraf": "^5.0.1",
     "typescript": "5.1.6",
     "uuid": "^9.0.0"

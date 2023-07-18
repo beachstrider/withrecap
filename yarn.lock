@@ -3983,7 +3983,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@recap/engine@workspace:packages/engine"
   dependencies:
-    "@recap/shared": 0.0.0
     "@sentry/node": ^7.50.0
     "@types/uuid": ^9.0.1
     cross-env: ^7.0.3
@@ -3996,6 +3995,7 @@ __metadata:
     googleapis: ^118.0.0
     mailgun.js: ^8.2.1
     openai: ^3.2.1
+    parcel: ^2.9.3
     rimraf: ^5.0.1
     typescript: 5.1.6
     uuid: ^9.0.0
@@ -4027,13 +4027,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@recap/shared@0.0.0, @recap/shared@workspace:packages/shared":
+"@recap/shared@workspace:packages/shared":
   version: 0.0.0-use.local
   resolution: "@recap/shared@workspace:packages/shared"
   dependencies:
     "@types/uuid": ^9.0.1
     cross-env: ^7.0.3
-    react: ^18.2.0
     rimraf: ^5.0.1
     typescript: 5.1.6
     uuid: ^9.0.0

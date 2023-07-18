@@ -1,9 +1,9 @@
 import * as Sentry from '@sentry/node'
-// import dayjs from 'dayjs'
-// import timezone from 'dayjs/plugin/timezone'
+import dayjs from 'dayjs'
+import timezone from 'dayjs/plugin/timezone'
 import * as functions from 'firebase-functions'
 
-import { Meeting, MeetingMetadata, User, dayjs } from '@recap/shared'
+import { Meeting, MeetingMetadata, User } from '@recap/shared'
 
 import { db, mail as mailgun, openai, realtime, settings } from '../../config'
 import { MeetingHighlights } from '../../services/highlights'
@@ -15,7 +15,7 @@ import { TranscriptService } from '../../services/transcript'
 import { debug, error, warn } from '../../utils/logger'
 import { SentryWrapper } from '../../utils/sentry'
 
-// dayjs.extend(timezone)
+dayjs.extend(timezone)
 
 const options: functions.RuntimeOptions = {
   memory: '512MB',

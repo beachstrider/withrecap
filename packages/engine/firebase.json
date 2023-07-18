@@ -17,11 +17,7 @@
         ".gitignore"
       ],
       "predeploy": [
-        "yarn build",
-        "bash ./deploy.sh pre-deploy"
-      ],
-      "postdeploy": [
-        "bash ./deploy.sh post-deploy"
+        "yarn build"
       ]
     }
   ],
