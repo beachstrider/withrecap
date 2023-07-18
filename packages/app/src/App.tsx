@@ -12,6 +12,7 @@ import NotFound from './containers/NotFound'
 import { OnboardingAddon } from './containers/Onboarding/Addon'
 import { OnboardingDone } from './containers/Onboarding/Done'
 import { OnboardingRegister } from './containers/Onboarding/Register'
+import { OnboardingSignout } from './containers/Onboarding/Signout'
 import PrivacyPolicy from './containers/PrivacyPolicy'
 import Signin from './containers/Signin'
 import TermsConditions from './containers/TermsConditions'
@@ -28,6 +29,12 @@ export default function App() {
   const signin = (
     <AuthProvider provider={GoogleAuthProvider} onRejected={onNeedAuth}>
       <Signin />
+    </AuthProvider>
+  )
+
+  const onboardingSignout = (
+    <AuthProvider provider={GoogleAuthProvider} onRejected={onNeedAuth}>
+      <OnboardingSignout />
     </AuthProvider>
   )
 
@@ -55,6 +62,7 @@ export default function App() {
         <Route path="/signin" element={signin} />
 
         {/* Onboarding */}
+        <Route path="/onboarding/signout" element={onboardingSignout} />
         <Route path="/onboarding/register" element={register} />
         <Route path="/onboarding/" element={authGuard}>
           <Route path="addon" element={<OnboardingAddon />} />

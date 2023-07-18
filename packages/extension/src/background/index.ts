@@ -317,10 +317,15 @@ const backgroundService = new ChromeBackgroundService()
 backgroundService.startListener()
 
 // Navigate to app onboarding the first time the extension gets installed
-chrome.runtime.onInstalled.addListener((object) => {
+chrome.runtime.onInstalled.addListener(async (object) => {
   if (object.reason === chrome.runtime.OnInstalledReason.INSTALL) {
+    const google = new GoogleIdentityAuthProvider()
+    await google.logout()
+
+    await chrome.storage.session.remove(['recording', 'meetingDetails', 'tabId', 'error'])
+
     chrome.tabs.create({
-      url: `http://${process.env.DOMAIN}/onboarding/register`
+      url: `http://${process.env.DOMAIN}/onboarding/signout`
     })
   }
 })
