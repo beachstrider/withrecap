@@ -53,6 +53,7 @@ class GoogleMeetsService {
   private ccDivObserver: MutationObserver | null = null
 
   // To limit docObserver to run only once
+  private observerStarted = false
   private callStarted = false
   private callEnded = false
   private captionEnabled = true
@@ -205,11 +206,11 @@ class GoogleMeetsService {
 
       this.callBar = document.body.querySelector(SELECTOR_CALL_BAR)
 
-      if (this.callBar && btnCallEnd && !this.callStarted) {
+      if (this.callBar && btnCallEnd && !this.observerStarted) {
         // HACK: sometimes chrome.runtime is undefined, this is known as a heisenbug
         await waitUntil(() => typeof chrome.runtime !== 'undefined')
 
-        this.callStarted = true
+        this.observerStarted = true
 
         // // HACK: in case background script is still logging in
         // For example the meeting was ended through tab close, but then you joined again - this will nullify the metadata's endTimestamp
@@ -251,25 +252,25 @@ class GoogleMeetsService {
           await this.endMeeting()
         })
 
-        chrome.runtime
-          .sendMessage({
+        try {
+          await chrome.runtime.sendMessage({
             meetingId: this.meetingId,
             type: ExtensionMessages.MeetingStarted
           })
-          .then(async () => {
-            console.debug('-> call started')
 
-            observer.disconnect()
-            // click on the cc button and start transcribing
-            await this.startTranscribing()
-          })
-          .catch(({ error }) => {
-            // TODO: Display a toast and stop there?
-            // This is a critical error and we cannot continue
-          })
+          console.debug('-> call started')
+
+          observer.disconnect()
+          // click on the cc button and start transcribing
+          await this.startTranscribing()
+        } catch (err) {
+          // TODO: Display a toast and stop there?
+          // This is a critical error and we cannot continue
+          console.error(err)
+        }
       }
 
-      if (outMeetBar) {
+      if (outMeetBar && this.callStarted) {
         observer.disconnect()
         await this.endMeeting()
       }
