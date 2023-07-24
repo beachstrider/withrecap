@@ -1,4 +1,5 @@
-export { OnPresenceDeleted } from './functions/background/OnPresenceDeleted'
+export { OnPresenceChanged } from './functions/background/OnPresenceChanged'
+export { OnPresencesDeleted } from './functions/background/OnPresencesDeleted'
 export { OnUserCreated } from './functions/background/OnUserCreated'
 
 export { CreateAuthToken } from './functions/callables/CreateAuthToken'

@@ -7,6 +7,7 @@ type FunctionType =
   | 'functions.pubsub.schedule.onRun'
   | 'functions.firestore.document.onUpdate'
   | 'functions.firestore.document.onCreate'
+  | 'functions.database.ref.onWrite'
   | 'functions.database.ref.onDelete'
 
 initSentry()

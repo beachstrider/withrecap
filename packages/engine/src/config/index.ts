@@ -17,7 +17,7 @@ const app = admin.initializeApp()
 
 const db = app.firestore()
 
-const realtime = app.database()
+const rtdb = app.database()
 
 const auth = app.auth()
 
@@ -56,4 +56,4 @@ const initSentry = () => {
   }
 }
 
-export { auth, db, firestore, googleAuth, initSentry, mail, openai, realtime, settings }
+export { auth, db, firestore, googleAuth, initSentry, mail, openai, rtdb, settings }

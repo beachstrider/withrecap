@@ -119,7 +119,8 @@ class GoogleMeetsService {
 
     ccDivObserver.observe(ccDiv, {
       childList: true,
-      subtree: true
+      subtree: true,
+      characterData: true
     })
 
     return ccDivObserver
