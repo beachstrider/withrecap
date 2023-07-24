@@ -23,7 +23,8 @@ class ChromeBackgroundService {
   private conversationStore: ConversationStore
   private presencesRTDB: PresencesRTDB
   private meeting: Meeting | undefined
-  private messages: Message[] = []
+  private _messages: Message[] = [] // all dump messages
+  private messages: Message[] = [] // sanitized messages
   private previousSpeaker = ''
 
   private isStarted = false
@@ -152,23 +153,21 @@ class ChromeBackgroundService {
     await this.google.logout()
   }
 
-  private async iAmRecording(meetingId: string, email: string) {
-    console.debug('-> I am recording')
-    this.isRecorder = true
-    await this.presencesRTDB?.activate(meetingId, email)
-  }
-
   private async saveMessages(meetingId: string): Promise<void> {
     if (this.messages.length && this.isRecorder) {
       try {
-        const messages = sanitize(this.messages)
+        const messages = this.messages
         console.debug(messages.map((message) => `${message.speaker}: ${message.text}`).join('\n'))
         await this.conversationStore.add(meetingId, messages)
       } catch (err) {
         throw new Error('An error occurred while storing new message')
       }
-      this.messages = []
     }
+  }
+
+  private async clearMessages(): Promise<void> {
+    this._messages = []
+    this.messages = []
   }
 
   private async processMeetingUserInfo(
@@ -250,10 +249,8 @@ class ChromeBackgroundService {
         console.debug('-> joining a meeting')
 
         this.presencesRTDB.subscribe(meetingId, email, async (isRecorder) => {
-          if (!isRecorder) {
-            console.debug('-> I am NOT recording')
-            this.isRecorder = false
-          }
+          console.debug(`-> I am ${isRecorder ? '' : 'NOT '}recording`)
+          this.isRecorder = isRecorder
         })
       } else {
         console.debug('-> processMeetingStart terminated due to earlier end of meeting')
@@ -264,20 +261,19 @@ class ChromeBackgroundService {
   }
 
   private async processMessage(meetingId: string, message: Message): Promise<void> {
+    // TODO: save messages at the appropriate moment
+
     // If speaker changed
     if (this.previousSpeaker !== message.speaker) {
-      // If I have just been a recorder
-      if (message.email === this.google.auth.currentUser!.email) {
-        await this.iAmRecording(meetingId, message.email)
-      }
-
-      // If messages are not empty AND I am a recorder
       await this.saveMessages(meetingId)
+      this.clearMessages()
     }
 
     if (this.isRecorder) {
-      this.messages.push(message)
+      this._messages.push(message)
+      this.messages = sanitize(this._messages)
     }
+
     this.previousSpeaker = message.speaker
   }
 
@@ -285,6 +281,7 @@ class ChromeBackgroundService {
     console.debug('-> process ending')
 
     await this.saveMessages(meetingId)
+    this.clearMessages()
 
     await chrome.storage.session.remove(['recording', 'meetingDetails', 'tabId', 'error'])
 
