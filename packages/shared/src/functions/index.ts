@@ -9,4 +9,5 @@ if (process.env.USE_FIREBASE_EMULATORS === 'true') {
 }
 
 export const sendInviteEmails = httpsCallable<{ emails: string }>(functions, 'SendInviteEmails')
+export const sendSharingEmails = httpsCallable<{ emails: string; mid: string }>(functions, 'SendSharingEmails')
 export const createAuthToken = httpsCallable(functions, 'CreateAuthToken')

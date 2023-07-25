@@ -15,5 +15,10 @@
   "turboConsoleLog.logType": "debug",
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "github-actions.workflows.pinned.workflows": [
+    ".github/workflows/deploy-firebase-functions.yml",
+    ".github/workflows/deploy-firebase-hosting.yml",
+    ".github/workflows/release-extension.yml"
+  ]
 }

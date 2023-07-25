@@ -38,7 +38,7 @@ export const Modal = ({ children, open, onClose }: Props) => {
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
-                <Dialog.Panel className="relative overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:w-full sm:max-w-lg">
+                <Dialog.Panel className="relative overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:max-w-lg w-full max-w-none">
                   <div className="px-4 py-5 bg-white sm:p-6">{children}</div>
                 </Dialog.Panel>
               </Transition.Child>
