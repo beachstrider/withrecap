@@ -2,6 +2,8 @@
 
 Meeting notes, on autopilot.
 
+![image](https://github.com/jasonmz/withrecap/assets/48445639/8702262f-ac5a-493f-bb49-6aa1753fd466)
+
 <br>
 
 ## 1. Getting Started
